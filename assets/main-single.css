@@ -1,0 +1,304 @@
+:root {
+  --nav-bg: #f8f8f8;
+  --text-color: #333;
+  --hover-bg: #efefef;
+  --border-color: #ddd;
+  --footer-bg: #292221;
+  --footer-text: #ffffff;
+  --footer-link-hover: #cc0032; /* Branding Red */
+  --footer-border: rgba(255, 255, 255, 0.1);
+}
+/* great_andhra_logo_panel */
+
+.great_andhra_logo_panel {
+  width: 990px;
+  padding: 0;
+  float: left;
+  background: #fff;
+  margin: 5px 0px;
+  column-gap: 5px;
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  height: 100px;
+}
+
+/* menu panel(header/navlink) */
+
+/* Parent menu item */
+/* .great_andhra_main_menu_panel_2019 ul li {
+  position: relative;
+  display: inline;
+} */
+
+/* Hide dropdown initially */
+/* .great_andhra_main_menu_panel_2019 ul li ul {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: #ffffff;
+  min-width: 150px;
+  border: 1px solid #ddd;
+  z-index: 999;
+  flex-direction: column; 
+} */
+
+/* Show dropdown on hover */
+/* .great_andhra_main_menu_panel_2019 ul li:hover > ul {
+  display: block;
+} */
+
+/* .great_andhra_main_menu_panel_2019 li.social-icons ul {
+  display: flex !important;
+  flex-direction: row;
+} */
+
+/* Dropdown items */
+/* .great_andhra_main_menu_panel_2019 ul li ul li {
+  display: block;
+  padding: 8px 12px;
+  white-space: nowrap;
+} */
+
+/* Dropdown links */
+/* .great_andhra_main_menu_panel_2019 ul li ul li a {
+  display: block;
+  color: #333;
+} */
+
+/* Optional hover effect */
+/* .great_andhra_main_menu_panel_2019 ul li ul li:hover {
+  background: #f2f2f2;
+} 
+
+ .great_andhra_main_menu_panel_2019 {
+  max-width: 990px;
+  height: 37px;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  background: #f5f5fa;
+  border: 1px solid #e6e6e6;
+} 
+
+.great_andhra_main_menu_panel_2019 ul {
+  font-size: 13px;
+  align-items: center;
+  display: flex;
+}
+
+.great_andhra_main_menu_panel_2019 ul li a {
+  text-transform: capitalize;
+  font-weight: 600;
+  color: #000000;
+  font-family: "Lato";
+  padding: 0 13px;
+  letter-spacing: 0.5px;
+  line-height: 33px;
+  margin: 0;
+} */
+
+/* 201223 section */
+.great_andhra_main_201223_ {
+  width: 990px;
+  display: flex;
+  align-items: center;
+  height: 50px;
+  justify-content: space-between;
+  background: #fff;
+}
+
+._201223_1,
+._201223_2,
+._201223_3 {
+  height: 40px;
+}
+
+/* Main body content  */
+.great_andhra_main_body_container {
+  width: 990px;
+  float: left;
+  background: #fff;
+}
+
+.great_andhra_main_body_container .two_column_home .paras {
+  width: 688px;
+  background: #fff;
+}
+
+.paras.float-left.clear.hero {
+  display: flex;
+}
+
+.great_andhra_main_body_container .home_left_column {
+  width: 330px;
+  margin: 0 14px 0 0;
+  background: #fff;
+}
+
+/* ads and aopinion section  */
+.great_andhra_main_body_container.ad-opinion {
+  display: flex;
+  flex-direction: column;
+}
+
+/* category section */
+.great_andhra_main_body_container.category_section {
+  display: flex;
+  gap: 10px;
+}
+
+.great_andhra_main_body_container.category_section
+  ul.sortable-list.ui-sortable {
+  float: left;
+  margin-top: 5px;
+}
+
+/* test */
+/* Main Navigation Container */
+/* Navbar container */
+.ga-nav {
+  background: var(--nav-bg);
+  border: 1px solid #e6e6e6;
+  display: flex;
+  align-items: center;
+  padding: 0 0 0 1px;
+  height: 37px;
+  overflow: visible; /* IMPORTANT */
+}
+
+/* Menu List */
+.menu {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  align-items: center;
+}
+
+/* Menu item */
+.menu-item {
+  position: relative;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+/* Links */
+.menu-link {
+  text-decoration: none;
+  color: #000000 !important;
+  padding: 0 15px;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: capitalize;
+  font-family: "Lato", sans-serif !important;
+  line-height: 33px;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  transition: background 0.2s;
+  /* ❌ removed z-index */
+}
+
+/* Hover */
+.menu-link:hover {
+  background: var(--hover-bg);
+}
+
+/* Dropdown icon */
+.menu-link i.fa-caret-down {
+  margin-left: 5px;
+  font-size: 12px;
+}
+
+/* Dropdown */
+.dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: #ffffff;
+  min-width: 160px;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+  /* Fix */
+  display: block;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(5px);
+  transition: all 0.2s ease;
+
+  z-index: 9999;
+  list-style: none;
+  padding: 5px 0;
+  margin: 0;
+}
+
+/* Show dropdown */
+.menu-item:hover .dropdown {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+/* Dropdown items */
+.dropdown li {
+  display: block;
+}
+
+.dropdown a {
+  display: block;
+  padding: 0px 13px;
+  text-decoration: none;
+  text-transform: capitalize;
+  color: #000 !important;
+  font-size: 14px;
+  font-size: 11px;
+  line-height: 33px;
+  font-family: "lato" !important ;
+}
+
+.dropdown a:hover {
+  background: var(--hover-bg);
+  color: red !important;
+}
+
+/* Logo */
+.nav-print-img {
+  height: 17px;
+  vertical-align: middle;
+}
+
+/* Social Icons */
+.social-group {
+  margin-left: auto;
+  display: flex;
+  gap: 15px;
+  padding-right: 15px;
+}
+
+.social-group a {
+  color: #555;
+  font-size: 18px;
+  transition: opacity 0.2s;
+}
+
+.social-group a:hover {
+  opacity: 0.7;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .ga-nav {
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .social-group {
+    margin-left: 20px;
+  }
+}

@@ -1,0 +1,8 @@
+# Runtime file cache for API responses (config.php sets GA_CACHE_DIR) — regenerated automatically
+/cache/
+
+# OS/editor cruft
+Thumbs.db
+.DS_Store
+.vscode/
+.idea/

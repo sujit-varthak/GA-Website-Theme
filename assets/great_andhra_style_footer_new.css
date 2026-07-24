@@ -1,0 +1,285 @@
+/* .footer_nav_bar ul li a,
+.gan-footer .gan-footer-first .block ul li a {
+  text-decoration: none;
+  color: #fff;
+} */
+
+/* .great_andhra_main_footer {
+    width: 990px;
+    height: 133px;
+    margin: 0;
+    padding: 0;
+    float: left;
+    background: #fff
+} */
+
+/* * html .great_andhra_main_footer {
+  width: 1000px;
+}
+
+.great_andhra_main_footer .nav_bar {
+  width: 975px;
+  height: 93px;
+  margin: 0;
+  padding: 0;
+  float: left;
+  background: #fff;
+}
+
+.great_andhra_main_footer .nav_bar .footer_logo {
+  width: 250px;
+  height: 93px;
+  margin: 0;
+  padding: 0;
+  float: left;
+}
+
+.great_andhra_main_footer .nav_bar .footer_logo .ga_txt {
+  width: 250px;
+  margin: 33px 0 0 10px;
+  padding: 0;
+  float: left;
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 20px;
+  color: #000;
+}
+
+.great_andhra_main_footer .nav_bar .footer_logo .pw_txt {
+  width: 250px;
+  margin: 0 0 0 31px;
+  padding: 0;
+  float: left;
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 11px;
+  color: #000;
+}
+
+.footer_nav_bar {
+  margin: 0;
+  padding: 0;
+  float: right;
+  width: 840px;
+}
+
+.footer_nav_bar ul {
+  margin: 10px 0 0;
+  padding: 0;
+  float: left;
+}
+
+.footer_nav_bar ul.menu {
+  border: none;
+  list-style: none;
+  text-align: center;
+}
+
+.footer_nav_bar ul li {
+  margin: 0;
+  padding: 0;
+  float: left;
+  list-style: none;
+  display: block;
+}
+
+.footer_nav_bar ul.menu li:first-child {
+  border-left: none;
+}
+
+.footer_nav_bar ul li a {
+  margin: 3px;
+  padding: 0 13px 10px;
+  border-left: 1px solid #20262b;
+  vertical-align: middle;
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 13px;
+  display: block;
+  float: left;
+  font-weight: 700;
+}
+
+.great_andhra_main_footer .copyright_bar {
+  width: 990px;
+  margin: 0;
+  padding: 15px 0 0;
+  float: left;
+  background: #fff;
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 13px;
+  color: #6f6e6e;
+  text-align: center;
+} */
+
+/* .great_andhra_main_footer .copyright_bar_index,
+.great_andhra_main_footer .copyright_bar_index .div_cpright {
+  background: #000;
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 13px;
+  margin: 0;
+  width: 990px;
+  word-spacing: 2px;
+  float: left;
+} */
+
+/* .great_andhra_main_footer .copyright_bar_index {
+  height: 40px;
+  padding: 0;
+} */
+
+/* .great_andhra_main_footer .copyright_bar_index .div_cpright {
+  height: 16px;
+  padding: 10px 0;
+  font-weight: 700;
+  text-transform: uppercase;
+  text-align: center;
+  vertical-align: middle;
+  color: #3e4448;
+}
+
+section {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  vertical-align: baseline;
+  font: inherit;
+  display: block;
+}
+
+.gan-footer .gan-footer-first .block,
+.gan-footer .gan-footer-first .block ul li,
+.gan-footer .gan-footer-first h2,
+.gan-footer .gan-footer-third,
+h2.bl-title {
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+} */
+
+/* .gan-footer {
+  background: #292221;
+  height: 247px;
+} */
+/* 
+.gan-footer .gan-footer-first {
+  height: 150px;
+  margin-bottom: 20px;
+  margin-top: 20px;
+  margin-left: 20px;
+  width: 990px;
+}
+
+.gan-footer .gan-footer-first h2 {
+  color: #fff;
+  line-height: normal;
+  margin: 0;
+  padding-left: 18px;
+  padding-right: 12px;
+  font-size: 13px;
+  border-bottom: 1px solid #433e3d;
+  padding-bottom: 2px;
+  width: 100%;
+}
+
+.gan-footer .gan-footer-first .block {
+  float: left;
+  border-left: 1px solid #433e3d;
+  min-height: 170px;
+  padding-right: 30px;
+  width: auto;
+}
+
+.gan-footer .gan-footer-first .block#block-fbconnect-fbconnect-login h3 {
+  font-size: 13px;
+  margin-top: 10px;
+}
+
+.gan-footer
+  .gan-footer-first
+  .block#block-fbconnect-fbconnect-login
+  a.fb_button
+  fb_button_large {
+  display: block;
+}
+
+.gan-footer .gan-footer-first .block ul {
+  margin: 10px 0 0;
+}
+
+.gan-footer .gan-footer-first .block ul li {
+  font-size: 13px;
+  list-style-image: none;
+  list-style-type: none;
+  padding-right: 25px;
+  margin: 6px 0 0;
+}
+
+.gan-footer .gan-footer-first .block ul li ul.menuf {
+  display: none;
+  padding: 0;
+  margin: 0;
+}
+
+.gan-footer .gan-footer-first .block ul li a:hover {
+  color: #bb1a00;
+  text-decoration: underline;
+}
+
+.gan-footer .gan-footer-first .block:first-child {
+  border-left: none;
+  margin-left: 0;
+  padding-left: 0;
+}
+
+.gan-footer .gan-footer-third {
+  font-weight: 400;
+  color: #ffffff;
+  font-size: 12px;
+  line-height: 40px;
+  padding: 1px 0 6px;
+  word-spacing: 2px;
+  text-align: center;
+  text-transform: uppercase;
+  border-top: 1px solid #433e3d;
+  width: 966px;
+}
+
+h2.bl-title {
+  font-size: 18px;
+  margin: 0;
+  padding-left: 40px;
+  text-transform: uppercase;
+}
+
+ul.menuf {
+  border: none;
+  list-style: none;
+  text-align: left;
+  padding-left: 18px;
+}
+
+ul.menuf li {
+  margin: 0 0 0 0.5em;
+}
+
+li a.active {
+  color: #000;
+}
+
+ul.inline,
+ul.links.inline {
+  display: inline;
+  padding-left: 0;
+}
+
+ul.inline li {
+  display: inline;
+  list-style-type: none;
+  padding: 0 0.5em;
+}
+
+.gangrid-main {
+  display: inline;
+  float: left;
+  position: relative;
+  margin-left: 19px;
+  margin-right: 10px;
+  width: 940px;
+} */

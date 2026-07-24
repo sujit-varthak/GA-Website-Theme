@@ -1,0 +1,652 @@
+/* ========================================
+   MOBILE RESPONSIVE CSS FOR LIST PAGE
+   For GreatAndhra.com List Page (Latest News/Category Pages)
+   ======================================== */
+
+/* Mobile Breakpoints */
+@media (max-width: 768px) {
+  /* ========================================
+     GLOBAL RESETS FOR MOBILE
+     ======================================== */
+
+  html,
+  body {
+    overflow-x: hidden;
+    width: 100%;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  body.home_bg {
+    background: #ffffff !important;
+  }
+
+  /* ========================================
+     MAIN CONTAINER
+     ======================================== */
+
+  .great_andhra_movie_body {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .great_andhra_movie_inner_body {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: none !important;
+  }
+
+  /* ========================================
+     LOGO PANEL / HEADER
+     ======================================== */
+
+  .great_andhra_logo_panel {
+    width: 100% !important;
+    height: auto !important;
+    padding: 10px !important;
+    margin: 5px 0 !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 10px !important;
+  }
+
+  .great_andhra_logo_panel .logo {
+    width: 200px !important;
+    height: auto !important;
+    margin: 0 auto !important;
+    display: block !important;
+    text-align: center !important;
+  }
+
+  .great_andhra_logo_panel .logo img {
+    width: 100% !important;
+    height: auto !important;
+  }
+
+  /* Header Ad Section */
+  .great_andhra_logo_panel .AdinHedare {
+    width: 100% !important;
+    margin: 10px 0 !important;
+    text-align: center !important;
+  }
+
+  .AdinHedare img {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+
+  .a-label-header {
+    font-size: 9px !important;
+  }
+
+  /* ========================================
+     NAVIGATION MENU
+     ======================================== */
+
+  .ga-nav {
+    width: 100% !important;
+    height: auto !important;
+    padding: 0 !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .menu {
+    width: auto !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .menu-item {
+    flex-shrink: 0 !important;
+  }
+
+  .menu-link {
+    padding: 0 12px !important;
+    font-size: 12px !important;
+    white-space: nowrap !important;
+  }
+
+  /* Dropdown adjustments for mobile */
+  .dropdown {
+    position: fixed !important;
+    left: 0 !important;
+    right: 0 !important;
+    top: auto !important;
+    min-width: 100% !important;
+    max-height: 300px;
+    overflow-y: auto;
+  }
+
+  .dropdown a {
+    font-size: 12px !important;
+    padding: 10px 15px !important;
+    line-height: normal !important;
+  }
+
+  /* Social Icons in Nav */
+  .social-group {
+    display: none !important;
+  }
+
+  /* Telugu text link */
+  #telugu_text a {
+    font-size: 12px !important;
+  }
+
+  /* Social icons in menu */
+  .social-icons {
+    display: none !important;
+  }
+
+  /* Print Icon */
+  .nav-print-img {
+    height: 15px !important;
+  }
+
+  /* Home Icon */
+  i.fas.fa-home {
+    font-size: 14px !important;
+  }
+
+  /* ========================================
+     MAIN BODY CONTAINER
+     ======================================== */
+
+  .great_andhra_main_body_container {
+    width: 100% !important;
+    padding: 10px !important;
+    float: none !important;
+    flex-direction: column !important;
+  }
+
+  /* ========================================
+     TWO COLUMN LAYOUT - MAIN CONTENT
+     ======================================== */
+
+  .great_andhra_main_body_container .movies_column {
+    width: 100% !important;
+    float: none !important;
+    padding: 5px !important;
+    margin-bottom: 20px !important;
+  }
+
+  /* News Item Container */
+  .great_andhra_main_body_container .movies_news_description_container {
+    width: 100% !important;
+    margin: 0 0 20px !important;
+    font-size: 15px !important;
+    display: block !important;
+    border-bottom: 1px solid #e0e0e0 !important;
+    padding-bottom: 15px !important;
+  }
+
+  /* News Image */
+  .great_andhra_main_body_container .page_news .img_plc,
+  .great_andhra_main_body_container .img_plc {
+    width: 40% !important;
+    float: none !important;
+    margin: 0 0 10px 0 !important;
+    text-align: center !important;
+  }
+
+
+
+  /*.great_andhra_main_body_container .movies_news_description_container img {*/
+  /*  width: 100% !important;*/
+  /*  max-width: 100% !important;*/
+  /*  height: auto !important;*/
+  /*  float: none !important;*/
+  /*  margin: 0 0 10px 0 !important;*/
+  /*}*/
+
+  /* News Title Link */
+  .movies_news_description_container a {
+    font-size: 16px !important;
+    line-height: 22px !important;
+    display: block !important;
+    margin-bottom: 8px !important;
+  }
+
+  /* Byline / Date */
+  .byline {
+    font-size: 11px !important;
+    padding: 5px 0 !important;
+    margin-bottom: 8px !important;
+  }
+
+  /* News Description/Content */
+  .view_mov_poli_content {
+    display: none;
+  }
+
+  /* ========================================
+     PAGE NEWS / ARTICLE HEADER (if exists on list page)
+     ======================================== */
+
+  .great_andhra_main_body_container .movies_page_news .header {
+    width: 100% !important;
+    padding-bottom: 10px !important;
+    margin-bottom: 15px !important;
+  }
+
+  .great_andhra_main_body_container .movies_page_news .header h1 {
+    width: 100% !important;
+    font-size: 24px !important;
+    line-height: 30px !important;
+    padding-bottom: 8px !important;
+  }
+
+  .great_andhra_main_body_container .movies_page_news ul .byline {
+    font-size: 11px !important;
+    padding: 5px 0 !important;
+  }
+
+  .great_andhra_main_body_container .movies_page_news .content {
+    width: 100% !important;
+    margin: 10px 0 !important;
+    font-size: 15px !important;
+    line-height: 22px !important;
+  }
+
+  /* ========================================
+     SIDEBAR / RIGHT COLUMN
+     ======================================== */
+
+  .great_andhra_main_body_container .movies_column_middle {
+    width: 100% !important;
+    float: none !important;
+    margin-top: 20px !important;
+  }
+
+  /* Sortable Items in Sidebar */
+  .great_andhra_main_body_container .sortable-item {
+    width: 100% !important;
+    margin: 0 0 15px !important;
+  }
+
+  .great_andhra_main_body_container .sortable-list,
+  .great_andhra_main_body_container .un-sortable-list {
+    width: 100% !important;
+    padding: 0 !important;
+  }
+
+  /* Sidebar Widget */
+  .great_andhra_main_body_container .sortable-item_style_8_movies .header {
+    font-size: 14px !important;
+    padding-top: 8px !important;
+    padding-bottom: 5px !important;
+  }
+
+  .great_andhra_main_body_container .sortable-item_style_8_movies .content {
+    width: 100% !important;
+  }
+
+  /* News List in Sidebar */
+  .great_andhra_main_body_container .news_style {
+    width: 100% !important;
+    padding: 8px 5px !important;
+  }
+
+  .great_andhra_main_body_container .news_style li {
+    padding: 5px 4px 8px 20px !important;
+    font-size: 12px !important;
+    background-position: 0 8px !important;
+  }
+
+  .great_andhra_main_body_container .news_style li a {
+    font-size: 13px !important;
+    line-height: 18px !important;
+  }
+
+  /* ========================================
+     PAGINATION
+     ======================================== */
+
+  .new_pagination {
+    width: 100% !important;
+    padding: 20px 10px !important;
+    margin: 10px 0 !important;
+    font-size: 12px !important;
+  }
+
+  .new_pagination a {
+    margin: 0 5px !important;
+    font-size: 12px !important;
+  }
+
+  .new_pagination span {
+    padding: 3px 6px !important;
+    font-size: 14px !important;
+    margin: 0 2px !important;
+  }
+
+  /* ========================================
+     ADS SECTIONS
+     ======================================== */
+
+  /* Ad placeholders */
+  div[id^="vuukle-ad"] {
+    min-width: 100% !important;
+    min-height: 250px !important;
+    margin: 10px 0 !important;
+  }
+
+  #div-gpt-ad-1497448474263-25 {
+    width: 100% !important;
+  }
+
+  .vuukle-sticky-ad-bg {
+    width: 100% !important;
+  }
+
+  /* ========================================
+     IMAGES - GLOBAL
+     ======================================== */
+
+  .great_andhra_main_body_container img {
+
+    height: auto !important;
+  }
+
+  h1 img,
+  h2 img,
+  h3 img,
+  h4 img,
+  h5 img,
+  h6 img {
+    margin: 1px !important;
+  }
+
+  /* ========================================
+     UTILITY CLASSES
+     ======================================== */
+
+  .float-left,
+  .float-right {
+    float: none !important;
+  }
+
+  .clear,
+  .clear-left,
+  .clear-right {
+    clear: both;
+  }
+
+  .close_button {
+    display: block !important;
+    padding: 8px !important;
+    background: #000 !important;
+    color: #fff !important;
+    text-align: center !important;
+    cursor: pointer !important;
+    margin-top: 5px !important;
+  }
+
+  /* ========================================
+     FOOTER
+     ======================================== */
+
+  .new_great_andhra_main_footer {
+    width: 100% !important;
+    padding: 15px 0 0 !important;
+  }
+
+  .footer-container {
+    max-width: 100% !important;
+    padding: 0 15px !important;
+    padding-top: 20px !important;
+  }
+
+  .footer-nav-links {
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 10px !important;
+  }
+
+  .footer-nav-links li a {
+    font-size: 12px !important;
+  }
+
+  .footer-social-bar {
+    gap: 18px !important;
+    padding-top: 20px !important;
+    padding-bottom: 15px !important;
+  }
+
+  .footer-social-bar a {
+    font-size: 22px !important;
+  }
+
+  .footer-copyright {
+    line-height: 24px !important;
+    padding: 10px 0 !important;
+    font-size: 11px !important;
+    word-spacing: 1px !important;
+    letter-spacing: 0.3px !important;
+  }
+
+  .footer-bottom-spacer {
+    height: 15px !important;
+  }
+
+  /* Old footer styles (if still in use) */
+  .great_andhra_main_footer {
+    width: 100% !important;
+  }
+
+  .gan-footer .gan-footer-first {
+    width: 100% !important;
+    padding: 15px 10px !important;
+  }
+
+  .menuf {
+    flex-direction: column !important;
+    gap: 10px !important;
+  }
+
+  /* ========================================
+     RESPONSIVE TWEAKS FOR SPECIFIC ELEMENTS
+     ======================================== */
+
+  /* Dropdown menu button (hamburger) */
+  .c-hamburger {
+    width: 100% !important;
+    max-width: 200px !important;
+  }
+
+  /* Category img placeholder */
+  .img_plc_cat_26 {
+    margin: 10px 0 !important;
+  }
+
+  /* Link colors and states */
+  a {
+    word-wrap: break-word;
+  }
+}
+
+/* ========================================
+   EXTRA SMALL MOBILE (< 480px)
+   ======================================== */
+
+@media (max-width: 480px) {
+  /* Logo */
+  .great_andhra_logo_panel .logo {
+    width: 180px !important;
+  }
+
+  /* Navigation */
+  .menu-link {
+    font-size: 11px !important;
+    padding: 0 10px !important;
+  }
+
+  /* Main content area */
+  .great_andhra_main_body_container {
+    padding: 8px !important;
+  }
+
+  /* News items */
+  .movies_news_description_container a {
+    font-size: 15px !important;
+    line-height: 20px !important;
+  }
+
+  .view_mov_poli_content {
+    font-size: 13px !important;
+    line-height: 19px !important;
+  }
+
+  .byline {
+    font-size: 10px !important;
+  }
+
+  /* Page header */
+  .great_andhra_main_body_container .movies_page_news .header h1 {
+    font-size: 20px !important;
+    line-height: 26px !important;
+  }
+
+  /* Sidebar */
+  .great_andhra_main_body_container .news_style li {
+    font-size: 11px !important;
+    padding: 4px 4px 6px 18px !important;
+  }
+
+  .great_andhra_main_body_container .news_style li a {
+    font-size: 12px !important;
+    line-height: 17px !important;
+  }
+
+  /* Pagination */
+  .new_pagination {
+    padding: 15px 5px !important;
+    font-size: 11px !important;
+  }
+
+  .new_pagination a {
+    margin: 0 3px !important;
+  }
+
+  .new_pagination span {
+    padding: 2px 5px !important;
+    font-size: 13px !important;
+  }
+
+  /* Footer */
+  .footer-nav-links li a {
+    font-size: 11px !important;
+  }
+
+  .footer-social-bar a {
+    font-size: 20px !important;
+  }
+
+  .footer-copyright {
+    font-size: 10px !important;
+  }
+}
+
+/* ========================================
+   TABLET (481px - 768px)
+   ======================================== */
+
+@media (min-width: 481px) and (max-width: 768px) {
+  /* Logo */
+  .great_andhra_logo_panel .logo {
+    width: 220px !important;
+  }
+
+  /* Navigation */
+  .menu-link {
+    font-size: 13px !important;
+  }
+
+  /* News items */
+  .movies_news_description_container a {
+    font-size: 17px !important;
+    line-height: 23px !important;
+  }
+
+  .view_mov_poli_content {
+    font-size: 15px !important;
+    line-height: 21px !important;
+  }
+
+  /* Page header */
+  .great_andhra_main_body_container .movies_page_news .header h1 {
+    font-size: 26px !important;
+    line-height: 32px !important;
+  }
+
+  /* Sidebar */
+  .great_andhra_main_body_container .news_style li a {
+    font-size: 13px !important;
+  }
+}
+
+/* ========================================
+   LANDSCAPE MODE OPTIMIZATIONS
+   ======================================== */
+
+@media (max-width: 768px) and (orientation: landscape) {
+  /* Optimize navigation for landscape */
+  .ga-nav {
+    height: 35px !important;
+  }
+
+  .menu-link {
+    line-height: 35px !important;
+  }
+
+  /* Reduce vertical spacing in landscape */
+  .great_andhra_main_body_container {
+    padding: 8px !important;
+  }
+
+  .movies_news_description_container {
+    margin: 0 0 15px !important;
+    padding-bottom: 10px !important;
+  }
+
+  /* Logo smaller in landscape */
+  .great_andhra_logo_panel {
+    height: auto !important;
+    padding: 8px !important;
+  }
+
+  .great_andhra_logo_panel .logo {
+    width: 160px !important;
+  }
+}
+
+/* ========================================
+   PRINT STYLES (Optional)
+   ======================================== */
+
+@media print {
+  .ga-nav,
+  .footer-social-bar,
+  .social-icons,
+  .new_pagination,
+  div[id^="vuukle-ad"],
+  .AdinHedare {
+    display: none !important;
+  }
+
+  body {
+    font-size: 12pt !important;
+  }
+
+  .great_andhra_main_body_container {
+    width: 100% !important;
+  }
+}

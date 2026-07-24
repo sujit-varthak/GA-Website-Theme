@@ -1,0 +1,44 @@
+/* .great_andhra_main_201223_ {
+    width: 990px;
+    float: left;
+    height: 50px;
+    margin: 1px;
+    padding: 0;
+    background: #fff;
+    border: 0px;
+} */
+/* ._201223_1, ._201223_2, ._201223_3 {
+    height: 40px;
+    padding: 0;
+    position: absolute;
+} */
+/* ._201223_1 {
+    margin: 5px 0 0;
+}
+._201223_2 {
+    margin: 5px 0 0 342px;
+}
+._201223_3 {
+    margin: 5px 0 0 690px;
+} */
+
+/* .great_andhra_logo_panel ._201223_ {
+     height: 60px;
+    margin: 0px 0 0 260px;
+    padding: 0;
+    position: absolute; 
+} */
+._201223_.center-align {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 70%;
+  position: relative;
+}
+.great_andhra_logo_panel_top_box_201223_ {
+  height: 50px;
+  /* padding: 0; */
+  float: left;
+  background: #fff;
+}

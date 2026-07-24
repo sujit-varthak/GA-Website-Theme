@@ -1,0 +1,505 @@
+body,
+html,
+p {
+  margin: 0;
+  padding: 0;
+}
+
+i.fas.fa-home {
+  font-size: 16px;
+  margin-top: 2px;
+  color: #333333;
+}
+
+/* top header */
+.great_andhra_logo_panel {
+  width: 990px;
+  padding: 0;
+  float: left;
+  background: #fff;
+  margin: 5px 0px;
+  column-gap: 5px;
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  height: 100px;
+}
+
+/* Main Navigation Container */
+/* Navbar container */
+.ga-nav {
+  background: #f8f8f8;
+  border: 1px solid #e6e6e6;
+  display: flex;
+  align-items: center;
+  padding: 0 0 0 1px;
+  height: 37px;
+  overflow: visible; /* IMPORTANT */
+}
+
+/* Menu List */
+.menu {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  align-items: center;
+}
+
+/* Menu item */
+.menu-item {
+  position: relative;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+/* Links */
+.menu-link {
+  text-decoration: none;
+  color: #000000 !important;
+  padding: 0 15px;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: capitalize;
+  font-family: "Lato", sans-serif !important;
+  line-height: 33px;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  transition: background 0.2s;
+  /* ❌ removed z-index */
+}
+
+/* Hover */
+.menu-link:hover {
+  background: var(--hover-bg);
+}
+
+/* Dropdown icon */
+.menu-link i.fa-caret-down {
+  margin-left: 5px;
+  font-size: 12px;
+}
+
+/* Dropdown */
+.dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: #ffffff;
+  min-width: 160px;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+  /* Fix */
+  display: block;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(5px);
+  transition: all 0.2s ease;
+
+  z-index: 9999;
+  list-style: none;
+  padding: 5px 0;
+  margin: 0;
+}
+
+/* Show dropdown */
+.menu-item:hover .dropdown {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+/* Dropdown items */
+.dropdown li {
+  display: block;
+}
+
+.dropdown a {
+  display: block;
+  padding: 0px 13px;
+  text-decoration: none;
+  text-transform: capitalize;
+  color: #000 !important;
+  font-size: 14px;
+  font-size: 11px;
+  line-height: 33px;
+  font-family: "lato" !important ;
+}
+
+.dropdown a:hover {
+  background: var(--hover-bg);
+  color: red !important;
+}
+
+/* Logo */
+.nav-print-img {
+  height: 17px;
+  vertical-align: middle;
+}
+
+/* Social Icons */
+.social-group {
+  margin-left: auto;
+  display: flex;
+  gap: 15px;
+  padding-right: 15px;
+}
+
+.social-group a {
+  color: #555;
+  font-size: 18px;
+  transition: opacity 0.2s;
+}
+
+.social-group a:hover {
+  opacity: 0.7;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .ga-nav {
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .social-group {
+    margin-left: 20px;
+  }
+}
+
+/* main section */
+.great_andhra_main_body_container {
+  width: 990px;
+  display: flex;
+}
+
+.great_andhra_main_body_container .movies_column {
+  width: 660px;
+  padding: 6px;
+}
+
+.great_andhra_main_body_container .movies_column_middle {
+  width: 310px;
+}
+
+.great_andhra_main_body_container .movies_news_description_container {
+  width: 650px;
+  margin: 0 0 16px;
+  font-family: Lato, sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  border-bottom: 1px solid #d4d4d4;
+  text-decoration: none;
+}
+
+/* second column */
+.great_andhra_main_body_container .sortable-item_style_8_movies .content {
+  display: block;
+  width: 296px;
+  font-family: "Lato", Arial, Helvetica, sans-serif;
+}
+
+.great_andhra_main_body_container .news_style {
+  padding: 10px 6px;
+}
+
+.great_andhra_main_body_container .news_style li {
+  display: flex;
+  padding: 2px 4px 5px 13px;
+  font-family: Lato;
+  font-size: 12px;
+  background: url(../images/arrow_right_12.png) 0 5px no-repeat;
+}
+.great_andhra_main_body_container .news_style li a {
+  color: #069;
+  font-size: 13px;
+  text-decoration: none;
+}
+
+/* footer */
+.new_great_andhra_main_footer {
+  /* background: var(--footer-bg); */
+  color: var(--footer-text);
+  padding: 20px 0 0px; /* Padding for the top and bottom */
+  font-family: "Lato", sans-serif;
+  width: 100%;
+}
+
+.footer-container {
+  max-width: 990px;
+  background: #292221;
+  margin: 0 auto;
+  padding: 0 20px;
+  padding-top: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Links Navigation - Lato 13px White */
+.footer-nav-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 35px;
+}
+
+.footer-nav-links li a {
+  color: #ffffff !important;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 400;
+  transition: all 0.2s ease;
+  text-transform: capitalize;
+  font-family: "Lato", sans-serif;
+}
+
+.footer-nav-links li a:hover {
+  color: white;
+  text-decoration: underline;
+}
+
+/* Social Icons - White 24x24 */
+.footer-social-bar {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  padding-top: 30px;
+  padding-bottom: 20px;
+}
+
+.footer-social-bar a {
+  color: #ffffff;
+  font-size: 24px; /* Icon size 24px */
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s ease;
+  text-decoration: none;
+}
+
+.footer-social-bar a:hover {
+  opacity: 0.8;
+}
+
+/* Last Line/Copyright Bar styling based on provided specs */
+.footer-copyright {
+  width: 100%;
+  border-top: 1px solid var(--footer-border);
+  padding: 1px 0 6px;
+  text-align: center;
+  font-size: 12px;
+  color: #ffffff;
+  font-weight: 400;
+  line-height: 40px;
+  word-spacing: 2px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* The White Part at the very end */
+.footer-bottom-spacer {
+  background-color: #ffffff;
+  height: 20px; /* Adjust height as needed */
+  width: 100%;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .footer-nav-links {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+  .footer-copyright {
+    line-height: 24px;
+    padding: 10px 0;
+  }
+}
+
+.close_button {
+  display: none;
+}
+
+.great_andhra_logo_panel {
+  height: 110px;
+  margin: 10px 0px;
+}
+.new_pagination {
+  width: 100%;
+  text-align: center;
+  margin: 10px 0;
+  padding: 30px 0;
+  font-family: Lato;
+  font-size: 13px;
+}
+.new_pagination a {
+  margin: 0 10px;
+  text-decoration: none;
+}
+.new_pagination span {
+  padding: 3px 7px;
+  border: 1px solid #ccc;
+  box-shadow: 0 0 2px #ccc;
+  border-radius: 5px;
+  margin: 0;
+  font-weight: 700;
+  font-size: 16px;
+  font-family: Lato;
+}
+.new_pagination a:active,
+a:visited {
+  color: #333;
+  font-weight: 700;
+}
+.sortable-item a:hover {
+  text-decoration: none;
+}
+.view_mov_poli_content {
+  font-size: 14px;
+  font-weight: 400;
+  font-family: Lato, sans-serif;
+  padding-top: 5px;
+  text-align: left;
+  line-height: 18px;
+}
+.great_andhra_main_body_container .sortable-item_style_8_movies .header {
+  clear: both;
+  color: #000;
+  font-family: Lato;
+  font-size: 15px;
+  padding-top: 10px;
+  text-transform: uppercase;
+}
+.great_andhra_main_body_container .movies_news_description_container img {
+  float: left;
+  margin: 0 10px 10px 0;
+}
+.great_andhra_main_body_container .movies_page_news .content {
+  width: 650px;
+  margin: 10px 0 0;
+}
+
+.great_andhra_main_body_container .movies_page_news .header h1 {
+  width: 650px;
+  padding-bottom: 1px;
+  font-size: 32px;
+  color: #333333;
+  font-weight: 700;
+}
+
+.great_andhra_main_body_container .movies_page_news .header {
+  margin-bottom: 20px;
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 1px;
+}
+
+.great_andhra_main_body_container .movies_page_news ul .byline {
+  margin: 0;
+  padding: 0 0 4px 13px;
+  padding: 0 0 4px 0;
+  font-family: "Lato", Arial, Helvetica, sans-serif;
+  font-size: 10px;
+  color: #999;
+  font-weight: 400;
+}
+
+.great_andhra_main_body_container .sortable-item {
+  margin: 0 0 10px;
+}
+
+.great_andhra_main_body_container .sortable-list,
+.great_andhra_main_body_container .un-sortable-list {
+  margin: 0;
+  min-height: 10px;
+  padding: 0;
+  list-style: none;
+}
+
+.great_andhra_movie_inner_body {
+  width: 990px;
+  margin: 0;
+  padding: 0;
+  float: left;
+  background: url(../images/great_andhra_movie_body_bg.gif) left top repeat-y;
+}
+
+.great_andhra_movie_body {
+  width: 990px;
+  margin: 0 auto;
+  padding: 0;
+}
+.clear {
+  clear: both;
+}
+.clear-left {
+  clear: left;
+}
+.clear-right {
+  clear: right;
+}
+.float-left {
+  float: left;
+}
+.float-right {
+  float: right;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+img {
+  margin: 1px;
+  padding: 0;
+  border: none;
+}
+body,
+html {
+  font-family: "Lato", Arial, Helvetica, sans-serif;
+  background: center center repeat-y fixed #fff;
+}
+.nopadding,
+body,
+html,
+p {
+  padding: 0;
+}
+.bold,
+.font_weight_bold {
+  font-weight: 700;
+}
+.color_000000,
+a {
+  color: #000;
+}
+.outline_none,
+a,
+input {
+  outline: 0;
+}
+
+.great_andhra_main_body_container .page_news .img_plc {
+  margin: 1px 10px 1px 0;
+  padding: 0;
+  float: left;
+  width: 300px;
+  text-align: left;
+}
+.img_plc img {
+  width: 150px;
+}
+.great_andhra_main_body_container .page_news .img_plc_cat_26 {
+  margin: 10px 10px 1px 0;
+}

@@ -1,0 +1,105 @@
+/* footer */
+.new_great_andhra_main_footer {
+  /* background: var(--footer-bg); */
+  color: #ffffff;
+  padding: 20px 0 0px; /* Padding for the top and bottom */
+  font-family: "Lato", sans-serif;
+  width: 100%;
+}
+
+.footer-container {
+  max-width: 990px;
+  background: #292221;
+  margin: 0 auto;
+  padding: 0 20px;
+  padding-top: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Links Navigation - Lato 13px White */
+.footer-nav-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 35px;
+}
+
+.footer-nav-links li a {
+  color: #ffffff !important;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 400;
+  transition: all 0.2s ease;
+  text-transform: capitalize;
+  font-family: "Lato", sans-serif;
+}
+
+.footer-nav-links li a:hover {
+  color: white;
+  text-decoration: underline;
+}
+
+/* Social Icons - White 24x24 */
+.footer-social-bar {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  padding-top: 30px;
+  padding-bottom: 20px;
+}
+
+.footer-social-bar a {
+  color: #ffffff;
+  font-size: 24px; /* Icon size 24px */
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s ease;
+  text-decoration: none;
+}
+
+.footer-social-bar a:hover {
+  opacity: 0.8;
+}
+
+/* Last Line/Copyright Bar styling based on provided specs */
+.footer-copyright {
+  width: 100%;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 1px 0 6px;
+  text-align: center;
+  font-size: 12px;
+  color: #ffffff;
+  font-weight: 400;
+  line-height: 40px;
+  word-spacing: 2px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* The White Part at the very end */
+.footer-bottom-spacer {
+  background-color: #ffffff;
+  height: 20px; /* Adjust height as needed */
+  width: 100%;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .footer-nav-links {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+  .footer-copyright {
+    line-height: 24px;
+    padding: 10px 0;
+  }
+}

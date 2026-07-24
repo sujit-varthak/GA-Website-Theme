@@ -1,0 +1,510 @@
+.temp-ads {
+  width: 100%;
+}
+.great_andhra_logo_panel {
+  width: 990px;
+  padding: 0;
+  float: left;
+  background: #fff;
+  margin: 5px 0px;
+  column-gap: 5px;
+  display: inline-flex;
+  flex-direction: row;
+  height: 110px;
+}
+
+.great_andhra_logo_panel .logo {
+  align-self: center;
+}
+
+.ga-nav {
+  background: #f8f8f8;
+  border: 1px solid #e6e6e6;
+  display: flex;
+  align-items: center;
+  padding: 0 0 0 1px;
+  height: 37px;
+  overflow: visible; /* IMPORTANT */
+}
+
+/* Menu List */
+.menu {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  align-items: center;
+}
+
+/* Menu item */
+.menu-item {
+  position: relative;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+/* Links */
+.menu-link {
+  text-decoration: none;
+  color: #000000 !important;
+  padding: 0 15px;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: capitalize;
+  font-family: "Lato", sans-serif !important;
+  line-height: 33px;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  transition: background 0.2s;
+  /* ❌ removed z-index */
+}
+
+/* Hover */
+.menu-link:hover {
+  background: var(--hover-bg);
+}
+
+/* Dropdown icon */
+.menu-link i.fa-caret-down {
+  margin-left: 5px;
+  font-size: 12px;
+}
+
+/* Dropdown */
+.dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: #ffffff;
+  min-width: 160px;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+  /* Fix */
+  display: block;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(5px);
+  transition: all 0.2s ease;
+
+  z-index: 9999;
+  list-style: none;
+  padding: 5px 0;
+  margin: 0;
+}
+
+/* Show dropdown */
+.menu-item:hover .dropdown {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+/* Dropdown items */
+.dropdown li {
+  display: block;
+}
+
+.dropdown a {
+  display: block;
+  padding: 0px 13px;
+  text-decoration: none;
+  text-transform: capitalize;
+  color: #000 !important;
+  font-size: 14px;
+  font-size: 11px;
+  line-height: 33px;
+  font-family: "lato" !important ;
+}
+
+.dropdown a:hover {
+  background: var(--hover-bg);
+  color: red !important;
+}
+
+/* Logo */
+.nav-print-img {
+  height: 17px;
+  vertical-align: middle;
+}
+
+/* Social Icons */
+.social-group {
+  margin-left: auto;
+  display: flex;
+  gap: 15px;
+  padding-right: 15px;
+}
+
+.social-group a {
+  color: #555;
+  font-size: 18px;
+  transition: opacity 0.2s;
+}
+
+.social-group a:hover {
+  opacity: 0.7;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .ga-nav {
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .social-group {
+    margin-left: 20px;
+  }
+}
+
+/* main body */
+.great_andhra_main_body_container {
+  width: 990px;
+  display: flex;
+}
+
+/* two-column main body content */
+.great_andhra_main_body_container .two_column {
+  width: 670px;
+  margin-top: 6px;
+  /* border-right: 1px solid #ededed; */
+}
+
+.great_andhra_main_body_container .breade_crumb {
+  margin-bottom: 10px;
+}
+
+.great_andhra_main_body_container .breade_crumb a {
+  font-family: "Lato";
+  font-size: 12px;
+  color: #222222;
+  background: url(https://www.greatandhra.com/images/breadcrum.png) right center
+    no-repeat;
+  margin: 0 5px 0 0;
+  padding: 0 10px 0 0;
+}
+
+.great_andhra_main_body_container .breade_crumb span {
+  font-family: "Lato";
+  font-size: 12px;
+  color: #222222;
+}
+
+.great_andhra_main_body_container .page_news .header h1 {
+  padding: 0 0 2px;
+  font-size: 28px;
+  color: #333333;
+  font-weight: 600;
+  font-family: "Lato";
+}
+
+.great_andhra_main_body_container .page_news .byline {
+  font-family: "Lato";
+  padding: 0 0 4px;
+  font-size: 13px;
+  font-weight: 400;
+  width: 420px;
+  line-height: 28px;
+}
+
+/* ads section */
+.add_place_650X60,
+.local_place_650X60 {
+  padding-bottom: 10px;
+  overflow: hidden;
+  width: 650px;
+  padding-top: 10px;
+}
+
+/* content-section */
+.great_andhra_main_body_container .page_news .content {
+  width: 650px;
+  font-family:
+    Roboto,
+    Helvetica Neue,
+    Helvetica,
+    sans-serif;
+  font-size: 16px;
+  color: #333333;
+  text-align: left;
+  line-height: 24px;
+}
+
+/* content-img */
+.great_andhra_main_body_container .page_news .img_plc,
+.img_plc img {
+  width: 650px;
+}
+
+/* paragraph */
+.great_andhra_main_body_container .page_news .content p {
+  margin: 16px 0;
+  line-height: 24px;
+}
+
+.great_andhra_main_body_container .page_news .header_re {
+  width: 650px;
+  padding: 3px 0 2px;
+  font-family: Roboto Condensed;
+  font-size: 15px;
+  color: #000;
+  font-weight: 700;
+  border-top: 1px #a8a8a8 solid;
+  background: url(https://www.greatandhra.com/images/box-header.png) repeat-x
+    #fff;
+}
+
+.great_andhra_main_body_container .page_news .content_re {
+  width: 650px;
+  margin: 1px 0 6px;
+  font-family: roboto;
+  font-size: 16px;
+  line-height: 24px;
+  border: 1px solid #a8a8a8;
+  background: #f9f9f9;
+}
+
+.great_andhra_main_body_container .news_style_re {
+  display: block;
+  padding: 0;
+  margin: 0;
+}
+
+.great_andhra_main_body_container .news_style_re li {
+  display: block;
+  padding: 0 0 5px 18px;
+  margin: 2px 4px 0;
+  background: url(https://www.greatandhra.com/images/button.png) 0 5px no-repeat;
+}
+
+.great_andhra_main_body_container .news_style_re li a {
+  color: #bb1a00;
+  font-family: "Open Sans", HelveticaNeue, Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  text-decoration: none;
+}
+
+.tags {
+  margin-bottom: 8px;
+  font-family: roboto;
+  font-size: 14px;
+}
+
+.tags a {
+  background: #e6e6e6;
+  border-radius: 5px;
+  color: #069;
+  line-height: 26px;
+  margin: 0 1px;
+  padding: 2px 3px;
+  text-decoration: none;
+}
+
+.tags a:hover {
+  text-decoration: underline;
+}
+
+/* Tags currently have no working filter endpoint on the backend, so they render as
+   non-clickable chips (same look as .tags a) instead of dead/misleading links. */
+.tags .tag-chip {
+  display: inline-block;
+  background: #e6e6e6;
+  border-radius: 5px;
+  color: #069;
+  line-height: 26px;
+  margin: 0 1px;
+  padding: 2px 3px;
+}
+
+.ga-unavailable {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f2f2f2;
+  text-align: center;
+}
+
+.ga-unavailable-msg {
+  color: #888;
+  font-size: 14px;
+  font-style: italic;
+  margin: 0;
+  padding: 8px;
+}
+
+.ga-unavailable-msg a {
+  color: #069;
+  text-decoration: underline;
+}
+
+.great_andhra_main_body_container .column {
+  width: 310px;
+}
+
+.great_andhra_main_body_container .sortable-list,
+.great_andhra_main_body_container .un-sortable-list {
+  margin: 0;
+  min-height: 10px;
+  padding: 0;
+  list-style: none;
+}
+
+.great_andhra_main_body_container .sortable-item {
+  margin-bottom: 4px;
+}
+
+.innerpage_latestnews .header {
+  color: #333333;
+  font-size: 15px;
+  text-transform: capitalize;
+  background: #f2f2f2;
+  padding: 10px 0 6px 2px;
+  font-weight: 700;
+  border-bottom: 1px #d9d9d9 solid;
+  font-family: "Lato";
+}
+
+ul.top_story_option2_3story li .top_news_txt {
+  line-height: 21px;
+  color: #333333;
+  text-decoration: none;
+  padding-top: 15px;
+  display: block;
+  font-size: 14px;
+  font-family: "Lato";
+}
+
+.great_andhra_main_body_container .sortable-item_style_13 {
+  width: 100%;
+  border: 1px solid #d5d5d5;
+  padding: 0px 0px 10px 10px;
+}
+
+.great_andhra_main_body_container .sortable-item_style_13 .header {
+  width: 278px;
+  height: 28px;
+  color: #000;
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 28px;
+}
+
+.great_andhra_main_body_container .sortable-item_style_13 .content {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.trending_topics a {
+  color: #727272;
+  font-size: 11px;
+  padding: 5px 10px;
+  border-radius: 18px;
+  text-transform: capitalize;
+  border: 1px solid #d3d3d3;
+  display: inline-block;
+  text-decoration: none;
+  font-family: "Lato";
+}
+
+.trending_topics a:hover {
+  text-decoration: underline;
+}
+
+.great_andhra_main_body_container .sortable-item_style_14 {
+  display: block;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+.great_andhra_main_body_container .sortable-item_style_14 .header {
+  display: block;
+  width: 100%;
+  height: 28px;
+  padding: 0 0 0 4px;
+  background: #f2f2f2;
+  color: #404040;
+  font-family: "lato";
+  font-size: 15px;
+  font-weight: bold;
+  line-height: 28px;
+}
+
+.close_button {
+  display: none;
+}
+
+ul.top_story_option2_3story {
+  list-style: none;
+  padding: 0;
+}
+
+ul.top_story_option2_3story li {
+  margin-bottom: 0px;
+  display: block;
+  height: 80px;
+  border-top: 1px #d9d9d9 solid;
+}
+
+ul.top_story_option2_3story li .top_newsbox_img {
+  float: left;
+  margin-right: 24px;
+  height: 75px;
+  width: 100px;
+  position: relative;
+  margin-top: 5px;
+}
+
+ul.top_story_option2_3story a {
+  text-decoration: none;
+}
+
+i.fas.fa-home {
+  font-size: 16px;
+  margin-top: 2px;
+  color: #333333;
+}
+
+.sortable-item a:hover {
+  text-decoration: none;
+}
+
+.source-image-left {
+  margin-left: -16px;
+  padding-top: 20px;
+  position: absolute;
+}
+
+.source-image-right {
+  margin-right: -16px;
+  padding-top: 20px;
+  position: absolute;
+}
+
+.great_andhra_inner_body,
+.great_andhra_movie_body {
+  width: 990px;
+  margin: 0 auto;
+  padding: 0;
+}
+.clear,
+.like_page {
+  clear: both;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: #ffffff;
+  background-position: center center;
+  background-attachment: fixed;
+  background-repeat: repeat-y;
+}
