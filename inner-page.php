@@ -3,8 +3,8 @@ require_once __DIR__ . '/config.php';
 require_once __DIR__ . '/inc/api-client.php';
 require_once __DIR__ . '/inc/helpers.php';
 
-$ga_slug = isset($_GET['slug']) ? trim((string) $_GET['slug']) : '';
-$ga_result = $ga_slug !== '' ? ga_fetch_article_by_slug($ga_slug) : ['status' => 'not_found', 'article' => null];
+$ga_id = isset($_GET['id']) ? trim((string) $_GET['id']) : '';
+$ga_result = $ga_id !== '' ? ga_fetch_article_by_id($ga_id) : ['status' => 'not_found', 'article' => null];
 $ga_status = $ga_result['status'];
 $ga_article = $ga_result['article'];
 

@@ -34,10 +34,17 @@ function ga_image(array $article, array $fallback): array
     ];
 }
 
+// The backend resolves articles by id now, not slug — id is the real lookup key.
+// slug still rides along in the URL purely for readability/SEO, it's not used to fetch anything.
 function ga_inner_link(array $article): string
 {
+    $id = $article['id'] ?? '';
     $slug = $article['slug'] ?? '';
-    return 'inner-page.php?slug=' . rawurlencode($slug);
+    $query = 'id=' . rawurlencode($id);
+    if ($slug !== '') {
+        $query .= '&slug=' . rawurlencode($slug);
+    }
+    return 'inner-page.php?' . $query;
 }
 
 function ga_e(?string $value): string

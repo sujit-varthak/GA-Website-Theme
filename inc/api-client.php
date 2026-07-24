@@ -76,10 +76,11 @@ function ga_http_get(string $url, int $connectTimeout = 3, int $timeout = 8): ar
 }
 
 // Returns ['status' => 'found'|'not_found'|'unavailable', 'article' => array|null]
-function ga_fetch_article_by_slug(string $slug): array
+// The backend's article-detail endpoint now resolves by id (not slug) — confirmed 2026-07-24.
+function ga_fetch_article_by_id(string $id): array
 {
-    $safeSlug = preg_replace('/[^a-z0-9\-_]/', '', strtolower($slug));
-    $cacheFile = ga_cache_path('article_' . ($safeSlug !== '' ? $safeSlug : 'unknown'));
+    $safeId = preg_replace('/[^a-z0-9\-]/', '', strtolower($id));
+    $cacheFile = ga_cache_path('article_' . ($safeId !== '' ? $safeId : 'unknown'));
 
     $isFresh = is_file($cacheFile) && (time() - filemtime($cacheFile)) < GA_CACHE_TTL;
     if ($isFresh) {
@@ -89,7 +90,7 @@ function ga_fetch_article_by_slug(string $slug): array
         }
     }
 
-    $url = rtrim(GA_API_BASE_URL, '/') . '/api/public/articles/' . rawurlencode($slug);
+    $url = rtrim(GA_API_BASE_URL, '/') . '/api/public/articles/' . rawurlencode($id);
     $result = ga_http_get($url);
 
     if ($result['status'] === 404) {
