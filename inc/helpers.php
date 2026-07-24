@@ -70,3 +70,13 @@ function ga_tag_names(array $article): array
     }
     return $names;
 }
+
+function ga_article_has_tag(array $article, string $tagSlug): bool
+{
+    foreach (($article['tags'] ?? []) as $entry) {
+        if (($entry['tag']['slug'] ?? '') === $tagSlug) {
+            return true;
+        }
+    }
+    return false;
+}
