@@ -1,7 +1,11 @@
 <?php
 define('GA_API_BASE_URL', 'https://great-andhra-uat.onrender.com');
 define('GA_CACHE_DIR', __DIR__ . '/cache');
-define('GA_CACHE_TTL', 300); // seconds — one Render call feeds every visitor for 5 minutes
+define('GA_CACHE_TTL', 30); // seconds — lowered for demo purposes, bump back up before real traffic
+
+// Manual cache-clear trigger: hit clear-cache.php?key=<this> to force-refresh instantly
+// instead of waiting out the TTL. Change this to your own value before going live.
+define('GA_CACHE_CLEAR_KEY', 'ga-dev-clear-2026');
 
 // Homepage Big Story: the API has no tagId filter (confirmed it's silently ignored), so we pull
 // this many latest articles in one call and scan them in PHP for the "big story" tag.
