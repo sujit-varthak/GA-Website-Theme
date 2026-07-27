@@ -10,6 +10,7 @@ $ga_home_data = ga_fetch_homepage();
 $ga_hero_article = $ga_home_data['bigStory']['hero'] ?? null;
 $ga_list_articles = $ga_home_data['bigStory']['related'] ?? [];
 $ga_trending_articles = $ga_home_data['trending'] ?? [];
+$ga_opinion_articles = $ga_home_data['opinion'] ?? [];
 
 // Shared latest-articles batch feeds three sections: "Article" (latest-first, as fetched),
 // Most Popular and the "Most Read" tab (both viewCount-sorted, excluding the Big Story hero
@@ -847,74 +848,32 @@ $ga_most_read_articles = array_slice($ga_popular_sorted, 0, 15);
                     <div class="ga-mdcenter">
                         <h3 style="font-size: 14px; background: none;"> OPINION </h3>
                         <ul class="bg-unlist ga-grply ga-featured-videos editors_pick_full">
+                            <?php if (!empty($ga_opinion_articles)): ?>
+                            <?php foreach ($ga_opinion_articles as $ga_i => $ga_article): ?>
+                            <?php
+                                $ga_fallback = GA_OPINION_FALLBACK_IMAGES[$ga_i] ?? GA_OPINION_FALLBACK_IMAGES[0];
+                                $ga_img = ga_image($ga_article, $ga_fallback);
+                                $ga_title = ga_truncate($ga_article['title'] ?? '', GA_OPINION_TITLE_MAX);
+                            ?>
                             <li>
-                                <a href="https://www.greatandhra.com/politics/opinion/pakistan-the-old-cunning-fox-luring-trump-153813"
-                                    title="Pakistan, The Old Cunning Fox Luring Trump">
+                                <a href="<?php echo ga_e(ga_inner_link($ga_article)); ?>"
+                                    title="<?php echo ga_e($ga_article['title'] ?? ''); ?>">
                                     <div class="big-galist-lft">
-                                        <!--<img src="ga-imgcompress.php?file=newphotos11/us-pak-iran11774750562.jpg&width=185&height=110&action=resize&quality=185" width="185" height="110" alt="Pakistan, The Old Cunning Fox Luring Trump" />-->
-                                        <img alt="Pakistan, The Old Cunning Fox Luring Trump" height="110"
-                                            src="images/us-pak-iran11774750562.jpg" width="185">
+                                        <img alt="<?php echo ga_e($ga_article['title'] ?? ''); ?>"
+                                            height="<?php echo (int) $ga_img['height']; ?>"
+                                            src="<?php echo ga_e($ga_img['src']); ?>"
+                                            width="<?php echo (int) $ga_img['width']; ?>">
                                         </img>
                                     </div>
                                     <div class="big-galist-rgt">
-                                        <p>Pakistan, The Old Cunning Fox Luring Trump</p>
+                                        <p><?php echo ga_e($ga_title); ?></p>
                                     </div>
                                 </a>
                             </li>
-                            <li>
-                                <a href="https://www.greatandhra.com/politics/opinion/opinion-amaravati-resolution-masks-ground-reality-153810"
-                                    title="Opinion: Amaravati Resolution Masks Ground Reality">
-                                    <div class="big-galist-lft">
-                                        <!--<img src="ga-imgcompress.php?file=newphotos11/amaravati-babu11774729994.jpg&width=185&height=110&action=resize&quality=185" width="185" height="110" alt="Opinion: Amaravati Resolution Masks Ground Reality" />-->
-                                        <img alt="Opinion: Amaravati Resolution Masks Ground Reality" height="110"
-                                            src="images/amaravati-babu11774729994.jpg" width="185">
-                                        </img>
-                                    </div>
-                                    <div class="big-galist-rgt">
-                                        <p>Opinion: Amaravati Resolution Masks Ground Reality</p>
-                                    </div>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="https://www.greatandhra.com/politics/opinion/more-mps-and-mlas-more-corruption-in-india-153718"
-                                    title="More MPs And MLAs, More Corruption In India">
-                                    <div class="big-galist-lft">
-                                        <!--<img src="ga-imgcompress.php?file=newphotos11/politician11774397654.jpg&width=185&height=110&action=resize&quality=185" width="185" height="110" alt="More MPs And MLAs, More Corruption In India" />-->
-                                        <img alt="More MPs And MLAs, More Corruption In India" height="110"
-                                            src="images/politician11774397654.jpg" width="185">
-                                        </img>
-                                    </div>
-                                    <div class="big-galist-rgt">
-                                        <p>More MPs And MLAs, More Corruption In India</p>
-                                    </div>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="https://www.greatandhra.com/politics/opinion/why-every-indian-should-thank-indias-modi-153668"
-                                    title="Why Every Indian Should Thank India's Modi">
-                                    <div class="big-galist-lft">
-                                        <!--<img src="ga-imgcompress.php?file=newphotos11/modi_11774228164.jpg&width=185&height=110&action=resize&quality=185" width="185" height="110" alt="Why Every Indian Should Thank India's Modi" />-->
-                                        <img alt="Why Every Indian Should Thank India's Modi" height="110"
-                                            src="images/modi_11774228164.jpg" width="185" />
-                                    </div>
-                                    <div class="big-galist-rgt">
-                                        <p>Why Every Indian Should Thank India's Modi</p>
-                                    </div>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="https://www.greatandhra.com/politics/opinion/opinion-great-scholar-yet-such-poor-wisdom-153624"
-                                    title="Opinion: Great Scholar, Yet Such Poor Wisdom">
-                                    <div class="big-galist-lft">
-                                        <!--<img src="ga-imgcompress.php?file=newphotos11/garikapati11774051378.jpg&width=185&height=110&action=resize&quality=185" width="185" height="110" alt="Opinion: Great Scholar, Yet Such Poor Wisdom" />-->
-                                        <img alt="Opinion: Great Scholar, Yet Such Poor Wisdom" height="110"
-                                            src="images/garikapati11774051378.jpg" width="185" />
-                                    </div>
-                                    <div class="big-galist-rgt">
-                                        <p>Opinion: Great Scholar, Yet Such Poor Wisdom</p>
-                                    </div>
-                                </a>
-                            </li>
+                            <?php endforeach; ?>
+                            <?php else: ?>
+                            <li class="ga-unavailable"><p class="ga-unavailable-msg">Content temporarily unavailable</p></li>
+                            <?php endif; ?>
                         </ul>
                     </div>
                 </div>

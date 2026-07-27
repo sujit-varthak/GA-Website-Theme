@@ -11,6 +11,7 @@ define('GA_CACHE_CLEAR_KEY', 'ga-dev-clear-2026');
 define('GA_HOME_HERO_TITLE_MAX', 100);
 define('GA_HOME_LIST_TITLE_MAX', 80);
 define('GA_MOST_POPULAR_TITLE_MAX', 90);
+define('GA_OPINION_TITLE_MAX', 90);
 
 // Most Popular: no dedicated backend endpoint yet, so we pull this many latest articles and
 // sort by viewCount in PHP (same "could miss an older high-view article" caveat as any
@@ -43,4 +44,12 @@ define('GA_MOST_POPULAR_FALLBACK_IMAGES', [
     ['src' => 'images/jagan_new181775031416.jpg', 'width' => 120, 'height' => 75],
     ['src' => 'images/h1bvisa41775058007.jpg', 'width' => 120, 'height' => 75],
     ['src' => 'images/rishabshetty11775008296.jpg', 'width' => 120, 'height' => 75],
+]);
+
+define('GA_OPINION_FALLBACK_IMAGES', [
+    ['src' => 'images/us-pak-iran11774750562.jpg', 'width' => 185, 'height' => 110],
+    ['src' => 'images/amaravati-babu11774729994.jpg', 'width' => 185, 'height' => 110],
+    ['src' => 'images/politician11774397654.jpg', 'width' => 185, 'height' => 110],
+    ['src' => 'images/modi_11774228164.jpg', 'width' => 185, 'height' => 110],
+    ['src' => 'images/garikapati11774051378.jpg', 'width' => 185, 'height' => 110],
 ]);
