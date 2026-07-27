@@ -11,6 +11,12 @@ $ga_hero_article = $ga_home_data['bigStory']['hero'] ?? null;
 $ga_list_articles = $ga_home_data['bigStory']['related'] ?? [];
 $ga_trending_articles = $ga_home_data['trending'] ?? [];
 $ga_opinion_articles = $ga_home_data['opinion'] ?? [];
+$ga_movie_news_articles = $ga_home_data['movieNews'] ?? [];
+$ga_movie_gossip_articles = $ga_home_data['movieGossip'] ?? [];
+$ga_andhra_news_articles = $ga_home_data['andhraNews'] ?? [];
+$ga_telangana_news_articles = $ga_home_data['telanganaNews'] ?? [];
+$ga_politics_gossip_articles = $ga_home_data['politicsGossip'] ?? [];
+$ga_reviews_articles = $ga_home_data['reviews'] ?? [];
 
 // Shared latest-articles batch feeds three sections: "Article" (latest-first, as fetched),
 // Most Popular and the "Most Read" tab (both viewCount-sorted, excluding the Big Story hero
@@ -1000,63 +1006,7 @@ $ga_most_read_articles = array_slice($ga_popular_sorted, 0, 15);
                                     </a>
                                     <div class="content">
                                         <ul class="news_style news_section_ul" style="padding-top:3px;">
-                                            <li class="main-story clearfix">
-                                                <a href="https://www.greatandhra.com/movies/news/teaser-ranbirs-rama-avatar-is-grand-glorious-goosebumps-153916"
-                                                    title="Teaser: Ranbir's Rama Avatar Is Grand, Glorious, Goosebumps">
-                                                    <img alt="Teaser: Ranbir's Rama Avatar Is Grand, Glorious, Goosebumps"
-                                                        height="200" src="images/ramayana41775105638.jpg" width="330">
-                                                    </img></a>
-                                            </li>
-                                            <li> <a href="https://www.greatandhra.com/movies/news/teaser-ranbirs-rama-avatar-is-grand-glorious-goosebumps-153916"
-                                                    title="Teaser: Ranbir's Rama Avatar Is Grand, Glorious, Goosebumps">
-
-
-
-                                                    Teaser: Ranbir's Rama Avatar Is Grand, Glorious, Goosebumps
-
-
-
-                                                </a> </li>
-                                            <li> <a href="https://www.greatandhra.com/movies/news/sharwas-biker-first-of-its-kind-in-tollywood-153915"
-                                                    title="Sharwa's Biker: First-Of-Its-Kind In Tollywood">
-
-
-
-                                                    Sharwa's Biker: First-Of-Its-Kind In Tollywood
-
-
-
-                                                </a> </li>
-                                            <li> <a href="https://www.greatandhra.com/movies/news/first-quarter-report-one-mega-hit-one-mega-shock-153914"
-                                                    title="First Quarter Report: One Mega Hit... One Mega Shock!">
-
-
-
-                                                    First Quarter Report: One Mega Hit... One Mega Shock!
-
-
-
-                                                </a> </li>
-                                            <li> <a href="https://www.greatandhra.com/movies/news/prabhass-films-may-see-release-date-reshuffle-153912"
-                                                    title="Prabhas's Films May See Release Date Reshuffle">
-
-
-
-                                                    Prabhas's Films May See Release Date Reshuffle
-
-
-
-                                                </a> </li>
-                                            <li> <a href="https://www.greatandhra.com/movies/news/malavika-reveals-sharwanand-is-an-introvert-like-her-153911"
-                                                    title="Malavika Reveals Sharwanand is an Introvert like Her">
-
-
-
-                                                    Malavika Reveals Sharwanand is an Introvert like Her
-
-
-
-                                                </a> </li>
+                                            <?php ga_render_category_section($ga_movie_news_articles, GA_MOVIE_NEWS_FALLBACK_IMAGE, GA_CATEGORY_SECTION_TITLE_MAX); ?>
                                         </ul>
                                     </div>
                                 </div>
@@ -1073,63 +1023,7 @@ $ga_most_read_articles = array_slice($ga_popular_sorted, 0, 15);
                                     </a>
                                     <div class="content">
                                         <ul class="news_style news_section_ul" style="padding-top:3px;">
-                                            <li class="main-story clearfix">
-                                                <a href="https://www.greatandhra.com/movies/gossip/buzz-big-director-cost-shock-stuns-producer-153840"
-                                                    title="Buzz: Big Director Cost Shock Stuns Producer">
-                                                    <img alt="Buzz: Big Director Cost Shock Stuns Producer" height="200"
-                                                        src="images/armurugadoss1774855134.jpg" width="330" />
-                                                </a>
-                                            </li>
-                                            <li> <a href="https://www.greatandhra.com/movies/gossip/buzz-big-director-cost-shock-stuns-producer-153840"
-                                                    title="Buzz: Big Director Cost Shock Stuns Producer">
-
-
-
-                                                    Buzz: Big Director Cost Shock Stuns Producer
-
-
-
-                                                </a> </li>
-                                            <li> <a href="https://www.greatandhra.com/movies/gossip/buzz-pooja-name-free-for-every-project-153828"
-                                                    title="Buzz: Pooja Name... Free for Every Project?">
-
-
-
-                                                    Buzz: Pooja Name... Free for Every Project?
-
-
-
-                                                </a> </li>
-                                            <li> <a href="https://www.greatandhra.com/movies/gossip/buzz-rs-15-cr-demand-from-small-heroine-153821"
-                                                    title="Buzz: Rs 1.5 Cr Demand from Small Heroine?">
-
-
-
-                                                    Buzz: Rs 1.5 Cr Demand from Small Heroine?
-
-
-
-                                                </a> </li>
-                                            <li> <a href="https://www.greatandhra.com/movies/gossip/young-heroes-background-check-on-new-producers-153816"
-                                                    title="Young Heroes' Background Check On New Producers">
-
-
-
-                                                    Young Heroes' Background Check On New Producers
-
-
-
-                                                </a> </li>
-                                            <li> <a href="https://www.greatandhra.com/movies/gossip/rajamouli-splits-varanasi-in-two-153793"
-                                                    title="Rajamouli Splits Varanasi in Two?">
-
-
-
-                                                    Rajamouli Splits Varanasi in Two?
-
-
-
-                                                </a> </li>
+                                            <?php ga_render_category_section($ga_movie_gossip_articles, GA_MOVIE_GOSSIP_FALLBACK_IMAGE, GA_CATEGORY_SECTION_TITLE_MAX); ?>
                                         </ul>
                                         <!--<div class="more"> <a href="https://www.greatandhra.com/movie-gossip-5.html"> more </a> </div>-->
                                     </div>
@@ -1148,63 +1042,7 @@ $ga_most_read_articles = array_slice($ga_popular_sorted, 0, 15);
                                     </a>
                                     <div class="content">
                                         <ul class="news_style news_section_ul" style="padding-top:3px;">
-                                            <li class="main-story clearfix">
-                                                <a href="https://www.greatandhra.com/politics/andhra-news/naidu-wants-statewide-amaravati-celebrations-153917"
-                                                    title="Naidu Wants Statewide Amaravati Celebrations">
-                                                    <img alt="Naidu Wants Statewide Amaravati Celebrations" height="200"
-                                                        src="images/babu_new251775111776.jpg" width="330" />
-                                                </a>
-                                            </li>
-                                            <li> <a href="https://www.greatandhra.com/politics/andhra-news/naidu-wants-statewide-amaravati-celebrations-153917"
-                                                    title="Naidu Wants Statewide Amaravati Celebrations">
-
-
-
-                                                    Naidu Wants Statewide Amaravati Celebrations
-
-
-
-                                                </a> </li>
-                                            <li> <a href="https://www.greatandhra.com/politics/andhra-news/cadre-upset-over-jagans-mavigun-proposal-153908"
-                                                    title="Cadre Upset Over Jagan's MAVIGUN Proposal">
-
-
-
-                                                    Cadre Upset Over Jagan's MAVIGUN Proposal
-
-
-
-                                                </a> </li>
-                                            <li> <a href="https://www.greatandhra.com/politics/andhra-news/naidu-helpless-as-tdp-mla-behaves-rudely-with-sp-153900"
-                                                    title="Naidu helpless, as TDP MLA behaves rudely with SP">
-
-
-
-                                                    Naidu helpless, as TDP MLA behaves rudely with SP
-
-
-
-                                                </a> </li>
-                                            <li> <a href="https://www.greatandhra.com/politics/andhra-news/ysrcp-opposes-amaravati-bill-in-ls-stages-walk-out-153894"
-                                                    title="YSRCP opposes Amaravati bill in LS, stages walk out">
-
-
-
-                                                    YSRCP opposes Amaravati bill in LS, stages walk out
-
-
-
-                                                </a> </li>
-                                            <li> <a href="https://www.greatandhra.com/politics/andhra-news/hydraa-demolishes-illegal-properties-of-mim-153892"
-                                                    title="HYDRAA demolishes illegal properties of MIM">
-
-
-
-                                                    HYDRAA demolishes illegal properties of MIM
-
-
-
-                                                </a> </li>
+                                            <?php ga_render_category_section($ga_andhra_news_articles, GA_ANDHRA_NEWS_FALLBACK_IMAGE, GA_CATEGORY_SECTION_TITLE_MAX); ?>
                                         </ul>
                                     </div>
                                 </div>
@@ -1221,64 +1059,7 @@ $ga_most_read_articles = array_slice($ga_popular_sorted, 0, 15);
                                     </a>
                                     <div class="content">
                                         <ul class="news_style news_section_ul" style="padding-top:3px;">
-                                            <li class="main-story clearfix">
-                                                <a href="https://www.greatandhra.com/politics/telangana-news/real-estate-rupee-fall-hits-hyderabad-market-153910"
-                                                    title="Real Estate: Rupee Fall Hits Hyderabad Market">
-                                                    <img alt="Real Estate: Rupee Fall Hits Hyderabad Market"
-                                                        height="200" src="images/dollar-rupee11775089475.jpg"
-                                                        width="330" />
-                                                </a>
-                                            </li>
-                                            <li> <a href="https://www.greatandhra.com/politics/telangana-news/real-estate-rupee-fall-hits-hyderabad-market-153910"
-                                                    title="Real Estate: Rupee Fall Hits Hyderabad Market">
-
-
-
-                                                    Real Estate: Rupee Fall Hits Hyderabad Market
-
-
-
-                                                </a> </li>
-                                            <li> <a href="https://www.greatandhra.com/politics/telangana-news/is-vijayashanti-in-congress-or-opposition-153909"
-                                                    title="Is Vijayashanti in Congress or opposition?">
-
-
-
-                                                    Is Vijayashanti in Congress or opposition?
-
-
-
-                                                </a> </li>
-                                            <li> <a href="https://www.greatandhra.com/politics/telangana-news/reddys-alleged-unruly-behaviour-referred-to-ethics-committee-153826"
-                                                    title="Reddy's alleged unruly behaviour referred to Ethics Committee">
-
-
-
-                                                    Reddy's alleged unruly behaviour referred to Ethics Committee
-
-
-
-                                                </a> </li>
-                                            <li> <a href="https://www.greatandhra.com/politics/telangana-news/hyd-techie-in-us-duped-of-rs-103-cr-in-casino-scam-153784"
-                                                    title="Hyd Techie in US Duped of Rs 10.3 Cr in Casino Scam">
-
-
-
-                                                    Hyd Techie in US Duped of Rs 10.3 Cr in Casino Scam
-
-
-
-                                                </a> </li>
-                                            <li> <a href="https://www.greatandhra.com/politics/telangana-news/sit-to-attach-rs-70-crore-properties-of-raj-kesireddy-153769"
-                                                    title="SIT to attach Rs 70 crore properties of Raj Kesireddy">
-
-
-
-                                                    SIT to attach Rs 70 crore properties of Raj Kesireddy
-
-
-
-                                                </a> </li>
+                                            <?php ga_render_category_section($ga_telangana_news_articles, GA_TELANGANA_NEWS_FALLBACK_IMAGE, GA_CATEGORY_SECTION_TITLE_MAX); ?>
                                         </ul>
                                     </div>
                                 </div>
@@ -1297,63 +1078,7 @@ $ga_most_read_articles = array_slice($ga_popular_sorted, 0, 15);
                                     </a>
                                     <div class="content">
                                         <ul class="news_style news_section_ul" style="padding-top:3px;">
-                                            <li class="main-story clearfix">
-                                                <a href="https://www.greatandhra.com/politics/gossip/fact-sheet-mass-layoffs-shake-telugu-media-153903"
-                                                    title="Fact Sheet: Mass Layoffs Shake Telugu Media">
-                                                    <img alt="Fact Sheet: Mass Layoffs Shake Telugu Media" height="200"
-                                                        src="images/bigtv11775055984.jpg" width="330" />
-                                                </a>
-                                            </li>
-                                            <li> <a href="https://www.greatandhra.com/politics/gossip/fact-sheet-mass-layoffs-shake-telugu-media-153903"
-                                                    title="Fact Sheet: Mass Layoffs Shake Telugu Media">
-
-
-
-                                                    Fact Sheet: Mass Layoffs Shake Telugu Media
-
-
-
-                                                </a> </li>
-                                            <li> <a href="https://www.greatandhra.com/politics/gossip/naidu-planning-to-drop-b-r-naidu-as-ttd-chief-153866"
-                                                    title="Naidu Planning to Drop B R Naidu as TTD Chief?">
-
-
-
-                                                    Naidu Planning to Drop B R Naidu as TTD Chief?
-
-
-
-                                                </a> </li>
-                                            <li> <a href="https://www.greatandhra.com/politics/gossip/jubilee-hills-coop-society-polls-turn-a-media-war-153832"
-                                                    title="Jubilee Hills Coop Society polls turn a media war!">
-
-
-
-                                                    Jubilee Hills Coop Society polls turn a media war!
-
-
-
-                                                </a> </li>
-                                            <li> <a href="https://www.greatandhra.com/politics/gossip/jagan-keeps-liquor-scam-accused-at-bay-153789"
-                                                    title="Jagan Keeps Liquor Scam Accused At Bay">
-
-
-
-                                                    Jagan Keeps Liquor Scam Accused At Bay
-
-
-
-                                                </a> </li>
-                                            <li> <a href="https://www.greatandhra.com/politics/gossip/the-unlucky-ipl-story-of-mr-reddy-153762"
-                                                    title="The Unlucky IPL Story Of Mr Reddy">
-
-
-
-                                                    The Unlucky IPL Story Of Mr Reddy
-
-
-
-                                                </a> </li>
+                                            <?php ga_render_category_section($ga_politics_gossip_articles, GA_POLITICS_GOSSIP_FALLBACK_IMAGE, GA_CATEGORY_SECTION_TITLE_MAX); ?>
                                         </ul>
                                     </div>
                                 </div>
@@ -1380,53 +1105,7 @@ $ga_most_read_articles = array_slice($ga_popular_sorted, 0, 15);
                                     </a>
                                     <div class="content">
                                         <ul class="news_style news_section_ul" style="padding-top:3px;">
-                                            <li class="main-story clearfix">
-                                                <a href="https://www.greatandhra.com/movies/reviews/youth-review-works-for-teenagers-only-153773"
-                                                    title="Youth Review: Works for Teenagers Only">
-                                                    <img alt="Youth Review: Works for Teenagers Only" height="200"
-                                                        src="images/youth41774602072.jpg" width="330" />
-                                                </a>
-                                            </li>
-                                            <li> <a href="https://www.greatandhra.com/movies/reviews/youth-review-works-for-teenagers-only-153773"
-                                                    title="Youth Review: Works for Teenagers Only">
-
-
-
-                                                    Youth Review: Works for Teenagers Only
-
-                                                </a> </li>
-                                            <li> <a href="https://www.greatandhra.com/movies/reviews/band-melam-review-amateurish-stale-and-dim-153748"
-                                                    title="'Band Melam' Review: Amateurish, Stale and Dim">
-
-
-
-                                                    'Band Melam' Review: Amateurish, Stale and Dim
-
-                                                </a> </li>
-                                            <li> <a href="https://www.greatandhra.com/movies/reviews/ustaad-bhagat-singh-review-cliched-cop-153588"
-                                                    title="'Ustaad Bhagat Singh' Review: Cliched Cop">
-
-
-
-                                                    'Ustaad Bhagat Singh' Review: Cliched Cop
-
-                                                </a> </li>
-                                            <li> <a href="https://www.greatandhra.com/movies/reviews/dhurandhar-the-revenge-review-epic-spy-saga-153583"
-                                                    title="'Dhurandhar The Revenge' Review: Epic Spy Saga">
-
-
-
-                                                    'Dhurandhar The Revenge' Review: Epic Spy Saga
-
-                                                </a> </li>
-                                            <li> <a href="https://www.greatandhra.com/movies/reviews/first-report-ustaad-bhagat-singh-lacks-freshness-153581"
-                                                    title="First Report: Ustaad Bhagat Singh Lacks Freshness">
-
-
-
-                                                    First Report: Ustaad Bhagat Singh Lacks Freshness
-
-                                                </a> </li>
+                                            <?php ga_render_category_section($ga_reviews_articles, GA_REVIEWS_FALLBACK_IMAGE, GA_CATEGORY_SECTION_TITLE_MAX); ?>
                                         </ul>
                                     </div>
                                 </div>

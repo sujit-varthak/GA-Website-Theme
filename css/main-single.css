@@ -308,6 +308,9 @@ ul.big-galist li a {
 li.main-story.clearfix img {
   width: 100%;
   height: 145px;
+  object-fit: cover;
+  object-position: center;
+  display: block;
 }
 
 .great_andhra_main_body_container .news_style.news_section_ul li {
