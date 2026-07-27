@@ -3,37 +3,11 @@ require_once __DIR__ . '/config.php';
 require_once __DIR__ . '/inc/api-client.php';
 require_once __DIR__ . '/inc/helpers.php';
 
-$ga_home_articles = ga_fetch_articles(GA_HOME_FEED_SIZE, 0);
-
-// Big Story = latest article tagged "big story"; feed is already newest-first, so the
-// first match found is the latest one. Falls back to the latest article overall if none
-// in this batch carry the tag, so the hero slot is never empty.
-$ga_hero_article = null;
-if ($ga_home_articles) {
-    foreach ($ga_home_articles as $ga_candidate) {
-        if (ga_article_has_tag($ga_candidate, GA_BIG_STORY_TAG_SLUG)) {
-            $ga_hero_article = $ga_candidate;
-            break;
-        }
-    }
-    if ($ga_hero_article === null) {
-        $ga_hero_article = $ga_home_articles[0];
-    }
-}
-
-// Below the ad: next 3 regular articles (any tag), skipping whichever one became the hero.
-$ga_list_articles = [];
-if ($ga_home_articles) {
-    foreach ($ga_home_articles as $ga_candidate) {
-        if ($ga_hero_article && ($ga_candidate['id'] ?? null) === ($ga_hero_article['id'] ?? null)) {
-            continue;
-        }
-        $ga_list_articles[] = $ga_candidate;
-        if (count($ga_list_articles) >= 3) {
-            break;
-        }
-    }
-}
+// Big Story hero + the flagged articles below the ad — the backend resolves the filtering,
+// sorting (by most-recently-updated), and hero/related split for us via /api/public/homepage.
+$ga_home_data = ga_fetch_homepage();
+$ga_hero_article = $ga_home_data['hero'] ?? null;
+$ga_list_articles = $ga_home_data['related'] ?? [];
 ?>
 <!-- <script type="text/javascript">
     if (screen.width <= 700) {

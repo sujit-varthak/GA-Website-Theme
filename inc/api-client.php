@@ -139,6 +139,35 @@ function ga_ping_view(string $articleId): void
     curl_close($ch);
 }
 
+// Returns ['hero' => article|null, 'related' => article[]] (0-3 items), or null if the API
+// failed AND no cache (fresh or stale) exists. Backend resolves filtering/sorting/dedup for us —
+// no client-side logic needed here beyond reading the bigStory key.
+function ga_fetch_homepage(): ?array
+{
+    $cacheFile = ga_cache_path('homepage');
+
+    $isFresh = is_file($cacheFile) && (time() - filemtime($cacheFile)) < GA_CACHE_TTL;
+    if ($isFresh) {
+        $cached = ga_cache_read($cacheFile);
+        if ($cached !== null) {
+            return $cached;
+        }
+    }
+
+    $url = rtrim(GA_API_BASE_URL, '/') . '/api/public/homepage';
+    $data = ga_http_get_json($url);
+
+    if ($data === null || !isset($data['bigStory']) || !is_array($data['bigStory'])) {
+        // API unreachable/erroring, or the response didn't have the key we need — fall back to stale cache.
+        return ga_cache_read($cacheFile);
+    }
+
+    $bigStory = $data['bigStory'];
+    file_put_contents($cacheFile, json_encode($bigStory));
+
+    return $bigStory;
+}
+
 // Returns a flat list of article arrays, or null if the API failed AND no cache (fresh or stale) exists.
 function ga_fetch_articles(int $take = 4, int $skip = 0): ?array
 {
