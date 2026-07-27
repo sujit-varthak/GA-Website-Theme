@@ -9,24 +9,28 @@ $ga_home_data = ga_fetch_homepage();
 $ga_hero_article = $ga_home_data['hero'] ?? null;
 $ga_list_articles = $ga_home_data['related'] ?? [];
 
-// Most Popular: latest-N articles sorted by viewCount, excluding whichever one is the Big
-// Story hero so the same article never appears twice on the homepage.
-$ga_popular_feed = ga_fetch_articles(GA_MOST_POPULAR_FEED_SIZE, 0);
-$ga_popular_articles = [];
-if ($ga_popular_feed) {
-    usort($ga_popular_feed, function ($a, $b) {
+// Shared latest-articles batch feeds three sections: "Article" (latest-first, as fetched),
+// Most Popular and the "Most Read" tab (both viewCount-sorted, excluding the Big Story hero
+// so it never reappears elsewhere on the page).
+$ga_latest_feed = ga_fetch_articles(GA_MOST_POPULAR_FEED_SIZE, 0);
+
+$ga_article_section_articles = $ga_latest_feed ? array_slice($ga_latest_feed, 0, 5) : [];
+
+$ga_popular_sorted = [];
+if ($ga_latest_feed) {
+    $ga_popular_sorted = $ga_latest_feed;
+    usort($ga_popular_sorted, function ($a, $b) {
         return (int) ($b['viewCount'] ?? 0) <=> (int) ($a['viewCount'] ?? 0);
     });
-    foreach ($ga_popular_feed as $ga_candidate) {
-        if ($ga_hero_article && ($ga_candidate['id'] ?? null) === ($ga_hero_article['id'] ?? null)) {
-            continue;
-        }
-        $ga_popular_articles[] = $ga_candidate;
-        if (count($ga_popular_articles) >= 5) {
-            break;
-        }
+    if ($ga_hero_article) {
+        $ga_popular_sorted = array_values(array_filter($ga_popular_sorted, function ($a) use ($ga_hero_article) {
+            return ($a['id'] ?? null) !== ($ga_hero_article['id'] ?? null);
+        }));
     }
 }
+
+$ga_popular_articles = array_slice($ga_popular_sorted, 0, 5);
+$ga_most_read_articles = array_slice($ga_popular_sorted, 0, 15);
 ?>
 <!-- <script type="text/javascript">
     if (screen.width <= 700) {
@@ -660,83 +664,16 @@ if ($ga_popular_feed) {
                                         </div>
                                         <div class="tabcontent" id="latest" style="display:none;">
                                             <ul class="news_style">
-                                                <li> <a href="https://www.greatandhra.com/articles/special-articles/i-know-h-1b-rules-techies-texas-clash-explodes-153882"
-                                                        title="'I Know H-1B Rules!' Techie's Texas Clash Explodes">
-                                                        <strong> 'I Know H-1B Rules!' Techie's Texas Clash Explodes
-                                                        </strong> </a>
+                                                <?php if (!empty($ga_most_read_articles)): ?>
+                                                <?php foreach ($ga_most_read_articles as $ga_article): ?>
+                                                <li> <a href="<?php echo ga_e(ga_inner_link($ga_article)); ?>"
+                                                        title="<?php echo ga_e($ga_article['title'] ?? ''); ?>">
+                                                        <?php echo ga_e($ga_article['title'] ?? ''); ?> </a>
                                                 </li>
-                                                <li> <a href="https://www.greatandhra.com/politics/telangana-news/techie-couple-from-tgana-dies-by-suicide-in-bengaluru-153864"
-                                                        title="Techie Couple from T'gana Dies by Suicide in Bengaluru">
-                                                        <strong> Techie Couple from T'gana Dies by Suicide in Bengaluru
-                                                        </strong> </a>
-                                                </li>
-                                                <li> <a href="https://www.greatandhra.com/articles/special-articles/indian-shoppers-become-new-target-in-us-153834"
-                                                        title="Indian Shoppers Become New Target in US">
-
-                                                        Indian Shoppers Become New Target in US </a>
-                                                </li>
-                                                <li> <a href="https://www.greatandhra.com/politics/telangana-news/ai-axe-empty-pockets-tragic-end-for-telugu-techie-couple-153906"
-                                                        title="AI Axe, Empty Pockets, Tragic End For Telugu Techie Couple">
-
-                                                        AI Axe, Empty Pockets, Tragic End For Telugu Techie Couple </a>
-                                                </li>
-                                                <li> <a href="https://www.greatandhra.com/articles/special-articles/oracle-axes-40-in-india-another-bloodbath-likely-153881"
-                                                        title="Oracle Axes 40% In India, Another Bloodbath Likely">
-
-                                                        Oracle Axes 40% In India, Another Bloodbath Likely </a>
-                                                </li>
-                                                <li> <a href="https://www.greatandhra.com/articles/special-articles/trumps-fresh-attack-on-birthright-citizenship-sparks-outrage-153852"
-                                                        title="Trump's Fresh Attack on Birthright Citizenship Sparks Outrage">
-
-                                                        Trump's Fresh Attack on Birthright Citizenship Sparks Outrage
-                                                    </a>
-                                                </li>
-                                                <li> <a href="https://www.greatandhra.com/articles/special-articles/this-city-offers-quicker-us-visa-slots-153845"
-                                                        title="This City Offers Quicker US Visa Slots">
-
-                                                        This City Offers Quicker US Visa Slots </a>
-                                                </li>
-                                                <li> <a href="https://www.greatandhra.com/politics/andhra-news/jagan-comes-up-with-new-andhra-capital-mavigun-153893"
-                                                        title="Jagan comes up with new Andhra capital: MAVIGUN!">
-
-                                                        Jagan comes up with new Andhra capital: MAVIGUN! </a>
-                                                </li>
-                                                <li> <a href="https://www.greatandhra.com/movies/gossip/buzz-two-leading-actresses-transformations-spark-ozempic-rumours-153859"
-                                                        title="Buzz: Two Leading Actresses' Transformations Spark Ozempic Rumours">
-
-                                                        Buzz: Two Leading Actresses' Transformations Spark Ozempic
-                                                        Rumours </a>
-                                                </li>
-                                                <li> <a href="https://www.greatandhra.com/movies/gossip/buzz-less-shooting-more-dating-for-heroine-153848"
-                                                        title="Buzz: Less Shooting, More Dating for Heroine">
-
-                                                        Buzz: Less Shooting, More Dating for Heroine </a>
-                                                </li>
-                                                <li> <a href="https://www.greatandhra.com/movies/news/project-hail-mary-345-am-show-also-full-shock-153836"
-                                                        title="Project Hail Mary: 3:45 AM Show Also Full... Shock!">
-
-                                                        Project Hail Mary: 3:45 AM Show Also Full... Shock! </a>
-                                                </li>
-                                                <li> <a href="https://www.greatandhra.com/articles/special-articles/indian-origin-doctor-says-send-h-1bs-back-first-153905"
-                                                        title="Indian-Origin Doctor Says: Send H-1Bs Back First">
-
-                                                        Indian-Origin Doctor Says: Send H-1Bs Back First </a>
-                                                </li>
-                                                <li> <a href="https://www.greatandhra.com/movies/news/director-on-hero-losing-23-kgs-in-6-months-153842"
-                                                        title="Director On Hero Losing 23 Kgs In 6 Months">
-
-                                                        Director On Hero Losing 23 Kgs In 6 Months </a>
-                                                </li>
-                                                <li> <a href="https://www.greatandhra.com/articles/special-articles/iranian-plane-scheduled-for-india-hit-by-us-airstrike-153858"
-                                                        title="Iranian Plane, Scheduled For India, Hit By US Airstrike">
-
-                                                        Iranian Plane, Scheduled For India, Hit By US Airstrike </a>
-                                                </li>
-                                                <li> <a href="https://www.greatandhra.com/articles/special-articles/nuclear-bomb-on-tehran-oppenheimer-moment-153855"
-                                                        title="Nuclear Bomb On Tehran: Oppenheimer Moment">
-
-                                                        Nuclear Bomb On Tehran: Oppenheimer Moment </a>
-                                                </li>
+                                                <?php endforeach; ?>
+                                                <?php else: ?>
+                                                <li class="ga-unavailable"><p class="ga-unavailable-msg">Content temporarily unavailable</p></li>
+                                                <?php endif; ?>
                                             </ul>
                                         </div>
                                         <div class="tabcontent" id="telugu" style="display:none;">
@@ -1824,21 +1761,13 @@ if ($ga_popular_feed) {
                             <div class="header"> Article </div>
                             <div class="content">
                                 <ul class="news_style">
-                                    <li><a
-                                            href="https://www.greatandhra.com/articles/special-articles/visa-row-telugu-techie-defends-himself-confidently-153902">Visa
-                                            Row: Telugu Techie Defends Himself Confidently</a></li>
-                                    <li><a
-                                            href="https://www.greatandhra.com/articles/special-articles/wake-up-youre-fired-oracles-6-am-layoff-horror-153888">Wake
-                                            Up, You're Fired: Oracle’s 6 AM Layoff Horror</a></li>
-                                    <li><a
-                                            href="https://www.greatandhra.com/articles/special-articles/oracle-begins-laying-off-employees-worldwide-153879">Oracle
-                                            begins laying off employees worldwide</a></li>
-                                    <li><a
-                                            href="https://www.greatandhra.com/articles/special-articles/changing-trends-inter-caste-and-dink-marriages-153869">Changing
-                                            Trends: Inter-Caste And DINK Marriages</a></li>
-                                    <li><a
-                                            href="https://www.greatandhra.com/articles/special-articles/iran-war-brings-visa-relief-for-h-1b-employees-153853">Iran
-                                            War Brings Visa Relief for H-1B Employees</a></li>
+                                    <?php if (!empty($ga_article_section_articles)): ?>
+                                    <?php foreach ($ga_article_section_articles as $ga_article): ?>
+                                    <li><a href="<?php echo ga_e(ga_inner_link($ga_article)); ?>"><?php echo ga_e($ga_article['title'] ?? ''); ?></a></li>
+                                    <?php endforeach; ?>
+                                    <?php else: ?>
+                                    <li class="ga-unavailable"><p class="ga-unavailable-msg">Content temporarily unavailable</p></li>
+                                    <?php endif; ?>
                                 </ul>
                             </div>
                         </div>
