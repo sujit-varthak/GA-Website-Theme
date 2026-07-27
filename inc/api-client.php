@@ -139,9 +139,10 @@ function ga_ping_view(string $articleId): void
     curl_close($ch);
 }
 
-// Returns ['hero' => article|null, 'related' => article[]] (0-3 items), or null if the API
-// failed AND no cache (fresh or stale) exists. Backend resolves filtering/sorting/dedup for us —
-// no client-side logic needed here beyond reading the bigStory key.
+// Returns the full aggregate response — currently ['bigStory' => ['hero'=>.., 'related'=>..],
+// 'trending' => article[]] — or null if the API failed AND no cache (fresh or stale) exists.
+// This endpoint is documented as growing (more keys added over time), so callers should read
+// only the specific key(s) they need rather than assuming this shape is final.
 function ga_fetch_homepage(): ?array
 {
     $cacheFile = ga_cache_path('homepage');
@@ -162,10 +163,9 @@ function ga_fetch_homepage(): ?array
         return ga_cache_read($cacheFile);
     }
 
-    $bigStory = $data['bigStory'];
-    file_put_contents($cacheFile, json_encode($bigStory));
+    file_put_contents($cacheFile, json_encode($data));
 
-    return $bigStory;
+    return $data;
 }
 
 // Returns a flat list of article arrays, or null if the API failed AND no cache (fresh or stale) exists.

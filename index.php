@@ -3,11 +3,13 @@ require_once __DIR__ . '/config.php';
 require_once __DIR__ . '/inc/api-client.php';
 require_once __DIR__ . '/inc/helpers.php';
 
-// Big Story hero + the flagged articles below the ad — the backend resolves the filtering,
-// sorting (by most-recently-updated), and hero/related split for us via /api/public/homepage.
+// Big Story hero + the flagged articles below the ad, and the "Top News" tab's trending
+// articles — all resolved server-side (filtering, sorting, hero-exclusion) by the same
+// /api/public/homepage call, cached once and read for both.
 $ga_home_data = ga_fetch_homepage();
-$ga_hero_article = $ga_home_data['hero'] ?? null;
-$ga_list_articles = $ga_home_data['related'] ?? [];
+$ga_hero_article = $ga_home_data['bigStory']['hero'] ?? null;
+$ga_list_articles = $ga_home_data['bigStory']['related'] ?? [];
+$ga_trending_articles = $ga_home_data['trending'] ?? [];
 
 // Shared latest-articles batch feeds three sections: "Article" (latest-first, as fetched),
 // Most Popular and the "Most Read" tab (both viewCount-sorted, excluding the Big Story hero
@@ -497,169 +499,17 @@ $ga_most_read_articles = array_slice($ga_popular_sorted, 0, 15);
                                         <!-- Tab content -->
                                         <div class="tabcontent" id="top" style="display:block;">
                                             <ul class="news_style">
-                                                <!--<li> <a href="https://www.youtube.com/watch?v=JN8te-vnOWc&t=5s" title="Old-style curd, pure taste, timeless tradition" target="_blank">
-
-<strong>Interview With Supriya: Love Is Unexpected</strong></a></li>-->
-                                                <li> <a href="https://www.greatandhra.com/politics/andhra-news/naidu-wants-statewide-amaravati-celebrations-153917"
-                                                        title="Naidu Wants Statewide Amaravati Celebrations">
-                                                        <strong> Naidu Wants Statewide Amaravati Celebrations </strong>
-                                                        <!--<i class="fa fa-play-circle-o" style="font-size: 14px;color:#CC0032;"></i>-->
+                                                <?php if (!empty($ga_trending_articles)): ?>
+                                                <?php foreach ($ga_trending_articles as $ga_article): ?>
+                                                <li> <a href="<?php echo ga_e(ga_inner_link($ga_article)); ?>"
+                                                        title="<?php echo ga_e($ga_article['title'] ?? ''); ?>">
+                                                        <strong> <?php echo ga_e($ga_article['title'] ?? ''); ?> </strong>
                                                     </a>
                                                 </li>
-                                                <li> <a href="https://www.greatandhra.com/movies/news/sharwas-biker-first-of-its-kind-in-tollywood-153915"
-                                                        title="Sharwa's Biker: First-Of-Its-Kind In Tollywood">
-                                                        <strong> Sharwa's Biker: First-Of-Its-Kind In Tollywood
-                                                        </strong>
-                                                        <!--<i class="fa fa-play-circle-o" style="font-size: 14px;color:#CC0032;"></i>-->
-                                                    </a>
-                                                </li>
-                                                <li> <a href="https://www.greatandhra.com/movies/news/first-quarter-report-one-mega-hit-one-mega-shock-153914"
-                                                        title="First Quarter Report: One Mega Hit... One Mega Shock!">
-
-                                                        First Quarter Report: One Mega Hit... One Mega Shock!
-                                                        <!--<i class="fa fa-play-circle-o" style="font-size: 14px;color:#CC0032;"></i>-->
-                                                    </a>
-                                                </li>
-                                                <li> <a href="https://www.greatandhra.com/politics/india-news/rajnath-drops-malayalam-movie-bombs-in-kerala-153913"
-                                                        title="Rajnath Drops Malayalam Movie Bombs In Kerala">
-
-                                                        Rajnath Drops Malayalam Movie Bombs In Kerala
-
-
-
-                                                        <!--<i class="fa fa-play-circle-o" style="font-size: 14px;color:#CC0032;"></i>-->
-                                                    </a>
-                                                </li>
-                                                <li> <a href="https://www.greatandhra.com/movies/news/prabhass-films-may-see-release-date-reshuffle-153912"
-                                                        title="Prabhas's Films May See Release Date Reshuffle">
-
-                                                        Prabhas's Films May See Release Date Reshuffle
-
-
-
-                                                        <!--<i class="fa fa-play-circle-o" style="font-size: 14px;color:#CC0032;"></i>-->
-                                                    </a>
-                                                </li>
-                                                <li> <a href="https://www.greatandhra.com/movies/news/malavika-reveals-sharwanand-is-an-introvert-like-her-153911"
-                                                        title="Malavika Reveals Sharwanand is an Introvert like Her">
-
-                                                        Malavika Reveals Sharwanand is an Introvert like Her
-
-
-
-                                                        <!--<i class="fa fa-play-circle-o" style="font-size: 14px;color:#CC0032;"></i>-->
-                                                    </a>
-                                                </li>
-                                                <li> <a href="https://www.greatandhra.com/politics/telangana-news/real-estate-rupee-fall-hits-hyderabad-market-153910"
-                                                        title="Real Estate: Rupee Fall Hits Hyderabad Market">
-
-                                                        Real Estate: Rupee Fall Hits Hyderabad Market
-
-
-
-                                                        <!--<i class="fa fa-play-circle-o" style="font-size: 14px;color:#CC0032;"></i>-->
-                                                    </a>
-                                                </li>
-                                                <li> <a href="https://www.greatandhra.com/politics/telangana-news/is-vijayashanti-in-congress-or-opposition-153909"
-                                                        title="Is Vijayashanti in Congress or opposition?">
-
-                                                        Is Vijayashanti in Congress or opposition?
-
-
-
-                                                        <!--<i class="fa fa-play-circle-o" style="font-size: 14px;color:#CC0032;"></i>-->
-                                                    </a>
-                                                </li>
-                                                <li> <a href="https://www.greatandhra.com/politics/andhra-news/cadre-upset-over-jagans-mavigun-proposal-153908"
-                                                        title="Cadre Upset Over Jagan's MAVIGUN Proposal">
-
-                                                        Cadre Upset Over Jagan's MAVIGUN Proposal
-
-
-
-                                                        <!--<i class="fa fa-play-circle-o" style="font-size: 14px;color:#CC0032;"></i>-->
-                                                    </a>
-                                                </li>
-                                                <li> <a href="https://www.greatandhra.com/movies/news/inside-talk-praises-ranbir-kapoors-rama-look-153907"
-                                                        title="Inside Talk Praises Ranbir Kapoor's Rama Look">
-
-                                                        Inside Talk Praises Ranbir Kapoor's Rama Look
-
-
-
-                                                        <!--<i class="fa fa-play-circle-o" style="font-size: 14px;color:#CC0032;"></i>-->
-                                                    </a>
-                                                </li>
-                                                <li> <a href="https://www.greatandhra.com/movies/news/why-ram-charan-says-peddi-is-not-getting-delayed-153904"
-                                                        title="Why Ram Charan says Peddi is not Getting Delayed?">
-
-                                                        Why Ram Charan says Peddi is not Getting Delayed?
-
-
-
-                                                        <!--<i class="fa fa-play-circle-o" style="font-size: 14px;color:#CC0032;"></i>-->
-                                                    </a>
-                                                </li>
-                                                <li> <a href="https://www.greatandhra.com/politics/gossip/fact-sheet-mass-layoffs-shake-telugu-media-153903"
-                                                        title="Fact Sheet: Mass Layoffs Shake Telugu Media">
-
-                                                        Fact Sheet: Mass Layoffs Shake Telugu Media
-
-
-
-                                                        <!--<i class="fa fa-play-circle-o" style="font-size: 14px;color:#CC0032;"></i>-->
-                                                    </a>
-                                                </li>
-                                                <li> <a href="https://www.greatandhra.com/articles/special-articles/visa-row-telugu-techie-defends-himself-confidently-153902"
-                                                        title="Visa Row: Telugu Techie Defends Himself Confidently">
-
-                                                        Visa Row: Telugu Techie Defends Himself Confidently
-
-
-
-                                                        <!--<i class="fa fa-play-circle-o" style="font-size: 14px;color:#CC0032;"></i>-->
-                                                    </a>
-                                                </li>
-                                                <li> <a href="https://www.greatandhra.com/movies/news/hot-ladys-jaw-dropping-glam-show-at-52-153901"
-                                                        title="HOT: Lady's Jaw Dropping Glam Show At 52">
-
-                                                        HOT: Lady's Jaw Dropping Glam Show At 52
-
-
-
-                                                        <!--<i class="fa fa-play-circle-o" style="font-size: 14px;color:#CC0032;"></i>-->
-                                                    </a>
-                                                </li>
-                                                <li> <a href="https://www.greatandhra.com/politics/andhra-news/naidu-helpless-as-tdp-mla-behaves-rudely-with-sp-153900"
-                                                        title="Naidu helpless, as TDP MLA behaves rudely with SP">
-
-                                                        Naidu helpless, as TDP MLA behaves rudely with SP
-
-
-
-                                                        <!--<i class="fa fa-play-circle-o" style="font-size: 14px;color:#CC0032;"></i>-->
-                                                    </a>
-                                                </li>
-                                                <li> <a href="https://www.greatandhra.com/movies/news/propaganda-my-foot-debate-makes-films-popular-153896"
-                                                        title="Propaganda, My Foot: Debate Makes Films Popular">
-
-                                                        Propaganda, My Foot: Debate Makes Films Popular
-
-
-
-                                                        <!--<i class="fa fa-play-circle-o" style="font-size: 14px;color:#CC0032;"></i>-->
-                                                    </a>
-                                                </li>
-                                                <li> <a href="https://www.greatandhra.com/politics/andhra-news/ysrcp-opposes-amaravati-bill-in-ls-stages-walk-out-153894"
-                                                        title="YSRCP opposes Amaravati bill in LS, stages walk out">
-
-                                                        YSRCP opposes Amaravati bill in LS, stages walk out
-
-
-
-                                                        <!--<i class="fa fa-play-circle-o" style="font-size: 14px;color:#CC0032;"></i>-->
-                                                    </a>
-                                                </li>
+                                                <?php endforeach; ?>
+                                                <?php else: ?>
+                                                <li class="ga-unavailable"><p class="ga-unavailable-msg">Content temporarily unavailable</p></li>
+                                                <?php endif; ?>
                                             </ul>
                                         </div>
                                         <div class="tabcontent" id="latest" style="display:none;">
