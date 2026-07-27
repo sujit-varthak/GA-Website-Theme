@@ -8,6 +8,25 @@ require_once __DIR__ . '/inc/helpers.php';
 $ga_home_data = ga_fetch_homepage();
 $ga_hero_article = $ga_home_data['hero'] ?? null;
 $ga_list_articles = $ga_home_data['related'] ?? [];
+
+// Most Popular: latest-N articles sorted by viewCount, excluding whichever one is the Big
+// Story hero so the same article never appears twice on the homepage.
+$ga_popular_feed = ga_fetch_articles(GA_MOST_POPULAR_FEED_SIZE, 0);
+$ga_popular_articles = [];
+if ($ga_popular_feed) {
+    usort($ga_popular_feed, function ($a, $b) {
+        return (int) ($b['viewCount'] ?? 0) <=> (int) ($a['viewCount'] ?? 0);
+    });
+    foreach ($ga_popular_feed as $ga_candidate) {
+        if ($ga_hero_article && ($ga_candidate['id'] ?? null) === ($ga_hero_article['id'] ?? null)) {
+            continue;
+        }
+        $ga_popular_articles[] = $ga_candidate;
+        if (count($ga_popular_articles) >= 5) {
+            break;
+        }
+    }
+}
 ?>
 <!-- <script type="text/javascript">
     if (screen.width <= 700) {
@@ -1834,77 +1853,31 @@ $ga_list_articles = $ga_home_data['related'] ?? [];
                             <div class="header"> Most Popular </div>
                             <div class="hm_topstory_3_story">
                                 <ul class="top_story_option2_3story list_top_news_mrgn">
+                                    <?php if (!empty($ga_popular_articles)): ?>
+                                    <?php foreach ($ga_popular_articles as $ga_i => $ga_article): ?>
+                                    <?php
+                                        $ga_fallback = GA_MOST_POPULAR_FALLBACK_IMAGES[$ga_i] ?? GA_MOST_POPULAR_FALLBACK_IMAGES[0];
+                                        $ga_img = ga_image($ga_article, $ga_fallback);
+                                        $ga_title = ga_truncate($ga_article['title'] ?? '', GA_MOST_POPULAR_TITLE_MAX);
+                                    ?>
                                     <li>
-                                        <a href="https://www.greatandhra.com/articles/special-articles/i-know-h-1b-rules-techies-texas-clash-explodes-153882"
-                                            title="'I Know H-1B Rules!' Techie's Texas Clash Explodes">
+                                        <a href="<?php echo ga_e(ga_inner_link($ga_article)); ?>"
+                                            title="<?php echo ga_e($ga_article['title'] ?? ''); ?>">
                                             <div class="top_newsbox_img">
-                                                <img alt="'I Know H-1B Rules!' Techie's Texas Clash Explodes" border="0"
-                                                    height="75" src="images/food11775001619.jpg" width="120" />
+                                                <img alt="<?php echo ga_e($ga_article['title'] ?? ''); ?>" border="0"
+                                                    height="<?php echo (int) $ga_img['height']; ?>"
+                                                    src="<?php echo ga_e($ga_img['src']); ?>"
+                                                    width="<?php echo (int) $ga_img['width']; ?>" />
                                             </div>
                                             <div class="top_news_txt">
-
-                                                'I Know H-1B Rules!' Techie's Texas Clash Explodes
-
+                                                <?php echo ga_e($ga_title); ?>
                                             </div>
                                         </a>
                                     </li>
-                                    <li>
-                                        <a href="https://www.greatandhra.com/politics/telangana-news/ai-axe-empty-pockets-tragic-end-for-telugu-techie-couple-153906"
-                                            title="AI Axe, Empty Pockets, Tragic End For Telugu Techie Couple">
-                                            <div class="top_newsbox_img">
-                                                <img alt="AI Axe, Empty Pockets, Tragic End For Telugu Techie Couple"
-                                                    border="0" height="75" src="images/tecg1775062056.jpg"
-                                                    width="120" />
-                                            </div>
-                                            <div class="top_news_txt">
-
-                                                AI Axe, Empty Pockets, Tragic End For Telugu Techie Couple
-
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="https://www.greatandhra.com/politics/andhra-news/jagan-comes-up-with-new-andhra-capital-mavigun-153893"
-                                            title="Jagan comes up with new Andhra capital: MAVIGUN!">
-                                            <div class="top_newsbox_img">
-                                                <img alt="Jagan comes up with new Andhra capital: MAVIGUN!" border="0"
-                                                    height="75" src="images/jagan_new181775031416.jpg" width="120" />
-                                            </div>
-                                            <div class="top_news_txt">
-
-                                                Jagan comes up with new Andhra capital: MAVIGUN!
-
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="https://www.greatandhra.com/articles/special-articles/indian-origin-doctor-says-send-h-1bs-back-first-153905"
-                                            title="Indian-Origin Doctor Says: Send H-1Bs Back First">
-                                            <div class="top_newsbox_img">
-                                                <img alt="Indian-Origin Doctor Says: Send H-1Bs Back First" border="0"
-                                                    height="75" src="images/h1bvisa41775058007.jpg" width="120" />
-                                            </div>
-                                            <div class="top_news_txt">
-
-                                                Indian-Origin Doctor Says: Send H-1Bs Back First
-
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="https://www.greatandhra.com/movies/news/rishab-shettys-immaturity-raises-serious-concerns-153886"
-                                            title="Rishab Shetty's Immaturity Raises Serious Concerns">
-                                            <div class="top_newsbox_img">
-                                                <img alt="Rishab Shetty's Immaturity Raises Serious Concerns" border="0"
-                                                    height="75" src="images/rishabshetty11775008296.jpg" width="120" />
-                                            </div>
-                                            <div class="top_news_txt">
-
-                                                Rishab Shetty's Immaturity Raises Serious Concerns
-
-                                            </div>
-                                        </a>
-                                    </li>
+                                    <?php endforeach; ?>
+                                    <?php else: ?>
+                                    <li class="ga-unavailable"><p class="ga-unavailable-msg">Content temporarily unavailable</p></li>
+                                    <?php endif; ?>
                                 </ul>
                             </div>
                         </div>

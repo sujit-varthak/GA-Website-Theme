@@ -627,6 +627,15 @@ ul.top_story_option2_3story li .top_newsbox_img {
   width: 100px;
   position: relative;
   margin-top: 5px;
+  overflow: hidden;
+}
+
+ul.top_story_option2_3story li .top_newsbox_img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
 }
 
 ul.top_story_option2_3story li {

@@ -10,6 +10,12 @@ define('GA_CACHE_CLEAR_KEY', 'ga-dev-clear-2026');
 // Max title length before PHP-side truncation kicks in (no CSS line-clamp anywhere in this theme).
 define('GA_HOME_HERO_TITLE_MAX', 100);
 define('GA_HOME_LIST_TITLE_MAX', 80);
+define('GA_MOST_POPULAR_TITLE_MAX', 90);
+
+// Most Popular: no dedicated backend endpoint yet, so we pull this many latest articles and
+// sort by viewCount in PHP (same "could miss an older high-view article" caveat as any
+// client-side scan — revisit if this ever needs to be exhaustive rather than latest-N).
+define('GA_MOST_POPULAR_FEED_SIZE', 20);
 
 // featuredImageUrl is currently always null from the API — these are the exact images/dimensions
 // already hardcoded in today's static markup, reused as a positional fallback until images are wired up.
@@ -29,4 +35,12 @@ define('GA_HOME_LIST_FALLBACK_IMAGES', [
 // since featuredImageUrl is currently always null.
 define('GA_ARTICLE_FALLBACK_IMAGE', [
     'src' => 'images/alluarjun_atlee21775487958.jpg',
+]);
+
+define('GA_MOST_POPULAR_FALLBACK_IMAGES', [
+    ['src' => 'images/food11775001619.jpg', 'width' => 120, 'height' => 75],
+    ['src' => 'images/tecg1775062056.jpg', 'width' => 120, 'height' => 75],
+    ['src' => 'images/jagan_new181775031416.jpg', 'width' => 120, 'height' => 75],
+    ['src' => 'images/h1bvisa41775058007.jpg', 'width' => 120, 'height' => 75],
+    ['src' => 'images/rishabshetty11775008296.jpg', 'width' => 120, 'height' => 75],
 ]);
