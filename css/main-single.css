@@ -305,6 +305,14 @@ ul.big-galist li a {
   width: 255px;
 }
 
+/* Plain headline items had no width cap, so a long title (common with real dynamic
+   content, unlike the short hand-picked static titles) wouldn't fit beside the 255px
+   hero image and dropped below it instead of wrapping within the gap. */
+.great_andhra_main_body_container .news_style.news_section_ul li:not(.main-story) {
+  max-width: 400px;
+  word-wrap: break-word;
+}
+
 li.main-story.clearfix img {
   width: 100%;
   height: 145px;
