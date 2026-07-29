@@ -508,7 +508,7 @@ $ga_most_read_articles = array_slice($ga_popular_sorted, 0, 15);
                                             <ul class="news_style">
                                                 <?php if (!empty($ga_trending_articles)): ?>
                                                 <?php foreach ($ga_trending_articles as $ga_article): ?>
-                                                <li> <a href="<?php echo ga_e(ga_inner_link($ga_article)); ?>"
+                                                <li> <a class="oneline-title" href="<?php echo ga_e(ga_inner_link($ga_article)); ?>"
                                                         title="<?php echo ga_e($ga_article['title'] ?? ''); ?>">
                                                         <strong> <?php echo ga_e($ga_article['title'] ?? ''); ?> </strong>
                                                     </a>
@@ -523,7 +523,7 @@ $ga_most_read_articles = array_slice($ga_popular_sorted, 0, 15);
                                             <ul class="news_style">
                                                 <?php if (!empty($ga_most_read_articles)): ?>
                                                 <?php foreach ($ga_most_read_articles as $ga_article): ?>
-                                                <li> <a href="<?php echo ga_e(ga_inner_link($ga_article)); ?>"
+                                                <li> <a class="oneline-title" href="<?php echo ga_e(ga_inner_link($ga_article)); ?>"
                                                         title="<?php echo ga_e($ga_article['title'] ?? ''); ?>">
                                                         <?php echo ga_e($ga_article['title'] ?? ''); ?> </a>
                                                 </li>
@@ -1251,7 +1251,7 @@ $ga_most_read_articles = array_slice($ga_popular_sorted, 0, 15);
                                 <ul class="news_style">
                                     <?php if (!empty($ga_article_section_articles)): ?>
                                     <?php foreach ($ga_article_section_articles as $ga_article): ?>
-                                    <li><a href="<?php echo ga_e(ga_inner_link($ga_article)); ?>"><?php echo ga_e($ga_article['title'] ?? ''); ?></a></li>
+                                    <li><a class="oneline-title" href="<?php echo ga_e(ga_inner_link($ga_article)); ?>"><?php echo ga_e($ga_article['title'] ?? ''); ?></a></li>
                                     <?php endforeach; ?>
                                     <?php else: ?>
                                     <li class="ga-unavailable"><p class="ga-unavailable-msg">Content temporarily unavailable</p></li>

@@ -90,7 +90,7 @@ function ga_render_category_section(array $articles, array $heroFallbackImage, i
         $link = ga_e(ga_inner_link($article));
         $titleAttr = ga_e($article['title'] ?? '');
         $titleText = ga_e(ga_truncate($article['title'] ?? '', $titleMax));
-        echo '<li> <a href="' . $link . '" title="' . $titleAttr . '">' . $titleText . '</a> </li>';
+        echo '<li> <a class="oneline-title" href="' . $link . '" title="' . $titleAttr . '">' . $titleText . '</a> </li>';
     }
 }
 

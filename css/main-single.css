@@ -323,7 +323,14 @@ li.main-story.clearfix img {
 
 .great_andhra_main_body_container .news_style.news_section_ul li {
   float: left;
+  width: 100%;
   margin-left: 8px;
+}
+
+.great_andhra_main_body_container.category_section ul.sortable-list.ui-sortable {
+  float: left;
+  width: 100%;
+  margin-top: 5px;
 }
 
 ul.bg-unlist.ga-featured-videos li {
