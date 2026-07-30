@@ -52,6 +52,35 @@ function ga_e(?string $value): string
     return htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
 }
 
+// Migrated articles store `body` as plain text (blank-line-separated paragraphs, no HTML
+// at all), while native articles already store it as real HTML (<div>/<span> blocks). Since
+// the template renders body raw, plain-text paragraph breaks were collapsing into one wall
+// of text. Detect which shape we have and only reformat the plain-text case — HTML bodies
+// pass through untouched. Fixes every current and future plain-text article with no data migration.
+function ga_render_article_body(?string $body): string
+{
+    $body = (string) $body;
+    if (trim($body) === '') {
+        return '';
+    }
+
+    // Already has real HTML tags — leave it exactly as-is.
+    if ($body !== strip_tags($body)) {
+        return $body;
+    }
+
+    $paragraphs = preg_split('/\r\n\s*\r\n|\n\s*\n/', trim($body));
+    $html = '';
+    foreach ($paragraphs as $paragraph) {
+        $paragraph = trim($paragraph);
+        if ($paragraph === '') {
+            continue;
+        }
+        $html .= '<p>' . nl2br(ga_e($paragraph)) . '</p>';
+    }
+    return $html;
+}
+
 function ga_format_date(?string $iso, string $format = 'F d, Y'): string
 {
     if (empty($iso)) {

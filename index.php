@@ -39,7 +39,10 @@ if ($ga_latest_feed) {
 }
 
 $ga_popular_articles = array_slice($ga_popular_sorted, 0, 5);
-$ga_most_read_articles = array_slice($ga_popular_sorted, 0, 15);
+// Most Read was uncapped (up to ~39 items) so it could match Big Story's height, but that
+// overflowed way past it instead. Capped at 17 now, same as Top News.
+$ga_most_read_articles = array_slice($ga_popular_sorted, 0, GA_TAB_ARTICLE_LIMIT);
+$ga_trending_articles = array_slice($ga_trending_articles, 0, GA_TAB_ARTICLE_LIMIT);
 ?>
 <!-- <script type="text/javascript">
     if (screen.width <= 700) {
@@ -507,10 +510,10 @@ $ga_most_read_articles = array_slice($ga_popular_sorted, 0, 15);
                                         <div class="tabcontent" id="top" style="display:block;">
                                             <ul class="news_style">
                                                 <?php if (!empty($ga_trending_articles)): ?>
-                                                <?php foreach ($ga_trending_articles as $ga_article): ?>
+                                                <?php foreach ($ga_trending_articles as $ga_i => $ga_article): ?>
                                                 <li> <a class="oneline-title" href="<?php echo ga_e(ga_inner_link($ga_article)); ?>"
                                                         title="<?php echo ga_e($ga_article['title'] ?? ''); ?>">
-                                                        <strong> <?php echo ga_e($ga_article['title'] ?? ''); ?> </strong>
+                                                        <?php if ($ga_i < 2): ?><strong> <?php echo ga_e($ga_article['title'] ?? ''); ?> </strong><?php else: ?><?php echo ga_e($ga_article['title'] ?? ''); ?><?php endif; ?>
                                                     </a>
                                                 </li>
                                                 <?php endforeach; ?>

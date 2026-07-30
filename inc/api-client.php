@@ -169,9 +169,10 @@ function ga_fetch_homepage(): ?array
 }
 
 // Returns a flat list of article arrays, or null if the API failed AND no cache (fresh or stale) exists.
-function ga_fetch_articles(int $take = 4, int $skip = 0): ?array
+// $categoryId is optional — confirmed working server-side filter (unlike tagId, which is silently ignored).
+function ga_fetch_articles(int $take = 4, int $skip = 0, ?string $categoryId = null): ?array
 {
-    $cacheKey = "articles_take{$take}_skip{$skip}";
+    $cacheKey = "articles_take{$take}_skip{$skip}" . ($categoryId ? "_cat{$categoryId}" : '');
     $cacheFile = ga_cache_path($cacheKey);
 
     $isFresh = is_file($cacheFile) && (time() - filemtime($cacheFile)) < GA_CACHE_TTL;
@@ -182,10 +183,11 @@ function ga_fetch_articles(int $take = 4, int $skip = 0): ?array
         }
     }
 
-    $url = rtrim(GA_API_BASE_URL, '/') . '/api/public/articles?' . http_build_query([
-        'take' => $take,
-        'skip' => $skip,
-    ]);
+    $query = ['take' => $take, 'skip' => $skip];
+    if ($categoryId) {
+        $query['categoryId'] = $categoryId;
+    }
+    $url = rtrim(GA_API_BASE_URL, '/') . '/api/public/articles?' . http_build_query($query);
 
     $data = ga_http_get_json($url);
 

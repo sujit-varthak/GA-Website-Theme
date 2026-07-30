@@ -18,6 +18,13 @@ $ga_img_src = $ga_article ? (ga_image($ga_article, ['src' => GA_ARTICLE_FALLBACK
 $ga_meta_title = $ga_article ? (($ga_article['seoTitle'] ?? null) ?: ($ga_article['title'] ?? '')) : 'Article Not Found';
 $ga_meta_desc = $ga_article ? (($ga_article['seoDescription'] ?? null) ?: ($ga_article['excerpt'] ?? '')) : '';
 $ga_category_name = $ga_article['category']['name'] ?? '';
+
+// Sidebar "Top News" widget — same trending data as the homepage, just capped at 3 here.
+$ga_home_data_sidebar = ga_fetch_homepage();
+$ga_sidebar_top_news = array_slice($ga_home_data_sidebar['trending'] ?? [], 0, GA_INNER_TOP_NEWS_COUNT);
+
+// "Recommended For You" — articles filtered to the "Articles" category.
+$ga_recommended_articles = ga_fetch_articles(GA_RECOMMENDED_COUNT, 0, GA_ARTICLES_CATEGORY_ID) ?? [];
 ?>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" version="XHTML+RDFa 1.0" dir="ltr"
     xmlns:og="http://ogp.me/ns#" xmlns:article="http://ogp.me/ns/article#" xmlns:book="http://ogp.me/ns/book#"
@@ -470,7 +477,7 @@ $ga_category_name = $ga_article['category']['name'] ?? '';
                                     </div>
                                 </div>
 
-                                <?php echo $ga_article['body'] ?? ''; ?>
+                                <?php echo ga_render_article_body($ga_article['body'] ?? ''); ?>
 
                                 <div class="vuukle-powerbar" style="min-height: 50px;"></div>
 
@@ -558,49 +565,29 @@ $ga_category_name = $ga_article['category']['name'] ?? '';
                                 <div class="header">Top News</div>
                                 <div class="hm_topstory_3_story">
                                     <ul class="top_story_option2_3story list_top_news_mrgn">
-
+                                        <?php if (!empty($ga_sidebar_top_news)): ?>
+                                        <?php foreach ($ga_sidebar_top_news as $ga_i => $ga_sb_article): ?>
+                                        <?php
+                                            $ga_sb_fallback = GA_INNER_TOP_NEWS_FALLBACK_IMAGES[$ga_i] ?? GA_INNER_TOP_NEWS_FALLBACK_IMAGES[0];
+                                            $ga_sb_img = ga_image($ga_sb_article, $ga_sb_fallback);
+                                        ?>
                                         <li>
-                                            <a href="https://www.greatandhra.com/movies/news/monday-bo-biker-outperforms-raakaasa-154025"
-                                                title="Monday BO: Biker Outperforms Raakaasa">
+                                            <a href="<?php echo ga_e(ga_inner_link($ga_sb_article)); ?>"
+                                                title="<?php echo ga_e($ga_sb_article['title'] ?? ''); ?>">
                                                 <div class="top_newsbox_img">
-                                                    <img alt="Monday BO: Biker Outperforms Raakaasa" border="0"
-                                                        src="images/biker61775536801.jpeg" width="111" height="62">
+                                                    <img alt="<?php echo ga_e($ga_sb_article['title'] ?? ''); ?>" border="0"
+                                                        src="<?php echo ga_e($ga_sb_img['src']); ?>"
+                                                        width="<?php echo (int) $ga_sb_img['width']; ?>"
+                                                        height="<?php echo (int) $ga_sb_img['height']; ?>">
                                                 </div>
                                                 <div class="top_news_txt">
-                                                    Monday BO: Biker Outperforms Raakaasa </div>
+                                                    <?php echo ga_e($ga_sb_article['title'] ?? ''); ?> </div>
                                             </a>
                                         </li>
-
-
-                                        <li>
-                                            <a href="https://www.greatandhra.com/movies/news/peddis-postponement-team-to-make-it-official-shortly-154024"
-                                                title="Peddi's Postponement: Team to Make it Official Shortly">
-                                                <div class="top_newsbox_img">
-                                                    <img alt="Peddi's Postponement: Team to Make it Official Shortly"
-                                                        border="0" src="images/peddi81775535513.jpg" width="111"
-                                                        height="62">
-                                                </div>
-                                                <div class="top_news_txt">
-                                                    Peddi's Postponement: Team to Make it Official Shortly </div>
-                                            </a>
-                                        </li>
-
-
-                                        <li>
-                                            <a href="https://www.greatandhra.com/politics/gossip/revanth-to-fulfil-one-tola-gold-promise-soon-154023"
-                                                title="Revanth to fulfil one-tola gold promise soon?">
-                                                <div class="top_newsbox_img">
-                                                    <img alt="Revanth to fulfil one-tola gold promise soon?" border="0"
-                                                        src="images/revanth%20(1)1775529951.jpg" width="111"
-                                                        height="62">
-                                                </div>
-                                                <div class="top_news_txt">
-                                                    Revanth to fulfil one-tola gold promise soon? </div>
-                                            </a>
-                                        </li>
-
-
-
+                                        <?php endforeach; ?>
+                                        <?php else: ?>
+                                        <li class="ga-unavailable"><p class="ga-unavailable-msg">Content temporarily unavailable</p></li>
+                                        <?php endif; ?>
                                     </ul>
                                 </div>
 
@@ -653,111 +640,30 @@ $ga_category_name = $ga_article['category']['name'] ?? '';
                                 <div class="header"> Recommended For You </div>
                                 <div class="hm_topstory_3_story">
                                     <ul class="top_story_option2_3story list_top_news_mrgn">
-
+                                        <?php if (!empty($ga_recommended_articles)): ?>
+                                        <?php foreach ($ga_recommended_articles as $ga_i => $ga_rec_article): ?>
+                                        <?php
+                                            $ga_rec_fallback = GA_RECOMMENDED_FALLBACK_IMAGES[$ga_i] ?? GA_RECOMMENDED_FALLBACK_IMAGES[0];
+                                            $ga_rec_img = ga_image($ga_rec_article, $ga_rec_fallback);
+                                        ?>
                                         <li>
-                                            <a href="https://www.greatandhra.com/movies/reviews/biker-review-new-game-familiar-emotions-153935"
-                                                title="Biker Review: New Game, Familiar Emotions">
+                                            <a href="<?php echo ga_e(ga_inner_link($ga_rec_article)); ?>"
+                                                title="<?php echo ga_e($ga_rec_article['title'] ?? ''); ?>">
                                                 <div class="top_newsbox_img">
                                                     <img border="0"
-                                                        src="images/biker91775193758.jpg&amp;width=113&amp;height=62&amp;action=resize&amp;quality=100"
-                                                        width="111" height="62"
-                                                        alt="Biker Review: New Game, Familiar Emotions">
+                                                        src="<?php echo ga_e($ga_rec_img['src']); ?>"
+                                                        width="<?php echo (int) $ga_rec_img['width']; ?>"
+                                                        height="<?php echo (int) $ga_rec_img['height']; ?>"
+                                                        alt="<?php echo ga_e($ga_rec_article['title'] ?? ''); ?>">
                                                 </div>
                                                 <div class="top_news_txt">
-                                                    Biker Review: New Game, Familiar Emotions </div>
+                                                    <?php echo ga_e($ga_rec_article['title'] ?? ''); ?> </div>
                                             </a>
                                         </li>
-                                        <li>
-                                            <a href="https://www.greatandhra.com/movies/reviews/raakaasaa-review-zero-horror-little-comedy-153936"
-                                                title="RaaKaaSaa Review: Zero Horror, Little Comedy">
-                                                <div class="top_newsbox_img">
-                                                    <img border="0"
-                                                        src="images/raakaasaa21775196309.jpg&amp;width=113&amp;height=62&amp;action=resize&amp;quality=100"
-                                                        width="111" height="62"
-                                                        alt="RaaKaaSaa Review: Zero Horror, Little Comedy">
-                                                </div>
-                                                <div class="top_news_txt">
-                                                    RaaKaaSaa Review: Zero Horror, Little Comedy </div>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="https://www.greatandhra.com/articles/special-articles/trump-loses-it-drops-f-bomb-on-iran-153987"
-                                                title="Trump Loses It, Drops F-Bomb On Iran">
-                                                <div class="top_newsbox_img">
-                                                    <img border="0"
-                                                        src="images/trump_iran11775399425.jpg&amp;width=113&amp;height=62&amp;action=resize&amp;quality=100"
-                                                        width="111" height="62"
-                                                        alt="Trump Loses It, Drops F-Bomb On Iran">
-                                                </div>
-                                                <div class="top_news_txt">
-                                                    Trump Loses It, Drops F-Bomb On Iran </div>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="https://www.greatandhra.com/movies/reviews/first-report-raakaasa-decent-fun-no-big-roar-153930"
-                                                title="First Report: RaaKaaSa- Decent Fun, No Big Roar">
-                                                <div class="top_newsbox_img">
-                                                    <img border="0"
-                                                        src="images/raakaasaa21775148515.jpg&amp;width=113&amp;height=62&amp;action=resize&amp;quality=100"
-                                                        width="111" height="62"
-                                                        alt="First Report: RaaKaaSa- Decent Fun, No Big Roar">
-                                                </div>
-                                                <div class="top_news_txt">
-                                                    First Report: RaaKaaSa- Decent Fun, No Big Roar </div>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="https://www.greatandhra.com/movies/news/teaser-ranbirs-rama-avatar-is-grand-glorious-goosebumps-153916"
-                                                title="Teaser: Ranbir's Rama Avatar Is Grand, Glorious, Goosebumps">
-                                                <div class="top_newsbox_img">
-                                                    <img border="0"
-                                                        src="images/ramayana41775105638.jpg&amp;width=113&amp;height=62&amp;action=resize&amp;quality=100"
-                                                        width="111" height="62"
-                                                        alt="Teaser: Ranbir's Rama Avatar Is Grand, Glorious, Goosebumps">
-                                                </div>
-                                                <div class="top_news_txt">
-                                                    Teaser: Ranbir's Rama Avatar Is Grand, Glorious, Goosebumps </div>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="https://www.greatandhra.com/politics/andhra-news/ap-murdered-by-family-betrayed-by-khaki-153981"
-                                                title="AP: Murdered By Family, Betrayed By Khaki">
-                                                <div class="top_newsbox_img">
-                                                    <img border="0"
-                                                        src="images/palnadu11775372743.jpg&amp;width=113&amp;height=62&amp;action=resize&amp;quality=100"
-                                                        width="111" height="62"
-                                                        alt="AP: Murdered By Family, Betrayed By Khaki">
-                                                </div>
-                                                <div class="top_news_txt">
-                                                    AP: Murdered By Family, Betrayed By Khaki </div>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="https://www.greatandhra.com/articles/special-articles/cow-housewarming-ritual-in-texas-triggers-cultural-storm-153945"
-                                                title="Cow Housewarming Ritual In Texas Triggers Cultural Storm">
-                                                <div class="top_newsbox_img">
-                                                    <img border="0"
-                                                        src="images/cow11775227175.jpg&amp;width=113&amp;height=62&amp;action=resize&amp;quality=100"
-                                                        width="111" height="62"
-                                                        alt="Cow Housewarming Ritual In Texas Triggers Cultural Storm">
-                                                </div>
-                                                <div class="top_news_txt">
-                                                    Cow Housewarming Ritual In Texas Triggers Cultural Storm </div>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="https://www.greatandhra.com/politics/telangana-news/dowry-horror-newlywed-techie-ends-life-in-hyd-153927"
-                                                title="Dowry Horror: Newlywed Techie Ends Life In Hyd">
-                                                <div class="top_newsbox_img">
-                                                    <img border="0"
-                                                        src="images/yaav11775140301.jpg&amp;width=113&amp;height=62&amp;action=resize&amp;quality=100"
-                                                        width="111" height="62"
-                                                        alt="Dowry Horror: Newlywed Techie Ends Life In Hyd">
-                                                </div>
-                                                <div class="top_news_txt">
-                                                    Dowry Horror: Newlywed Techie Ends Life In Hyd </div>
-                                            </a>
-                                        </li>
+                                        <?php endforeach; ?>
+                                        <?php else: ?>
+                                        <li class="ga-unavailable"><p class="ga-unavailable-msg">Content temporarily unavailable</p></li>
+                                        <?php endif; ?>
                                     </ul>
                                 </div>
                             </div>

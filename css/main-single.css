@@ -87,6 +87,7 @@ li {
 
 .paras.float-left.clear.hero {
   display: flex;
+  align-items: stretch;
 }
 
 .great_andhra_main_body_container .home_left_column {
@@ -94,6 +95,7 @@ li {
   margin: 0 14px 0 0;
   background: #fff;
 }
+
 
 /* ads and aopinion section  */
 .great_andhra_main_body_container.ad-opinion {
@@ -493,6 +495,10 @@ i.fab.fa-facebook-f {
 .ga-featured-videos .big-galist-rgt {
   width: 100%;
   padding: 0 5px 0 5px;
+}
+
+.ga-featured-videos .big-galist-rgt p {
+  width: 175px;
 }
 
 .editors_pick {
