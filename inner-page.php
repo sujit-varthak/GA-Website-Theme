@@ -3,7 +3,16 @@ require_once __DIR__ . '/config.php';
 require_once __DIR__ . '/inc/api-client.php';
 require_once __DIR__ . '/inc/helpers.php';
 
-$ga_id = isset($_GET['id']) ? trim((string) $_GET['id']) : '';
+// New URL shape: inner-page.php/{id}/{categorySlug}/{subCategorySlug?}/{titleSlug} — the
+// UUID is always the first path segment, regardless of how many category segments follow.
+// ?id= still works as a fallback for any old-style links.
+$ga_path_info = isset($_SERVER['PATH_INFO']) ? trim($_SERVER['PATH_INFO'], '/') : '';
+if ($ga_path_info !== '') {
+    $ga_path_segments = explode('/', $ga_path_info);
+    $ga_id = trim((string) $ga_path_segments[0]);
+} else {
+    $ga_id = isset($_GET['id']) ? trim((string) $_GET['id']) : '';
+}
 $ga_result = $ga_id !== '' ? ga_fetch_article_by_id($ga_id) : ['status' => 'not_found', 'article' => null];
 $ga_status = $ga_result['status'];
 $ga_article = $ga_result['article'];
@@ -18,6 +27,9 @@ $ga_img_src = $ga_article ? (ga_image($ga_article, ['src' => GA_ARTICLE_FALLBACK
 $ga_meta_title = $ga_article ? (($ga_article['seoTitle'] ?? null) ?: ($ga_article['title'] ?? '')) : 'Article Not Found';
 $ga_meta_desc = $ga_article ? (($ga_article['seoDescription'] ?? null) ?: ($ga_article['excerpt'] ?? '')) : '';
 $ga_category_name = $ga_article['category']['name'] ?? '';
+// Category's own "parent" is embedded directly on the article's category object — present
+// only when this category is itself a subcategory (e.g. Gossip under Politics).
+$ga_parent_category_name = $ga_article['category']['parent']['name'] ?? '';
 
 // Sidebar "Top News" widget — same trending data as the homepage, just capped at 3 here.
 $ga_home_data_sidebar = ga_fetch_homepage();
@@ -37,6 +49,10 @@ $ga_recommended_articles = ga_fetch_articles(GA_RECOMMENDED_COUNT, 0, GA_ARTICLE
 
 
 <head profile="http://www.w3.org/1999/xhtml/vocab">
+    <!-- The URL now carries extra path segments (id/category/subcategory/title) via
+         PATH_INFO, so every relative asset path (css/..., js/...) below would otherwise
+         resolve against that fake nested path instead of the site root. -->
+    <base href="/">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 
@@ -410,41 +426,39 @@ $ga_recommended_articles = ga_fetch_articles(GA_RECOMMENDED_COUNT, 0, GA_ARTICLE
                 <div class="two_column" style="overflow-anchor: auto;">
 
                     <?php if ($ga_article): ?>
+                    <?php
+                        $ga_breadcrumb_items = [['name' => 'Home', 'id' => 'index.php']];
+                        if ($ga_parent_category_name !== '') {
+                            $ga_breadcrumb_items[] = ['name' => $ga_parent_category_name, 'id' => ga_inner_link($ga_article)];
+                        }
+                        if ($ga_category_name !== '') {
+                            $ga_breadcrumb_items[] = ['name' => $ga_category_name, 'id' => ga_inner_link($ga_article)];
+                        }
+                        $ga_breadcrumb_items[] = ['name' => $ga_meta_title, 'id' => ga_inner_link($ga_article)];
+                    ?>
                     <script type="application/ld+json">{
 						"@context": "http://schema.org",
 						"@type": "BreadcrumbList",
 						"itemListElement": [
+							<?php foreach ($ga_breadcrumb_items as $ga_i => $ga_crumb): ?>
+							<?php if ($ga_i > 0): ?>,<?php endif; ?>
 							{
 								"@type": "ListItem",
-								"position": 1,
+								"position": <?php echo $ga_i + 1; ?>,
 								"item": {
-									"@type": "WebSite",
-									"@id": "index.php",
-									"name": "Home"
-								}
-							},
-							{
-								"@type": "ListItem",
-								"position": 2,
-									"item": {
-									"@type": "WebPage",
-									"@id": "<?php echo ga_e(ga_inner_link($ga_article)); ?>",
-									"name": "<?php echo ga_e($ga_category_name); ?>"
+									"@type": "<?php echo $ga_i === 0 ? 'WebSite' : 'WebPage'; ?>",
+									"@id": "<?php echo ga_e($ga_crumb['id']); ?>",
+									"name": "<?php echo ga_e($ga_crumb['name']); ?>"
 								}
 							}
-							,{
-								"@type": "ListItem",
-								"position": 3,
-									"item": {
-									"@type": "WebPage",
-									"@id": "<?php echo ga_e(ga_inner_link($ga_article)); ?>",
-									"name": "<?php echo ga_e($ga_meta_title); ?>"
-								}
-							}
+							<?php endforeach; ?>
 						]
 					}
 				</script>
                     <div class="breade_crumb"> <a href="index.php" title="Go to Home">Home</a>
+                        <?php if ($ga_parent_category_name !== ''): ?>
+                        <span><?php echo ga_e($ga_parent_category_name); ?></span>
+                        <?php endif; ?>
                         <span><?php echo ga_e($ga_category_name); ?></span>
                     </div>
                     <?php endif; ?>

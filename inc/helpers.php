@@ -34,11 +34,23 @@ function ga_image(array $article, array $fallback): array
     ];
 }
 
-// The backend resolves articles by id now, not slug — id is the real lookup key.
-// slug still rides along in the URL purely for readability/SEO, it's not used to fetch anything.
+// urlPath is "{shortId}/{categorySlug}/{subCategorySlug?}/{titleSlug}" — but shortId alone
+// doesn't resolve via /api/public/articles/:id (confirmed 404, backend lookup is UUID-only
+// for now), so we reuse the backend's own urlPath structure (category/subcategory/title,
+// slugification and all) and swap its first segment for the real UUID, which is what
+// inner-page.php actually needs to fetch the article. Path-based, no query string.
 function ga_inner_link(array $article): string
 {
     $id = $article['id'] ?? '';
+    $urlPath = $article['urlPath'] ?? '';
+
+    if ($urlPath !== '') {
+        $segments = explode('/', trim($urlPath, '/'));
+        $segments[0] = $id;
+        return 'inner-page.php/' . implode('/', array_map('rawurlencode', $segments));
+    }
+
+    // Fallback if urlPath is ever missing (e.g. stale cache from before it shipped).
     $slug = $article['slug'] ?? '';
     $query = 'id=' . rawurlencode($id);
     if ($slug !== '') {

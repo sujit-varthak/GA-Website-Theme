@@ -195,6 +195,13 @@
   color: #222222;
 }
 
+/* Only appears when there's a subcategory (parent + category both rendered as spans) —
+   the existing arrow separator only follows <a> tags, so two adjacent spans need their own. */
+.great_andhra_main_body_container .breade_crumb span:not(:last-child)::after {
+  content: " / ";
+  margin: 0 2px;
+}
+
 .great_andhra_main_body_container .page_news .header h1 {
   padding: 0 0 2px;
   font-size: 28px;

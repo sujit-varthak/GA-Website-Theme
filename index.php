@@ -17,6 +17,10 @@ $ga_andhra_news_articles = $ga_home_data['andhraNews'] ?? [];
 $ga_telangana_news_articles = $ga_home_data['telanganaNews'] ?? [];
 $ga_politics_gossip_articles = $ga_home_data['politicsGossip'] ?? [];
 $ga_reviews_articles = $ga_home_data['reviews'] ?? [];
+$ga_talk_of_town_articles = $ga_home_data['talkOfTheTown'] ?? [];
+$ga_featured_articles = $ga_home_data['featured'] ?? [];
+// Not an Article — a standalone curated link list (title + destination URL), admin-managed.
+$ga_usa_movie_schedule = $ga_home_data['usaMovieSchedule'] ?? [];
 
 // Shared latest-articles batch feeds three sections: "Article" (latest-first, as fetched),
 // Most Popular and the "Most Read" tab (both viewCount-sorted, excluding the Big Story hero
@@ -42,6 +46,8 @@ $ga_popular_articles = array_slice($ga_popular_sorted, 0, 5);
 // Most Read was uncapped (up to ~39 items) so it could match Big Story's height, but that
 // overflowed way past it instead. Capped at 17 now, same as Top News.
 $ga_most_read_articles = array_slice($ga_popular_sorted, 0, GA_TAB_ARTICLE_LIMIT);
+// Top News: back to the isTrending flag (via the homepage aggregate's trending key) — the
+// "Latest News" category filter was tried and then reverted back to this.
 $ga_trending_articles = array_slice($ga_trending_articles, 0, GA_TAB_ARTICLE_LIMIT);
 ?>
 <!-- <script type="text/javascript">
@@ -724,36 +730,17 @@ $ga_trending_articles = array_slice($ga_trending_articles, 0, GA_TAB_ARTICLE_LIM
                             <div class="header"> Talk Of The Town </div>
                             <div class="content">
                                 <ul class="news_style">
+                                    <?php if (!empty($ga_talk_of_town_articles)): ?>
+                                    <?php foreach ($ga_talk_of_town_articles as $ga_article): ?>
                                     <li>
-                                        <a class="oneline-title"
-                                            href="https://www.greatandhra.com/movies/news/hot-rx100-beauty-blasts-in-low-neck-blouse-153889"
-                                            title="HOT: RX100 Beauty Blasts In Low Neck Blouse">
-                                            HOT: RX100 Beauty Blasts In Low Neck Blouse </a>
+                                        <a class="oneline-title" href="<?php echo ga_e(ga_inner_link($ga_article)); ?>"
+                                            title="<?php echo ga_e($ga_article['title'] ?? ''); ?>">
+                                            <?php echo ga_e($ga_article['title'] ?? ''); ?> </a>
                                     </li>
-                                    <li>
-                                        <a class="oneline-title"
-                                            href="https://www.greatandhra.com/movies/news/rishab-shettys-immaturity-raises-serious-concerns-153886"
-                                            title="Rishab Shetty's Immaturity Raises Serious Concerns">
-                                            Rishab Shetty's Immaturity Raises Serious Concerns </a>
-                                    </li>
-                                    <li>
-                                        <a class="oneline-title"
-                                            href="https://www.greatandhra.com/movies/news/dhurandhar-action-on-the-roads-of-pakistan-153885"
-                                            title="'Dhurandhar' Action On The Roads Of Pakistan">
-                                            'Dhurandhar' Action On The Roads Of Pakistan </a>
-                                    </li>
-                                    <li>
-                                        <a class="oneline-title"
-                                            href="https://www.greatandhra.com/movies/news/actress-leases-out-bungalow-for-rs-414-crore-153880"
-                                            title="Actress Leases Out Bungalow for Rs 4.14 Crore">
-                                            Actress Leases Out Bungalow for Rs 4.14 Crore </a>
-                                    </li>
-                                    <li>
-                                        <a class="oneline-title"
-                                            href="https://www.greatandhra.com/movies/news/dhurandhar-2-changes-bollywoods-box-office-math-153877"
-                                            title="Dhurandhar 2 Changes Bollywood's Box Office Math">
-                                            Dhurandhar 2 Changes Bollywood's Box Office Math </a>
-                                    </li>
+                                    <?php endforeach; ?>
+                                    <?php else: ?>
+                                    <li class="ga-unavailable"><p class="ga-unavailable-msg">Content temporarily unavailable</p></li>
+                                    <?php endif; ?>
                                 </ul>
                             </div>
                         </div>
@@ -1125,12 +1112,14 @@ $ga_trending_articles = array_slice($ga_trending_articles, 0, GA_TAB_ARTICLE_LIM
                             <div class="header"> USA Movie Schedules </div>
                             <div class="content">
                                 <ul class="news_style">
-                                    <li><a href="https://movies.indianclicks.com/biker-movie" target="_blank">Biker </a>
-                                    </li>
-                                    <li><a href="https://movies.indianclicks.com/youth-telugu-movie"
-                                            target="_blank">Youth </a></li>
-                                    <li><a href="https://movies.indianclicks.com/couple-friendly-movie"
-                                            target="_blank">Couple Friendly</a></li>
+                                    <?php if (!empty($ga_usa_movie_schedule)): ?>
+                                    <?php foreach ($ga_usa_movie_schedule as $ga_schedule_item): ?>
+                                    <li><a class="oneline-title" href="<?php echo ga_e($ga_schedule_item['linkUrl'] ?? ''); ?>"
+                                            <?php echo !empty($ga_schedule_item['openInNewTab']) ? 'target="_blank"' : ''; ?>><?php echo ga_e($ga_schedule_item['title'] ?? ''); ?></a></li>
+                                    <?php endforeach; ?>
+                                    <?php else: ?>
+                                    <li class="ga-unavailable"><p class="ga-unavailable-msg">Content temporarily unavailable</p></li>
+                                    <?php endif; ?>
                                 </ul>
                             </div>
                         </div>
@@ -1140,21 +1129,14 @@ $ga_trending_articles = array_slice($ga_trending_articles, 0, GA_TAB_ARTICLE_LIM
                             <div class="header"> Featured </div>
                             <div class="content">
                                 <ul class="news_style">
-                                    <li><a
-                                            href="https://www.greatandhra.com/articles/news/azure-ai-engineer-certification-course-apr-11-153899">Azure
-                                            AI Engineer Certification Course, Apr 11</a></li>
-                                    <li><a
-                                            href="https://www.greatandhra.com/articles/news/why-used-mahindra-suvs-rule-off-the-road-153890">Why
-                                            Used Mahindra SUVs Rule Off the Road</a></li>
-                                    <li><a
-                                            href="https://www.greatandhra.com/articles/news/snusa-columbus-oh-chapters-music-dance-153807">SNUSA
-                                            Columbus OH Chapter's Music &amp; Dance</a></li>
-                                    <li><a
-                                            href="https://www.greatandhra.com/articles/news/watch-ipl-2026-on-cricbuzz-channel-via-yupptv-153787">Watch
-                                            IPL 2026 on Cricbuzz channel via YuppTV</a></li>
-                                    <li><a
-                                            href="https://www.greatandhra.com/articles/news/live-demo-on-full-stack-ai-llms-rag-ai-agents-153776">LIVE
-                                            Demo on Full Stack AI LLMs, RAG, AI Agent's</a></li>
+                                    <?php if (!empty($ga_featured_articles)): ?>
+                                    <?php foreach ($ga_featured_articles as $ga_article): ?>
+                                    <li><a class="oneline-title" href="<?php echo ga_e(ga_inner_link($ga_article)); ?>"
+                                            title="<?php echo ga_e($ga_article['title'] ?? ''); ?>"><?php echo ga_e($ga_article['title'] ?? ''); ?></a></li>
+                                    <?php endforeach; ?>
+                                    <?php else: ?>
+                                    <li class="ga-unavailable"><p class="ga-unavailable-msg">Content temporarily unavailable</p></li>
+                                    <?php endif; ?>
                                 </ul>
                             </div>
                         </div>
