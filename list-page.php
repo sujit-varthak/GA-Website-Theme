@@ -8,7 +8,36 @@ require_once __DIR__ . '/inc/helpers.php';
 $ga_category_id = isset($_GET['categoryId']) ? trim((string) $_GET['categoryId']) : '';
 $ga_category_name = isset($_GET['categoryName']) ? trim((string) $_GET['categoryName']) : 'Latest News';
 $ga_include_children = isset($_GET['includeChildren']) && $_GET['includeChildren'] === 'true';
-$ga_list_articles = $ga_category_id !== '' ? (ga_fetch_articles(GA_LIST_PAGE_TAKE, 0, $ga_category_id, $ga_include_children) ?? []) : [];
+
+// ga_fetch_articles() now returns a total count matching the filter (confirmed live
+// 2026-08-01), so real numbered pagination is possible instead of the earlier Prev/Next-only
+// "fetch one extra row" workaround.
+$ga_page = max(1, isset($_GET['page']) ? (int) $_GET['page'] : 1);
+$ga_skip = ($ga_page - 1) * GA_LIST_PAGE_TAKE;
+$ga_list_articles = [];
+$ga_total = 0;
+if ($ga_category_id !== '') {
+    $ga_result = ga_fetch_articles(GA_LIST_PAGE_TAKE, $ga_skip, $ga_category_id, $ga_include_children);
+    $ga_list_articles = $ga_result['items'] ?? [];
+    $ga_total = $ga_result['total'] ?? 0;
+}
+$ga_total_pages = $ga_total > 0 ? (int) ceil($ga_total / GA_LIST_PAGE_TAKE) : 1;
+
+// Sidebar widgets — small fixed lists (not affected by the main category/pagination above).
+$ga_sidebar_gossip = ga_fetch_articles(GA_LIST_SIDEBAR_COUNT, 0, GA_NAV_CATEGORY_IDS['movie-gossip'])['items'] ?? [];
+$ga_sidebar_reviews = ga_fetch_articles(GA_LIST_SIDEBAR_COUNT, 0, GA_NAV_CATEGORY_IDS['reviews'])['items'] ?? [];
+
+function ga_list_page_url(string $categoryId, string $categoryName, bool $includeChildren, int $page): string
+{
+    $params = ['categoryId' => $categoryId, 'categoryName' => $categoryName];
+    if ($includeChildren) {
+        $params['includeChildren'] = 'true';
+    }
+    if ($page > 1) {
+        $params['page'] = $page;
+    }
+    return 'list-page.php?' . http_build_query($params);
+}
 ?>
 <html lang="en">
 
@@ -183,7 +212,7 @@ $ga_list_articles = $ga_category_id !== '' ? (ga_fetch_articles(GA_LIST_PAGE_TAK
                 } */
             </style>
             <div class="great_andhra_logo_panel">
-                <a href="https://www.greatandhra.com/" class="logo">
+                <a href="index.php" class="logo">
                     <img src="./images/great_andhra.gif" title="Greatandhra website logo" alt="Greatandhra logo">
                 </a>
                 <div class="AdinHedare">
@@ -608,7 +637,7 @@ $ga_list_articles = $ga_category_id !== '' ? (ga_fetch_articles(GA_LIST_PAGE_TAK
             <!-- <div class="great_andhra_main_menu_panel_2019" id="great_andhra_main_menu_panel_2019"
 				style="position: relative; top: 0px;">
 				<ul id="menu">
-					<li><a href="https://www.greatandhra.com/" title="greandhra home"><i class="fas fa-home"
+					<li><a href="index.php" title="greandhra home"><i class="fas fa-home"
 								style="color:#333333;"></i></a></li>
 					<li><a href="https://www.greatandhra.com/latest">Latest</a></li>
 					<li id="Latest">
@@ -696,7 +725,7 @@ $ga_list_articles = $ga_category_id !== '' ? (ga_fetch_articles(GA_LIST_PAGE_TAK
                 <ul class="menu">
                     <!-- Home Icon -->
                     <li class="menu-item">
-                        <a href="https://www.greatandhra.com/" class="menu-link" title="greandhra home" itemprop="url">
+                        <a href="index.php" class="menu-link" title="greandhra home" itemprop="url">
                             <span itemprop="name"><i class="fas fa-home" style="color:#333333;"></i></span>
                         </a>
                     </li>
@@ -789,7 +818,7 @@ $ga_list_articles = $ga_category_id !== '' ? (ga_fetch_articles(GA_LIST_PAGE_TAK
             <div class="great_andhra_logo_panel-mob">
             <!-- First Row: Logo and Hamburger -->
             <div class="logo-bar">
-                <a class="logo" href="https://www.greatandhra.com/">
+                <a class="logo" href="index.php">
                     <img alt="Greatandhra logo" src="images/great_andhra.gif" title="Greatandhra website Logo" />
                 </a>
 
@@ -805,7 +834,7 @@ $ga_list_articles = $ga_category_id !== '' ? (ga_fetch_articles(GA_LIST_PAGE_TAK
                 <div class="mobile-nav-content">
                     <ul class="mobile-menu">
                         <li>
-                            <a href="https://www.greatandhra.com/">
+                            <a href="index.php">
                                 <i class="fas fa-home"></i> Home
                             </a>
                         </li>
@@ -946,27 +975,48 @@ $ga_list_articles = $ga_category_id !== '' ? (ga_fetch_articles(GA_LIST_PAGE_TAK
                         </ul>
                     </div>
                     <!--page_news-->
+                    <?php if ($ga_total_pages > 1): ?>
+                    <?php
+                        $ga_window_start = max(1, $ga_page - GA_LIST_PAGINATION_WINDOW);
+                        $ga_window_end = min($ga_total_pages, $ga_page + GA_LIST_PAGINATION_WINDOW);
+                    ?>
                     <div class="new_pagination" style="margin-left:0px;margin-top:10px; width:650px; ">
                         <table width="100%" align="center">
                             <tbody>
                                 <tr>
                                     <td align="center">
-                                        <a href="https://www.greatandhra.com/latest/1 ">1</a>
-                                        <a href="https://www.greatandhra.com/latest/2 ">2</a>
-                                        <a href="https://www.greatandhra.com/latest/3 ">3</a>
-                                        <a href="https://www.greatandhra.com/latest/4 ">4</a>
-                                        <a href="https://www.greatandhra.com/latest/5 ">5</a>
-                                        <a href="https://www.greatandhra.com/latest/6 ">6</a>
-                                        <a href="https://www.greatandhra.com/latest/7 ">7</a>
-                                        <a href="https://www.greatandhra.com/latest/8 ">8</a>
-                                        <a href="https://www.greatandhra.com/latest/2 ">&gt;&gt;</a>
+                                        <?php if ($ga_page > 1): ?>
+                                        <a href="<?php echo ga_e(ga_list_page_url($ga_category_id, $ga_category_name, $ga_include_children, $ga_page - 1)); ?>">&laquo; Prev</a>
+                                        <?php endif; ?>
 
+                                        <?php if ($ga_window_start > 1): ?>
+                                        <a href="<?php echo ga_e(ga_list_page_url($ga_category_id, $ga_category_name, $ga_include_children, 1)); ?>">1</a>
+                                        <?php if ($ga_window_start > 2): ?><span>&hellip;</span><?php endif; ?>
+                                        <?php endif; ?>
+
+                                        <?php for ($ga_p = $ga_window_start; $ga_p <= $ga_window_end; $ga_p++): ?>
+                                        <?php if ($ga_p === $ga_page): ?>
+                                        <span><?php echo $ga_p; ?></span>
+                                        <?php else: ?>
+                                        <a href="<?php echo ga_e(ga_list_page_url($ga_category_id, $ga_category_name, $ga_include_children, $ga_p)); ?>"><?php echo $ga_p; ?></a>
+                                        <?php endif; ?>
+                                        <?php endfor; ?>
+
+                                        <?php if ($ga_window_end < $ga_total_pages): ?>
+                                        <?php if ($ga_window_end < $ga_total_pages - 1): ?><span>&hellip;</span><?php endif; ?>
+                                        <a href="<?php echo ga_e(ga_list_page_url($ga_category_id, $ga_category_name, $ga_include_children, $ga_total_pages)); ?>"><?php echo $ga_total_pages; ?></a>
+                                        <?php endif; ?>
+
+                                        <?php if ($ga_page < $ga_total_pages): ?>
+                                        <a href="<?php echo ga_e(ga_list_page_url($ga_category_id, $ga_category_name, $ga_include_children, $ga_page + 1)); ?>">Next &raquo;</a>
+                                        <?php endif; ?>
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
 
                     </div>
+                    <?php endif; ?>
 
 
                 </div>
@@ -978,26 +1028,15 @@ $ga_list_articles = $ga_category_id !== '' ? (ga_fetch_articles(GA_LIST_PAGE_TAK
                                 <div class="header"> Gossip</div>
                                 <div class="content">
                                     <ul class="news_style">
-                                        <!--<li><a href="viewnews.php?id=154079&cat=1&scat=5" title="Debut Film Disaster Behind Couple’s Cold War?">Debut Film Disaster Behind Couple’s Cold War?</a> </li>-->
-                                        <li><a href="https://www.greatandhra.com/movies/gossip/debut-film-disaster-behind-couples-cold-war-154079"
-                                                title="Debut Film Disaster Behind Couple’s Cold War?">Debut Film
-                                                Disaster Behind Couple’s Cold War?</a> </li>
-                                        <!--<li><a href="viewnews.php?id=154078&cat=1&scat=5" title="'Varanasi' Plot Point: Inception Plus Indiana Zones?">'Varanasi' Plot Point: Inception Plus Indiana Zones?</a> </li>-->
-                                        <li><a href="https://www.greatandhra.com/movies/gossip/varanasi-plot-point-inception-plus-indiana-zones-154078"
-                                                title="'Varanasi' Plot Point: Inception Plus Indiana Zones?">'Varanasi'
-                                                Plot Point: Inception Plus Indiana Zones?</a> </li>
-                                        <!--<li><a href="viewnews.php?id=154073&cat=1&scat=5" title="Rishab Shetty's 'Breakup' Sparks Industry Buzz">Rishab Shetty's 'Breakup' Sparks Industry Buzz</a> </li>-->
-                                        <li><a href="https://www.greatandhra.com/movies/gossip/rishab-shettys-breakup-sparks-industry-buzz-154073"
-                                                title="Rishab Shetty's 'Breakup' Sparks Industry Buzz">Rishab Shetty's
-                                                'Breakup' Sparks Industry Buzz</a> </li>
-                                        <!--<li><a href="viewnews.php?id=154047&cat=1&scat=5" title="Big Ticket Films Struggle For Overseas Buyers">Big Ticket Films Struggle For Overseas Buyers</a> </li>-->
-                                        <li><a href="https://www.greatandhra.com/movies/gossip/big-ticket-films-struggle-for-overseas-buyers-154047"
-                                                title="Big Ticket Films Struggle For Overseas Buyers">Big Ticket Films
-                                                Struggle For Overseas Buyers</a> </li>
-                                        <!--<li><a href="viewnews.php?id=154012&cat=1&scat=5" title="Wildfire! Fans Speculate Allu Arjun's Title">Wildfire! Fans Speculate Allu Arjun's Title</a> </li>-->
-                                        <li><a href="https://www.greatandhra.com/movies/gossip/wildfire-fans-speculate-allu-arjuns-title-154012"
-                                                title="Wildfire! Fans Speculate Allu Arjun's Title">Wildfire! Fans
-                                                Speculate Allu Arjun's Title</a> </li>
+                                        <?php if (!empty($ga_sidebar_gossip)): ?>
+                                        <?php foreach ($ga_sidebar_gossip as $ga_gossip_article): ?>
+                                        <li><a href="<?php echo ga_e(ga_inner_link($ga_gossip_article)); ?>"
+                                                title="<?php echo ga_e($ga_gossip_article['title'] ?? ''); ?>"><?php echo ga_e($ga_gossip_article['title'] ?? ''); ?></a>
+                                        </li>
+                                        <?php endforeach; ?>
+                                        <?php else: ?>
+                                        <li class="ga-unavailable"><p class="ga-unavailable-msg">Content temporarily unavailable</p></li>
+                                        <?php endif; ?>
                                     </ul>
                                 </div>
                             </div>
@@ -1247,26 +1286,15 @@ $ga_list_articles = $ga_category_id !== '' ? (ga_fetch_articles(GA_LIST_PAGE_TAK
                                 <div class="header"> Reviews</div>
                                 <div class="content">
                                     <ul class="news_style">
-                                        <!--<li><a href="viewnews.php?id=153936&cat=1&scat=12" title="RaaKaaSaa Review: Zero Horror, Little Comedy">RaaKaaSaa Review: Zero Horror, Little Comedy</a> </li>-->
-                                        <li><a href="https://www.greatandhra.com/movies/reviews/raakaasaa-review-zero-horror-little-comedy-153936"
-                                                title="RaaKaaSaa Review: Zero Horror, Little Comedy">RaaKaaSaa Review:
-                                                Zero Horror, Little Comedy</a> </li>
-                                        <!--<li><a href="viewnews.php?id=153935&cat=1&scat=12" title="Biker Review: New Game, Familiar Emotions">Biker Review: New Game, Familiar Emotions</a> </li>-->
-                                        <li><a href="https://www.greatandhra.com/movies/reviews/biker-review-new-game-familiar-emotions-153935"
-                                                title="Biker Review: New Game, Familiar Emotions">Biker Review: New
-                                                Game, Familiar Emotions</a> </li>
-                                        <!--<li><a href="viewnews.php?id=153933&cat=1&scat=12" title="First Report: 'Biker'- Sports Drama With Human Emotions">First Report: 'Biker'- Sports Drama With Human Emotions</a> </li>-->
-                                        <li><a href="https://www.greatandhra.com/movies/reviews/first-report-biker-sports-drama-with-human-emotions-153933"
-                                                title="First Report: 'Biker'- Sports Drama With Human Emotions">First
-                                                Report: 'Biker'- Sports Drama With Human Emotions</a> </li>
-                                        <!--<li><a href="viewnews.php?id=153930&cat=1&scat=12" title="First Report: RaaKaaSa- Decent Fun, No Big Roar">First Report: RaaKaaSa- Decent Fun, No Big Roar</a> </li>-->
-                                        <li><a href="https://www.greatandhra.com/movies/reviews/first-report-raakaasa-decent-fun-no-big-roar-153930"
-                                                title="First Report: RaaKaaSa- Decent Fun, No Big Roar">First Report:
-                                                RaaKaaSa- Decent Fun, No Big Roar</a> </li>
-                                        <!--<li><a href="viewnews.php?id=153773&cat=1&scat=12" title="Youth Review: Works for Teenagers Only">Youth Review: Works for Teenagers Only</a> </li>-->
-                                        <li><a href="https://www.greatandhra.com/movies/reviews/youth-review-works-for-teenagers-only-153773"
-                                                title="Youth Review: Works for Teenagers Only">Youth Review: Works for
-                                                Teenagers Only</a> </li>
+                                        <?php if (!empty($ga_sidebar_reviews)): ?>
+                                        <?php foreach ($ga_sidebar_reviews as $ga_review_article): ?>
+                                        <li><a href="<?php echo ga_e(ga_inner_link($ga_review_article)); ?>"
+                                                title="<?php echo ga_e($ga_review_article['title'] ?? ''); ?>"><?php echo ga_e($ga_review_article['title'] ?? ''); ?></a>
+                                        </li>
+                                        <?php endforeach; ?>
+                                        <?php else: ?>
+                                        <li class="ga-unavailable"><p class="ga-unavailable-msg">Content temporarily unavailable</p></li>
+                                        <?php endif; ?>
                                     </ul>
                                 </div>
                             </div>

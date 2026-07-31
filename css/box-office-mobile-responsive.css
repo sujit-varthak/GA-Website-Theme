@@ -229,7 +229,9 @@
 
   .img_container_box img {
     width: 200px;
-    height: auto !important;
+    height: 133px !important;
+    object-fit: cover !important;
+    object-position: center !important;
     display: block !important;
   }
   

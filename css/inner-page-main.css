@@ -408,7 +408,8 @@ ul.top_story_option2_3story li .top_news_txt {
   gap: 6px;
 }
 
-.trending_topics a {
+.trending_topics a,
+.trending_topics span {
   color: #727272;
   font-size: 11px;
   padding: 5px 10px;

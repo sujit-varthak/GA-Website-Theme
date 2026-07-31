@@ -168,7 +168,9 @@ function ga_fetch_homepage(): ?array
     return $data;
 }
 
-// Returns a flat list of article arrays, or null if the API failed AND no cache (fresh or stale) exists.
+// Returns ['items' => article[], 'total' => int], or null if the API failed AND no cache
+// (fresh or stale) exists. total is the count matching the given filter (categoryId/
+// includeChildren applied), not the whole site — confirmed live 2026-08-01.
 // $categoryId is optional — confirmed working server-side filter (unlike tagId, which is silently ignored).
 // $includeChildren (opt-in, confirmed live 2026-07-31) also returns the category's direct children's articles.
 function ga_fetch_articles(int $take = 4, int $skip = 0, ?string $categoryId = null, bool $includeChildren = false): ?array
@@ -202,19 +204,24 @@ function ga_fetch_articles(int $take = 4, int $skip = 0, ?string $categoryId = n
         return ga_cache_read($cacheFile);
     }
 
-    // Response envelope isn't confirmed yet — handle a bare array or a {data:[...]} / {items:[...]} wrapper.
-    $articles = $data;
-    if (array_is_list($data) === false) {
-        if (isset($data['data']) && is_array($data['data'])) {
-            $articles = $data['data'];
-        } elseif (isset($data['items']) && is_array($data['items'])) {
-            $articles = $data['items'];
-        } else {
-            return ga_cache_read($cacheFile);
-        }
+    // Response is { items: [...], total: N } (confirmed live 2026-08-01). Defensive fallback
+    // for a bare array or {data:[...]} in case of a future/partial rollback — total is unknown
+    // in that case, so it's derived from the page size rather than the true site-wide count.
+    if (isset($data['items']) && is_array($data['items'])) {
+        $items = $data['items'];
+        $total = isset($data['total']) ? (int) $data['total'] : count($items);
+    } elseif (array_is_list($data)) {
+        $items = $data;
+        $total = count($items);
+    } elseif (isset($data['data']) && is_array($data['data'])) {
+        $items = $data['data'];
+        $total = isset($data['total']) ? (int) $data['total'] : count($items);
+    } else {
+        return ga_cache_read($cacheFile);
     }
 
-    file_put_contents($cacheFile, json_encode($articles));
+    $result = ['items' => $items, 'total' => $total];
+    file_put_contents($cacheFile, json_encode($result));
 
-    return $articles;
+    return $result;
 }

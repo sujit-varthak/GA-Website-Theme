@@ -23,10 +23,14 @@ $ga_featured_articles = $ga_home_data['featured'] ?? [];
 $ga_usa_movie_schedule = $ga_home_data['usaMovieSchedule'] ?? [];
 $ga_trending_tags = array_slice($ga_home_data['trendingTags'] ?? [], 0, GA_TRENDING_TAGS_COUNT);
 
+// Editor's Pick — most recent Reviews article with schemaData.movieName + rating populated.
+$ga_editors_pick_scan = ga_fetch_articles(GA_EDITORS_PICK_SCAN_COUNT, 0, GA_NAV_CATEGORY_IDS['reviews'])['items'] ?? [];
+$ga_editors_pick = ga_pick_editors_review($ga_editors_pick_scan);
+
 // Shared latest-articles batch feeds three sections: "Article" (latest-first, as fetched),
 // Most Popular and the "Most Read" tab (both viewCount-sorted, excluding the Big Story hero
 // so it never reappears elsewhere on the page).
-$ga_latest_feed = ga_fetch_articles(GA_MOST_POPULAR_FEED_SIZE, 0);
+$ga_latest_feed = ga_fetch_articles(GA_MOST_POPULAR_FEED_SIZE, 0)['items'] ?? null;
 
 $ga_article_section_articles = $ga_latest_feed ? array_slice($ga_latest_feed, 0, 5) : [];
 
@@ -166,7 +170,7 @@ $ga_trending_articles = array_slice($ga_trending_articles, 0, GA_TAB_ARTICLE_LIM
 
         <!--great_andhra_logo_panel-->
         <div class="great_andhra_logo_panel">
-            <a class="logo" href="https://www.greatandhra.com/">
+            <a class="logo" href="index.php">
                 <img alt="Greatandhra logo" src="images/great_andhra.gif" title="Greatandhra ebsite Logo" />
             </a>
             <div>
@@ -184,7 +188,7 @@ $ga_trending_articles = array_slice($ga_trending_articles, 0, GA_TAB_ARTICLE_LIM
         <div class="great_andhra_logo_panel-mob">
             <!-- First Row: Logo and Hamburger -->
             <div class="logo-bar">
-                <a class="logo" href="https://www.greatandhra.com/">
+                <a class="logo" href="index.php">
                     <img alt="Greatandhra logo" src="images/great_andhra.gif" title="Greatandhra website Logo" />
                 </a>
 
@@ -200,7 +204,7 @@ $ga_trending_articles = array_slice($ga_trending_articles, 0, GA_TAB_ARTICLE_LIM
                 <div class="mobile-nav-content">
                     <ul class="mobile-menu">
                         <li>
-                            <a href="https://www.greatandhra.com/">
+                            <a href="index.php">
                                 <i class="fas fa-home"></i> Home
                             </a>
                         </li>
@@ -312,7 +316,7 @@ $ga_trending_articles = array_slice($ga_trending_articles, 0, GA_TAB_ARTICLE_LIM
             <ul class="menu">
                 <!-- Home Icon -->
                 <li class="menu-item">
-                    <a href="https://www.greatandhra.com/" class="menu-link" title="greandhra home" itemprop="url">
+                    <a href="index.php" class="menu-link" title="greandhra home" itemprop="url">
                         <span itemprop="name"><i class="fas fa-home" style="color:#333333;"></i></span>
                     </a>
                 </li>
@@ -959,26 +963,39 @@ $ga_trending_articles = array_slice($ga_trending_articles, 0, GA_TAB_ARTICLE_LIM
                                 <div class="sortable-item_style_3">
                                     <div class="content">
                                         <ul class="news_style news_section_ul" style="padding-top:3px;">
+                                            <?php if ($ga_editors_pick): ?>
+                                            <?php
+                                                $ga_ep_link = ga_e(ga_inner_link($ga_editors_pick));
+                                                $ga_ep_movie_name = ga_e($ga_editors_pick['schemaData']['movieName'] ?? '');
+                                                $ga_ep_rating = ga_e($ga_editors_pick['schemaData']['rating'] ?? '');
+                                                $ga_ep_release = ga_format_date($ga_editors_pick['schemaData']['releaseDate'] ?? null, 'd-M-Y');
+                                                $ga_ep_img = ga_image($ga_editors_pick, GA_REVIEWS_FALLBACK_IMAGE);
+                                            ?>
                                             <li class="editors_pick_li clearfix">
-                                                <a href="https://www.greatandhra.com/movies/reviews/ustaad-bhagat-singh-review-cliched-cop-153588"
-                                                    title="'Ustaad Bhagat Singh' Review: Cliched Cop">
+                                                <a href="<?php echo $ga_ep_link; ?>"
+                                                    title="<?php echo $ga_ep_movie_name; ?>">
                                                     <div class="editors_pick">
                                                         <span class="editors_pick_cat">Review </span>
-                                                        <span class="editors_pick_title">'Ustaad Bhagat Singh' Review:
-                                                            Cliched Cop</span>
-                                                        <span class="editors_pick_desc">Overall, 'Ustaad Bhagat Singh'
-                                                            turns out to be a routine, mostly boring commercial
-                                                            entertainer. </span>
+                                                        <span class="editors_pick_title"><?php echo $ga_ep_movie_name; ?></span>
+                                                        <span class="editors_pick_desc">Rating : <?php echo $ga_ep_rating; ?></span>
+                                                        <?php if ($ga_ep_release !== ''): ?>
+                                                        <span class="editors_pick_release">Release Date : <?php echo ga_e($ga_ep_release); ?></span>
+                                                        <?php endif; ?>
                                                     </div>
                                                 </a>
                                             </li>
                                             <li class="main-story editors_pick_li clearfix">
-                                                <a href="https://www.greatandhra.com/movies/reviews/ustaad-bhagat-singh-review-cliched-cop-153588"
-                                                    title="'Ustaad Bhagat Singh' Review: Cliched Cop">
-                                                    <img alt="'Ustaad Bhagat Singh' Review: Cliched Cop" height="200"
-                                                        src="images/UstaadBhagatSingh11773903556.jpg" width="330" />
+                                                <a href="<?php echo $ga_ep_link; ?>"
+                                                    title="<?php echo $ga_ep_movie_name; ?>">
+                                                    <img alt="<?php echo $ga_ep_movie_name; ?>" height="<?php echo (int) $ga_ep_img['height']; ?>"
+                                                        src="<?php echo ga_e($ga_ep_img['src']); ?>" width="<?php echo (int) $ga_ep_img['width']; ?>" />
                                                 </a>
                                             </li>
+                                            <?php else: ?>
+                                            <li class="editors_pick_li clearfix ga-unavailable">
+                                                <p class="ga-unavailable-msg">Content temporarily unavailable</p>
+                                            </li>
+                                            <?php endif; ?>
                                         </ul>
                                     </div>
                                 </div>

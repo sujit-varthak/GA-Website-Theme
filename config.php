@@ -30,8 +30,27 @@ define('GA_RECOMMENDED_COUNT', 8);
 define('GA_ARTICLES_CATEGORY_ID', '43a01cf4-66a6-460b-8816-8c22518ad33c');
 
 // list-page.php: category-filtered listing, driven by ?categoryId=&categoryName= from the nav.
-// Matches the static design's hardcoded card count. No pagination wired yet (page 1 only).
+// Matches the static design's hardcoded card count.
 define('GA_LIST_PAGE_TAKE', 15);
+
+// Homepage "Editor's Pick" card: only articles with schemaData.movieName + schemaData.rating
+// populated qualify (confirmed live 2026-08-01 — only 2 of 32 Reviews articles have it so far).
+// Scans this many latest Reviews articles for the most recent qualifying one.
+define('GA_EDITORS_PICK_SCAN_COUNT', 30);
+
+// Numbered pagination: how many page links to show on each side of the current page
+// (plus first/last with an ellipsis gap) — categories can run to 80+ pages at this take size.
+define('GA_LIST_PAGINATION_WINDOW', 2);
+
+// list-page.php sidebar widgets (Gossip / Reviews) — small fixed lists, no pagination,
+// matches the item count already hardcoded in the static design.
+define('GA_LIST_SIDEBAR_COUNT', 5);
+
+// box-office.php: Movies category (includeChildren=true, so News/Gossip/Reviews are included
+// too — there's no dedicated "Box Office" category in the backend) with real pagination.
+// Take size matches the static design's 2-column x 7-row grid.
+define('GA_BOX_OFFICE_TAKE', 14);
+define('GA_BOX_OFFICE_FALLBACK_IMAGE', ['src' => 'images/ManaShankaraVaraPrasadGaru81768714474.jpg', 'width' => 300, 'height' => 200]);
 
 // Top Trending Topics: homepage's trendingTags is already sorted by articleCount descending
 // (capped at 15 server-side); cap further to the top N most-tagged topics for display.

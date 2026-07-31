@@ -296,7 +296,8 @@
     line-height: 26px !important;
   }
 
-  span.editors_pick_desc {
+  span.editors_pick_desc,
+  span.editors_pick_release {
     font-size: 13px !important;
     line-height: 18px !important;
   }
@@ -394,7 +395,8 @@
     width: 100% !important;
   }
 
-  .trending_topics a {
+  .trending_topics a,
+  .trending_topics span {
     font-size: 11px !important;
     padding: 4px 8px !important;
     margin: 3px !important;

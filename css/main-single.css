@@ -505,6 +505,12 @@ i.fab.fa-facebook-f {
   background-color: #0a2149;
   height: 210px;
   color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 14px;
+  padding: 20px;
+  box-sizing: border-box;
 }
 
 .great_andhra_main_body_container
@@ -521,25 +527,25 @@ li.editors_pick_li.clearfix img {
 }
 
 span.editors_pick_cat {
-  margin: 10px;
   text-transform: uppercase;
-  display: inline-block;
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 1px;
 }
 
 span.editors_pick_title {
-  display: inline-block;
-  margin-left: 10px;
+  display: block;
   font-size: 25px;
   line-height: 30px;
   font-weight: bold;
 }
 
-span.editors_pick_desc {
-  display: inline-block;
-  margin-left: 10px;
-  font-size: 14px;
+span.editors_pick_desc,
+span.editors_pick_release {
+  display: block;
+  font-size: 15px;
   line-height: 20px;
-  margin-top: 0px;
 }
 
 .trending_topics a,

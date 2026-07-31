@@ -2,6 +2,18 @@
 require_once __DIR__ . '/config.php';
 require_once __DIR__ . '/inc/api-client.php';
 require_once __DIR__ . '/inc/helpers.php';
+
+$ga_bo_page = max(1, isset($_GET['page']) ? (int) $_GET['page'] : 1);
+$ga_bo_skip = ($ga_bo_page - 1) * GA_BOX_OFFICE_TAKE;
+$ga_bo_result = ga_fetch_articles(GA_BOX_OFFICE_TAKE, $ga_bo_skip, GA_NAV_CATEGORY_IDS['movies'], true);
+$ga_bo_articles = $ga_bo_result['items'] ?? [];
+$ga_bo_total = $ga_bo_result['total'] ?? 0;
+$ga_bo_total_pages = $ga_bo_total > 0 ? (int) ceil($ga_bo_total / GA_BOX_OFFICE_TAKE) : 1;
+
+function ga_box_office_url(int $page): string
+{
+    return $page > 1 ? 'box-office.php?page=' . $page : 'box-office.php';
+}
 ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -310,7 +322,7 @@ require_once __DIR__ . '/inc/helpers.php';
 				}
 			</style> -->
             <div class="great_andhra_logo_panel">
-                <a href="https://www.greatandhra.com/" class="logo">
+                <a href="index.php" class="logo">
                     <img src="images/great_andhra.gif" title="Greatandhra website logo" alt="Greatandhra logo">
                 </a>
                 <div class="AdinHedare">
@@ -742,7 +754,7 @@ require_once __DIR__ . '/inc/helpers.php';
             <!-- <div class="great_andhra_main_menu_panel_2019" id="great_andhra_main_menu_panel_2019"
 				style="position: relative; top: 0px;">
 				<ul id="menu">
-					<li><a href="https://www.greatandhra.com/" title="greandhra home"><i class="fas fa-home"
+					<li><a href="index.php" title="greandhra home"><i class="fas fa-home"
 								style="color:#333333;"></i></a></li>
 					<li><a href="https://www.greatandhra.com/latest">Latest</a></li>
 					<li id="Latest">
@@ -830,7 +842,7 @@ require_once __DIR__ . '/inc/helpers.php';
                 <ul class="menu">
                     <!-- Home Icon -->
                     <li class="menu-item">
-                        <a href="https://www.greatandhra.com/" class="menu-link" title="greandhra home" itemprop="url">
+                        <a href="index.php" class="menu-link" title="greandhra home" itemprop="url">
                             <span itemprop="name"><i class="fas fa-home" style="color:#333333;"></i></span>
                         </a>
                     </li>
@@ -922,7 +934,7 @@ require_once __DIR__ . '/inc/helpers.php';
             <div class="great_andhra_logo_panel-mob">
             <!-- First Row: Logo and Hamburger -->
             <div class="logo-bar">
-                <a class="logo" href="https://www.greatandhra.com/">
+                <a class="logo" href="index.php">
                     <img alt="Greatandhra logo" src="images/great_andhra.gif" title="Greatandhra website Logo" />
                 </a>
 
@@ -938,7 +950,7 @@ require_once __DIR__ . '/inc/helpers.php';
                 <div class="mobile-nav-content">
                     <ul class="mobile-menu">
                         <li>
-                            <a href="https://www.greatandhra.com/">
+                            <a href="index.php">
                                 <i class="fas fa-home"></i> Home
                             </a>
                         </li>
@@ -1039,340 +1051,34 @@ require_once __DIR__ . '/inc/helpers.php';
                                 <div class="sortable-item_style_8_mov">
                                     <div class="header"> Box Office</div>
                                     <div class="gal_body_box">
-
-
-
+                                        <?php if (!empty($ga_bo_articles)): ?>
+                                        <?php foreach ($ga_bo_articles as $ga_bo_article): ?>
+                                        <?php $ga_bo_img = ga_image($ga_bo_article, GA_BOX_OFFICE_FALLBACK_IMAGE); ?>
                                         <div class="thumb_container_box">
-
-
                                             <div class="img_container_box"> <a
-                                                    href="https://www.greatandhra.com/movies/box-office/record-msg-breaches-og-lifetime-bookings-in-6-days-152196">
+                                                    href="<?php echo ga_e(ga_inner_link($ga_bo_article)); ?>">
                                                     <img border="0"
-                                                        src="images/ManaShankaraVaraPrasadGaru81768714474.jpg"
-                                                        alt="Record: MSG Breaches OG Lifetime Bookings In 6 Days"> </a>
-
-
-
+                                                        src="<?php echo ga_e($ga_bo_img['src']); ?>"
+                                                        width="<?php echo (int) $ga_bo_img['width']; ?>"
+                                                        height="<?php echo (int) $ga_bo_img['height']; ?>"
+                                                        alt="<?php echo ga_e($ga_bo_article['title'] ?? ''); ?>"> </a>
                                             </div>
 
                                             <div class="img_text_cont_box">
 
-                                                <a href="https://www.greatandhra.com/movies/box-office/record-msg-breaches-og-lifetime-bookings-in-6-days-152196"
-                                                    class="sublink"> Record: MSG Breaches OG Lifetime Bookings In 6 Days
+                                                <a href="<?php echo ga_e(ga_inner_link($ga_bo_article)); ?>"
+                                                    class="sublink"> <?php echo ga_e($ga_bo_article['title'] ?? ''); ?>
                                                 </a>
 
                                             </div>
 
                                         </div>
-
-
-
-                                        <div class="thumb_container_box">
-
-
-                                            <div class="img_container_box"> <a
-                                                    href="https://www.greatandhra.com/movies/box-office/us-bo-dhurandhar-inches-closer-to-all-time-record-151809">
-                                                    <img border="0" src="images/dhurandhar41766998511.jpg"
-                                                        alt="US BO: Dhurandhar Inches Closer to All-Time Record"> </a>
-
-
-
-                                            </div>
-
-                                            <div class="img_text_cont_box">
-
-                                                <a href="https://www.greatandhra.com/movies/box-office/us-bo-dhurandhar-inches-closer-to-all-time-record-151809"
-                                                    class="sublink"> US BO: Dhurandhar Inches Closer to All-Time Record
-                                                </a>
-
-                                            </div>
-
+                                        <?php endforeach; ?>
+                                        <?php else: ?>
+                                        <div class="ga-unavailable" style="min-height:150px; width:100%;">
+                                            <p class="ga-unavailable-msg">No articles found.</p>
                                         </div>
-
-
-
-                                        <div class="thumb_container_box">
-
-
-                                            <div class="img_container_box"> <a
-                                                    href="https://www.greatandhra.com/movies/box-office/the-raja-saab-aims-for-biggest-opening-in-usa-150899">
-                                                    <img border="0" src="images/rajasaab91763580338.jpg"
-                                                        alt="'The Raja Saab' Aims for Biggest Opening in USA"> </a>
-
-
-
-                                            </div>
-
-                                            <div class="img_text_cont_box">
-
-                                                <a href="https://www.greatandhra.com/movies/box-office/the-raja-saab-aims-for-biggest-opening-in-usa-150899"
-                                                    class="sublink"> 'The Raja Saab' Aims for Biggest Opening in USA
-                                                </a>
-
-                                            </div>
-
-                                        </div>
-
-
-
-                                        <div class="thumb_container_box">
-
-
-                                            <div class="img_container_box"> <a
-                                                    href="https://www.greatandhra.com/movies/box-office/top-10-vijay-d-not-even-close-to-naga-chaitanya-148274">
-                                                    <img border="0" src="images/kingdom61754540222.jpg"
-                                                        alt="Top 10: Vijay D Not Even Close To Naga Chaitanya?"> </a>
-
-
-
-                                            </div>
-
-                                            <div class="img_text_cont_box">
-
-                                                <a href="https://www.greatandhra.com/movies/box-office/top-10-vijay-d-not-even-close-to-naga-chaitanya-148274"
-                                                    class="sublink"> Top 10: Vijay D Not Even Close To Naga Chaitanya?
-                                                </a>
-
-                                            </div>
-
-                                        </div>
-
-
-
-                                        <div class="thumb_container_box">
-
-
-                                            <div class="img_container_box"> <a
-                                                    href="https://www.greatandhra.com/movies/box-office/hari-hara-veera-mallu-modest-day-1-expected-despite-hype-147889">
-                                                    <img border="0" src="images/Hari-Hara-Veera-Mallu101753209728.jpg"
-                                                        alt="Hari Hara Veera Mallu: Modest Day 1 Expected Despite Hype">
-                                                </a>
-
-
-
-                                            </div>
-
-                                            <div class="img_text_cont_box">
-
-                                                <a href="https://www.greatandhra.com/movies/box-office/hari-hara-veera-mallu-modest-day-1-expected-despite-hype-147889"
-                                                    class="sublink"> Hari Hara Veera Mallu: Modest Day 1 Expected
-                                                    Despite Hype </a>
-
-                                            </div>
-
-                                        </div>
-
-
-
-                                        <div class="thumb_container_box">
-
-
-                                            <div class="img_container_box"> <a
-                                                    href="https://www.greatandhra.com/movies/box-office/imdb-shocker-junior-beats-war-2-coolie-147576">
-                                                    <img border="0" src="images/junior21752089998.jpg"
-                                                        alt="IMDb Shocker: Junior Beats War 2, Coolie"> </a>
-
-
-
-                                            </div>
-
-                                            <div class="img_text_cont_box">
-
-                                                <a href="https://www.greatandhra.com/movies/box-office/imdb-shocker-junior-beats-war-2-coolie-147576"
-                                                    class="sublink"> IMDb Shocker: Junior Beats War 2, Coolie </a>
-
-                                            </div>
-
-                                        </div>
-
-
-
-                                        <div class="thumb_container_box">
-
-
-                                            <div class="img_container_box"> <a
-                                                    href="https://www.greatandhra.com/movies/box-office/the-raja-saab-teaser-7th-most-viewed-on-youtube-147036">
-                                                    <img border="0" src="images/rajasaab41750149453.jpeg"
-                                                        alt="The Raja Saab Teaser: 7th Most-Viewed on YouTube"> </a>
-
-
-
-                                            </div>
-
-                                            <div class="img_text_cont_box">
-
-                                                <a href="https://www.greatandhra.com/movies/box-office/the-raja-saab-teaser-7th-most-viewed-on-youtube-147036"
-                                                    class="sublink"> The Raja Saab Teaser: 7th Most-Viewed on YouTube
-                                                </a>
-
-                                            </div>
-
-                                        </div>
-
-
-
-                                        <div class="thumb_container_box">
-
-
-                                            <div class="img_container_box"> <a
-                                                    href="https://www.greatandhra.com/movies/box-office/allu-arjun-atlee-raised-the-expectations-bar-145331">
-                                                    <img border="0" src="images/ava22_11744091604.jpg"
-                                                        alt="Allu Arjun-Atlee Raised The Expectations Bar"> </a>
-
-
-
-                                            </div>
-
-                                            <div class="img_text_cont_box">
-
-                                                <a href="https://www.greatandhra.com/movies/box-office/allu-arjun-atlee-raised-the-expectations-bar-145331"
-                                                    class="sublink"> Allu Arjun-Atlee Raised The Expectations Bar </a>
-
-                                            </div>
-
-                                        </div>
-
-
-
-                                        <div class="thumb_container_box">
-
-
-                                            <div class="img_container_box"> <a
-                                                    href="https://www.greatandhra.com/movies/box-office/pushpa-2-ott-verdict-falls-short-of-animal-143919">
-                                                    <img border="0" src="images/pushpa2_11738774884.jpg"
-                                                        alt="Pushpa 2 OTT Verdict: Falls Short of Animal"> </a>
-
-
-
-                                            </div>
-
-                                            <div class="img_text_cont_box">
-
-                                                <a href="https://www.greatandhra.com/movies/box-office/pushpa-2-ott-verdict-falls-short-of-animal-143919"
-                                                    class="sublink"> Pushpa 2 OTT Verdict: Falls Short of Animal </a>
-
-                                            </div>
-
-                                        </div>
-
-
-
-                                        <div class="thumb_container_box">
-
-
-                                            <div class="img_container_box"> <a
-                                                    href="https://www.greatandhra.com/movies/box-office/box-office-sankranthiki-beats-guntur-kaaram-143596">
-                                                    <img border="0" src="images/SankranthikiVasthunnam11737570484.jpg"
-                                                        alt="Box Office: Sankranthiki Beats Guntur Kaaram"> </a>
-
-
-
-                                            </div>
-
-                                            <div class="img_text_cont_box">
-
-                                                <a href="https://www.greatandhra.com/movies/box-office/box-office-sankranthiki-beats-guntur-kaaram-143596"
-                                                    class="sublink"> Box Office: Sankranthiki Beats Guntur Kaaram </a>
-
-                                            </div>
-
-                                        </div>
-
-
-
-                                        <div class="thumb_container_box">
-
-
-                                            <div class="img_container_box"> <a
-                                                    href="https://www.greatandhra.com/movies/box-office/sankranthiki-vasthunam-shocking-rampage-at-box-office-143526">
-                                                    <img border="0" src="images/SankranthikiVasthunnam81737301638.jpg"
-                                                        alt="Sankranthiki Vasthunam: Shocking Rampage At Box Office">
-                                                </a>
-
-
-
-                                            </div>
-
-                                            <div class="img_text_cont_box">
-
-                                                <a href="https://www.greatandhra.com/movies/box-office/sankranthiki-vasthunam-shocking-rampage-at-box-office-143526"
-                                                    class="sublink"> Sankranthiki Vasthunam: Shocking Rampage At Box
-                                                    Office </a>
-
-                                            </div>
-
-                                        </div>
-
-
-
-                                        <div class="thumb_container_box">
-
-
-                                            <div class="img_container_box"> <a
-                                                    href="https://www.greatandhra.com/movies/box-office/top-10-highest-grossing-indian-films-of-2024-143059">
-                                                    <img border="0" src="images/pushpa_kalki11735413616.jpg"
-                                                        alt="Top 10 Highest-Grossing Indian Films Of 2024"> </a>
-
-
-
-                                            </div>
-
-                                            <div class="img_text_cont_box">
-
-                                                <a href="https://www.greatandhra.com/movies/box-office/top-10-highest-grossing-indian-films-of-2024-143059"
-                                                    class="sublink"> Top 10 Highest-Grossing Indian Films Of 2024 </a>
-
-                                            </div>
-
-                                        </div>
-
-
-
-                                        <div class="thumb_container_box">
-
-
-                                            <div class="img_container_box"> <a
-                                                    href="https://www.greatandhra.com/movies/box-office/pushpa-2-7th-highest-grossing-indian-film-in-us-142775">
-                                                    <img border="0" src="images/pushpa2_41734329832.jpg"
-                                                        alt="Pushpa 2: 7th Highest-Grossing Indian Film in US"> </a>
-
-
-
-                                            </div>
-
-                                            <div class="img_text_cont_box">
-
-                                                <a href="https://www.greatandhra.com/movies/box-office/pushpa-2-7th-highest-grossing-indian-film-in-us-142775"
-                                                    class="sublink"> Pushpa 2: 7th Highest-Grossing Indian Film in US
-                                                </a>
-
-                                            </div>
-
-                                        </div>
-
-
-
-                                        <div class="thumb_container_box">
-
-
-                                            <div class="img_container_box"> <a
-                                                    href="https://www.greatandhra.com/movies/box-office/us-bo-pushpa-2-stands-in-fourth-place-142537">
-                                                    <img border="0" src="images/pushpa2_71733506904.jpg"
-                                                        alt="US BO: Pushpa 2 Stands in fourth Place"> </a>
-
-
-
-                                            </div>
-
-                                            <div class="img_text_cont_box">
-
-                                                <a href="https://www.greatandhra.com/movies/box-office/us-bo-pushpa-2-stands-in-fourth-place-142537"
-                                                    class="sublink"> US BO: Pushpa 2 Stands in fourth Place </a>
-
-                                            </div>
-
-                                        </div>
-
+                                        <?php endif; ?>
                                         <br>
                                     </div>
                                 </div>
@@ -1380,71 +1086,48 @@ require_once __DIR__ . '/inc/helpers.php';
                         </ul>
                     </div>
                     <page_news>
+                        <?php if ($ga_bo_total_pages > 1): ?>
+                        <?php
+                            $ga_bo_window_start = max(1, $ga_bo_page - GA_LIST_PAGINATION_WINDOW);
+                            $ga_bo_window_end = min($ga_bo_total_pages, $ga_bo_page + GA_LIST_PAGINATION_WINDOW);
+                        ?>
                         <div class="new_pagination" style="margin-left:0px;margin-top:10px; width:650px; ">
                             <table width="100%" align="center">
                                 <tbody>
                                     <tr>
                                         <td align="center">
-                                            <a href="https://www.greatandhra.com/boxoffice/1 ">1</a>
-                                            <a href="https://www.greatandhra.com/boxoffice/2 ">2</a>
-                                            <a href="https://www.greatandhra.com/boxoffice/3 ">3</a>
-                                            <a href="https://www.greatandhra.com/boxoffice/4 ">4</a>
-                                            <a href="https://www.greatandhra.com/boxoffice/5 ">5</a>
-                                            <a href="https://www.greatandhra.com/boxoffice/6 ">6</a>
-                                            <a href="https://www.greatandhra.com/boxoffice/7 ">7</a>
-                                            <a href="https://www.greatandhra.com/boxoffice/8 ">8</a>
-                                            <a href="https://www.greatandhra.com/boxoffice/9 ">9</a>
-                                            <a href="https://www.greatandhra.com/boxoffice/10 ">10</a>
-                                            <a href="https://www.greatandhra.com/boxoffice/11 ">11</a>
-                                            <a href="https://www.greatandhra.com/boxoffice/12 ">12</a>
-                                            <a href="https://www.greatandhra.com/boxoffice/13 ">13</a>
-                                            <a href="https://www.greatandhra.com/boxoffice/14 ">14</a>
-                                            <a href="https://www.greatandhra.com/boxoffice/15 ">15</a>
-                                            <a href="https://www.greatandhra.com/boxoffice/16 ">16</a>
-                                            <a href="https://www.greatandhra.com/boxoffice/17 ">17</a>
-                                            <a href="https://www.greatandhra.com/boxoffice/18 ">18</a>
-                                            <a href="https://www.greatandhra.com/boxoffice/19 ">19</a>
-                                            <a href="https://www.greatandhra.com/boxoffice/20 ">20</a>
-                                            <a href="https://www.greatandhra.com/boxoffice/21 ">21</a>
-                                            <a href="https://www.greatandhra.com/boxoffice/22 ">22</a>
-                                            <a href="https://www.greatandhra.com/boxoffice/23 ">23</a>
-                                            <a href="https://www.greatandhra.com/boxoffice/24 ">24</a>
-                                            <a href="https://www.greatandhra.com/boxoffice/25 ">25</a>
-                                            <a href="https://www.greatandhra.com/boxoffice/26 ">26</a>
-                                            <a href="https://www.greatandhra.com/boxoffice/27 ">27</a>
-                                            <a href="https://www.greatandhra.com/boxoffice/28 ">28</a>
-                                            <a href="https://www.greatandhra.com/boxoffice/29 ">29</a>
-                                            <a href="https://www.greatandhra.com/boxoffice/30 ">30</a>
-                                            <a href="https://www.greatandhra.com/boxoffice/31 ">31</a>
-                                            <a href="https://www.greatandhra.com/boxoffice/32 ">32</a>
-                                            <a href="https://www.greatandhra.com/boxoffice/33 ">33</a>
-                                            <a href="https://www.greatandhra.com/boxoffice/34 ">34</a>
-                                            <a href="https://www.greatandhra.com/boxoffice/35 ">35</a>
-                                            <a href="https://www.greatandhra.com/boxoffice/36 ">36</a>
-                                            <a href="https://www.greatandhra.com/boxoffice/37 ">37</a>
-                                            <a href="https://www.greatandhra.com/boxoffice/38 ">38</a>
-                                            <a href="https://www.greatandhra.com/boxoffice/39 ">39</a>
-                                            <a href="https://www.greatandhra.com/boxoffice/40 ">40</a>
-                                            <a href="https://www.greatandhra.com/boxoffice/41 ">41</a>
-                                            <a href="https://www.greatandhra.com/boxoffice/42 ">42</a>
-                                            <a href="https://www.greatandhra.com/boxoffice/43 ">43</a>
-                                            <a href="https://www.greatandhra.com/boxoffice/44 ">44</a>
-                                            <a href="https://www.greatandhra.com/boxoffice/45 ">45</a>
-                                            <a href="https://www.greatandhra.com/boxoffice/46 ">46</a>
-                                            <a href="https://www.greatandhra.com/boxoffice/47 ">47</a>
-                                            <a href="https://www.greatandhra.com/boxoffice/48 ">48</a>
-                                            <a href="https://www.greatandhra.com/boxoffice/49 ">49</a>
-                                            <a href="https://www.greatandhra.com/boxoffice/50 ">50</a>
-                                            <a href="https://www.greatandhra.com/boxoffice/51 ">51</a>
-                                            <a href="https://www.greatandhra.com/boxoffice/52 ">52</a>
-                                            <a href="https://www.greatandhra.com/boxoffice/53 ">53</a>
+                                            <?php if ($ga_bo_page > 1): ?>
+                                            <a href="<?php echo ga_e(ga_box_office_url($ga_bo_page - 1)); ?>">&laquo; Prev</a>
+                                            <?php endif; ?>
 
+                                            <?php if ($ga_bo_window_start > 1): ?>
+                                            <a href="<?php echo ga_e(ga_box_office_url(1)); ?>">1</a>
+                                            <?php if ($ga_bo_window_start > 2): ?><span>&hellip;</span><?php endif; ?>
+                                            <?php endif; ?>
+
+                                            <?php for ($ga_bo_p = $ga_bo_window_start; $ga_bo_p <= $ga_bo_window_end; $ga_bo_p++): ?>
+                                            <?php if ($ga_bo_p === $ga_bo_page): ?>
+                                            <span><?php echo $ga_bo_p; ?></span>
+                                            <?php else: ?>
+                                            <a href="<?php echo ga_e(ga_box_office_url($ga_bo_p)); ?>"><?php echo $ga_bo_p; ?></a>
+                                            <?php endif; ?>
+                                            <?php endfor; ?>
+
+                                            <?php if ($ga_bo_window_end < $ga_bo_total_pages): ?>
+                                            <?php if ($ga_bo_window_end < $ga_bo_total_pages - 1): ?><span>&hellip;</span><?php endif; ?>
+                                            <a href="<?php echo ga_e(ga_box_office_url($ga_bo_total_pages)); ?>"><?php echo $ga_bo_total_pages; ?></a>
+                                            <?php endif; ?>
+
+                                            <?php if ($ga_bo_page < $ga_bo_total_pages): ?>
+                                            <a href="<?php echo ga_e(ga_box_office_url($ga_bo_page + 1)); ?>">Next &raquo;</a>
+                                            <?php endif; ?>
                                         </td>
                                     </tr>
                                 </tbody>
                             </table>
 
                         </div>
+                        <?php endif; ?>
                         <br>
 
                     </page_news>

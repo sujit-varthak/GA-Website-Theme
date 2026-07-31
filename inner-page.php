@@ -35,8 +35,11 @@ $ga_parent_category_name = $ga_article['category']['parent']['name'] ?? '';
 $ga_home_data_sidebar = ga_fetch_homepage();
 $ga_sidebar_top_news = array_slice($ga_home_data_sidebar['trending'] ?? [], 0, GA_INNER_TOP_NEWS_COUNT);
 
+// "Top Trending Topics" — same data/cap as the homepage (see index.php).
+$ga_trending_tags = array_slice($ga_home_data_sidebar['trendingTags'] ?? [], 0, GA_TRENDING_TAGS_COUNT);
+
 // "Recommended For You" — articles filtered to the "Articles" category.
-$ga_recommended_articles = ga_fetch_articles(GA_RECOMMENDED_COUNT, 0, GA_ARTICLES_CATEGORY_ID) ?? [];
+$ga_recommended_articles = ga_fetch_articles(GA_RECOMMENDED_COUNT, 0, GA_ARTICLES_CATEGORY_ID)['items'] ?? [];
 ?>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" version="XHTML+RDFa 1.0" dir="ltr"
     xmlns:og="http://ogp.me/ns#" xmlns:article="http://ogp.me/ns/article#" xmlns:book="http://ogp.me/ns/book#"
@@ -134,7 +137,7 @@ $ga_recommended_articles = ga_fetch_articles(GA_RECOMMENDED_COUNT, 0, GA_ARTICLE
 
             //Click event to scroll to top
             $('.scrollToHome').click(function () {
-                window.location = 'http://www.greatandhra.com/';
+                window.location = 'index.php';
             });
 
         });
@@ -202,7 +205,7 @@ $ga_recommended_articles = ga_fetch_articles(GA_RECOMMENDED_COUNT, 0, GA_ARTICLE
         <div class="great_andhra_movie_inner_body">
             <!--great_andhra_logo_panel-->
             <div class="great_andhra_logo_panel">
-                <a href="https://www.greatandhra.com/" class="logo">
+                <a href="index.php" class="logo">
                     <img src="images/great_andhra.gif" title="Greatandhra website logo" alt="Greatandhra logo">
                 </a>
                 <div class="AdinHedare">
@@ -217,7 +220,7 @@ $ga_recommended_articles = ga_fetch_articles(GA_RECOMMENDED_COUNT, 0, GA_ARTICLE
             <div class="great_andhra_logo_panel-mob">
             <!-- First Row: Logo and Hamburger -->
             <div class="logo-bar">
-                <a class="logo" href="https://www.greatandhra.com/">
+                <a class="logo" href="index.php">
                     <img alt="Greatandhra logo" src="images/great_andhra.gif" title="Greatandhra website Logo" />
                 </a>
 
@@ -233,7 +236,7 @@ $ga_recommended_articles = ga_fetch_articles(GA_RECOMMENDED_COUNT, 0, GA_ARTICLE
                 <div class="mobile-nav-content">
                     <ul class="mobile-menu">
                         <li>
-                            <a href="https://www.greatandhra.com/">
+                            <a href="index.php">
                                 <i class="fas fa-home"></i> Home
                             </a>
                         </li>
@@ -330,7 +333,7 @@ $ga_recommended_articles = ga_fetch_articles(GA_RECOMMENDED_COUNT, 0, GA_ARTICLE
                 <ul class="menu">
                     <!-- Home Icon -->
                     <li class="menu-item">
-                        <a href="https://www.greatandhra.com/" class="menu-link" title="greandhra home" itemprop="url">
+                        <a href="index.php" class="menu-link" title="greandhra home" itemprop="url">
                             <span itemprop="name"><i class="fas fa-home" style="color:#333333;"></i></span>
                         </a>
                     </li>
@@ -621,27 +624,13 @@ $ga_recommended_articles = ga_fetch_articles(GA_RECOMMENDED_COUNT, 0, GA_ARTICLE
                             <div class="sortable-item_style_13">
                                 <div class="header"> Top Trending Topics </div>
                                 <div class="content trending_topics">
-                                    <a href="https://www.greatandhra.com/topic/bheemla-nayak">Bheemla Nayak</a>
-                                    <a href="https://www.greatandhra.com/topic/aadavallu-meeku-johaarlu">Aadavallu Meeku
-                                        Johaarlu</a>
-                                    <a href="https://www.greatandhra.com/topic/trivikram-srinivas">Trivikram
-                                        Srinivas</a>
-                                    <a href="https://www.greatandhra.com/topic/radhe-shyam">Radhe Shyam</a>
-                                    <a href="https://www.greatandhra.com/topic/pawan-kalyan">Pawan Kalyan</a>
-                                    <a href="https://www.greatandhra.com/topic/chiranjeevi">Chiranjeevi</a>
-                                    <a href="https://www.greatandhra.com/topic/sai-dharam-tej">Sai Dharam Tej</a>
-                                    <a href="https://www.greatandhra.com/topic/samantha">Samantha</a>
-                                    <a href="https://www.greatandhra.com/topic/rashmika">Rashmika</a>
-                                    <a href="https://www.greatandhra.com/topic/sharwanand">Sharwanand</a>
-                                    <a href="https://www.greatandhra.com/topic/maha-samudram">Maha Samudram</a>
-                                    <a href="https://www.greatandhra.com/topic/cm-jagan">CM Jagan</a>
-                                    <a href="https://www.greatandhra.com/topic/balakrishna">Balakrishna</a>
-                                    <a href="https://www.greatandhra.com/topic/cm-kcr">CM KCR</a>
-                                    <a href="https://www.greatandhra.com/topic/andhra-pradesh">Andhra Pradesh</a>
-                                    <a href="https://www.greatandhra.com/topic/telangana">Telangana</a>
-                                    <a href="https://www.greatandhra.com/topic/pooja-hegde">Pooja Hegde</a>
-                                    <a href="https://www.greatandhra.com/topic/acharya">Acharya</a>
-                                    <a href="https://www.greatandhra.com/topic/rrr">RRR</a>
+                                    <?php if (!empty($ga_trending_tags)): ?>
+                                    <?php foreach ($ga_trending_tags as $ga_tag): ?>
+                                    <span><?php echo ga_e($ga_tag['name'] ?? ''); ?></span>
+                                    <?php endforeach; ?>
+                                    <?php else: ?>
+                                    <span class="ga-unavailable-msg">Content temporarily unavailable</span>
+                                    <?php endif; ?>
                                 </div>
                             </div>
                         </li>

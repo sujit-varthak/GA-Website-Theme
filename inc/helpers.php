@@ -161,6 +161,27 @@ function ga_render_category_section(array $articles, array $heroFallbackImage, i
     }
 }
 
+// Homepage "Editor's Pick" card only features articles with schemaData.movieName and
+// schemaData.rating populated (most Reviews articles don't have this yet). Returns the most
+// recently published qualifying article, or null if none of $articles qualify.
+function ga_pick_editors_review(array $articles): ?array
+{
+    $qualifying = array_filter($articles, function ($article) {
+        $schema = $article['schemaData'] ?? null;
+        return is_array($schema) && !empty($schema['movieName']) && !empty($schema['rating']);
+    });
+
+    if (empty($qualifying)) {
+        return null;
+    }
+
+    usort($qualifying, function ($a, $b) {
+        return strtotime($b['publishedAt'] ?? '') <=> strtotime($a['publishedAt'] ?? '');
+    });
+
+    return $qualifying[0];
+}
+
 // tags[] comes as [{tag:{id,name,slug}}] — a join-table artifact, unwrap it here.
 function ga_tag_names(array $article): array
 {

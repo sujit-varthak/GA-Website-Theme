@@ -338,7 +338,8 @@
     gap: 8px !important;
   }
 
-  .trending_topics a {
+  .trending_topics a,
+  .trending_topics span {
     font-size: 11px !important;
     padding: 5px 10px !important;
   }
@@ -541,7 +542,8 @@
   }
 
   /* Trending Topics */
-  .trending_topics a {
+  .trending_topics a,
+  .trending_topics span {
     font-size: 10px !important;
     padding: 4px 8px !important;
   }
