@@ -170,9 +170,12 @@ function ga_fetch_homepage(): ?array
 
 // Returns a flat list of article arrays, or null if the API failed AND no cache (fresh or stale) exists.
 // $categoryId is optional — confirmed working server-side filter (unlike tagId, which is silently ignored).
-function ga_fetch_articles(int $take = 4, int $skip = 0, ?string $categoryId = null): ?array
+// $includeChildren (opt-in, confirmed live 2026-07-31) also returns the category's direct children's articles.
+function ga_fetch_articles(int $take = 4, int $skip = 0, ?string $categoryId = null, bool $includeChildren = false): ?array
 {
-    $cacheKey = "articles_take{$take}_skip{$skip}" . ($categoryId ? "_cat{$categoryId}" : '');
+    $cacheKey = "articles_take{$take}_skip{$skip}"
+        . ($categoryId ? "_cat{$categoryId}" : '')
+        . ($includeChildren ? '_children' : '');
     $cacheFile = ga_cache_path($cacheKey);
 
     $isFresh = is_file($cacheFile) && (time() - filemtime($cacheFile)) < GA_CACHE_TTL;
@@ -186,6 +189,9 @@ function ga_fetch_articles(int $take = 4, int $skip = 0, ?string $categoryId = n
     $query = ['take' => $take, 'skip' => $skip];
     if ($categoryId) {
         $query['categoryId'] = $categoryId;
+    }
+    if ($includeChildren) {
+        $query['includeChildren'] = 'true';
     }
     $url = rtrim(GA_API_BASE_URL, '/') . '/api/public/articles?' . http_build_query($query);
 

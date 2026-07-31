@@ -372,6 +372,11 @@ a:visited {
   padding-top: 5px;
   text-align: left;
   line-height: 18px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
 }
 .great_andhra_main_body_container .sortable-item_style_8_movies .header {
   clear: both;
@@ -384,6 +389,26 @@ a:visited {
 .great_andhra_main_body_container .movies_news_description_container img {
   float: left;
   margin: 0 10px 10px 0;
+  width: 150px;
+  height: 112px;
+  object-fit: cover;
+  object-position: center;
+}
+
+.ga-unavailable {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f2f2f2;
+  text-align: center;
+}
+
+.ga-unavailable-msg {
+  color: #888;
+  font-size: 14px;
+  font-style: italic;
+  margin: 0;
+  padding: 8px;
 }
 .great_andhra_main_body_container .movies_page_news .content {
   width: 650px;

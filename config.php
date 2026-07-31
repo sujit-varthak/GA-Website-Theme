@@ -29,6 +29,29 @@ define('GA_INNER_TOP_NEWS_COUNT', 3);
 define('GA_RECOMMENDED_COUNT', 8);
 define('GA_ARTICLES_CATEGORY_ID', '43a01cf4-66a6-460b-8816-8c22518ad33c');
 
+// list-page.php: category-filtered listing, driven by ?categoryId=&categoryName= from the nav.
+// Matches the static design's hardcoded card count. No pagination wired yet (page 1 only).
+define('GA_LIST_PAGE_TAKE', 15);
+
+// Top Trending Topics: homepage's trendingTags is already sorted by articleCount descending
+// (capped at 15 server-side); cap further to the top N most-tagged topics for display.
+define('GA_TRENDING_TAGS_COUNT', 12);
+
+// Nav category IDs. Leaf categories are filtered exact-match; 'politics' and 'movies' are
+// parent categories meant to be used with ga_nav_category_link(..., includeChildren: true)
+// so their listing also pulls in their children's articles (confirmed live 2026-07-31).
+define('GA_NAV_CATEGORY_IDS', [
+    'latest-news' => '7cb7575e-3833-449c-9879-735f8358572d',
+    'andhra-news' => 'e361f8ee-2628-424c-9ef8-70ac74de3467',
+    'telangana-news' => 'f0bad803-1efd-417e-abc0-f5685bc548de',
+    'movie-news' => '0f5e2282-bd0f-4485-b3a1-fdb097f64fa1',
+    'movie-gossip' => '41355071-df49-44b5-90cc-a3f54d960b84',
+    'reviews' => 'f2cb5c9c-c2a5-4a8e-88a3-9f0b75fd3cff',
+    'opinion' => '473631fd-cf8c-4b45-be7b-229bcae015f4',
+    'politics' => 'd0c0f169-82ac-4bb3-8d9f-5350e97c07ea',
+    'movies' => '4a49a6ff-53f8-4d5b-be10-dea88bae7a18',
+]);
+
 // featuredImageUrl is currently always null from the API — these are the exact images/dimensions
 // already hardcoded in today's static markup, reused as a positional fallback until images are wired up.
 define('GA_HOME_HERO_FALLBACK_IMAGE', [
@@ -80,6 +103,9 @@ define('GA_INNER_TOP_NEWS_FALLBACK_IMAGES', [
     ['src' => 'images/peddi81775535513.jpg', 'width' => 111, 'height' => 62],
     ['src' => 'images/revanth (1)1775529951.jpg', 'width' => 111, 'height' => 62],
 ]);
+
+// list-page.php card image — reuses the first static image from the current design.
+define('GA_LIST_PAGE_FALLBACK_IMAGE', ['src' => './images/babuwont1775729325.jpeg', 'width' => 150, 'height' => 112]);
 
 define('GA_RECOMMENDED_FALLBACK_IMAGES', [
     ['src' => 'images/biker91775193758.jpg&width=113&height=62&action=resize&quality=100', 'width' => 111, 'height' => 62],

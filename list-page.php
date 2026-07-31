@@ -1,3 +1,15 @@
+<?php
+require_once __DIR__ . '/config.php';
+require_once __DIR__ . '/inc/api-client.php';
+require_once __DIR__ . '/inc/helpers.php';
+
+// categoryId is an exact match by default; ?includeChildren=true (used by the Politics/Movies
+// parent nav links) also pulls in the category's direct children's articles.
+$ga_category_id = isset($_GET['categoryId']) ? trim((string) $_GET['categoryId']) : '';
+$ga_category_name = isset($_GET['categoryName']) ? trim((string) $_GET['categoryName']) : 'Latest News';
+$ga_include_children = isset($_GET['includeChildren']) && $_GET['includeChildren'] === 'true';
+$ga_list_articles = $ga_category_id !== '' ? (ga_fetch_articles(GA_LIST_PAGE_TAKE, 0, $ga_category_id, $ga_include_children) ?? []) : [];
+?>
 <html lang="en">
 
 <head>
@@ -690,39 +702,39 @@
                     </li>
 
                     <li class="menu-item">
-                        <a href="https://www.greatandhra.com/latest" class="menu-link" itemprop="url">
+                        <a href="<?php echo ga_e(ga_nav_category_link('latest-news', 'Latest News')); ?>" class="menu-link" itemprop="url">
                             <span itemprop="name">latest</span>
                         </a>
                     </li>
 
                     <!-- Politics with Dropdown -->
                     <li class="menu-item">
-                        <a href="https://www.greatandhra.com/politics" class="menu-link" itemprop="url">
+                        <a href="<?php echo ga_e(ga_nav_category_link('politics', 'Politics', true)); ?>" class="menu-link" itemprop="url">
                             <span itemprop="name">politics</span>
                             <i class="fas fa-caret-down"></i>
                         </a>
                         <ul class="dropdown">
-                            <li><a href="https://www.greatandhra.com/andhra-news" itemprop="url">andhra</a></li>
-                            <li><a href="https://www.greatandhra.com/telangana-news" itemprop="url">telangana</a></li>
+                            <li><a href="<?php echo ga_e(ga_nav_category_link('andhra-news', 'Andhra News')); ?>" itemprop="url">andhra</a></li>
+                            <li><a href="<?php echo ga_e(ga_nav_category_link('telangana-news', 'Telangana News')); ?>" itemprop="url">telangana</a></li>
                             <li><a href="https://www.greatandhra.com/india-news" itemprop="url">india</a></li>
                         </ul>
                     </li>
 
                     <!-- Movies with Dropdown -->
                     <li class="menu-item">
-                        <a href="https://www.greatandhra.com/movies" class="menu-link" itemprop="url">
+                        <a href="<?php echo ga_e(ga_nav_category_link('movies', 'Movies', true)); ?>" class="menu-link" itemprop="url">
                             <span itemprop="name">movies</span>
                             <i class="fas fa-caret-down"></i>
                         </a>
                         <ul class="dropdown">
-                            <li><a href="https://www.greatandhra.com/movies" itemprop="url">news</a></li>
-                            <li><a href="https://www.greatandhra.com/moviegossip" itemprop="url">gossip</a></li>
-                            <li><a href="https://www.greatandhra.com/boxoffice" itemprop="url">boxoffice</a></li>
+                            <li><a href="<?php echo ga_e(ga_nav_category_link('movie-news', 'Movie News')); ?>" itemprop="url">news</a></li>
+                            <li><a href="<?php echo ga_e(ga_nav_category_link('movie-gossip', 'Movie Gossip')); ?>" itemprop="url">gossip</a></li>
+                            <li><a href="box-office.php" itemprop="url">boxoffice</a></li>
                         </ul>
                     </li>
 
                     <li class="menu-item">
-                        <a href="https://www.greatandhra.com/reviews" class="menu-link">reviews</a>
+                        <a href="<?php echo ga_e(ga_nav_category_link('reviews', 'Reviews')); ?>" class="menu-link">reviews</a>
                     </li>
 
                     <li class="menu-item">
@@ -732,7 +744,7 @@
                     </li>
 
                     <li class="menu-item">
-                        <a href="https://www.greatandhra.com/opinion" class="menu-link" itemprop="url">
+                        <a href="<?php echo ga_e(ga_nav_category_link('opinion', 'Opinion')); ?>" class="menu-link" itemprop="url">
                             <span itemprop="name">opinion</span>
                         </a>
                     </li>
@@ -798,36 +810,36 @@
                             </a>
                         </li>
                         <li>
-                            <a href="https://www.greatandhra.com/latest">Latest</a>
+                            <a href="<?php echo ga_e(ga_nav_category_link('latest-news', 'Latest News')); ?>">Latest</a>
                         </li>
                         <li class="has-submenu">
-                            <a href="#" class="submenu-toggle">
+                            <a href="<?php echo ga_e(ga_nav_category_link('politics', 'Politics', true)); ?>" class="submenu-toggle">
                                 Politics <i class="fas fa-caret-down"></i>
                             </a>
                             <ul class="submenu">
-                                <li><a href="https://www.greatandhra.com/andhra-news">Andhra</a></li>
-                                <li><a href="https://www.greatandhra.com/telangana-news">Telangana</a></li>
+                                <li><a href="<?php echo ga_e(ga_nav_category_link('andhra-news', 'Andhra News')); ?>">Andhra</a></li>
+                                <li><a href="<?php echo ga_e(ga_nav_category_link('telangana-news', 'Telangana News')); ?>">Telangana</a></li>
                                 <li><a href="https://www.greatandhra.com/india-news">India</a></li>
                             </ul>
                         </li>
                         <li class="has-submenu">
-                            <a href="#" class="submenu-toggle">
+                            <a href="<?php echo ga_e(ga_nav_category_link('movies', 'Movies', true)); ?>" class="submenu-toggle">
                                 Movies <i class="fas fa-caret-down"></i>
                             </a>
                             <ul class="submenu">
-                                <li><a href="https://www.greatandhra.com/movies">News</a></li>
-                                <li><a href="https://www.greatandhra.com/moviegossip">Gossip</a></li>
-                                <li><a href="https://www.greatandhra.com/boxoffice">Box Office</a></li>
+                                <li><a href="<?php echo ga_e(ga_nav_category_link('movie-news', 'Movie News')); ?>">News</a></li>
+                                <li><a href="<?php echo ga_e(ga_nav_category_link('movie-gossip', 'Movie Gossip')); ?>">Gossip</a></li>
+                                <li><a href="box-office.php">Box Office</a></li>
                             </ul>
                         </li>
                         <li>
-                            <a href="https://www.greatandhra.com/reviews">Reviews</a>
+                            <a href="<?php echo ga_e(ga_nav_category_link('reviews', 'Reviews')); ?>">Reviews</a>
                         </li>
                         <li>
                             <a href="https://gallery.greatandhra.com/index.php">Gallery</a>
                         </li>
                         <li>
-                            <a href="https://www.greatandhra.com/opinion">Opinion</a>
+                            <a href="<?php echo ga_e(ga_nav_category_link('opinion', 'Opinion')); ?>">Opinion</a>
                         </li>
                         <li>
                             <a href="http://epaper.greatandhra.com/">
@@ -893,495 +905,41 @@
                             <li class="un-sortable-item sortable-item_right_top_panel">
                                 <div class="sortable-item_style_8_mov">
                                     <div class="header">
-                                        <h1>Latest News</h1>
+                                        <h1><?php echo ga_e($ga_category_name); ?></h1>
                                     </div>
 
                                     <div class="content">
+                                        <?php if (!empty($ga_list_articles)): ?>
+                                        <?php foreach ($ga_list_articles as $ga_article): ?>
+                                        <?php
+                                            $ga_list_img = ga_image($ga_article, GA_LIST_PAGE_FALLBACK_IMAGE);
+                                            $ga_list_date = ga_format_date($ga_article['publishedAt'] ?? null, 'd-M-Y H:i:s');
+                                        ?>
                                         <div class="movies_news_description_container float-left" style="color:#000; ">
                                             <div class="img_plc">
                                                 <div>
-                                                    <img border="0" src="./images/babuwont1775729325.jpeg"
-                                                        align="absmiddle" width="150" height="112"
-                                                        alt="Naidu Won't Alter Jagan's Kurnool Legal Plan">
+                                                    <img border="0" src="<?php echo ga_e($ga_list_img['src']); ?>"
+                                                        align="absmiddle" width="<?php echo (int) $ga_list_img['width']; ?>"
+                                                        height="<?php echo (int) $ga_list_img['height']; ?>"
+                                                        alt="<?php echo ga_e($ga_article['title'] ?? ''); ?>">
                                                 </div>
                                             </div>
                                             <div>
-                                                <!--<a style="color:#024D99; " href="viewnews.php?id=154083&cat=15&scat=52" title="Naidu Won't Alter Jagan's Kurnool Legal Plan">Naidu Won't Alter Jagan's Kurnool Legal Plan
-									            </a>-->
                                                 <a style="color:#326891; "
-                                                    href="https://www.greatandhra.com/politics/andhra-news/naidu-wont-alter-jagans-kurnool-legal-plan-154083"
-                                                    title="Naidu Won't Alter Jagan's Kurnool Legal Plan">Naidu Won't
-                                                    Alter Jagan's Kurnool Legal Plan</a>
-                                                <div class="byline " style="padding:0px; ">Published Date : 09-Apr-2026
-                                                    15:38:45 IST</div>
+                                                    href="<?php echo ga_e(ga_inner_link($ga_article)); ?>"
+                                                    title="<?php echo ga_e($ga_article['title'] ?? ''); ?>"><?php echo ga_e($ga_article['title'] ?? ''); ?></a>
+                                                <div class="byline " style="padding:0px; ">Published Date : <?php echo ga_e($ga_list_date); ?> IST</div>
                                             </div>
                                             <div class="view_mov_poli_content">
-
-                                                The Telugu Desam Party-led coalition government in Andhra Pradesh has
-                                                decided not to make any changes in the decision taken by the previous
-                                                YSR Congress party government to </div>
-
+                                                <?php echo ga_e(ga_article_excerpt($ga_article, 220)); ?>
+                                            </div>
                                         </div>
-
-
-
-                                        <div class="movies_news_description_container float-left" style="color:#000; ">
-
-                                            <div class="img_plc">
-
-                                                <div>
-                                                    <img border="0" src="./images/HM11775726916.jpg" align="absmiddle"
-                                                        width="150" height="112"
-                                                        alt="HM suspended for negative comments against Naidu">
-                                                </div>
-
-                                            </div>
-
-                                            <div><!--<a style="color:#024D99; " href="viewnews.php?id=154082&cat=15&scat=52" title="HM suspended for negative comments against Naidu">HM suspended for negative comments against Naidu
-
-									</a>-->
-
-                                                <a style="color:#326891; "
-                                                    href="https://www.greatandhra.com/politics/andhra-news/hm-suspended-for-negative-comments-against-naidu-154082"
-                                                    title="HM suspended for negative comments against Naidu">HM
-                                                    suspended for negative comments against Naidu</a>
-                                                <div class="byline " style="padding:0px; ">Published Date : 09-Apr-2026
-                                                    14:58:36 IST</div>
-                                            </div>
-                                            <div class="view_mov_poli_content">
-
-                                                A government school headmaster has been suspended and booked under
-                                                criminal charges for allegedly posting objectionable content against
-                                                Andhra Pradesh chief minister N Chandrababu Naidu on social media.
-                                            </div>
-
+                                        <?php endforeach; ?>
+                                        <?php else: ?>
+                                        <div class="ga-unavailable" style="min-height:150px;">
+                                            <p class="ga-unavailable-msg">No articles found in this category yet.</p>
                                         </div>
-
-
-
-                                        <div class="movies_news_description_container float-left" style="color:#000; ">
-
-                                            <div class="img_plc">
-
-                                                <div>
-                                                    <img border="0" src="./images/lulugroup1775726231.jpg"
-                                                        align="absmiddle" width="150" height="112"
-                                                        alt="Naidu withdraws land allotment to Lulu group: Pawan effect?">
-                                                </div>
-
-                                            </div>
-
-                                            <div><!--<a style="color:#024D99; " href="viewnews.php?id=154081&cat=15&scat=52" title="Naidu withdraws land allotment to Lulu group: Pawan effect?">Naidu withdraws land allotment to Lulu group: Pawan effect?
-
-									</a>-->
-
-                                                <a style="color:#326891; "
-                                                    href="https://www.greatandhra.com/politics/andhra-news/naidu-withdraws-land-allotment-to-lulu-group-pawan-effect-154081"
-                                                    title="Naidu withdraws land allotment to Lulu group: Pawan effect?">Naidu
-                                                    withdraws land allotment to Lulu group: Pawan effect?</a>
-                                                <div class="byline " style="padding:0px; ">Published Date : 09-Apr-2026
-                                                    14:47:11 IST</div>
-                                            </div>
-                                            <div class="view_mov_poli_content">
-
-                                                The decision of the Chandrababu Naidu government to withdraw the
-                                                allotment of prime land made to Lulu Group International has triggered
-                                                an interesting debate in the political and media circles. </div>
-
-                                        </div>
-
-
-
-                                        <div class="movies_news_description_container float-left" style="color:#000; ">
-
-                                            <div class="img_plc">
-
-                                                <div>
-                                                    <img border="0" src="./images/KavaliGreeshma1775726088.jpg"
-                                                        align="absmiddle" width="150" height="112"
-                                                        alt="TDP MLC opens up on her second marriage!">
-                                                </div>
-
-                                            </div>
-
-                                            <div><!--<a style="color:#024D99; " href="viewnews.php?id=154080&cat=15&scat=52" title="TDP MLC opens up on her second marriage!">TDP MLC opens up on her second marriage!
-
-									</a>-->
-
-                                                <a style="color:#326891; "
-                                                    href="https://www.greatandhra.com/politics/andhra-news/tdp-mlc-opens-up-on-her-second-marriage-154080"
-                                                    title="TDP MLC opens up on her second marriage!">TDP MLC opens up on
-                                                    her second marriage!</a>
-                                                <div class="byline " style="padding:0px; ">Published Date : 09-Apr-2026
-                                                    14:44:48 IST</div>
-                                            </div>
-                                            <div class="view_mov_poli_content">
-
-                                                Kavali Greeshma, a firebrand legislative council member of the Telugu
-                                                Desam Party and daughter of former assembly speaker Kavali Pratibha
-                                                Bharati, is known for her sharp rhetoric against the opposition. </div>
-
-                                        </div>
-
-
-
-                                        <div class="movies_news_description_container float-left" style="color:#000; ">
-
-                                            <div class="img_plc">
-
-                                                <div>
-                                                    <img border="0" src="./images/couple31775716316.jpg"
-                                                        align="absmiddle" width="150" height="112"
-                                                        alt="Debut Film Disaster Behind Couple’s Cold War?">
-                                                </div>
-
-                                            </div>
-
-                                            <div><!--<a style="color:#024D99; " href="viewnews.php?id=154079&cat=1&scat=5" title="Debut Film Disaster Behind Couple’s Cold War?">Debut Film Disaster Behind Couple’s Cold War?
-
-									</a>-->
-
-                                                <a style="color:#326891; "
-                                                    href="https://www.greatandhra.com/movies/gossip/debut-film-disaster-behind-couples-cold-war-154079"
-                                                    title="Debut Film Disaster Behind Couple’s Cold War?">Debut Film
-                                                    Disaster Behind Couple’s Cold War?</a>
-                                                <div class="byline " style="padding:0px; ">Published Date : 09-Apr-2026
-                                                    12:02:38 IST</div>
-                                            </div>
-                                            <div class="view_mov_poli_content">
-
-                                                That is why people say professional life and personal life should not be
-                                                mixed. If there is a clear line between the two, life becomes much
-                                                easier. </div>
-
-                                        </div>
-
-
-
-                                        <div class="movies_news_description_container float-left" style="color:#000; ">
-
-                                            <div class="img_plc">
-
-                                                <div>
-                                                    <img border="0" src="./images/varanasi11775715905.jpg"
-                                                        align="absmiddle" width="150" height="112"
-                                                        alt="'Varanasi' Plot Point: Inception Plus Indiana Zones?">
-                                                </div>
-
-                                            </div>
-
-                                            <div><!--<a style="color:#024D99; " href="viewnews.php?id=154078&cat=1&scat=5" title="'Varanasi' Plot Point: Inception Plus Indiana Zones?">'Varanasi' Plot Point: Inception Plus Indiana Zones?
-
-									</a>-->
-
-                                                <a style="color:#326891; "
-                                                    href="https://www.greatandhra.com/movies/gossip/varanasi-plot-point-inception-plus-indiana-zones-154078"
-                                                    title="'Varanasi' Plot Point: Inception Plus Indiana Zones?">'Varanasi'
-                                                    Plot Point: Inception Plus Indiana Zones?</a>
-                                                <div class="byline " style="padding:0px; ">Published Date : 09-Apr-2026
-                                                    11:55:05 IST</div>
-                                            </div>
-                                            <div class="view_mov_poli_content">
-
-                                                A synopsis, reportedly related to the Varanasi plot line of the upcoming
-                                                S.S. Rajamouli film is currently in circulation. </div>
-
-                                        </div>
-
-
-
-                                        <div class="movies_news_description_container float-left" style="color:#000; ">
-
-                                            <div class="img_plc">
-
-                                                <div>
-                                                    <img border="0" src="./images/dacoit41775707534.jpg"
-                                                        align="absmiddle" width="150" height="112"
-                                                        alt="Sesh's Dacoit Outstanding Advance Bookings">
-                                                </div>
-
-                                            </div>
-
-                                            <div><!--<a style="color:#024D99; " href="viewnews.php?id=154077&cat=1&scat=4" title="Sesh's Dacoit Outstanding Advance Bookings">Sesh's Dacoit Outstanding Advance Bookings
-
-									</a>-->
-
-                                                <a style="color:#326891; "
-                                                    href="https://www.greatandhra.com/movies/news/seshs-dacoit-outstanding-advance-bookings-154077"
-                                                    title="Sesh's Dacoit Outstanding Advance Bookings">Sesh's Dacoit
-                                                    Outstanding Advance Bookings</a>
-                                                <div class="byline " style="padding:0px; ">Published Date : 09-Apr-2026
-                                                    09:46:12 IST</div>
-                                            </div>
-                                            <div class="view_mov_poli_content">
-
-                                                Adivi Sesh continues his successful streak, with his last five films
-                                                turning into major blockbusters and generating strong profits for
-                                                producers. </div>
-
-                                        </div>
-
-
-
-                                        <div class="movies_news_description_container float-left" style="color:#000; ">
-
-                                            <div class="img_plc">
-
-                                                <div>
-                                                    <img border="0" src="./images/vijay_political11775698960.jpg"
-                                                        align="absmiddle" width="150" height="112"
-                                                        alt="Vijay Finally Breaks Silence On Trisha Rumours">
-                                                </div>
-
-                                            </div>
-
-                                            <div><!--<a style="color:#024D99; " href="viewnews.php?id=154076&cat=1&scat=4" title="Vijay Finally Breaks Silence On Trisha Rumours">Vijay Finally Breaks Silence On Trisha Rumours
-
-									</a>-->
-
-                                                <a style="color:#326891; "
-                                                    href="https://www.greatandhra.com/movies/news/vijay-finally-breaks-silence-on-trisha-rumours-154076"
-                                                    title="Vijay Finally Breaks Silence On Trisha Rumours">Vijay Finally
-                                                    Breaks Silence On Trisha Rumours</a>
-                                                <div class="byline " style="padding:0px; ">Published Date : 09-Apr-2026
-                                                    07:12:40 IST</div>
-                                            </div>
-                                            <div class="view_mov_poli_content">
-
-                                                Tamil actor-turned-politician Vijay has finally addressed the
-                                                controversies surrounding his personal life and political journey,
-                                                including rumours about his divorce and his alleged relationship with
-                                                Trisha Krishnan, during a public rally in Tirunelveli. </div>
-
-                                        </div>
-
-
-
-                                        <div class="movies_news_description_container float-left" style="color:#000; ">
-
-                                            <div class="img_plc">
-
-                                                <div>
-                                                    <img border="0" src="./images/raaka21775695481.jpg"
-                                                        align="absmiddle" width="150" height="112"
-                                                        alt="Is Allu Arjun Doing 'Bhediya' Like Film?">
-                                                </div>
-
-                                            </div>
-
-                                            <div><!--<a style="color:#024D99; " href="viewnews.php?id=154075&cat=1&scat=4" title="Is Allu Arjun Doing 'Bhediya' Like Film?">Is Allu Arjun Doing 'Bhediya' Like Film?
-
-									</a>-->
-
-                                                <a style="color:#326891; "
-                                                    href="https://www.greatandhra.com/movies/news/is-allu-arjun-doing-bhediya-like-film-154075"
-                                                    title="Is Allu Arjun Doing 'Bhediya' Like Film?">Is Allu Arjun Doing
-                                                    'Bhediya' Like Film?</a>
-                                                <div class="byline " style="padding:0px; ">Published Date : 09-Apr-2026
-                                                    06:14:41 IST</div>
-                                            </div>
-                                            <div class="view_mov_poli_content">
-
-                                                The moment the still surfaced, it reminded many viewers of films like
-                                                Bhediya. This has triggered speculation about whether Allu Arjun is
-                                                attempting a similar experimental concept. </div>
-
-                                        </div>
-
-
-
-                                        <div class="movies_news_description_container float-left" style="color:#000; ">
-
-                                            <div class="img_plc">
-
-                                                <div>
-                                                    <img border="0" src="./images/maaintibangaram31775694312.jpg"
-                                                        align="absmiddle" width="150" height="112"
-                                                        alt="Samantha Cannot Arrive Early">
-                                                </div>
-
-                                            </div>
-
-                                            <div><!--<a style="color:#024D99; " href="viewnews.php?id=154074&cat=1&scat=4" title="Samantha Cannot Arrive Early">Samantha Cannot Arrive Early
-
-									</a>-->
-
-                                                <a style="color:#326891; "
-                                                    href="https://www.greatandhra.com/movies/news/samantha-cannot-arrive-early-154074"
-                                                    title="Samantha Cannot Arrive Early">Samantha Cannot Arrive
-                                                    Early</a>
-                                                <div class="byline " style="padding:0px; ">Published Date : 09-Apr-2026
-                                                    05:55:12 IST</div>
-                                            </div>
-                                            <div class="view_mov_poli_content">
-
-                                                Samantha Ruth Prabhu is gearing up for her comeback film Maa Inti
-                                                Bangaram, a project that holds special significance as she not only
-                                                plays the lead but is also backing it as a producer. </div>
-
-                                        </div>
-
-
-
-                                        <div class="movies_news_description_container float-left" style="color:#000; ">
-
-                                            <div class="img_plc">
-
-                                                <div>
-                                                    <img border="0" src="./images/rishabshetty11775693560.jpg"
-                                                        align="absmiddle" width="150" height="112"
-                                                        alt="Rishab Shetty's 'Breakup' Sparks Industry Buzz">
-                                                </div>
-
-                                            </div>
-
-                                            <div><!--<a style="color:#024D99; " href="viewnews.php?id=154073&cat=1&scat=5" title="Rishab Shetty's 'Breakup' Sparks Industry Buzz">Rishab Shetty's 'Breakup' Sparks Industry Buzz
-
-									</a>-->
-
-                                                <a style="color:#326891; "
-                                                    href="https://www.greatandhra.com/movies/gossip/rishab-shettys-breakup-sparks-industry-buzz-154073"
-                                                    title="Rishab Shetty's 'Breakup' Sparks Industry Buzz">Rishab
-                                                    Shetty's 'Breakup' Sparks Industry Buzz</a>
-                                                <div class="byline " style="padding:0px; ">Published Date : 09-Apr-2026
-                                                    05:45:00 IST</div>
-                                            </div>
-                                            <div class="view_mov_poli_content">
-
-                                                Director Prashant Varma initially approached Hombale Films to produce
-                                                the ambitious film Jai Hanuman with Rishab Shetty in the lead. </div>
-
-                                        </div>
-
-
-
-                                        <div class="movies_news_description_container float-left" style="color:#000; ">
-
-                                            <div class="img_plc">
-
-                                                <div>
-                                                    <img border="0" src="./images/kayadu21775693154.jpg"
-                                                        align="absmiddle" width="150" height="112"
-                                                        alt="HOT: Hottest Beauty Shines In Sensuous Saree">
-                                                </div>
-
-                                            </div>
-
-                                            <div><!--<a style="color:#024D99; " href="viewnews.php?id=154072&cat=1&scat=4" title="HOT: Hottest Beauty Shines In Sensuous Saree">HOT: Hottest Beauty Shines In Sensuous Saree
-
-									</a>-->
-
-                                                <a style="color:#326891; "
-                                                    href="https://www.greatandhra.com/movies/news/hot-hottest-beauty-shines-in-sensuous-saree-154072"
-                                                    title="HOT: Hottest Beauty Shines In Sensuous Saree">HOT: Hottest
-                                                    Beauty Shines In Sensuous Saree</a>
-                                                <div class="byline " style="padding:0px; ">Published Date : 09-Apr-2026
-                                                    05:35:54 IST</div>
-                                            </div>
-                                            <div class="view_mov_poli_content">
-
-                                                Kayadu Lohar turns heads in a graceful peacock blue saree, blending
-                                                elegance with youthful charm. </div>
-
-                                        </div>
-
-
-
-                                        <div class="movies_news_description_container float-left" style="color:#000; ">
-
-                                            <div class="img_plc">
-
-                                                <div>
-                                                    <img border="0" src="./images/stevenspeilburg11775690894.jpg"
-                                                        align="absmiddle" width="150" height="112"
-                                                        alt="Steven Spielberg wants to direct a pure horror film">
-                                                </div>
-
-                                            </div>
-
-                                            <div><!--<a style="color:#024D99; " href="viewnews.php?id=154071&cat=1&scat=4" title="Steven Spielberg wants to direct a pure horror film">Steven Spielberg wants to direct a pure horror film
-
-									</a>-->
-
-                                                <a style="color:#326891; "
-                                                    href="https://www.greatandhra.com/movies/news/steven-spielberg-wants-to-direct-a-pure-horror-film-154071"
-                                                    title="Steven Spielberg wants to direct a pure horror film">Steven
-                                                    Spielberg wants to direct a pure horror film</a>
-                                                <div class="byline " style="padding:0px; ">Published Date : 09-Apr-2026
-                                                    04:58:14 IST</div>
-                                            </div>
-                                            <div class="view_mov_poli_content">
-
-                                                Filmmaker Steven Spielberg has expressed his wish to direct a horror
-                                                film in the future. </div>
-
-                                        </div>
-
-
-
-                                        <div class="movies_news_description_container float-left" style="color:#000; ">
-
-                                            <div class="img_plc">
-
-                                                <div>
-                                                    <img border="0" src="./images/jagan_new61775683069.jpg"
-                                                        align="absmiddle" width="150" height="112"
-                                                        alt="Watch: MAVIGUN Idea Shattering Amaravati Dream?">
-                                                </div>
-
-                                            </div>
-
-                                            <div><!--<a style="color:#024D99; " href="viewnews.php?id=154070&cat=15&scat=52" title="Watch: MAVIGUN Idea Shattering Amaravati Dream?">Watch: MAVIGUN Idea Shattering Amaravati Dream?
-
-									</a>-->
-
-                                                <a style="color:#326891; "
-                                                    href="https://www.greatandhra.com/politics/andhra-news/watch-mavigun-idea-shattering-amaravati-dream-154070"
-                                                    title="Watch: MAVIGUN Idea Shattering Amaravati Dream?">Watch:
-                                                    MAVIGUN Idea Shattering Amaravati Dream?</a>
-                                                <div class="byline " style="padding:0px; ">Published Date : 09-Apr-2026
-                                                    02:48:00 IST</div>
-                                            </div>
-                                            <div class="view_mov_poli_content">
-
-                                                Is Jagan’s MAVIGUN idea shattering the Amaravati dream? The answer, many
-                                                believe, is yes. </div>
-
-                                        </div>
-
-
-
-                                        <div class="movies_news_description_container float-left" style="color:#000; ">
-
-                                            <div class="img_plc">
-
-                                                <div>
-                                                    <img border="0" src="./images/biker_raakaasaa11775670604.jpg"
-                                                        align="absmiddle" width="150" height="112"
-                                                        alt="Biker Moves Forward, Raakaasa Slows Down">
-                                                </div>
-
-                                            </div>
-
-                                            <div><!--<a style="color:#024D99; " href="viewnews.php?id=154069&cat=1&scat=4" title="Biker Moves Forward, Raakaasa Slows Down">Biker Moves Forward, Raakaasa Slows Down
-
-									</a>-->
-
-                                                <a style="color:#326891; "
-                                                    href="https://www.greatandhra.com/movies/news/biker-moves-forward-raakaasa-slows-down-154069"
-                                                    title="Biker Moves Forward, Raakaasa Slows Down">Biker Moves
-                                                    Forward, Raakaasa Slows Down</a>
-                                                <div class="byline " style="padding:0px; ">Published Date : 08-Apr-2026
-                                                    23:20:04 IST</div>
-                                            </div>
-                                            <div class="view_mov_poli_content">
-
-                                                After a surprising opening weekend where Raakaasa, produced by Niharika
-                                                Konidela and starring Sangeeth Shobhan, held an edge over Sharwanand's
-                                                Biker, the box office trends have now shifted. </div>
-
-                                        </div>
-
+                                        <?php endif; ?>
                                     </div>
                                 </div>
                             </li>

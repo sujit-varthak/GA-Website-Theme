@@ -238,36 +238,36 @@ $ga_recommended_articles = ga_fetch_articles(GA_RECOMMENDED_COUNT, 0, GA_ARTICLE
                             </a>
                         </li>
                         <li>
-                            <a href="https://www.greatandhra.com/latest">Latest</a>
+                            <a href="<?php echo ga_e(ga_nav_category_link('latest-news', 'Latest News')); ?>">Latest</a>
                         </li>
                         <li class="has-submenu">
-                            <a href="#" class="submenu-toggle">
+                            <a href="<?php echo ga_e(ga_nav_category_link('politics', 'Politics', true)); ?>" class="submenu-toggle">
                                 Politics <i class="fas fa-caret-down"></i>
                             </a>
                             <ul class="submenu">
-                                <li><a href="https://www.greatandhra.com/andhra-news">Andhra</a></li>
-                                <li><a href="https://www.greatandhra.com/telangana-news">Telangana</a></li>
+                                <li><a href="<?php echo ga_e(ga_nav_category_link('andhra-news', 'Andhra News')); ?>">Andhra</a></li>
+                                <li><a href="<?php echo ga_e(ga_nav_category_link('telangana-news', 'Telangana News')); ?>">Telangana</a></li>
                                 <li><a href="https://www.greatandhra.com/india-news">India</a></li>
                             </ul>
                         </li>
                         <li class="has-submenu">
-                            <a href="#" class="submenu-toggle">
+                            <a href="<?php echo ga_e(ga_nav_category_link('movies', 'Movies', true)); ?>" class="submenu-toggle">
                                 Movies <i class="fas fa-caret-down"></i>
                             </a>
                             <ul class="submenu">
-                                <li><a href="https://www.greatandhra.com/movies">News</a></li>
-                                <li><a href="https://www.greatandhra.com/moviegossip">Gossip</a></li>
-                                <li><a href="https://www.greatandhra.com/boxoffice">Box Office</a></li>
+                                <li><a href="<?php echo ga_e(ga_nav_category_link('movie-news', 'Movie News')); ?>">News</a></li>
+                                <li><a href="<?php echo ga_e(ga_nav_category_link('movie-gossip', 'Movie Gossip')); ?>">Gossip</a></li>
+                                <li><a href="box-office.php">Box Office</a></li>
                             </ul>
                         </li>
                         <li>
-                            <a href="https://www.greatandhra.com/reviews">Reviews</a>
+                            <a href="<?php echo ga_e(ga_nav_category_link('reviews', 'Reviews')); ?>">Reviews</a>
                         </li>
                         <li>
                             <a href="https://gallery.greatandhra.com/index.php">Gallery</a>
                         </li>
                         <li>
-                            <a href="https://www.greatandhra.com/opinion">Opinion</a>
+                            <a href="<?php echo ga_e(ga_nav_category_link('opinion', 'Opinion')); ?>">Opinion</a>
                         </li>
                         <li>
                             <a href="http://epaper.greatandhra.com/">
@@ -336,39 +336,39 @@ $ga_recommended_articles = ga_fetch_articles(GA_RECOMMENDED_COUNT, 0, GA_ARTICLE
                     </li>
 
                     <li class="menu-item">
-                        <a href="https://www.greatandhra.com/latest" class="menu-link" itemprop="url">
+                        <a href="<?php echo ga_e(ga_nav_category_link('latest-news', 'Latest News')); ?>" class="menu-link" itemprop="url">
                             <span itemprop="name">latest</span>
                         </a>
                     </li>
 
                     <!-- Politics with Dropdown -->
                     <li class="menu-item">
-                        <a href="https://www.greatandhra.com/politics" class="menu-link" itemprop="url">
+                        <a href="<?php echo ga_e(ga_nav_category_link('politics', 'Politics', true)); ?>" class="menu-link" itemprop="url">
                             <span itemprop="name">politics</span>
                             <i class="fas fa-caret-down"></i>
                         </a>
                         <ul class="dropdown">
-                            <li><a href="https://www.greatandhra.com/andhra-news" itemprop="url">andhra</a></li>
-                            <li><a href="https://www.greatandhra.com/telangana-news" itemprop="url">telangana</a></li>
+                            <li><a href="<?php echo ga_e(ga_nav_category_link('andhra-news', 'Andhra News')); ?>" itemprop="url">andhra</a></li>
+                            <li><a href="<?php echo ga_e(ga_nav_category_link('telangana-news', 'Telangana News')); ?>" itemprop="url">telangana</a></li>
                             <li><a href="https://www.greatandhra.com/india-news" itemprop="url">india</a></li>
                         </ul>
                     </li>
 
                     <!-- Movies with Dropdown -->
                     <li class="menu-item">
-                        <a href="https://www.greatandhra.com/movies" class="menu-link" itemprop="url">
+                        <a href="<?php echo ga_e(ga_nav_category_link('movies', 'Movies', true)); ?>" class="menu-link" itemprop="url">
                             <span itemprop="name">movies</span>
                             <i class="fas fa-caret-down"></i>
                         </a>
                         <ul class="dropdown">
-                            <li><a href="https://www.greatandhra.com/movies" itemprop="url">news</a></li>
-                            <li><a href="https://www.greatandhra.com/moviegossip" itemprop="url">gossip</a></li>
-                            <li><a href="https://www.greatandhra.com/boxoffice" itemprop="url">boxoffice</a></li>
+                            <li><a href="<?php echo ga_e(ga_nav_category_link('movie-news', 'Movie News')); ?>" itemprop="url">news</a></li>
+                            <li><a href="<?php echo ga_e(ga_nav_category_link('movie-gossip', 'Movie Gossip')); ?>" itemprop="url">gossip</a></li>
+                            <li><a href="box-office.php" itemprop="url">boxoffice</a></li>
                         </ul>
                     </li>
 
                     <li class="menu-item">
-                        <a href="https://www.greatandhra.com/reviews" class="menu-link">reviews</a>
+                        <a href="<?php echo ga_e(ga_nav_category_link('reviews', 'Reviews')); ?>" class="menu-link">reviews</a>
                     </li>
 
                     <li class="menu-item">
@@ -378,7 +378,7 @@ $ga_recommended_articles = ga_fetch_articles(GA_RECOMMENDED_COUNT, 0, GA_ARTICLE
                     </li>
 
                     <li class="menu-item">
-                        <a href="https://www.greatandhra.com/opinion" class="menu-link" itemprop="url">
+                        <a href="<?php echo ga_e(ga_nav_category_link('opinion', 'Opinion')); ?>" class="menu-link" itemprop="url">
                             <span itemprop="name">opinion</span>
                         </a>
                     </li>

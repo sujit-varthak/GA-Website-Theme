@@ -21,6 +21,7 @@ $ga_talk_of_town_articles = $ga_home_data['talkOfTheTown'] ?? [];
 $ga_featured_articles = $ga_home_data['featured'] ?? [];
 // Not an Article — a standalone curated link list (title + destination URL), admin-managed.
 $ga_usa_movie_schedule = $ga_home_data['usaMovieSchedule'] ?? [];
+$ga_trending_tags = array_slice($ga_home_data['trendingTags'] ?? [], 0, GA_TRENDING_TAGS_COUNT);
 
 // Shared latest-articles batch feeds three sections: "Article" (latest-first, as fetched),
 // Most Popular and the "Most Read" tab (both viewCount-sorted, excluding the Big Story hero
@@ -204,36 +205,36 @@ $ga_trending_articles = array_slice($ga_trending_articles, 0, GA_TAB_ARTICLE_LIM
                             </a>
                         </li>
                         <li>
-                            <a href="https://www.greatandhra.com/latest">Latest</a>
+                            <a href="<?php echo ga_e(ga_nav_category_link('latest-news', 'Latest News')); ?>">Latest</a>
                         </li>
                         <li class="has-submenu">
-                            <a href="#" class="submenu-toggle">
+                            <a href="<?php echo ga_e(ga_nav_category_link('politics', 'Politics', true)); ?>" class="submenu-toggle">
                                 Politics <i class="fas fa-caret-down"></i>
                             </a>
                             <ul class="submenu">
-                                <li><a href="https://www.greatandhra.com/andhra-news">Andhra</a></li>
-                                <li><a href="https://www.greatandhra.com/telangana-news">Telangana</a></li>
+                                <li><a href="<?php echo ga_e(ga_nav_category_link('andhra-news', 'Andhra News')); ?>">Andhra</a></li>
+                                <li><a href="<?php echo ga_e(ga_nav_category_link('telangana-news', 'Telangana News')); ?>">Telangana</a></li>
                                 <li><a href="https://www.greatandhra.com/india-news">India</a></li>
                             </ul>
                         </li>
                         <li class="has-submenu">
-                            <a href="#" class="submenu-toggle">
+                            <a href="<?php echo ga_e(ga_nav_category_link('movies', 'Movies', true)); ?>" class="submenu-toggle">
                                 Movies <i class="fas fa-caret-down"></i>
                             </a>
                             <ul class="submenu">
-                                <li><a href="https://www.greatandhra.com/movies">News</a></li>
-                                <li><a href="https://www.greatandhra.com/moviegossip">Gossip</a></li>
-                                <li><a href="https://www.greatandhra.com/boxoffice">Box Office</a></li>
+                                <li><a href="<?php echo ga_e(ga_nav_category_link('movie-news', 'Movie News')); ?>">News</a></li>
+                                <li><a href="<?php echo ga_e(ga_nav_category_link('movie-gossip', 'Movie Gossip')); ?>">Gossip</a></li>
+                                <li><a href="box-office.php">Box Office</a></li>
                             </ul>
                         </li>
                         <li>
-                            <a href="https://www.greatandhra.com/reviews">Reviews</a>
+                            <a href="<?php echo ga_e(ga_nav_category_link('reviews', 'Reviews')); ?>">Reviews</a>
                         </li>
                         <li>
                             <a href="https://gallery.greatandhra.com/index.php">Gallery</a>
                         </li>
                         <li>
-                            <a href="https://www.greatandhra.com/opinion">Opinion</a>
+                            <a href="<?php echo ga_e(ga_nav_category_link('opinion', 'Opinion')); ?>">Opinion</a>
                         </li>
                         <li>
                             <a href="http://epaper.greatandhra.com/">
@@ -317,39 +318,39 @@ $ga_trending_articles = array_slice($ga_trending_articles, 0, GA_TAB_ARTICLE_LIM
                 </li>
 
                 <li class="menu-item">
-                    <a href="https://www.greatandhra.com/latest" class="menu-link" itemprop="url">
+                    <a href="<?php echo ga_e(ga_nav_category_link('latest-news', 'Latest News')); ?>" class="menu-link" itemprop="url">
                         <span itemprop="name">latest</span>
                     </a>
                 </li>
 
                 <!-- Politics with Dropdown -->
                 <li class="menu-item">
-                    <a href="https://www.greatandhra.com/politics" class="menu-link" itemprop="url">
+                    <a href="<?php echo ga_e(ga_nav_category_link('politics', 'Politics', true)); ?>" class="menu-link" itemprop="url">
                         <span itemprop="name">politics</span>
                         <i class="fas fa-caret-down"></i>
                     </a>
                     <ul class="dropdown">
-                        <li><a href="https://www.greatandhra.com/andhra-news" itemprop="url">andhra</a></li>
-                        <li><a href="https://www.greatandhra.com/telangana-news" itemprop="url">telangana</a></li>
+                        <li><a href="<?php echo ga_e(ga_nav_category_link('andhra-news', 'Andhra News')); ?>" itemprop="url">andhra</a></li>
+                        <li><a href="<?php echo ga_e(ga_nav_category_link('telangana-news', 'Telangana News')); ?>" itemprop="url">telangana</a></li>
                         <li><a href="https://www.greatandhra.com/india-news" itemprop="url">india</a></li>
                     </ul>
                 </li>
 
                 <!-- Movies with Dropdown -->
                 <li class="menu-item">
-                    <a href="https://www.greatandhra.com/movies" class="menu-link" itemprop="url">
+                    <a href="<?php echo ga_e(ga_nav_category_link('movies', 'Movies', true)); ?>" class="menu-link" itemprop="url">
                         <span itemprop="name">movies</span>
                         <i class="fas fa-caret-down"></i>
                     </a>
                     <ul class="dropdown">
-                        <li><a href="https://www.greatandhra.com/movies" itemprop="url">news</a></li>
-                        <li><a href="https://www.greatandhra.com/moviegossip" itemprop="url">gossip</a></li>
-                        <li><a href="https://www.greatandhra.com/boxoffice" itemprop="url">boxoffice</a></li>
+                        <li><a href="<?php echo ga_e(ga_nav_category_link('movie-news', 'Movie News')); ?>" itemprop="url">news</a></li>
+                        <li><a href="<?php echo ga_e(ga_nav_category_link('movie-gossip', 'Movie Gossip')); ?>" itemprop="url">gossip</a></li>
+                        <li><a href="box-office.php" itemprop="url">boxoffice</a></li>
                     </ul>
                 </li>
 
                 <li class="menu-item">
-                    <a href="https://www.greatandhra.com/reviews" class="menu-link">reviews</a>
+                    <a href="<?php echo ga_e(ga_nav_category_link('reviews', 'Reviews')); ?>" class="menu-link">reviews</a>
                 </li>
 
                 <li class="menu-item">
@@ -359,7 +360,7 @@ $ga_trending_articles = array_slice($ga_trending_articles, 0, GA_TAB_ARTICLE_LIM
                 </li>
 
                 <li class="menu-item">
-                    <a href="https://www.greatandhra.com/opinion" class="menu-link" itemprop="url">
+                    <a href="<?php echo ga_e(ga_nav_category_link('opinion', 'Opinion')); ?>" class="menu-link" itemprop="url">
                         <span itemprop="name">opinion</span>
                     </a>
                 </li>
@@ -1162,26 +1163,13 @@ $ga_trending_articles = array_slice($ga_trending_articles, 0, GA_TAB_ARTICLE_LIM
                         <div class="sortable-item_style_13">
                             <div class="header"> Top Trending Topics </div>
                             <div class="content trending_topics">
-                                <a href="https://www.greatandhra.com/topic/bheemla-nayak">Bheemla Nayak</a>
-                                <a href="https://www.greatandhra.com/topic/aadavallu-meeku-johaarlu">Aadavallu Meeku
-                                    Johaarlu</a>
-                                <a href="https://www.greatandhra.com/topic/trivikram-srinivas">Trivikram Srinivas</a>
-                                <a href="https://www.greatandhra.com/topic/radhe-shyam">Radhe Shyam</a>
-                                <a href="https://www.greatandhra.com/topic/pawan-kalyan">Pawan Kalyan</a>
-                                <a href="https://www.greatandhra.com/topic/chiranjeevi">Chiranjeevi</a>
-                                <a href="https://www.greatandhra.com/topic/sai-dharam-tej">Sai Dharam Tej</a>
-                                <a href="https://www.greatandhra.com/topic/samantha">Samantha</a>
-                                <a href="https://www.greatandhra.com/topic/rashmika">Rashmika</a>
-                                <a href="https://www.greatandhra.com/topic/sharwanand">Sharwanand</a>
-                                <a href="https://www.greatandhra.com/topic/maha-samudram">Maha Samudram</a>
-                                <a href="https://www.greatandhra.com/topic/cm-jagan">CM Jagan</a>
-                                <a href="https://www.greatandhra.com/topic/balakrishna">Balakrishna</a>
-                                <a href="https://www.greatandhra.com/topic/cm-kcr">CM KCR</a>
-                                <a href="https://www.greatandhra.com/topic/andhra-pradesh">Andhra Pradesh</a>
-                                <a href="https://www.greatandhra.com/topic/telangana">Telangana</a>
-                                <a href="https://www.greatandhra.com/topic/pooja-hegde">Pooja Hegde</a>
-                                <a href="https://www.greatandhra.com/topic/acharya">Acharya</a>
-                                <a href="https://www.greatandhra.com/topic/rrr">RRR</a>
+                                <?php if (!empty($ga_trending_tags)): ?>
+                                <?php foreach ($ga_trending_tags as $ga_tag): ?>
+                                <span><?php echo ga_e($ga_tag['name'] ?? ''); ?></span>
+                                <?php endforeach; ?>
+                                <?php else: ?>
+                                <span class="ga-unavailable-msg">Content temporarily unavailable</span>
+                                <?php endif; ?>
                             </div>
                         </div>
                     </li>

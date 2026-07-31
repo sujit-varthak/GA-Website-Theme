@@ -542,7 +542,8 @@ span.editors_pick_desc {
   margin-top: 0px;
 }
 
-.trending_topics a {
+.trending_topics a,
+.trending_topics span {
   color: #727272 !important;
   font-size: 11px;
   padding: 5px 10px;

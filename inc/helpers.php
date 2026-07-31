@@ -34,29 +34,41 @@ function ga_image(array $article, array $fallback): array
     ];
 }
 
-// urlPath is "{shortId}/{categorySlug}/{subCategorySlug?}/{titleSlug}" — but shortId alone
-// doesn't resolve via /api/public/articles/:id (confirmed 404, backend lookup is UUID-only
-// for now), so we reuse the backend's own urlPath structure (category/subcategory/title,
-// slugification and all) and swap its first segment for the real UUID, which is what
-// inner-page.php actually needs to fetch the article. Path-based, no query string.
+// urlPath is "{shortId}/{categorySlug}/{subCategorySlug?}/{titleSlug}". The backend's
+// /api/public/articles/:id now accepts either the shortId or the full UUID (confirmed
+// 2026-07-31, auto-detected by format) — so urlPath is used verbatim, no more substituting
+// the UUID in. Path-based, no query string.
 function ga_inner_link(array $article): string
 {
-    $id = $article['id'] ?? '';
     $urlPath = $article['urlPath'] ?? '';
 
     if ($urlPath !== '') {
         $segments = explode('/', trim($urlPath, '/'));
-        $segments[0] = $id;
         return 'inner-page.php/' . implode('/', array_map('rawurlencode', $segments));
     }
 
     // Fallback if urlPath is ever missing (e.g. stale cache from before it shipped).
+    $id = $article['id'] ?? '';
     $slug = $article['slug'] ?? '';
     $query = 'id=' . rawurlencode($id);
     if ($slug !== '') {
         $query .= '&slug=' . rawurlencode($slug);
     }
     return 'inner-page.php?' . $query;
+}
+
+// Builds a nav link to list-page.php for a category (key into GA_NAV_CATEGORY_IDS).
+// $categoryName rides along so list-page.php can show a real header even with 0 results,
+// without needing a separate categories lookup. $includeChildren=true is for parent
+// categories (Politics/Movies) whose own listing should also include their children's articles.
+function ga_nav_category_link(string $categoryKey, string $categoryName, bool $includeChildren = false): string
+{
+    $id = GA_NAV_CATEGORY_IDS[$categoryKey] ?? '';
+    $url = 'list-page.php?categoryId=' . rawurlencode($id) . '&categoryName=' . rawurlencode($categoryName);
+    if ($includeChildren) {
+        $url .= '&includeChildren=true';
+    }
+    return $url;
 }
 
 function ga_e(?string $value): string
@@ -91,6 +103,20 @@ function ga_render_article_body(?string $body): string
         $html .= '<p>' . nl2br(ga_e($paragraph)) . '</p>';
     }
     return $html;
+}
+
+// excerpt is null for almost every article (confirmed 2026-07-31) — fall back to a plain-text
+// preview of body, same "field is empty, use what IS available" pattern as the image fallback.
+function ga_article_excerpt(array $article, int $maxLength): string
+{
+    $excerpt = trim((string) ($article['excerpt'] ?? ''));
+    if ($excerpt !== '') {
+        return ga_truncate($excerpt, $maxLength);
+    }
+
+    $body = (string) ($article['body'] ?? '');
+    $plainBody = trim(preg_replace('/\s+/', ' ', strip_tags($body)));
+    return ga_truncate($plainBody, $maxLength);
 }
 
 function ga_format_date(?string $iso, string $format = 'F d, Y'): string
