@@ -1,7 +1,8 @@
 <?php
 require_once __DIR__ . '/config.php';
-require_once __DIR__ . '/inc/api-client.php';
 require_once __DIR__ . '/inc/helpers.php';
+ga_maybe_show_roadblock_ad();
+require_once __DIR__ . '/inc/api-client.php';
 
 // Big Story hero + the flagged articles below the ad, and the "Top News" tab's trending
 // articles — all resolved server-side (filtering, sorting, hero-exclusion) by the same
@@ -55,36 +56,6 @@ $ga_most_read_articles = array_slice($ga_popular_sorted, 0, GA_TAB_ARTICLE_LIMIT
 // "Latest News" category filter was tried and then reverted back to this.
 $ga_trending_articles = array_slice($ga_trending_articles, 0, GA_TAB_ARTICLE_LIMIT);
 ?>
-<!-- <script type="text/javascript">
-    if (screen.width <= 700) {
-        document.location = "https://m.greatandhra.com/";
-        exit();
-    }
-
-    var isRoadBlock = "true";
-    var gaRBCookieName = "garb";
-    if (isRoadBlock == 'true') {
-        var isCoookieSet = 'false';
-        var pattern = RegExp("garb=.[^;]*");
-        matched = document.cookie.match(pattern);
-        if (matched) {
-            var cookie = matched[0].split('=');
-            var cookie = cookie[1];
-        }
-        if (cookie != '' && cookie == '1') {
-            var isCoookieSet = 'true';
-        }
-        if (isCoookieSet == 'false') {
-            var minutes = "10";
-            var date = new Date();
-            date.setTime(date.getTime() + (minutes * 60 * 1000));
-            var expires = "; expires=" + date.toGMTString();
-            document.cookie = gaRBCookieName + "=1; " + expires + "; path=/";
-            document.location = "https://www.greatandhra.com/advertisement.php";
-            exit();
-        }
-    }
-</script> -->
 <!DOCTYPE html
     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -285,7 +256,7 @@ $ga_trending_articles = array_slice($ga_trending_articles, 0, GA_TAB_ARTICLE_LIM
                 </a>
             </div>
         </div>
-        
+
 
 
         <link crossorigin="anonymous" href="assets/all.css"
@@ -294,20 +265,19 @@ $ga_trending_articles = array_slice($ga_trending_articles, 0, GA_TAB_ARTICLE_LIM
         <!---Search button-->
         <script src="assets/jquery.min.1.8.2.js" type="text/javascript"></script>
         <script type="text/javascript">
-            $(document).ready(function (e) {
-                $('.search_img').click(function () {
+            $(document).ready(function(e) {
+                $('.search_img').click(function() {
                     $('#search_box_new').slideToggle('slow');
                 });
             });
         </script>
         <script>
-
-            $(document).ready(function () {
+            $(document).ready(function() {
 
                 /*$("body").click(function(){
                     $(".dropdown-content").removeAttr('style');
                 });*/
-                $(".dropdown").click(function () {
+                $(".dropdown").click(function() {
                     $(".dropdown-content").toggle();
                 });
             });
@@ -403,7 +373,7 @@ $ga_trending_articles = array_slice($ga_trending_articles, 0, GA_TAB_ARTICLE_LIM
                 </li>
             </ul>
         </nav>
-        
+
         <?php include_once 'html-files/trending-highlight.php'; ?>
 
 
@@ -442,30 +412,30 @@ $ga_trending_articles = array_slice($ga_trending_articles, 0, GA_TAB_ARTICLE_LIM
                                 <div class="sortable-item_style_1">
                                     <div class="header"> Big Story </div>
                                     <?php if ($ga_hero_article): ?>
-                                    <?php $ga_hero_img = ga_image($ga_hero_article, GA_HOME_HERO_FALLBACK_IMAGE); ?>
-                                    <div class="content1">
-                                        <div class="todays_picture">
-                                            <a href="<?php echo ga_e(ga_inner_link($ga_hero_article)); ?>">
-                                                <img alt="<?php echo ga_e($ga_hero_article['title'] ?? ''); ?>"
-                                                    border="0" height="<?php echo (int) $ga_hero_img['height']; ?>"
-                                                    src="<?php echo ga_e($ga_hero_img['src']); ?>"
-                                                    width="<?php echo (int) $ga_hero_img['width']; ?>" />
-                                            </a>
-                                        </div>
-                                        <div class="big_description">
-                                            <h1 class="big_content">
-                                                <a class="sublink" href="<?php echo ga_e(ga_inner_link($ga_hero_article)); ?>">
-                                                    <?php echo ga_e(ga_truncate($ga_hero_article['title'] ?? '', GA_HOME_HERO_TITLE_MAX)); ?>
+                                        <?php $ga_hero_img = ga_image($ga_hero_article, GA_HOME_HERO_FALLBACK_IMAGE); ?>
+                                        <div class="content1">
+                                            <div class="todays_picture">
+                                                <a href="<?php echo ga_e(ga_inner_link($ga_hero_article)); ?>">
+                                                    <img alt="<?php echo ga_e($ga_hero_article['title'] ?? ''); ?>"
+                                                        border="0" height="<?php echo (int) $ga_hero_img['height']; ?>"
+                                                        src="<?php echo ga_e($ga_hero_img['src']); ?>"
+                                                        width="<?php echo (int) $ga_hero_img['width']; ?>" />
                                                 </a>
-                                            </h1>
+                                            </div>
+                                            <div class="big_description">
+                                                <h1 class="big_content">
+                                                    <a class="sublink" href="<?php echo ga_e(ga_inner_link($ga_hero_article)); ?>">
+                                                        <?php echo ga_e(ga_truncate($ga_hero_article['title'] ?? '', GA_HOME_HERO_TITLE_MAX)); ?>
+                                                    </a>
+                                                </h1>
+                                            </div>
                                         </div>
-                                    </div>
                                     <?php else: ?>
-                                    <div class="content1">
-                                        <div class="todays_picture ga-unavailable">
-                                            <p class="ga-unavailable-msg">Content temporarily unavailable</p>
+                                        <div class="content1">
+                                            <div class="todays_picture ga-unavailable">
+                                                <p class="ga-unavailable-msg">Content temporarily unavailable</p>
+                                            </div>
                                         </div>
-                                    </div>
                                     <?php endif; ?>
                                 </div>
                             <li class="sortable-item_clear123">
@@ -475,27 +445,29 @@ $ga_trending_articles = array_slice($ga_trending_articles, 0, GA_TAB_ARTICLE_LIM
                             <li>
                                 <ul class="big-galist bg-unlist">
                                     <?php if (!empty($ga_list_articles)): ?>
-                                    <?php foreach (array_values($ga_list_articles) as $ga_i => $ga_article): ?>
-                                    <?php
-                                        $ga_fallback = GA_HOME_LIST_FALLBACK_IMAGES[$ga_i] ?? GA_HOME_LIST_FALLBACK_IMAGES[0];
-                                        $ga_list_img = ga_image($ga_article, $ga_fallback);
-                                        $ga_list_title = ga_truncate($ga_article['title'] ?? '', GA_HOME_LIST_TITLE_MAX);
-                                    ?>
-                                    <li style="margin-bottom: 2px;"> <a
-                                            href="<?php echo ga_e(ga_inner_link($ga_article)); ?>">
-                                            <div class="big-galist-lft"> <img
-                                                    alt="<?php echo ga_e($ga_article['title'] ?? ''); ?>"
-                                                    height="<?php echo (int) $ga_list_img['height']; ?>"
-                                                    src="<?php echo ga_e($ga_list_img['src']); ?>"
-                                                    width="<?php echo (int) $ga_list_img['width']; ?>" /> </div>
-                                            <div class="big-galist-rgt">
-                                                <p><?php echo ga_e($ga_list_title); ?></p>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <?php endforeach; ?>
+                                        <?php foreach (array_values($ga_list_articles) as $ga_i => $ga_article): ?>
+                                            <?php
+                                            $ga_fallback = GA_HOME_LIST_FALLBACK_IMAGES[$ga_i] ?? GA_HOME_LIST_FALLBACK_IMAGES[0];
+                                            $ga_list_img = ga_image($ga_article, $ga_fallback);
+                                            $ga_list_title = ga_truncate($ga_article['title'] ?? '', GA_HOME_LIST_TITLE_MAX);
+                                            ?>
+                                            <li style="margin-bottom: 2px;"> <a
+                                                    href="<?php echo ga_e(ga_inner_link($ga_article)); ?>">
+                                                    <div class="big-galist-lft"> <img
+                                                            alt="<?php echo ga_e($ga_article['title'] ?? ''); ?>"
+                                                            height="<?php echo (int) $ga_list_img['height']; ?>"
+                                                            src="<?php echo ga_e($ga_list_img['src']); ?>"
+                                                            width="<?php echo (int) $ga_list_img['width']; ?>" /> </div>
+                                                    <div class="big-galist-rgt">
+                                                        <p><?php echo ga_e($ga_list_title); ?></p>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                        <?php endforeach; ?>
                                     <?php else: ?>
-                                    <li class="ga-unavailable"><p class="ga-unavailable-msg">Content temporarily unavailable</p></li>
+                                        <li class="ga-unavailable">
+                                            <p class="ga-unavailable-msg">Content temporarily unavailable</p>
+                                        </li>
                                     <?php endif; ?>
                                 </ul>
                             </li>
@@ -521,29 +493,33 @@ $ga_trending_articles = array_slice($ga_trending_articles, 0, GA_TAB_ARTICLE_LIM
                                         <div class="tabcontent" id="top" style="display:block;">
                                             <ul class="news_style">
                                                 <?php if (!empty($ga_trending_articles)): ?>
-                                                <?php foreach ($ga_trending_articles as $ga_i => $ga_article): ?>
-                                                <li> <a class="oneline-title" href="<?php echo ga_e(ga_inner_link($ga_article)); ?>"
-                                                        title="<?php echo ga_e($ga_article['title'] ?? ''); ?>">
-                                                        <?php if ($ga_i < 2): ?><strong> <?php echo ga_e($ga_article['title'] ?? ''); ?> </strong><?php else: ?><?php echo ga_e($ga_article['title'] ?? ''); ?><?php endif; ?>
-                                                    </a>
-                                                </li>
-                                                <?php endforeach; ?>
+                                                    <?php foreach ($ga_trending_articles as $ga_i => $ga_article): ?>
+                                                        <li> <a class="oneline-title" href="<?php echo ga_e(ga_inner_link($ga_article)); ?>"
+                                                                title="<?php echo ga_e($ga_article['title'] ?? ''); ?>">
+                                                                <?php if ($ga_i < 2): ?><strong> <?php echo ga_e($ga_article['title'] ?? ''); ?> </strong><?php else: ?><?php echo ga_e($ga_article['title'] ?? ''); ?><?php endif; ?>
+                                                            </a>
+                                                        </li>
+                                                    <?php endforeach; ?>
                                                 <?php else: ?>
-                                                <li class="ga-unavailable"><p class="ga-unavailable-msg">Content temporarily unavailable</p></li>
+                                                    <li class="ga-unavailable">
+                                                        <p class="ga-unavailable-msg">Content temporarily unavailable</p>
+                                                    </li>
                                                 <?php endif; ?>
                                             </ul>
                                         </div>
                                         <div class="tabcontent" id="latest" style="display:none;">
                                             <ul class="news_style">
                                                 <?php if (!empty($ga_most_read_articles)): ?>
-                                                <?php foreach ($ga_most_read_articles as $ga_article): ?>
-                                                <li> <a class="oneline-title" href="<?php echo ga_e(ga_inner_link($ga_article)); ?>"
-                                                        title="<?php echo ga_e($ga_article['title'] ?? ''); ?>">
-                                                        <?php echo ga_e($ga_article['title'] ?? ''); ?> </a>
-                                                </li>
-                                                <?php endforeach; ?>
+                                                    <?php foreach ($ga_most_read_articles as $ga_article): ?>
+                                                        <li> <a class="oneline-title" href="<?php echo ga_e(ga_inner_link($ga_article)); ?>"
+                                                                title="<?php echo ga_e($ga_article['title'] ?? ''); ?>">
+                                                                <?php echo ga_e($ga_article['title'] ?? ''); ?> </a>
+                                                        </li>
+                                                    <?php endforeach; ?>
                                                 <?php else: ?>
-                                                <li class="ga-unavailable"><p class="ga-unavailable-msg">Content temporarily unavailable</p></li>
+                                                    <li class="ga-unavailable">
+                                                        <p class="ga-unavailable-msg">Content temporarily unavailable</p>
+                                                    </li>
                                                 <?php endif; ?>
                                             </ul>
                                         </div>
@@ -736,15 +712,17 @@ $ga_trending_articles = array_slice($ga_trending_articles, 0, GA_TAB_ARTICLE_LIM
                             <div class="content">
                                 <ul class="news_style">
                                     <?php if (!empty($ga_talk_of_town_articles)): ?>
-                                    <?php foreach ($ga_talk_of_town_articles as $ga_article): ?>
-                                    <li>
-                                        <a class="oneline-title" href="<?php echo ga_e(ga_inner_link($ga_article)); ?>"
-                                            title="<?php echo ga_e($ga_article['title'] ?? ''); ?>">
-                                            <?php echo ga_e($ga_article['title'] ?? ''); ?> </a>
-                                    </li>
-                                    <?php endforeach; ?>
+                                        <?php foreach ($ga_talk_of_town_articles as $ga_article): ?>
+                                            <li>
+                                                <a class="oneline-title" href="<?php echo ga_e(ga_inner_link($ga_article)); ?>"
+                                                    title="<?php echo ga_e($ga_article['title'] ?? ''); ?>">
+                                                    <?php echo ga_e($ga_article['title'] ?? ''); ?> </a>
+                                            </li>
+                                        <?php endforeach; ?>
                                     <?php else: ?>
-                                    <li class="ga-unavailable"><p class="ga-unavailable-msg">Content temporarily unavailable</p></li>
+                                        <li class="ga-unavailable">
+                                            <p class="ga-unavailable-msg">Content temporarily unavailable</p>
+                                        </li>
                                     <?php endif; ?>
                                 </ul>
                             </div>
@@ -789,9 +767,7 @@ $ga_trending_articles = array_slice($ga_trending_articles, 0, GA_TAB_ARTICLE_LIM
                     <ins class="adsbygoogle" data-ad-client="ca-pub-1239645388568087" data-ad-slot="4304682596"
                         style="display:inline-block;width:728px;height:90px"></ins>
                     <script>
-
                         (adsbygoogle = window.adsbygoogle || []).push({});
-
                     </script>
                 </div>
             </div>
@@ -850,30 +826,32 @@ $ga_trending_articles = array_slice($ga_trending_articles, 0, GA_TAB_ARTICLE_LIM
                         <h3 style="font-size: 14px; background: none;"> OPINION </h3>
                         <ul class="bg-unlist ga-grply ga-featured-videos editors_pick_full">
                             <?php if (!empty($ga_opinion_articles)): ?>
-                            <?php foreach ($ga_opinion_articles as $ga_i => $ga_article): ?>
-                            <?php
-                                $ga_fallback = GA_OPINION_FALLBACK_IMAGES[$ga_i] ?? GA_OPINION_FALLBACK_IMAGES[0];
-                                $ga_img = ga_image($ga_article, $ga_fallback);
-                                $ga_title = ga_truncate($ga_article['title'] ?? '', GA_OPINION_TITLE_MAX);
-                            ?>
-                            <li>
-                                <a href="<?php echo ga_e(ga_inner_link($ga_article)); ?>"
-                                    title="<?php echo ga_e($ga_article['title'] ?? ''); ?>">
-                                    <div class="big-galist-lft">
-                                        <img alt="<?php echo ga_e($ga_article['title'] ?? ''); ?>"
-                                            height="<?php echo (int) $ga_img['height']; ?>"
-                                            src="<?php echo ga_e($ga_img['src']); ?>"
-                                            width="<?php echo (int) $ga_img['width']; ?>">
-                                        </img>
-                                    </div>
-                                    <div class="big-galist-rgt">
-                                        <p><?php echo ga_e($ga_title); ?></p>
-                                    </div>
-                                </a>
-                            </li>
-                            <?php endforeach; ?>
+                                <?php foreach ($ga_opinion_articles as $ga_i => $ga_article): ?>
+                                    <?php
+                                    $ga_fallback = GA_OPINION_FALLBACK_IMAGES[$ga_i] ?? GA_OPINION_FALLBACK_IMAGES[0];
+                                    $ga_img = ga_image($ga_article, $ga_fallback);
+                                    $ga_title = ga_truncate($ga_article['title'] ?? '', GA_OPINION_TITLE_MAX);
+                                    ?>
+                                    <li>
+                                        <a href="<?php echo ga_e(ga_inner_link($ga_article)); ?>"
+                                            title="<?php echo ga_e($ga_article['title'] ?? ''); ?>">
+                                            <div class="big-galist-lft">
+                                                <img alt="<?php echo ga_e($ga_article['title'] ?? ''); ?>"
+                                                    height="<?php echo (int) $ga_img['height']; ?>"
+                                                    src="<?php echo ga_e($ga_img['src']); ?>"
+                                                    width="<?php echo (int) $ga_img['width']; ?>">
+                                                </img>
+                                            </div>
+                                            <div class="big-galist-rgt">
+                                                <p><?php echo ga_e($ga_title); ?></p>
+                                            </div>
+                                        </a>
+                                    </li>
+                                <?php endforeach; ?>
                             <?php else: ?>
-                            <li class="ga-unavailable"><p class="ga-unavailable-msg">Content temporarily unavailable</p></li>
+                                <li class="ga-unavailable">
+                                    <p class="ga-unavailable-msg">Content temporarily unavailable</p>
+                                </li>
                             <?php endif; ?>
                         </ul>
                     </div>
@@ -964,37 +942,42 @@ $ga_trending_articles = array_slice($ga_trending_articles, 0, GA_TAB_ARTICLE_LIM
                                     <div class="content">
                                         <ul class="news_style news_section_ul" style="padding-top:3px;">
                                             <?php if ($ga_editors_pick): ?>
-                                            <?php
+                                                <?php
                                                 $ga_ep_link = ga_e(ga_inner_link($ga_editors_pick));
+                                                $ga_ep_full_title = ga_e($ga_editors_pick['title'] ?? '');
+                                                $ga_ep_post_title = ga_e(ga_truncate($ga_editors_pick['title'] ?? '', GA_EDITORS_PICK_TITLE_MAX));
                                                 $ga_ep_movie_name = ga_e($ga_editors_pick['schemaData']['movieName'] ?? '');
                                                 $ga_ep_rating = ga_e($ga_editors_pick['schemaData']['rating'] ?? '');
                                                 $ga_ep_release = ga_format_date($ga_editors_pick['schemaData']['releaseDate'] ?? null, 'd-M-Y');
                                                 $ga_ep_img = ga_image($ga_editors_pick, GA_REVIEWS_FALLBACK_IMAGE);
-                                            ?>
-                                            <li class="editors_pick_li clearfix">
-                                                <a href="<?php echo $ga_ep_link; ?>"
-                                                    title="<?php echo $ga_ep_movie_name; ?>">
-                                                    <div class="editors_pick">
-                                                        <span class="editors_pick_cat">Review </span>
-                                                        <span class="editors_pick_title"><?php echo $ga_ep_movie_name; ?></span>
-                                                        <span class="editors_pick_desc">Rating : <?php echo $ga_ep_rating; ?></span>
-                                                        <?php if ($ga_ep_release !== ''): ?>
-                                                        <span class="editors_pick_release">Release Date : <?php echo ga_e($ga_ep_release); ?></span>
-                                                        <?php endif; ?>
-                                                    </div>
-                                                </a>
-                                            </li>
-                                            <li class="main-story editors_pick_li clearfix">
-                                                <a href="<?php echo $ga_ep_link; ?>"
-                                                    title="<?php echo $ga_ep_movie_name; ?>">
-                                                    <img alt="<?php echo $ga_ep_movie_name; ?>" height="<?php echo (int) $ga_ep_img['height']; ?>"
-                                                        src="<?php echo ga_e($ga_ep_img['src']); ?>" width="<?php echo (int) $ga_ep_img['width']; ?>" />
-                                                </a>
-                                            </li>
+                                                ?>
+                                                <li class="editors_pick_li clearfix">
+                                                    <a href="<?php echo $ga_ep_link; ?>"
+                                                        title="<?php echo $ga_ep_full_title; ?>">
+                                                        <div class="editors_pick">
+                                                            <span class="editors_pick_post_title"><?php echo $ga_ep_post_title; ?></span>
+                                                            <span class="editors_pick_title"><?php echo $ga_ep_movie_name; ?></span>
+
+                                                        </div>
+                                                        <div class="editor_pick_review">
+                                                            <span class="editors_pick_desc">Rating : <?php echo $ga_ep_rating; ?></span>
+                                                            <?php if ($ga_ep_release !== ''): ?>
+                                                                <span class="editors_pick_release">Release Date : <?php echo ga_e($ga_ep_release); ?></span>
+                                                            <?php endif; ?>
+                                                        </div>
+                                                    </a>
+                                                </li>
+                                                <li class="main-story editors_pick_li clearfix">
+                                                    <a href="<?php echo $ga_ep_link; ?>"
+                                                        title="<?php echo $ga_ep_full_title; ?>">
+                                                        <img alt="<?php echo $ga_ep_full_title; ?>" height="<?php echo (int) $ga_ep_img['height']; ?>"
+                                                            src="<?php echo ga_e($ga_ep_img['src']); ?>" width="<?php echo (int) $ga_ep_img['width']; ?>" />
+                                                    </a>
+                                                </li>
                                             <?php else: ?>
-                                            <li class="editors_pick_li clearfix ga-unavailable">
-                                                <p class="ga-unavailable-msg">Content temporarily unavailable</p>
-                                            </li>
+                                                <li class="editors_pick_li clearfix ga-unavailable">
+                                                    <p class="ga-unavailable-msg">Content temporarily unavailable</p>
+                                                </li>
                                             <?php endif; ?>
                                         </ul>
                                     </div>
@@ -1009,7 +992,7 @@ $ga_trending_articles = array_slice($ga_trending_articles, 0, GA_TAB_ARTICLE_LIM
                         <ul class="sortable-list ui-sortable">
                             <li class="sortable-item">
                                 <div class="sortable-item_style_3">
-                                    <a href="https://www.greatandhra.com/movies">
+                                    <a href="<?php echo ga_e(ga_nav_category_link('movie-news', 'Movie News')); ?>">
                                         <div class="header"> Movie News <span class="more_arrow"></span> </div>
                                     </a>
                                     <div class="content">
@@ -1026,7 +1009,7 @@ $ga_trending_articles = array_slice($ga_trending_articles, 0, GA_TAB_ARTICLE_LIM
                             <li class="sortable-item">
                                 <div class="sortable-item_style_3">
                                     <!-- Moview Gossip -->
-                                    <a href="https://www.greatandhra.com/moviegossip">
+                                    <a href="<?php echo ga_e(ga_nav_category_link('movie-gossip', 'Movie Gossip')); ?>">
                                         <div class="header"> Movie Gossip <span class="more_arrow"></span> </div>
                                     </a>
                                     <div class="content">
@@ -1045,7 +1028,7 @@ $ga_trending_articles = array_slice($ga_trending_articles, 0, GA_TAB_ARTICLE_LIM
                         <ul class="sortable-list ui-sortable">
                             <li class="sortable-item">
                                 <div class="sortable-item_style_3">
-                                    <a href="https://www.greatandhra.com/andhra-news">
+                                    <a href="<?php echo ga_e(ga_nav_category_link('andhra-news', 'Andhra News')); ?>">
                                         <div class="header"> Andhra News <span class="more_arrow"></span> </div>
                                     </a>
                                     <div class="content">
@@ -1062,7 +1045,7 @@ $ga_trending_articles = array_slice($ga_trending_articles, 0, GA_TAB_ARTICLE_LIM
                             <li class="sortable-item">
                                 <div class="sortable-item_style_3">
                                     <!-- telangana-news -->
-                                    <a href="https://www.greatandhra.com/telangana-news">
+                                    <a href="<?php echo ga_e(ga_nav_category_link('telangana-news', 'Telangana News')); ?>">
                                         <div class="header"> Telangana News <span class="more_arrow"></span> </div>
                                     </a>
                                     <div class="content">
@@ -1081,7 +1064,7 @@ $ga_trending_articles = array_slice($ga_trending_articles, 0, GA_TAB_ARTICLE_LIM
                             <li class="sortable-item">
                                 <div class="sortable-item_style_3">
                                     <!-- Gossip -->
-                                    <a href="https://www.greatandhra.com/politics">
+                                    <a href="<?php echo ga_e(ga_nav_category_link('politics', 'Politics', true)); ?>">
                                         <div class="header"> Gossip <span class="more_arrow"></span> </div>
                                     </a>
                                     <div class="content">
@@ -1108,7 +1091,7 @@ $ga_trending_articles = array_slice($ga_trending_articles, 0, GA_TAB_ARTICLE_LIM
                         <ul class="sortable-list ui-sortable">
                             <li class="sortable-item" id="sortable-item_5">
                                 <div class="sortable-item_style_3">
-                                    <a href="https://www.greatandhra.com/reviews">
+                                    <a href="<?php echo ga_e(ga_nav_category_link('reviews', 'Reviews')); ?>">
                                         <div class="header"> Reviews <span class="more_arrow"></span> </div>
                                     </a>
                                     <div class="content">
@@ -1131,12 +1114,14 @@ $ga_trending_articles = array_slice($ga_trending_articles, 0, GA_TAB_ARTICLE_LIM
                             <div class="content">
                                 <ul class="news_style">
                                     <?php if (!empty($ga_usa_movie_schedule)): ?>
-                                    <?php foreach ($ga_usa_movie_schedule as $ga_schedule_item): ?>
-                                    <li><a class="oneline-title" href="<?php echo ga_e($ga_schedule_item['linkUrl'] ?? ''); ?>"
-                                            <?php echo !empty($ga_schedule_item['openInNewTab']) ? 'target="_blank"' : ''; ?>><?php echo ga_e($ga_schedule_item['title'] ?? ''); ?></a></li>
-                                    <?php endforeach; ?>
+                                        <?php foreach ($ga_usa_movie_schedule as $ga_schedule_item): ?>
+                                            <li><a class="oneline-title" href="<?php echo ga_e($ga_schedule_item['linkUrl'] ?? ''); ?>"
+                                                    <?php echo !empty($ga_schedule_item['openInNewTab']) ? 'target="_blank"' : ''; ?>><?php echo ga_e($ga_schedule_item['title'] ?? ''); ?></a></li>
+                                        <?php endforeach; ?>
                                     <?php else: ?>
-                                    <li class="ga-unavailable"><p class="ga-unavailable-msg">Content temporarily unavailable</p></li>
+                                        <li class="ga-unavailable">
+                                            <p class="ga-unavailable-msg">Content temporarily unavailable</p>
+                                        </li>
                                     <?php endif; ?>
                                 </ul>
                             </div>
@@ -1148,12 +1133,14 @@ $ga_trending_articles = array_slice($ga_trending_articles, 0, GA_TAB_ARTICLE_LIM
                             <div class="content">
                                 <ul class="news_style">
                                     <?php if (!empty($ga_featured_articles)): ?>
-                                    <?php foreach ($ga_featured_articles as $ga_article): ?>
-                                    <li><a class="oneline-title" href="<?php echo ga_e(ga_inner_link($ga_article)); ?>"
-                                            title="<?php echo ga_e($ga_article['title'] ?? ''); ?>"><?php echo ga_e($ga_article['title'] ?? ''); ?></a></li>
-                                    <?php endforeach; ?>
+                                        <?php foreach ($ga_featured_articles as $ga_article): ?>
+                                            <li><a class="oneline-title" href="<?php echo ga_e(ga_inner_link($ga_article)); ?>"
+                                                    title="<?php echo ga_e($ga_article['title'] ?? ''); ?>"><?php echo ga_e($ga_article['title'] ?? ''); ?></a></li>
+                                        <?php endforeach; ?>
                                     <?php else: ?>
-                                    <li class="ga-unavailable"><p class="ga-unavailable-msg">Content temporarily unavailable</p></li>
+                                        <li class="ga-unavailable">
+                                            <p class="ga-unavailable-msg">Content temporarily unavailable</p>
+                                        </li>
                                     <?php endif; ?>
                                 </ul>
                             </div>
@@ -1181,11 +1168,11 @@ $ga_trending_articles = array_slice($ga_trending_articles, 0, GA_TAB_ARTICLE_LIM
                             <div class="header"> Top Trending Topics </div>
                             <div class="content trending_topics">
                                 <?php if (!empty($ga_trending_tags)): ?>
-                                <?php foreach ($ga_trending_tags as $ga_tag): ?>
-                                <span><?php echo ga_e($ga_tag['name'] ?? ''); ?></span>
-                                <?php endforeach; ?>
+                                    <?php foreach ($ga_trending_tags as $ga_tag): ?>
+                                        <a href="<?php echo ga_e(ga_tag_link($ga_tag['id'] ?? '', $ga_tag['name'] ?? '')); ?>"><?php echo ga_e($ga_tag['name'] ?? ''); ?></a>
+                                    <?php endforeach; ?>
                                 <?php else: ?>
-                                <span class="ga-unavailable-msg">Content temporarily unavailable</span>
+                                    <span class="ga-unavailable-msg">Content temporarily unavailable</span>
                                 <?php endif; ?>
                             </div>
                         </div>
@@ -1240,11 +1227,13 @@ $ga_trending_articles = array_slice($ga_trending_articles, 0, GA_TAB_ARTICLE_LIM
                             <div class="content">
                                 <ul class="news_style">
                                     <?php if (!empty($ga_article_section_articles)): ?>
-                                    <?php foreach ($ga_article_section_articles as $ga_article): ?>
-                                    <li><a class="oneline-title" href="<?php echo ga_e(ga_inner_link($ga_article)); ?>"><?php echo ga_e($ga_article['title'] ?? ''); ?></a></li>
-                                    <?php endforeach; ?>
+                                        <?php foreach ($ga_article_section_articles as $ga_article): ?>
+                                            <li><a class="oneline-title" href="<?php echo ga_e(ga_inner_link($ga_article)); ?>"><?php echo ga_e($ga_article['title'] ?? ''); ?></a></li>
+                                        <?php endforeach; ?>
                                     <?php else: ?>
-                                    <li class="ga-unavailable"><p class="ga-unavailable-msg">Content temporarily unavailable</p></li>
+                                        <li class="ga-unavailable">
+                                            <p class="ga-unavailable-msg">Content temporarily unavailable</p>
+                                        </li>
                                     <?php endif; ?>
                                 </ul>
                             </div>
@@ -1261,29 +1250,31 @@ $ga_trending_articles = array_slice($ga_trending_articles, 0, GA_TAB_ARTICLE_LIM
                             <div class="hm_topstory_3_story">
                                 <ul class="top_story_option2_3story list_top_news_mrgn">
                                     <?php if (!empty($ga_popular_articles)): ?>
-                                    <?php foreach ($ga_popular_articles as $ga_i => $ga_article): ?>
-                                    <?php
-                                        $ga_fallback = GA_MOST_POPULAR_FALLBACK_IMAGES[$ga_i] ?? GA_MOST_POPULAR_FALLBACK_IMAGES[0];
-                                        $ga_img = ga_image($ga_article, $ga_fallback);
-                                        $ga_title = ga_truncate($ga_article['title'] ?? '', GA_MOST_POPULAR_TITLE_MAX);
-                                    ?>
-                                    <li>
-                                        <a href="<?php echo ga_e(ga_inner_link($ga_article)); ?>"
-                                            title="<?php echo ga_e($ga_article['title'] ?? ''); ?>">
-                                            <div class="top_newsbox_img">
-                                                <img alt="<?php echo ga_e($ga_article['title'] ?? ''); ?>" border="0"
-                                                    height="<?php echo (int) $ga_img['height']; ?>"
-                                                    src="<?php echo ga_e($ga_img['src']); ?>"
-                                                    width="<?php echo (int) $ga_img['width']; ?>" />
-                                            </div>
-                                            <div class="top_news_txt">
-                                                <?php echo ga_e($ga_title); ?>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <?php endforeach; ?>
+                                        <?php foreach ($ga_popular_articles as $ga_i => $ga_article): ?>
+                                            <?php
+                                            $ga_fallback = GA_MOST_POPULAR_FALLBACK_IMAGES[$ga_i] ?? GA_MOST_POPULAR_FALLBACK_IMAGES[0];
+                                            $ga_img = ga_image($ga_article, $ga_fallback);
+                                            $ga_title = ga_truncate($ga_article['title'] ?? '', GA_MOST_POPULAR_TITLE_MAX);
+                                            ?>
+                                            <li>
+                                                <a href="<?php echo ga_e(ga_inner_link($ga_article)); ?>"
+                                                    title="<?php echo ga_e($ga_article['title'] ?? ''); ?>">
+                                                    <div class="top_newsbox_img">
+                                                        <img alt="<?php echo ga_e($ga_article['title'] ?? ''); ?>" border="0"
+                                                            height="<?php echo (int) $ga_img['height']; ?>"
+                                                            src="<?php echo ga_e($ga_img['src']); ?>"
+                                                            width="<?php echo (int) $ga_img['width']; ?>" />
+                                                    </div>
+                                                    <div class="top_news_txt">
+                                                        <?php echo ga_e($ga_title); ?>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                        <?php endforeach; ?>
                                     <?php else: ?>
-                                    <li class="ga-unavailable"><p class="ga-unavailable-msg">Content temporarily unavailable</p></li>
+                                        <li class="ga-unavailable">
+                                            <p class="ga-unavailable-msg">Content temporarily unavailable</p>
+                                        </li>
                                     <?php endif; ?>
                                 </ul>
                             </div>
@@ -1413,7 +1404,31 @@ $ga_trending_articles = array_slice($ga_trending_articles, 0, GA_TAB_ARTICLE_LIM
     <!--great_andhra_inner_body-->
 
     <!--great_andhra_body-->
-    <script>var VUUKLE_CONFIG = { apiKey: '2b166297-6273-48a9-82e9-696327c67418', articleId: '1', comments: { enabled: false }, emotes: { "enabled": false }, powerbar: { "enabled": false }, ads: { noDefaults: true } }; (function () { var d = document, s = d.createElement('script'); s.async = true; s.src = 'https://cdn.vuukle.com/platform.js'; (d.head || d.body).appendChild(s); })();</script>
+    <script>
+        var VUUKLE_CONFIG = {
+            apiKey: '2b166297-6273-48a9-82e9-696327c67418',
+            articleId: '1',
+            comments: {
+                enabled: false
+            },
+            emotes: {
+                "enabled": false
+            },
+            powerbar: {
+                "enabled": false
+            },
+            ads: {
+                noDefaults: true
+            }
+        };
+        (function() {
+            var d = document,
+                s = d.createElement('script');
+            s.async = true;
+            s.src = 'https://cdn.vuukle.com/platform.js';
+            (d.head || d.body).appendChild(s);
+        })();
+    </script>
 </body>
 <script src="js/jquery-ui-1.8.custom.min.js" type="text/javascript"> </script>
 <script src="js/jquery.marquee.js" type="text/javascript"> </script>
@@ -1503,7 +1518,6 @@ $ga_trending_articles = array_slice($ga_trending_articles, 0, GA_TAB_ARTICLE_LIM
     } */
 </style>
 <script>
-
     function openTabs(evt, cityName) {
 
         // Declare all variables
@@ -1543,7 +1557,6 @@ $ga_trending_articles = array_slice($ga_trending_articles, 0, GA_TAB_ARTICLE_LIM
         evt.currentTarget.className += " active";
 
     }
-
 </script>
 
 </html>

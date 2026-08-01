@@ -275,7 +275,7 @@
      EDITORS PICK
      ======================================== */
 
-  .editors_pick {
+  .great_andhra_main_body_container li.editors_pick_li:not(.main-story) > a {
     height: auto !important;
     min-height: 180px !important;
   }
@@ -291,14 +291,19 @@
     height: auto !important;
   }
 
-  span.editors_pick_title {
+  span.editors_pick_post_title {
     font-size: 20px !important;
     line-height: 26px !important;
   }
 
+  span.editors_pick_title {
+    font-size: 14px !important;
+    line-height: 19px !important;
+  }
+
   span.editors_pick_desc,
   span.editors_pick_release {
-    font-size: 13px !important;
+    font-size: 14px !important;
     line-height: 18px !important;
   }
 

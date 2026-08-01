@@ -71,6 +71,13 @@ function ga_nav_category_link(string $categoryKey, string $categoryName, bool $i
     return $url;
 }
 
+// Builds a link to list-page.php for a tag (e.g. from Top Trending Topics). tagId filtering
+// is confirmed working live 2026-08-02 — was silently ignored before that.
+function ga_tag_link(string $tagId, string $tagName): string
+{
+    return 'list-page.php?tagId=' . rawurlencode($tagId) . '&tagName=' . rawurlencode($tagName);
+}
+
 function ga_e(?string $value): string
 {
     return htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
@@ -193,4 +200,32 @@ function ga_tag_names(array $article): array
         }
     }
     return $names;
+}
+
+// Only "/relative/paths" starting with a single slash are allowed as a roadblock-ad return
+// target — blocks open-redirect abuse via a crafted ?return= (e.g. //evil.com or https://evil.com).
+function ga_sanitize_local_path(?string $path, string $fallback = '/'): string
+{
+    $path = (string) $path;
+    if ($path === '' || $path[0] !== '/' || (isset($path[1]) && $path[1] === '/') || strpos($path, '://') !== false) {
+        return $fallback;
+    }
+    return $path;
+}
+
+// Called at the top of every page (before any API fetch or output): first visit in this
+// cookie window gets redirected to the roadblock ad instead of the page they asked for;
+// advertisement.php sends them on to their original destination once the ad's done.
+// Skips entirely once the cookie is set, so it only ever fires once per GA_ROADBLOCK_COOKIE_TTL.
+function ga_maybe_show_roadblock_ad(): void
+{
+    if (!GA_ROADBLOCK_AD_ENABLED || isset($_COOKIE[GA_ROADBLOCK_COOKIE_NAME])) {
+        return;
+    }
+
+    setcookie(GA_ROADBLOCK_COOKIE_NAME, '1', time() + GA_ROADBLOCK_COOKIE_TTL, '/');
+
+    $returnTo = ga_sanitize_local_path($_SERVER['REQUEST_URI'] ?? '/');
+    header('Location: /advertisement.php?return=' . rawurlencode($returnTo));
+    exit;
 }

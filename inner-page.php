@@ -1,7 +1,8 @@
 <?php
 require_once __DIR__ . '/config.php';
-require_once __DIR__ . '/inc/api-client.php';
 require_once __DIR__ . '/inc/helpers.php';
+ga_maybe_show_roadblock_ad();
+require_once __DIR__ . '/inc/api-client.php';
 
 // New URL shape: inner-page.php/{id}/{categorySlug}/{subCategorySlug?}/{titleSlug} — the
 // UUID is always the first path segment, regardless of how many category segments follow.
@@ -626,7 +627,7 @@ $ga_recommended_articles = ga_fetch_articles(GA_RECOMMENDED_COUNT, 0, GA_ARTICLE
                                 <div class="content trending_topics">
                                     <?php if (!empty($ga_trending_tags)): ?>
                                     <?php foreach ($ga_trending_tags as $ga_tag): ?>
-                                    <span><?php echo ga_e($ga_tag['name'] ?? ''); ?></span>
+                                    <a href="<?php echo ga_e(ga_tag_link($ga_tag['id'] ?? '', $ga_tag['name'] ?? '')); ?>"><?php echo ga_e($ga_tag['name'] ?? ''); ?></a>
                                     <?php endforeach; ?>
                                     <?php else: ?>
                                     <span class="ga-unavailable-msg">Content temporarily unavailable</span>

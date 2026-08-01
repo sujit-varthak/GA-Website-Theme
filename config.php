@@ -3,6 +3,21 @@ define('GA_API_BASE_URL', 'https://great-andhra-uat.onrender.com');
 define('GA_CACHE_DIR', __DIR__ . '/cache');
 define('GA_CACHE_TTL', 30); // seconds — lowered for demo purposes, bump back up before real traffic
 
+// Full-page roadblock ad (advertisement.php), shown once per cookie window before any page
+// renders. Kill switch + cookie name/lifetime in one place so it's easy to disable or retune.
+define('GA_ROADBLOCK_AD_ENABLED', true);
+define('GA_ROADBLOCK_COOKIE_NAME', 'garb');
+define('GA_ROADBLOCK_COOKIE_TTL', 15 * 60); // seconds — re-shows the ad 15 minutes after the last one
+
+// Current roadblock ad campaign — swap these when the campaign changes, no template edits needed.
+// Two crops: the portrait one-sheet reads fine on a narrow phone screen but wastes most of a
+// desktop viewport, so desktop gets the wide landscape banner instead (picked via <picture> in
+// advertisement.php's markup, at the same 768px breakpoint the rest of the site's CSS uses).
+define('GA_ROADBLOCK_AD_NAME', 'Spider-Man: Brand New Day');
+define('GA_ROADBLOCK_AD_IMAGE_MOBILE', 'images/spiderman-brand-new-day-poster.jpg');
+define('GA_ROADBLOCK_AD_IMAGE_DESKTOP', 'images/spiderman-brand-new-day-landscape.jpg');
+define('GA_ROADBLOCK_AD_LINK', 'https://www.imdb.com/title/tt22084616/');
+
 // Manual cache-clear trigger: hit clear-cache.php?key=<this> to force-refresh instantly
 // instead of waiting out the TTL. Change this to your own value before going live.
 define('GA_CACHE_CLEAR_KEY', 'ga-dev-clear-2026');
@@ -37,6 +52,9 @@ define('GA_LIST_PAGE_TAKE', 15);
 // populated qualify (confirmed live 2026-08-01 — only 2 of 32 Reviews articles have it so far).
 // Scans this many latest Reviews articles for the most recent qualifying one.
 define('GA_EDITORS_PICK_SCAN_COUNT', 30);
+// The card is narrow (~half the 650px column) with a large font, so the article's own
+// headline needs a shorter cap than other sections to stay readable within it.
+define('GA_EDITORS_PICK_TITLE_MAX', 55);
 
 // Numbered pagination: how many page links to show on each side of the current page
 // (plus first/last with an ellipsis gap) — categories can run to 80+ pages at this take size.

@@ -501,16 +501,29 @@ i.fab.fa-facebook-f {
   width: 175px;
 }
 
-.editors_pick {
-  background-color: #0a2149;
-  height: 210px;
-  color: #ffffff;
+.great_andhra_main_body_container li.editors_pick_li:not(.main-story) > a {
   display: flex;
   flex-direction: column;
   justify-content: center;
   gap: 14px;
+  height: 210px;
   padding: 20px;
+  background-color: #0a2149;
+  color: #ffffff;
   box-sizing: border-box;
+}
+
+.editors_pick {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.editor_pick_review {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
 }
 
 .great_andhra_main_body_container
@@ -526,25 +539,24 @@ li.editors_pick_li.clearfix img {
   height: 210px;
 }
 
-span.editors_pick_cat {
-  text-transform: uppercase;
-  display: block;
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 1px;
-}
-
-span.editors_pick_title {
+span.editors_pick_post_title {
   display: block;
   font-size: 25px;
   line-height: 30px;
   font-weight: bold;
 }
 
+span.editors_pick_title {
+  display: block;
+  font-size: 16px;
+  line-height: 22px;
+  font-weight: bold;
+}
+
 span.editors_pick_desc,
 span.editors_pick_release {
   display: block;
-  font-size: 15px;
+  font-size: 14px;
   line-height: 20px;
 }
 

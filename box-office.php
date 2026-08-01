@@ -1,7 +1,8 @@
 <?php
 require_once __DIR__ . '/config.php';
-require_once __DIR__ . '/inc/api-client.php';
 require_once __DIR__ . '/inc/helpers.php';
+ga_maybe_show_roadblock_ad();
+require_once __DIR__ . '/inc/api-client.php';
 
 $ga_bo_page = max(1, isset($_GET['page']) ? (int) $_GET['page'] : 1);
 $ga_bo_skip = ($ga_bo_page - 1) * GA_BOX_OFFICE_TAKE;
@@ -9,6 +10,16 @@ $ga_bo_result = ga_fetch_articles(GA_BOX_OFFICE_TAKE, $ga_bo_skip, GA_NAV_CATEGO
 $ga_bo_articles = $ga_bo_result['items'] ?? [];
 $ga_bo_total = $ga_bo_result['total'] ?? 0;
 $ga_bo_total_pages = $ga_bo_total > 0 ? (int) ceil($ga_bo_total / GA_BOX_OFFICE_TAKE) : 1;
+
+// Sidebar "Reviews" widget — Movies > Reviews subcategory, same small fixed list as list-page.php's.
+$ga_bo_sidebar_reviews = ga_fetch_articles(GA_LIST_SIDEBAR_COUNT, 0, GA_NAV_CATEGORY_IDS['reviews'])['items'] ?? [];
+
+// Movie Rankings (confirmed live 2026-08-02) — admin-curated link lists, not articles, same
+// shape as usaMovieSchedule (title/movieName + linkUrl + openInNewTab), capped at 5 server-side.
+$ga_bo_home_data = ga_fetch_homepage();
+$ga_weekly_top_five = $ga_bo_home_data['weeklyTopFive'] ?? [];
+$ga_all_time_top_films = $ga_bo_home_data['allTimeTopFilms'] ?? [];
+$ga_usa_box_office = $ga_bo_home_data['usaBoxOffice'] ?? [];
 
 function ga_box_office_url(int $page): string
 {
@@ -1147,38 +1158,19 @@ function ga_box_office_url(int $page): string
 
 
                                         <tbody class="row-hover">
-                                            <tr class="row-2 even">
+                                            <?php if (!empty($ga_weekly_top_five)): ?>
+                                            <?php foreach ($ga_weekly_top_five as $ga_wtf_i => $ga_wtf_item): ?>
+                                            <tr class="<?php echo $ga_wtf_i % 2 === 0 ? 'row-2 even' : 'row-3 odd'; ?>">
                                                 <td class="column-1"><a
-                                                        href="https://www.greatandhra.com/movies/reviews/geetha-govindam-review-total-paisa-vasool-91400.html"
-                                                        target="_blank">1. Geetha Govindam </a></td>
-
-
+                                                        href="<?php echo ga_e($ga_wtf_item['linkUrl'] ?? ''); ?>"
+                                                        <?php echo !empty($ga_wtf_item['openInNewTab']) ? 'target="_blank"' : ''; ?>><?php echo ($ga_wtf_i + 1) . '. ' . ga_e(trim($ga_wtf_item['title'] ?? '')); ?></a></td>
                                             </tr>
-                                            <tr class="row-3 odd">
-                                                <td class="column-1"><a
-                                                        href="https://www.greatandhra.com/movies/reviews/srinivasa-kalyanam-review-wedding-cassette-91277.html"
-                                                        target="_blank">2. Srinivasa Kalyanam </a></td>
-
-
+                                            <?php endforeach; ?>
+                                            <?php else: ?>
+                                            <tr>
+                                                <td class="column-1 ga-unavailable"><p class="ga-unavailable-msg">Content temporarily unavailable</p></td>
                                             </tr>
-                                            <tr class="row-2 even">
-                                                <td class="column-1"><a
-                                                        href="https://www.greatandhra.com/movies/reviews/goodachari-review-engaging-spy-thriller-91157.html"
-                                                        target="_blank">3. Goodachari</a></td>
-
-                                            </tr>
-                                            <tr class="row-3 odd">
-                                                <td class="column-1"><a
-                                                        href="https://www.greatandhra.com/movies/reviews/vishwaroopam-2-review-clumsy-sequel-91296.html"
-                                                        target="_blank">4. Vishwaroopam 2</a> </td>
-
-
-                                            </tr>
-                                            <tr class="row-2 even">
-                                                <td class="column-1"><a href="#" target="_blank">5. Gold</a></td>
-
-                                            </tr>
-
+                                            <?php endif; ?>
                                         </tbody>
                                     </table>
 
@@ -1272,38 +1264,20 @@ function ga_box_office_url(int $page): string
 
 
                                         <tbody class="row-hover">
-                                            <tr class="row-2 even">
+                                            <?php if (!empty($ga_all_time_top_films)): ?>
+                                            <?php foreach ($ga_all_time_top_films as $ga_atf_i => $ga_atf_item): ?>
+                                            <tr class="<?php echo $ga_atf_i % 2 === 0 ? 'row-2 even' : 'row-3 odd'; ?>">
                                                 <td class="column-1"><a
-                                                        href="https://www.greatandhra.com/movies/reviews/baahubali-2-review-epic-conclusion-81546.html">1.
-                                                        Baahubali 2</a></td>
-                                                <td class="column-2">200+ Crores</td>
+                                                        href="<?php echo ga_e($ga_atf_item['linkUrl'] ?? ''); ?>"
+                                                        <?php echo !empty($ga_atf_item['openInNewTab']) ? 'target="_blank"' : ''; ?>><?php echo ($ga_atf_i + 1) . '. ' . ga_e(trim($ga_atf_item['movieName'] ?? '')); ?></a></td>
+                                                <td class="column-2"><?php echo ga_e($ga_atf_item['amount'] ?? ''); ?></td>
                                             </tr>
-                                            <tr class="row-2 even">
-                                                <td class="column-1"><a
-                                                        href="https://www.greatandhra.com/movies/reviews/baahubali-review-visual-spectacle-with-weak-climax-67457.html">2.
-                                                        Baahubali</a></td>
-                                                <td class="column-2">180 Crores</td>
+                                            <?php endforeach; ?>
+                                            <?php else: ?>
+                                            <tr>
+                                                <td class="column-1 ga-unavailable" colspan="2"><p class="ga-unavailable-msg">Content temporarily unavailable</p></td>
                                             </tr>
-                                            <tr class="row-3 odd">
-                                                <td class="column-1"><a
-                                                        href="https://www.greatandhra.com/movies/reviews/rangasthalam-review-charan-steals-the-show-88490.html"
-                                                        target="_blank">3. Rangasthalam</a> </td>
-                                                <td class="column-2">124 Crores</td>
-                                            </tr>
-                                            <tr class="row-3 even">
-                                                <td class="column-1"><a
-                                                        href="https://www.greatandhra.com/movies/reviews/bharat-ane-nenu-review-keeps-promise-88925.html"
-                                                        target="_blank">4. Bharat Ane Nenu</a> </td>
-                                                <td class="column-2">110 Crores</td>
-                                            </tr>
-                                            <tr class="row-2 odd">
-                                                <td class="column-1"><a
-                                                        href="https://www.greatandhra.com/movies/reviews/khaidi-no-150-review-megastars-show-79334.html">5.
-                                                        Khaidi No 150</a></td>
-                                                <td class="column-2">102 Crores</td>
-                                            </tr>
-
-
+                                            <?php endif; ?>
                                         </tbody>
                                     </table>
                                 </div>
@@ -1484,38 +1458,20 @@ function ga_box_office_url(int $page): string
 
 
                                         <tbody class="row-hover">
-                                            <tr class="row-2 even">
+                                            <?php if (!empty($ga_usa_box_office)): ?>
+                                            <?php foreach ($ga_usa_box_office as $ga_usbo_i => $ga_usbo_item): ?>
+                                            <tr class="<?php echo $ga_usbo_i % 2 === 0 ? 'row-2 even' : 'row-3 odd'; ?>">
                                                 <td class="column-1"><a
-                                                        href="https://www.greatandhra.com/movies/reviews/rangasthalam-review-charan-steals-the-show-88490.html">Rangasthalam</a>
-                                                </td>
-                                                <td class="column-2">23.52 Crores</td>
+                                                        href="<?php echo ga_e($ga_usbo_item['linkUrl'] ?? ''); ?>"
+                                                        <?php echo !empty($ga_usbo_item['openInNewTab']) ? 'target="_blank"' : ''; ?>><?php echo ga_e(trim($ga_usbo_item['movieName'] ?? '')); ?></a></td>
+                                                <td class="column-2"><?php echo ga_e($ga_usbo_item['amount'] ?? ''); ?></td>
                                             </tr>
-                                            <tr class="row-3 odd">
-                                                <td class="column-1"><a
-                                                        href="https://www.greatandhra.com/movies/reviews/bharat-ane-nenu-review-keeps-promise-88925.html"
-                                                        target="_blank">Bharat Ane Nenu</a> </td>
-                                                <td class="column-2">22.83 Crores</td>
+                                            <?php endforeach; ?>
+                                            <?php else: ?>
+                                            <tr>
+                                                <td class="column-1 ga-unavailable" colspan="2"><p class="ga-unavailable-msg">Content temporarily unavailable</p></td>
                                             </tr>
-                                            <tr class="row-2 even">
-                                                <td class="column-1"><a
-                                                        href="https://www.greatandhra.com/movies/reviews/mahanati-review-epic-biopic-89334.html">Mahanati</a>
-                                                </td>
-                                                <td class="column-2">12.73 Crores</td>
-                                            </tr>
-                                            <tr class="row-2 even">
-                                                <td class="column-1"><a
-                                                        href="https://www.greatandhra.com/movies/reviews/agnyaathavaasi-review-a-huge-let-down-86790.html">Agnyathavaasi</a>
-                                                </td>
-                                                <td class="column-2">13.83 Crores</td>
-                                            </tr>
-                                            <tr class="row-3 odd">
-                                                <td class="column-1"><a
-                                                        href="https://www.greatandhra.com/movies/reviews/geetha-govindam-review-total-paisa-vasool-91400.html"
-                                                        target="_blank">Geetha Govindam</a> </td>
-                                                <td class="column-2">10.42 Crores</td>
-                                            </tr>
-
-
+                                            <?php endif; ?>
                                         </tbody>
                                     </table>
                                 </div>
@@ -1533,26 +1489,15 @@ function ga_box_office_url(int $page): string
                                 <div class="header"> Reviews</div>
                                 <div class="content">
                                     <ul class="news_style">
-                                        <!--<li><a href="viewnews.php?id=154117&cat=1&scat=12" title="LIK Review: Interesting Idea, Dull Execution">LIK Review: Interesting Idea, Dull Execution</a> </li>-->
-                                        <li><a href="https://www.greatandhra.com/movies/reviews/lik-review-interesting-idea-dull-execution-154117"
-                                                title="LIK Review: Interesting Idea, Dull Execution">LIK Review:
-                                                Interesting Idea, Dull Execution</a> </li>
-                                        <!--<li><a href="viewnews.php?id=154097&cat=1&scat=12" title="'Dacoit' Review: A Half-Baked Love Story With Twists">'Dacoit' Review: A Half-Baked Love Story With Twists</a> </li>-->
-                                        <li><a href="https://www.greatandhra.com/movies/reviews/dacoit-review-a-half-baked-love-story-with-twists-154097"
-                                                title="'Dacoit' Review: A Half-Baked Love Story With Twists">'Dacoit'
-                                                Review: A Half-Baked Love Story With Twists</a> </li>
-                                        <!--<li><a href="viewnews.php?id=154093&cat=1&scat=12" title="First Report: Adivi Sesh's Dacoit Opens With Twists">First Report: Adivi Sesh's Dacoit Opens With Twists</a> </li>-->
-                                        <li><a href="https://www.greatandhra.com/movies/reviews/first-report-adivi-seshs-dacoit-opens-with-twists-154093"
-                                                title="First Report: Adivi Sesh's Dacoit Opens With Twists">First
-                                                Report: Adivi Sesh's Dacoit Opens With Twists</a> </li>
-                                        <!--<li><a href="viewnews.php?id=153936&cat=1&scat=12" title="RaaKaaSaa Review: Zero Horror, Little Comedy">RaaKaaSaa Review: Zero Horror, Little Comedy</a> </li>-->
-                                        <li><a href="https://www.greatandhra.com/movies/reviews/raakaasaa-review-zero-horror-little-comedy-153936"
-                                                title="RaaKaaSaa Review: Zero Horror, Little Comedy">RaaKaaSaa Review:
-                                                Zero Horror, Little Comedy</a> </li>
-                                        <!--<li><a href="viewnews.php?id=153935&cat=1&scat=12" title="Biker Review: New Game, Familiar Emotions">Biker Review: New Game, Familiar Emotions</a> </li>-->
-                                        <li><a href="https://www.greatandhra.com/movies/reviews/biker-review-new-game-familiar-emotions-153935"
-                                                title="Biker Review: New Game, Familiar Emotions">Biker Review: New
-                                                Game, Familiar Emotions</a> </li>
+                                        <?php if (!empty($ga_bo_sidebar_reviews)): ?>
+                                        <?php foreach ($ga_bo_sidebar_reviews as $ga_bo_review_article): ?>
+                                        <li><a href="<?php echo ga_e(ga_inner_link($ga_bo_review_article)); ?>"
+                                                title="<?php echo ga_e($ga_bo_review_article['title'] ?? ''); ?>"><?php echo ga_e($ga_bo_review_article['title'] ?? ''); ?></a>
+                                        </li>
+                                        <?php endforeach; ?>
+                                        <?php else: ?>
+                                        <li class="ga-unavailable"><p class="ga-unavailable-msg">Content temporarily unavailable</p></li>
+                                        <?php endif; ?>
                                     </ul>
                                 </div>
                             </div>

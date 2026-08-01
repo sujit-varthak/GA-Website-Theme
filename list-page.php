@@ -1,13 +1,20 @@
 <?php
 require_once __DIR__ . '/config.php';
-require_once __DIR__ . '/inc/api-client.php';
 require_once __DIR__ . '/inc/helpers.php';
+ga_maybe_show_roadblock_ad();
+require_once __DIR__ . '/inc/api-client.php';
 
 // categoryId is an exact match by default; ?includeChildren=true (used by the Politics/Movies
-// parent nav links) also pulls in the category's direct children's articles.
+// parent nav links) also pulls in the category's direct children's articles. tagId (used by
+// Top Trending Topics) filters by tag instead — confirmed working live 2026-08-02 — and takes
+// precedence over categoryId if both are somehow present.
 $ga_category_id = isset($_GET['categoryId']) ? trim((string) $_GET['categoryId']) : '';
 $ga_category_name = isset($_GET['categoryName']) ? trim((string) $_GET['categoryName']) : 'Latest News';
 $ga_include_children = isset($_GET['includeChildren']) && $_GET['includeChildren'] === 'true';
+$ga_tag_id = isset($_GET['tagId']) ? trim((string) $_GET['tagId']) : '';
+$ga_tag_name = isset($_GET['tagName']) ? trim((string) $_GET['tagName']) : '';
+$ga_is_tag_mode = $ga_tag_id !== '';
+$ga_page_heading = $ga_is_tag_mode ? $ga_tag_name : $ga_category_name;
 
 // ga_fetch_articles() now returns a total count matching the filter (confirmed live
 // 2026-08-01), so real numbered pagination is possible instead of the earlier Prev/Next-only
@@ -16,7 +23,11 @@ $ga_page = max(1, isset($_GET['page']) ? (int) $_GET['page'] : 1);
 $ga_skip = ($ga_page - 1) * GA_LIST_PAGE_TAKE;
 $ga_list_articles = [];
 $ga_total = 0;
-if ($ga_category_id !== '') {
+if ($ga_is_tag_mode) {
+    $ga_result = ga_fetch_articles(GA_LIST_PAGE_TAKE, $ga_skip, null, false, $ga_tag_id);
+    $ga_list_articles = $ga_result['items'] ?? [];
+    $ga_total = $ga_result['total'] ?? 0;
+} elseif ($ga_category_id !== '') {
     $ga_result = ga_fetch_articles(GA_LIST_PAGE_TAKE, $ga_skip, $ga_category_id, $ga_include_children);
     $ga_list_articles = $ga_result['items'] ?? [];
     $ga_total = $ga_result['total'] ?? 0;
@@ -27,12 +38,18 @@ $ga_total_pages = $ga_total > 0 ? (int) ceil($ga_total / GA_LIST_PAGE_TAKE) : 1;
 $ga_sidebar_gossip = ga_fetch_articles(GA_LIST_SIDEBAR_COUNT, 0, GA_NAV_CATEGORY_IDS['movie-gossip'])['items'] ?? [];
 $ga_sidebar_reviews = ga_fetch_articles(GA_LIST_SIDEBAR_COUNT, 0, GA_NAV_CATEGORY_IDS['reviews'])['items'] ?? [];
 
-function ga_list_page_url(string $categoryId, string $categoryName, bool $includeChildren, int $page): string
+// Base query params for this page's filter (tag XOR category), reused by pagination links —
+// only $page changes between them.
+$ga_base_params = $ga_is_tag_mode
+    ? ['tagId' => $ga_tag_id, 'tagName' => $ga_tag_name]
+    : ['categoryId' => $ga_category_id, 'categoryName' => $ga_category_name];
+if (!$ga_is_tag_mode && $ga_include_children) {
+    $ga_base_params['includeChildren'] = 'true';
+}
+
+function ga_list_page_url(array $baseParams, int $page): string
 {
-    $params = ['categoryId' => $categoryId, 'categoryName' => $categoryName];
-    if ($includeChildren) {
-        $params['includeChildren'] = 'true';
-    }
+    $params = $baseParams;
     if ($page > 1) {
         $params['page'] = $page;
     }
@@ -934,7 +951,7 @@ function ga_list_page_url(string $categoryId, string $categoryName, bool $includ
                             <li class="un-sortable-item sortable-item_right_top_panel">
                                 <div class="sortable-item_style_8_mov">
                                     <div class="header">
-                                        <h1><?php echo ga_e($ga_category_name); ?></h1>
+                                        <h1><?php echo ga_e($ga_page_heading); ?></h1>
                                     </div>
 
                                     <div class="content">
@@ -986,11 +1003,11 @@ function ga_list_page_url(string $categoryId, string $categoryName, bool $includ
                                 <tr>
                                     <td align="center">
                                         <?php if ($ga_page > 1): ?>
-                                        <a href="<?php echo ga_e(ga_list_page_url($ga_category_id, $ga_category_name, $ga_include_children, $ga_page - 1)); ?>">&laquo; Prev</a>
+                                        <a href="<?php echo ga_e(ga_list_page_url($ga_base_params, $ga_page - 1)); ?>">&laquo; Prev</a>
                                         <?php endif; ?>
 
                                         <?php if ($ga_window_start > 1): ?>
-                                        <a href="<?php echo ga_e(ga_list_page_url($ga_category_id, $ga_category_name, $ga_include_children, 1)); ?>">1</a>
+                                        <a href="<?php echo ga_e(ga_list_page_url($ga_base_params, 1)); ?>">1</a>
                                         <?php if ($ga_window_start > 2): ?><span>&hellip;</span><?php endif; ?>
                                         <?php endif; ?>
 
@@ -998,17 +1015,17 @@ function ga_list_page_url(string $categoryId, string $categoryName, bool $includ
                                         <?php if ($ga_p === $ga_page): ?>
                                         <span><?php echo $ga_p; ?></span>
                                         <?php else: ?>
-                                        <a href="<?php echo ga_e(ga_list_page_url($ga_category_id, $ga_category_name, $ga_include_children, $ga_p)); ?>"><?php echo $ga_p; ?></a>
+                                        <a href="<?php echo ga_e(ga_list_page_url($ga_base_params, $ga_p)); ?>"><?php echo $ga_p; ?></a>
                                         <?php endif; ?>
                                         <?php endfor; ?>
 
                                         <?php if ($ga_window_end < $ga_total_pages): ?>
                                         <?php if ($ga_window_end < $ga_total_pages - 1): ?><span>&hellip;</span><?php endif; ?>
-                                        <a href="<?php echo ga_e(ga_list_page_url($ga_category_id, $ga_category_name, $ga_include_children, $ga_total_pages)); ?>"><?php echo $ga_total_pages; ?></a>
+                                        <a href="<?php echo ga_e(ga_list_page_url($ga_base_params, $ga_total_pages)); ?>"><?php echo $ga_total_pages; ?></a>
                                         <?php endif; ?>
 
                                         <?php if ($ga_page < $ga_total_pages): ?>
-                                        <a href="<?php echo ga_e(ga_list_page_url($ga_category_id, $ga_category_name, $ga_include_children, $ga_page + 1)); ?>">Next &raquo;</a>
+                                        <a href="<?php echo ga_e(ga_list_page_url($ga_base_params, $ga_page + 1)); ?>">Next &raquo;</a>
                                         <?php endif; ?>
                                     </td>
                                 </tr>

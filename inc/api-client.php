@@ -170,14 +170,16 @@ function ga_fetch_homepage(): ?array
 
 // Returns ['items' => article[], 'total' => int], or null if the API failed AND no cache
 // (fresh or stale) exists. total is the count matching the given filter (categoryId/
-// includeChildren applied), not the whole site — confirmed live 2026-08-01.
-// $categoryId is optional — confirmed working server-side filter (unlike tagId, which is silently ignored).
+// includeChildren/tagId applied), not the whole site — confirmed live 2026-08-01.
+// $categoryId is optional — confirmed working server-side filter.
 // $includeChildren (opt-in, confirmed live 2026-07-31) also returns the category's direct children's articles.
-function ga_fetch_articles(int $take = 4, int $skip = 0, ?string $categoryId = null, bool $includeChildren = false): ?array
+// $tagId (opt-in, confirmed live 2026-08-02 — was silently ignored before that) filters by tag instead.
+function ga_fetch_articles(int $take = 4, int $skip = 0, ?string $categoryId = null, bool $includeChildren = false, ?string $tagId = null): ?array
 {
     $cacheKey = "articles_take{$take}_skip{$skip}"
         . ($categoryId ? "_cat{$categoryId}" : '')
-        . ($includeChildren ? '_children' : '');
+        . ($includeChildren ? '_children' : '')
+        . ($tagId ? "_tag{$tagId}" : '');
     $cacheFile = ga_cache_path($cacheKey);
 
     $isFresh = is_file($cacheFile) && (time() - filemtime($cacheFile)) < GA_CACHE_TTL;
@@ -194,6 +196,9 @@ function ga_fetch_articles(int $take = 4, int $skip = 0, ?string $categoryId = n
     }
     if ($includeChildren) {
         $query['includeChildren'] = 'true';
+    }
+    if ($tagId) {
+        $query['tagId'] = $tagId;
     }
     $url = rtrim(GA_API_BASE_URL, '/') . '/api/public/articles?' . http_build_query($query);
 
