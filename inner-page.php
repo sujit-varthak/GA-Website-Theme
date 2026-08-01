@@ -633,7 +633,7 @@ if ($ga_article && !empty($ga_article['category']['id'])) {
                                 <div class="content trending_topics">
                                     <?php if (!empty($ga_trending_tags)): ?>
                                     <?php foreach ($ga_trending_tags as $ga_tag): ?>
-                                    <a href="<?php echo ga_e(ga_tag_link($ga_tag['id'] ?? '', $ga_tag['name'] ?? '')); ?>"><?php echo ga_e($ga_tag['name'] ?? ''); ?></a>
+                                    <a href="<?php echo ga_e(ga_tag_link($ga_tag['slug'] ?? '')); ?>"><?php echo ga_e($ga_tag['name'] ?? ''); ?></a>
                                     <?php endforeach; ?>
                                     <?php else: ?>
                                     <span class="ga-unavailable-msg">Content temporarily unavailable</span>

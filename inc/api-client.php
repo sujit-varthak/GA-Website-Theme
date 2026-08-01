@@ -230,3 +230,32 @@ function ga_fetch_articles(int $take = 4, int $skip = 0, ?string $categoryId = n
 
     return $result;
 }
+
+// Full tag list ({id, name, slug, createdAt, ...}[], 2251 items / ~300KB as of 2026-08-01).
+// Confirmed live that /api/public/tags and /api/public/articles both silently ignore a
+// ?slug=/?tagSlug= filter and just return everything unfiltered — there's no server-side
+// slug lookup to call instead — so /tag/{slug} URLs resolve by fetching this once and scanning
+// it in PHP (see ga_find_tag_by_slug()/ga_find_tag_by_id() in inc/helpers.php). Cached far
+// longer than articles (GA_TAGS_CACHE_TTL vs GA_CACHE_TTL) since new tags appear far less often.
+function ga_fetch_all_tags(): array
+{
+    $cacheFile = ga_cache_path('all_tags');
+    $isFresh = is_file($cacheFile) && (time() - filemtime($cacheFile)) < GA_TAGS_CACHE_TTL;
+    if ($isFresh) {
+        $cached = ga_cache_read($cacheFile);
+        if ($cached !== null) {
+            return $cached;
+        }
+    }
+
+    $url = rtrim(GA_API_BASE_URL, '/') . '/api/public/tags';
+    $tags = ga_http_get_json($url);
+
+    if (!is_array($tags)) {
+        return ga_cache_read($cacheFile) ?? [];
+    }
+
+    file_put_contents($cacheFile, json_encode($tags));
+
+    return $tags;
+}

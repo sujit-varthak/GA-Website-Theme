@@ -2,12 +2,17 @@
 require_once __DIR__ . '/config.php';
 require_once __DIR__ . '/inc/helpers.php';
 ga_maybe_show_roadblock_ad();
+require_once __DIR__ . '/inc/api-client.php';
 
-// Clean URL path ("movies/gossip", "politics", "tag/{tagId}/{slug}") arrives via PATH_INFO from
-// the .htaccess catch-all rewrite. "tag/..." is ID-based like article URLs (see ga_tag_link());
-// anything else is resolved against GA_CATEGORY_ROUTES. No PATH_INFO means an old-style
-// ?categoryId=/?tagId= link — canonicalized with a 301 to the clean path when one exists,
-// otherwise rendered directly (covers any category not yet added to GA_CATEGORY_ROUTES).
+// Clean URL path ("movies/gossip", "politics", "tag/{slug}") arrives via PATH_INFO from the
+// .htaccess catch-all rewrite. "tag/..." is pure-slug — confirmed live 2026-08-01 that the
+// backend's tag.slug is already unique/canonical (0 collisions across 2251 tags), so
+// ga_find_tag_by_slug() resolves it directly against the full tag list (no slug-filter exists
+// on the API, so this is done client-side — see ga_fetch_all_tags() in inc/api-client.php).
+// Anything else is resolved against GA_CATEGORY_ROUTES. No PATH_INFO means an old-style
+// ?categoryId=/?tagId= link, or the earlier tag/{id}/{slug} scheme (built before the slug field
+// was confirmed) — both 301 to the current clean path when resolvable, otherwise rendered
+// directly (covers any category not yet added to GA_CATEGORY_ROUTES).
 $ga_path_info = isset($_SERVER['PATH_INFO']) ? trim($_SERVER['PATH_INFO'], '/') : '';
 $ga_clean_path = '';
 $ga_category_id = '';
@@ -20,10 +25,29 @@ $ga_is_tag_mode = false;
 if ($ga_path_info !== '') {
     $ga_segments = explode('/', $ga_path_info);
     if ($ga_segments[0] === 'tag' && !empty($ga_segments[1])) {
-        $ga_tag_id = trim((string) $ga_segments[1]);
-        $ga_tag_name = isset($ga_segments[2]) ? ga_unslugify(rawurldecode($ga_segments[2])) : '';
-        $ga_is_tag_mode = true;
-        $ga_clean_path = $ga_path_info;
+        $ga_tag_arg = rawurldecode(trim((string) $ga_segments[1]));
+        $ga_is_legacy_tag_id = (bool) preg_match(
+            '/^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/',
+            $ga_tag_arg
+        );
+        if ($ga_is_legacy_tag_id) {
+            $ga_legacy_tag = ga_find_tag_by_id($ga_tag_arg);
+            if ($ga_legacy_tag !== null) {
+                header('Location: /tag/' . rawurlencode($ga_legacy_tag['slug']), true, 301);
+                exit;
+            }
+            http_response_code(404);
+        } else {
+            $ga_tag = ga_find_tag_by_slug($ga_tag_arg);
+            if ($ga_tag !== null) {
+                $ga_tag_id = $ga_tag['id'];
+                $ga_tag_name = $ga_tag['name'];
+                $ga_is_tag_mode = true;
+                $ga_clean_path = 'tag/' . rawurlencode($ga_tag_arg);
+            } else {
+                http_response_code(404);
+            }
+        }
     } else {
         $ga_route = ga_resolve_category_path($ga_path_info);
         if ($ga_route !== null) {
@@ -41,13 +65,17 @@ if ($ga_path_info !== '') {
     $ga_qs_category_id = isset($_GET['categoryId']) ? trim((string) $_GET['categoryId']) : '';
 
     if ($ga_qs_tag_id !== '') {
-        $ga_qs_tag_name = isset($_GET['tagName']) ? trim((string) $_GET['tagName']) : '';
-        $ga_redirect_to = '/tag/' . rawurlencode($ga_qs_tag_id) . '/' . rawurlencode(ga_slugify($ga_qs_tag_name));
-        header('Location: ' . $ga_redirect_to . ($ga_qs_page > 1 ? '?page=' . $ga_qs_page : ''), true, 301);
-        exit;
-    }
-
-    if ($ga_qs_category_id !== '') {
+        $ga_legacy_tag = ga_find_tag_by_id($ga_qs_tag_id);
+        if ($ga_legacy_tag !== null) {
+            header('Location: /tag/' . rawurlencode($ga_legacy_tag['slug']) . ($ga_qs_page > 1 ? '?page=' . $ga_qs_page : ''), true, 301);
+            exit;
+        }
+        // Tag not found in the full list (deleted, or a stale/bad id) — render with whatever
+        // the old link carried rather than 404ing outright.
+        $ga_tag_id = $ga_qs_tag_id;
+        $ga_tag_name = isset($_GET['tagName']) ? trim((string) $_GET['tagName']) : '';
+        $ga_is_tag_mode = true;
+    } elseif ($ga_qs_category_id !== '') {
         $ga_redirect_path = ga_category_path_for_id($ga_qs_category_id);
         if ($ga_redirect_path !== null) {
             header('Location: /' . $ga_redirect_path . ($ga_qs_page > 1 ? '?page=' . $ga_qs_page : ''), true, 301);
@@ -60,8 +88,6 @@ if ($ga_path_info !== '') {
 }
 
 $ga_page_heading = $ga_is_tag_mode ? $ga_tag_name : $ga_category_name;
-
-require_once __DIR__ . '/inc/api-client.php';
 
 // ga_fetch_articles() now returns a total count matching the filter (confirmed live
 // 2026-08-01), so real numbered pagination is possible instead of the earlier Prev/Next-only

@@ -2,6 +2,7 @@
 define('GA_API_BASE_URL', 'https://great-andhra-uat.onrender.com');
 define('GA_CACHE_DIR', __DIR__ . '/cache');
 define('GA_CACHE_TTL', 30); // seconds — lowered for demo purposes, bump back up before real traffic
+define('GA_TAGS_CACHE_TTL', 3600); // seconds — the full tag list (ga_fetch_all_tags()) changes far less often than articles
 
 // Full-page roadblock ad (advertisement.php), shown once per cookie window before any page
 // renders. Kill switch + cookie name/lifetime in one place so it's easy to disable or retune.

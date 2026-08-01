@@ -111,31 +111,40 @@ function ga_category_path_for_id(string $categoryId): ?string
     return GA_CATEGORY_ROUTES[$key]['urlPath'];
 }
 
-// Lowercase, hyphen-joined, alphanumeric-only — deterministic so ga_unslugify() below can
-// round-trip ordinary English tag names back to a display string.
-function ga_slugify(string $text): string
+// The backend's tag.slug is unique/canonical (confirmed live 2026-08-01 — zero collisions
+// across the full 2251-tag list), so /tag/{slug} URLs need no ID at all. Both scan the same
+// cached full list (ga_fetch_all_tags() in inc/api-client.php) — there's no slug-based filter
+// on the API (confirmed: /api/public/tags?slug=... and /api/public/articles?tagSlug=... both
+// silently ignore the param and return everything), so resolution happens client-side. Cheap
+// even at 2000+ tags (one linear scan of small associative arrays).
+function ga_find_tag_by_slug(string $slug): ?array
 {
-    $slug = strtolower(trim($text));
-    $slug = preg_replace('/[^a-z0-9]+/', '-', $slug);
-    return trim($slug, '-');
+    foreach (ga_fetch_all_tags() as $tag) {
+        if (($tag['slug'] ?? '') === $slug) {
+            return $tag;
+        }
+    }
+    return null;
 }
 
-// Approximate reverse of ga_slugify() — tag URLs are ID-based (see ga_tag_link()), so the tag's
-// display name has no other source once parsed back out of the URL. Good enough for ordinary
-// Title Case English names ("pawan-kalyan" -> "Pawan Kalyan"); acronyms/non-English names won't
-// round-trip perfectly, but this is only ever a page heading, not a lookup key.
-function ga_unslugify(string $slug): string
+// Reverse lookup, used to 301 the earlier tag/{id}/{slug} scheme (built before the slug field
+// was confirmed) and old ?tagId=... links to the current pure-slug /tag/{slug} form.
+function ga_find_tag_by_id(string $tagId): ?array
 {
-    return ucwords(str_replace('-', ' ', $slug));
+    foreach (ga_fetch_all_tags() as $tag) {
+        if (($tag['id'] ?? '') === $tagId) {
+            return $tag;
+        }
+    }
+    return null;
 }
 
-// Builds a link to list-page.php for a tag (e.g. from Top Trending Topics). ID-based like
-// article URLs — the slug is cosmetic, the tagId is what's actually looked up — since tags are
-// an open-ended set from the API with no fixed table to resolve a slug back to an ID from.
-// tagId filtering confirmed working live 2026-08-02 — was silently ignored before that.
-function ga_tag_link(string $tagId, string $tagName): string
+// Builds a link to list-page.php for a tag (e.g. from Top Trending Topics). $tagSlug should be
+// the tag's own real slug field from the API — not re-derived here — so it round-trips exactly
+// through ga_find_tag_by_slug() above.
+function ga_tag_link(string $tagSlug): string
 {
-    return 'tag/' . rawurlencode($tagId) . '/' . rawurlencode(ga_slugify($tagName));
+    return 'tag/' . rawurlencode($tagSlug);
 }
 
 function ga_e(?string $value): string
