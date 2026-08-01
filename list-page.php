@@ -21,6 +21,12 @@ $ga_include_children = false;
 $ga_tag_id = '';
 $ga_tag_name = '';
 $ga_is_tag_mode = false;
+// "Latest News" shows whatever's currently flagged trending — same source as the homepage's
+// Top News tab — not a literal category filter. The backend has no working trending filter on
+// the paginated articles endpoint (confirmed: ?isTrending=/?trending= are both silently
+// ignored, same as the tag/slug filters checked earlier), so this fetches the homepage
+// aggregate's trending array whole and paginates it in PHP instead (see the fetch block below).
+$ga_is_latest_news_trending = false;
 
 if ($ga_path_info !== '') {
     $ga_segments = explode('/', $ga_path_info);
@@ -55,6 +61,7 @@ if ($ga_path_info !== '') {
             $ga_category_name = $ga_route['name'];
             $ga_include_children = $ga_route['includeChildren'];
             $ga_clean_path = $ga_path_info;
+            $ga_is_latest_news_trending = ($ga_path_info === 'latest-news');
         } else {
             http_response_code(404);
         }
@@ -100,6 +107,10 @@ if ($ga_is_tag_mode) {
     $ga_result = ga_fetch_articles(GA_LIST_PAGE_TAKE, $ga_skip, null, false, $ga_tag_id);
     $ga_list_articles = $ga_result['items'] ?? [];
     $ga_total = $ga_result['total'] ?? 0;
+} elseif ($ga_is_latest_news_trending) {
+    $ga_all_trending = ga_fetch_homepage()['trending'] ?? [];
+    $ga_total = count($ga_all_trending);
+    $ga_list_articles = array_slice($ga_all_trending, $ga_skip, GA_LIST_PAGE_TAKE);
 } elseif ($ga_category_id !== '') {
     $ga_result = ga_fetch_articles(GA_LIST_PAGE_TAKE, $ga_skip, $ga_category_id, $ga_include_children);
     $ga_list_articles = $ga_result['items'] ?? [];
