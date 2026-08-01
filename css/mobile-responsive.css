@@ -284,6 +284,7 @@
     .news_style.news_section_ul
     li.editors_pick_li {
     width: 100% !important;
+    margin: 0 !important;
   }
 
   li.editors_pick_li.clearfix img {
@@ -311,32 +312,48 @@
      GALLERY / VIDEO SECTIONS
      ======================================== */
 
+  /* Desktop stacks these as a wrapping grid of 188px tiles (image on top, caption below —
+     see ul.bg-unlist.ga-featured-videos li in main-single.css). On mobile this switches to a
+     single column of full-width rows instead, image fixed on the left and caption to its
+     right — same row treatment as ul.big-galist below, just for this widget's own classes
+     since its <ul> doesn't carry the big-galist class. */
   ul.bg-unlist.ga-featured-videos,
   ul.bg-unlist.ga-grply {
     width: 100% !important;
     display: flex !important;
-    flex-wrap: wrap !important;
+    flex-direction: column !important;
     gap: 10px !important;
   }
 
   ul.bg-unlist.ga-featured-videos li,
   ul.bg-unlist.ga-grply li {
+    width: 100% !important;
     margin: 0 !important;
     float: none !important;
     min-height: auto !important;
   }
 
- 
+  ul.bg-unlist.ga-featured-videos li a,
+  ul.bg-unlist.ga-grply li a {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+  }
+
+  /* Image stays exactly as it already is (185x110, same as desktop) — flex-shrink:0 just
+     stops it getting squeezed by caption length, same issue fixed for .big-galist-lft below. */
+  .ga-featured-videos .big-galist-lft {
+    flex-shrink: 0 !important;
+    flex-grow: 0 !important;
+    width: 185px !important;
+    height: 110px !important;
+  }
 
   .ga-featured-videos .big-galist-rgt {
-    width: 100% !important;
+    width: auto !important;
+    flex: 1 !important;
+    min-width: 0 !important;
   }
-  
-  .ga-featured-videos .big-galist-rgt a {
-   display: flex;
-  }
-
- 
 
   ul.big-galist li a {
     display: flex;
@@ -356,6 +373,22 @@
   ul.big-galist li {
     width: 100% !important;
     margin-bottom: 5px !important;
+  }
+
+  /* .big-galist-lft keeps its 111x62 box from main-single.css, but ul.big-galist li a
+     above turns it into a flex item — without flex-shrink:0 it gets squeezed by however
+     long each item's title happens to be, so the "same" 111x62 box (and the object-fit:cover
+     image inside it) renders at a different visual size per item. Locking it stops that;
+     min-width:0 on the text side lets the title wrap instead of forcing the image to shrink. */
+  ul.big-galist li a .big-galist-lft {
+    flex-shrink: 0 !important;
+    flex-grow: 0 !important;
+    width: 111px !important;
+    height: 62px !important;
+  }
+
+  ul.big-galist li a .big-galist-rgt {
+    min-width: 0 !important;
   }
 
   /* ========================================
@@ -488,9 +521,9 @@
     overflow-x: auto !important;
     white-space: nowrap !important;
   }
-  
-  .temp-class{
-      width:100%;
+
+  .temp-class {
+    width: 100%;
   }
 
   /* ========================================
@@ -693,4 +726,3 @@
     margin-bottom: 10px !important;
   }
 }
-
