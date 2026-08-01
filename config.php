@@ -44,6 +44,9 @@ define('GA_INNER_TOP_NEWS_COUNT', 3);
 define('GA_RECOMMENDED_COUNT', 8);
 define('GA_ARTICLES_CATEGORY_ID', '43a01cf4-66a6-460b-8816-8c22518ad33c');
 
+// "Related Articles" widget — other articles from the same category as the one being read.
+define('GA_RELATED_ARTICLES_COUNT', 3);
+
 // list-page.php: category-filtered listing, driven by ?categoryId=&categoryName= from the nav.
 // Matches the static design's hardcoded card count.
 define('GA_LIST_PAGE_TAKE', 15);

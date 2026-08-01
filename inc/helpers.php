@@ -38,13 +38,17 @@ function ga_image(array $article, array $fallback): array
 // /api/public/articles/:id now accepts either the shortId or the full UUID (confirmed
 // 2026-07-31, auto-detected by format) — so urlPath is used verbatim, no more substituting
 // the UUID in. Path-based, no query string.
+// Bare form (no "inner-page.php/" prefix) as of the .htaccess rewrite — root-relative, safe
+// on every page that calls this: index/list-page/box-office are always one level deep at
+// root, and inner-page.php itself carries a <base href="/"> specifically so its own deep
+// PATH_INFO URL doesn't throw off this same relative link when linking to related articles.
 function ga_inner_link(array $article): string
 {
     $urlPath = $article['urlPath'] ?? '';
 
     if ($urlPath !== '') {
         $segments = explode('/', trim($urlPath, '/'));
-        return 'inner-page.php/' . implode('/', array_map('rawurlencode', $segments));
+        return implode('/', array_map('rawurlencode', $segments));
     }
 
     // Fallback if urlPath is ever missing (e.g. stale cache from before it shipped).

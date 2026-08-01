@@ -41,6 +41,18 @@ $ga_trending_tags = array_slice($ga_home_data_sidebar['trendingTags'] ?? [], 0, 
 
 // "Recommended For You" — articles filtered to the "Articles" category.
 $ga_recommended_articles = ga_fetch_articles(GA_RECOMMENDED_COUNT, 0, GA_ARTICLES_CATEGORY_ID)['items'] ?? [];
+
+// "Related Articles" — other articles from the same category as this one. Fetches one extra
+// so excluding the current article (always present in its own category's feed) still leaves
+// a full GA_RELATED_ARTICLES_COUNT.
+$ga_related_articles = [];
+if ($ga_article && !empty($ga_article['category']['id'])) {
+    $ga_related_fetch = ga_fetch_articles(GA_RELATED_ARTICLES_COUNT + 1, 0, $ga_article['category']['id'])['items'] ?? [];
+    $ga_related_articles = array_values(array_filter($ga_related_fetch, function ($a) use ($ga_article) {
+        return ($a['id'] ?? null) !== ($ga_article['id'] ?? null);
+    }));
+    $ga_related_articles = array_slice($ga_related_articles, 0, GA_RELATED_ARTICLES_COUNT);
+}
 ?>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" version="XHTML+RDFa 1.0" dir="ltr"
     xmlns:og="http://ogp.me/ns#" xmlns:article="http://ogp.me/ns/article#" xmlns:book="http://ogp.me/ns/book#"
@@ -527,26 +539,20 @@ $ga_recommended_articles = ga_fetch_articles(GA_RECOMMENDED_COUNT, 0, GA_ARTICLE
 
                         </div>
 
+                        <?php if (!empty($ga_related_articles)): ?>
                         <div class="header_re">RELATED ARTICLES</div>
                         <div class="content_re">
                             <ul class="news_style_re">
+                                <?php foreach ($ga_related_articles as $ga_related_article): ?>
                                 <li>
-                                    <a href="https://www.greatandhra.com/movies/gossip/buzz-two-leading-actresses-transformations-spark-ozempic-rumours-153859"
-                                        title="Buzz: Two Leading Actresses' Transformations Spark Ozempic Rumours">
-                                        Buzz: Two Leading Actresses' Transformations Spark Ozempic Rumours </a>
+                                    <a href="<?php echo ga_e(ga_inner_link($ga_related_article)); ?>"
+                                        title="<?php echo ga_e($ga_related_article['title'] ?? ''); ?>">
+                                        <?php echo ga_e($ga_related_article['title'] ?? ''); ?> </a>
                                 </li>
-                                <li>
-                                    <a href="https://www.greatandhra.com/movies/gossip/buzz-less-shooting-more-dating-for-heroine-153848"
-                                        title="Buzz: Less Shooting, More Dating for Heroine">
-                                        Buzz: Less Shooting, More Dating for Heroine </a>
-                                </li>
-                                <li>
-                                    <a href="https://www.greatandhra.com/movies/gossip/buzz-big-director-cost-shock-stuns-producer-153840"
-                                        title="Buzz: Big Director Cost Shock Stuns Producer">
-                                        Buzz: Big Director Cost Shock Stuns Producer </a>
-                                </li>
+                                <?php endforeach; ?>
                             </ul>
                         </div>
+                        <?php endif; ?>
                     </div>
                     <!--page_news-->
 

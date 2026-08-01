@@ -1,0 +1,27 @@
+RewriteEngine On
+RewriteBase /
+
+# Canonicalize old inner-page.php/{id}/... links to the new bare form. Matched against
+# THE_REQUEST (the original request line as the browser sent it) rather than the current
+# rewritten URI — THE_REQUEST never changes across internal rewrite passes, so this rule
+# does NOT re-fire when the bare-URL rule below internally rewrites a request back to
+# inner-page.php/... on the same pass. Matching on the live URI instead would loop forever:
+# bare -> internal rewrite to inner-page.php/... -> (re-matches this rule) -> redirect back
+# to bare -> browser re-requests bare -> repeat.
+RewriteCond %{THE_REQUEST} \s/inner-page\.php/([0-9]+|[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})(/[^\s]*)?\s
+RewriteRule ^ /%1%2 [R=301,L]
+
+# Real files and directories (css/, js/, images/, assets/, cache/, inc/, the other .php
+# entry points, favicon.ico, etc.) pass straight through — untouched. This is what keeps
+# a bare-URL rewrite below from swallowing asset requests and breaking the whole page.
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# Bare article URLs: /{id}/{category}/{subcategory?}/{title-slug}, where {id} is either
+# the numeric shortId or a full UUID. Internally forwarded to inner-page.php with the same
+# PATH_INFO shape it already parses today (see inner-page.php's PATH_INFO handling) — the
+# browser URL bar stays clean, but Apache still runs the exact same script/PATH_INFO combo
+# as the current inner-page.php/{id}/... links, so inner-page.php itself needs no changes.
+# Old inner-page.php/{id}/... links still work as-is (untouched by this rule, matched above).
+RewriteRule ^([0-9]+|[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})(/.*)?$ inner-page.php/$1$2 [L]
