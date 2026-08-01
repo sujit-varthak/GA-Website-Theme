@@ -278,6 +278,12 @@
     font-size: 13px !important;
   }
 
+  .new_pagination span {
+    padding: 3px 6px !important;
+    font-size: 14px !important;
+    margin: 0 2px !important;
+  }
+
   /* ========================================
      DATA TABLES
      ======================================== */
@@ -595,6 +601,11 @@
   .new_pagination a {
     margin: 2px 3px !important;
     font-size: 12px !important;
+  }
+
+  .new_pagination span {
+    padding: 2px 5px !important;
+    font-size: 13px !important;
   }
 
   /* Tables */

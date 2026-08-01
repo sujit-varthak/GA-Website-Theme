@@ -277,6 +277,21 @@
   font-weight: 700;
 }
 
+/* Current page indicator — box-office.php renders it as a <span> (see the pagination
+   markup), same as list-page.php; this was the one rule list-page.php's own CSS had that
+   never got copied here, which is why the current page looked like plain text instead of
+   the bordered box list-page.php shows. Values matched exactly from main-list-page.css. */
+.new_pagination span {
+  padding: 3px 7px;
+  border: 1px solid #ccc;
+  box-shadow: 0 0 2px #ccc;
+  border-radius: 5px;
+  margin: 0;
+  font-weight: 700;
+  font-size: 16px;
+  font-family: "Lato", sans-serif;
+}
+
 .img_text_cont_box a {
   font-family: "Lato", sans-serif;
   font-size: 15px;
