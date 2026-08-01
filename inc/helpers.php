@@ -61,12 +61,19 @@ function ga_inner_link(array $article): string
     return 'inner-page.php?' . $query;
 }
 
-// Builds a nav link to list-page.php for a category (key into GA_NAV_CATEGORY_IDS).
-// $categoryName rides along so list-page.php can show a real header even with 0 results,
-// without needing a separate categories lookup. $includeChildren=true is for parent
-// categories (Politics/Movies) whose own listing should also include their children's articles.
+// Builds a nav link to list-page.php for a category (key into GA_NAV_CATEGORY_IDS). Emits the
+// clean GA_CATEGORY_ROUTES path (e.g. "movies/gossip") when one exists for this key; falls back
+// to the old ?categoryId=... query-string form for any category not yet added there, so a
+// category can be migrated to the clean scheme one at a time without breaking the others.
+// $categoryName/$includeChildren only matter on that fallback path — GA_CATEGORY_ROUTES already
+// carries both for anything routed through the clean form.
 function ga_nav_category_link(string $categoryKey, string $categoryName, bool $includeChildren = false): string
 {
+    $route = GA_CATEGORY_ROUTES[$categoryKey] ?? null;
+    if ($route !== null) {
+        return $route['urlPath'];
+    }
+
     $id = GA_NAV_CATEGORY_IDS[$categoryKey] ?? '';
     $url = 'list-page.php?categoryId=' . rawurlencode($id) . '&categoryName=' . rawurlencode($categoryName);
     if ($includeChildren) {
@@ -75,11 +82,60 @@ function ga_nav_category_link(string $categoryKey, string $categoryName, bool $i
     return $url;
 }
 
-// Builds a link to list-page.php for a tag (e.g. from Top Trending Topics). tagId filtering
-// is confirmed working live 2026-08-02 — was silently ignored before that.
+// Resolves a clean category URL path ("movies/gossip", "politics", ...) back to the
+// categoryId/name/includeChildren list-page.php needs — the single source both its PATH_INFO
+// parsing and the old ?categoryId=... redirect (via ga_category_path_for_id() below) key off of.
+// Returns null for anything not in GA_CATEGORY_ROUTES (caller 404s).
+function ga_resolve_category_path(string $path): ?array
+{
+    foreach (GA_CATEGORY_ROUTES as $key => $route) {
+        if ($route['urlPath'] === $path) {
+            return [
+                'id' => GA_NAV_CATEGORY_IDS[$key] ?? '',
+                'name' => $route['name'],
+                'includeChildren' => $route['includeChildren'],
+            ];
+        }
+    }
+    return null;
+}
+
+// Reverse of ga_resolve_category_path(): given an old link's ?categoryId=..., finds its clean
+// URL path for the 301 redirect. Null if that ID isn't in GA_CATEGORY_ROUTES yet.
+function ga_category_path_for_id(string $categoryId): ?string
+{
+    $key = array_search($categoryId, GA_NAV_CATEGORY_IDS, true);
+    if ($key === false || !isset(GA_CATEGORY_ROUTES[$key])) {
+        return null;
+    }
+    return GA_CATEGORY_ROUTES[$key]['urlPath'];
+}
+
+// Lowercase, hyphen-joined, alphanumeric-only — deterministic so ga_unslugify() below can
+// round-trip ordinary English tag names back to a display string.
+function ga_slugify(string $text): string
+{
+    $slug = strtolower(trim($text));
+    $slug = preg_replace('/[^a-z0-9]+/', '-', $slug);
+    return trim($slug, '-');
+}
+
+// Approximate reverse of ga_slugify() — tag URLs are ID-based (see ga_tag_link()), so the tag's
+// display name has no other source once parsed back out of the URL. Good enough for ordinary
+// Title Case English names ("pawan-kalyan" -> "Pawan Kalyan"); acronyms/non-English names won't
+// round-trip perfectly, but this is only ever a page heading, not a lookup key.
+function ga_unslugify(string $slug): string
+{
+    return ucwords(str_replace('-', ' ', $slug));
+}
+
+// Builds a link to list-page.php for a tag (e.g. from Top Trending Topics). ID-based like
+// article URLs — the slug is cosmetic, the tagId is what's actually looked up — since tags are
+// an open-ended set from the API with no fixed table to resolve a slug back to an ID from.
+// tagId filtering confirmed working live 2026-08-02 — was silently ignored before that.
 function ga_tag_link(string $tagId, string $tagName): string
 {
-    return 'list-page.php?tagId=' . rawurlencode($tagId) . '&tagName=' . rawurlencode($tagName);
+    return 'tag/' . rawurlencode($tagId) . '/' . rawurlencode(ga_slugify($tagName));
 }
 
 function ga_e(?string $value): string

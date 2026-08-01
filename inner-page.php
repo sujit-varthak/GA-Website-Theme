@@ -273,7 +273,7 @@ if ($ga_article && !empty($ga_article['category']['id'])) {
                             <ul class="submenu">
                                 <li><a href="<?php echo ga_e(ga_nav_category_link('movie-news', 'Movie News')); ?>">News</a></li>
                                 <li><a href="<?php echo ga_e(ga_nav_category_link('movie-gossip', 'Movie Gossip')); ?>">Gossip</a></li>
-                                <li><a href="box-office.php">Box Office</a></li>
+                                <li><a href="box-office">Box Office</a></li>
                             </ul>
                         </li>
                         <li>
@@ -379,7 +379,7 @@ if ($ga_article && !empty($ga_article['category']['id'])) {
                         <ul class="dropdown">
                             <li><a href="<?php echo ga_e(ga_nav_category_link('movie-news', 'Movie News')); ?>" itemprop="url">news</a></li>
                             <li><a href="<?php echo ga_e(ga_nav_category_link('movie-gossip', 'Movie Gossip')); ?>" itemprop="url">gossip</a></li>
-                            <li><a href="box-office.php" itemprop="url">boxoffice</a></li>
+                            <li><a href="box-office" itemprop="url">boxoffice</a></li>
                         </ul>
                     </li>
 

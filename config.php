@@ -92,6 +92,24 @@ define('GA_NAV_CATEGORY_IDS', [
     'movies' => '4a49a6ff-53f8-4d5b-be10-dea88bae7a18',
 ]);
 
+// Clean-URL routing for list-page.php, keyed by the same category key as GA_NAV_CATEGORY_IDS
+// (kept as a separate table rather than folded into it, since several call sites read
+// GA_NAV_CATEGORY_IDS directly for ga_fetch_articles() and don't need urlPath/name at all).
+// urlPath is what shows in the browser and what ga_resolve_category_path()/ga_category_path_for_id()
+// in inc/helpers.php both key off of — single source of truth for both directions (link-building
+// and the old ?categoryId=... -> clean-path 301 redirect).
+define('GA_CATEGORY_ROUTES', [
+    'politics' => ['urlPath' => 'politics', 'name' => 'Politics', 'includeChildren' => true],
+    'movies' => ['urlPath' => 'movies', 'name' => 'Movies', 'includeChildren' => true],
+    'movie-news' => ['urlPath' => 'movies/news', 'name' => 'Movie News', 'includeChildren' => false],
+    'movie-gossip' => ['urlPath' => 'movies/gossip', 'name' => 'Movie Gossip', 'includeChildren' => false],
+    'andhra-news' => ['urlPath' => 'politics/andhra', 'name' => 'Andhra News', 'includeChildren' => false],
+    'telangana-news' => ['urlPath' => 'politics/telangana', 'name' => 'Telangana News', 'includeChildren' => false],
+    'reviews' => ['urlPath' => 'reviews', 'name' => 'Reviews', 'includeChildren' => false],
+    'opinion' => ['urlPath' => 'opinion', 'name' => 'Opinion', 'includeChildren' => false],
+    'latest-news' => ['urlPath' => 'latest-news', 'name' => 'Latest News', 'includeChildren' => false],
+]);
+
 // featuredImageUrl is currently always null from the API — these are the exact images/dimensions
 // already hardcoded in today's static markup, reused as a positional fallback until images are wired up.
 define('GA_HOME_HERO_FALLBACK_IMAGE', [

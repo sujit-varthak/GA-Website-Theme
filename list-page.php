@@ -2,19 +2,66 @@
 require_once __DIR__ . '/config.php';
 require_once __DIR__ . '/inc/helpers.php';
 ga_maybe_show_roadblock_ad();
-require_once __DIR__ . '/inc/api-client.php';
 
-// categoryId is an exact match by default; ?includeChildren=true (used by the Politics/Movies
-// parent nav links) also pulls in the category's direct children's articles. tagId (used by
-// Top Trending Topics) filters by tag instead — confirmed working live 2026-08-02 — and takes
-// precedence over categoryId if both are somehow present.
-$ga_category_id = isset($_GET['categoryId']) ? trim((string) $_GET['categoryId']) : '';
-$ga_category_name = isset($_GET['categoryName']) ? trim((string) $_GET['categoryName']) : 'Latest News';
-$ga_include_children = isset($_GET['includeChildren']) && $_GET['includeChildren'] === 'true';
-$ga_tag_id = isset($_GET['tagId']) ? trim((string) $_GET['tagId']) : '';
-$ga_tag_name = isset($_GET['tagName']) ? trim((string) $_GET['tagName']) : '';
-$ga_is_tag_mode = $ga_tag_id !== '';
+// Clean URL path ("movies/gossip", "politics", "tag/{tagId}/{slug}") arrives via PATH_INFO from
+// the .htaccess catch-all rewrite. "tag/..." is ID-based like article URLs (see ga_tag_link());
+// anything else is resolved against GA_CATEGORY_ROUTES. No PATH_INFO means an old-style
+// ?categoryId=/?tagId= link — canonicalized with a 301 to the clean path when one exists,
+// otherwise rendered directly (covers any category not yet added to GA_CATEGORY_ROUTES).
+$ga_path_info = isset($_SERVER['PATH_INFO']) ? trim($_SERVER['PATH_INFO'], '/') : '';
+$ga_clean_path = '';
+$ga_category_id = '';
+$ga_category_name = 'Latest News';
+$ga_include_children = false;
+$ga_tag_id = '';
+$ga_tag_name = '';
+$ga_is_tag_mode = false;
+
+if ($ga_path_info !== '') {
+    $ga_segments = explode('/', $ga_path_info);
+    if ($ga_segments[0] === 'tag' && !empty($ga_segments[1])) {
+        $ga_tag_id = trim((string) $ga_segments[1]);
+        $ga_tag_name = isset($ga_segments[2]) ? ga_unslugify(rawurldecode($ga_segments[2])) : '';
+        $ga_is_tag_mode = true;
+        $ga_clean_path = $ga_path_info;
+    } else {
+        $ga_route = ga_resolve_category_path($ga_path_info);
+        if ($ga_route !== null) {
+            $ga_category_id = $ga_route['id'];
+            $ga_category_name = $ga_route['name'];
+            $ga_include_children = $ga_route['includeChildren'];
+            $ga_clean_path = $ga_path_info;
+        } else {
+            http_response_code(404);
+        }
+    }
+} else {
+    $ga_qs_page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
+    $ga_qs_tag_id = isset($_GET['tagId']) ? trim((string) $_GET['tagId']) : '';
+    $ga_qs_category_id = isset($_GET['categoryId']) ? trim((string) $_GET['categoryId']) : '';
+
+    if ($ga_qs_tag_id !== '') {
+        $ga_qs_tag_name = isset($_GET['tagName']) ? trim((string) $_GET['tagName']) : '';
+        $ga_redirect_to = '/tag/' . rawurlencode($ga_qs_tag_id) . '/' . rawurlencode(ga_slugify($ga_qs_tag_name));
+        header('Location: ' . $ga_redirect_to . ($ga_qs_page > 1 ? '?page=' . $ga_qs_page : ''), true, 301);
+        exit;
+    }
+
+    if ($ga_qs_category_id !== '') {
+        $ga_redirect_path = ga_category_path_for_id($ga_qs_category_id);
+        if ($ga_redirect_path !== null) {
+            header('Location: /' . $ga_redirect_path . ($ga_qs_page > 1 ? '?page=' . $ga_qs_page : ''), true, 301);
+            exit;
+        }
+        $ga_category_id = $ga_qs_category_id;
+        $ga_category_name = isset($_GET['categoryName']) ? trim((string) $_GET['categoryName']) : 'Latest News';
+        $ga_include_children = isset($_GET['includeChildren']) && $_GET['includeChildren'] === 'true';
+    }
+}
+
 $ga_page_heading = $ga_is_tag_mode ? $ga_tag_name : $ga_category_name;
+
+require_once __DIR__ . '/inc/api-client.php';
 
 // ga_fetch_articles() now returns a total count matching the filter (confirmed live
 // 2026-08-01), so real numbered pagination is possible instead of the earlier Prev/Next-only
@@ -38,8 +85,8 @@ $ga_total_pages = $ga_total > 0 ? (int) ceil($ga_total / GA_LIST_PAGE_TAKE) : 1;
 $ga_sidebar_gossip = ga_fetch_articles(GA_LIST_SIDEBAR_COUNT, 0, GA_NAV_CATEGORY_IDS['movie-gossip'])['items'] ?? [];
 $ga_sidebar_reviews = ga_fetch_articles(GA_LIST_SIDEBAR_COUNT, 0, GA_NAV_CATEGORY_IDS['reviews'])['items'] ?? [];
 
-// Base query params for this page's filter (tag XOR category), reused by pagination links —
-// only $page changes between them.
+// Base query params for the legacy ?categoryId=/?tagId= form — only used as a pagination
+// fallback when this request itself isn't on a clean path (see ga_list_page_url() below).
 $ga_base_params = $ga_is_tag_mode
     ? ['tagId' => $ga_tag_id, 'tagName' => $ga_tag_name]
     : ['categoryId' => $ga_category_id, 'categoryName' => $ga_category_name];
@@ -47,9 +94,12 @@ if (!$ga_is_tag_mode && $ga_include_children) {
     $ga_base_params['includeChildren'] = 'true';
 }
 
-function ga_list_page_url(array $baseParams, int $page): string
+function ga_list_page_url(string $cleanPath, array $legacyParams, int $page): string
 {
-    $params = $baseParams;
+    if ($cleanPath !== '') {
+        return '/' . $cleanPath . ($page > 1 ? '?page=' . $page : '');
+    }
+    $params = $legacyParams;
     if ($page > 1) {
         $params['page'] = $page;
     }
@@ -59,6 +109,10 @@ function ga_list_page_url(array $baseParams, int $page): string
 <html lang="en">
 
 <head>
+    <!-- Clean category/tag URLs now carry 1-3 path segments (e.g. movies/gossip,
+         politics/andhra, tag/{id}/{slug}), so every relative asset path below needs
+         anchoring to root — same fix already applied to inner-page.php for the same reason. -->
+    <base href="/">
     <script type="text/javascript" async=""
         src="https://cdn.confiant-integrations.net/RNw7xiqRu-6_97G1pl1Hr7_2fbE/gpt_and_prebid/config.js"></script>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -775,7 +829,7 @@ function ga_list_page_url(array $baseParams, int $page): string
                         <ul class="dropdown">
                             <li><a href="<?php echo ga_e(ga_nav_category_link('movie-news', 'Movie News')); ?>" itemprop="url">news</a></li>
                             <li><a href="<?php echo ga_e(ga_nav_category_link('movie-gossip', 'Movie Gossip')); ?>" itemprop="url">gossip</a></li>
-                            <li><a href="box-office.php" itemprop="url">boxoffice</a></li>
+                            <li><a href="box-office" itemprop="url">boxoffice</a></li>
                         </ul>
                     </li>
 
@@ -875,7 +929,7 @@ function ga_list_page_url(array $baseParams, int $page): string
                             <ul class="submenu">
                                 <li><a href="<?php echo ga_e(ga_nav_category_link('movie-news', 'Movie News')); ?>">News</a></li>
                                 <li><a href="<?php echo ga_e(ga_nav_category_link('movie-gossip', 'Movie Gossip')); ?>">Gossip</a></li>
-                                <li><a href="box-office.php">Box Office</a></li>
+                                <li><a href="box-office">Box Office</a></li>
                             </ul>
                         </li>
                         <li>
@@ -1003,11 +1057,11 @@ function ga_list_page_url(array $baseParams, int $page): string
                                 <tr>
                                     <td align="center">
                                         <?php if ($ga_page > 1): ?>
-                                        <a href="<?php echo ga_e(ga_list_page_url($ga_base_params, $ga_page - 1)); ?>">&laquo; Prev</a>
+                                        <a href="<?php echo ga_e(ga_list_page_url($ga_clean_path, $ga_base_params,$ga_page - 1)); ?>">&laquo; Prev</a>
                                         <?php endif; ?>
 
                                         <?php if ($ga_window_start > 1): ?>
-                                        <a href="<?php echo ga_e(ga_list_page_url($ga_base_params, 1)); ?>">1</a>
+                                        <a href="<?php echo ga_e(ga_list_page_url($ga_clean_path, $ga_base_params,1)); ?>">1</a>
                                         <?php if ($ga_window_start > 2): ?><span>&hellip;</span><?php endif; ?>
                                         <?php endif; ?>
 
@@ -1015,17 +1069,17 @@ function ga_list_page_url(array $baseParams, int $page): string
                                         <?php if ($ga_p === $ga_page): ?>
                                         <span><?php echo $ga_p; ?></span>
                                         <?php else: ?>
-                                        <a href="<?php echo ga_e(ga_list_page_url($ga_base_params, $ga_p)); ?>"><?php echo $ga_p; ?></a>
+                                        <a href="<?php echo ga_e(ga_list_page_url($ga_clean_path, $ga_base_params,$ga_p)); ?>"><?php echo $ga_p; ?></a>
                                         <?php endif; ?>
                                         <?php endfor; ?>
 
                                         <?php if ($ga_window_end < $ga_total_pages): ?>
                                         <?php if ($ga_window_end < $ga_total_pages - 1): ?><span>&hellip;</span><?php endif; ?>
-                                        <a href="<?php echo ga_e(ga_list_page_url($ga_base_params, $ga_total_pages)); ?>"><?php echo $ga_total_pages; ?></a>
+                                        <a href="<?php echo ga_e(ga_list_page_url($ga_clean_path, $ga_base_params,$ga_total_pages)); ?>"><?php echo $ga_total_pages; ?></a>
                                         <?php endif; ?>
 
                                         <?php if ($ga_page < $ga_total_pages): ?>
-                                        <a href="<?php echo ga_e(ga_list_page_url($ga_base_params, $ga_page + 1)); ?>">Next &raquo;</a>
+                                        <a href="<?php echo ga_e(ga_list_page_url($ga_clean_path, $ga_base_params,$ga_page + 1)); ?>">Next &raquo;</a>
                                         <?php endif; ?>
                                     </td>
                                 </tr>

@@ -23,7 +23,7 @@ $ga_usa_box_office = $ga_bo_home_data['usaBoxOffice'] ?? [];
 
 function ga_box_office_url(int $page): string
 {
-    return $page > 1 ? 'box-office.php?page=' . $page : 'box-office.php';
+    return $page > 1 ? 'box-office?page=' . $page : 'box-office';
 }
 ?>
 <!DOCTYPE html>
@@ -886,7 +886,7 @@ function ga_box_office_url(int $page): string
                         <ul class="dropdown">
                             <li><a href="<?php echo ga_e(ga_nav_category_link('movie-news', 'Movie News')); ?>" itemprop="url">news</a></li>
                             <li><a href="<?php echo ga_e(ga_nav_category_link('movie-gossip', 'Movie Gossip')); ?>" itemprop="url">gossip</a></li>
-                            <li><a href="box-office.php" itemprop="url">boxoffice</a></li>
+                            <li><a href="box-office" itemprop="url">boxoffice</a></li>
                         </ul>
                     </li>
 
@@ -985,7 +985,7 @@ function ga_box_office_url(int $page): string
                             <ul class="submenu">
                                 <li><a href="<?php echo ga_e(ga_nav_category_link('movie-news', 'Movie News')); ?>">News</a></li>
                                 <li><a href="<?php echo ga_e(ga_nav_category_link('movie-gossip', 'Movie Gossip')); ?>">Gossip</a></li>
-                                <li><a href="box-office.php">Box Office</a></li>
+                                <li><a href="box-office">Box Office</a></li>
                             </ul>
                         </li>
                         <li>
