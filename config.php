@@ -110,6 +110,25 @@ define('GA_AD_FALLBACKS', [
     ],
 ]);
 
+// Fixed image dimensions per zone, matching what was hardcoded in the static markup this
+// replaced (e.g. the sidebar images were always width="160" with auto height, not stretched
+// to their fixed-position container's much narrower 80px/120px wrapper). ga_render_ad() uses
+// these as HTML width/height attributes; a zone not listed here (e.g.
+// HOMEPAGE_SECTION_INLINE, which had no explicit size in the original markup) renders
+// responsively instead (max-width: 100%; height: auto).
+define('GA_AD_ZONE_IMAGE_DIMENSIONS', [
+    'HOMEPAGE_SIDEBAR_LEFT' => ['width' => 160, 'height' => null],
+    'HOMEPAGE_SIDEBAR_RIGHT' => ['width' => 160, 'height' => null],
+    'HOMEPAGE_TOP_BANNER' => ['width' => 728, 'height' => 90],
+    'HOMEPAGE_MOBILE_BANNER' => ['width' => null, 'height' => 250],
+    'INNER_SIDEBAR_LEFT' => ['width' => 160, 'height' => null],
+    'INNER_SIDEBAR_RIGHT' => ['width' => 160, 'height' => null],
+    'INNER_TOP_BANNER' => ['width' => 728, 'height' => 90],
+    'INNER_MOBILE_BANNER' => ['width' => null, 'height' => 250],
+    'BOXOFFICE_TOP_BANNER' => ['width' => 728, 'height' => 90],
+    'BOXOFFICE_MOBILE_BANNER' => ['width' => null, 'height' => 250],
+]);
+
 // Max title length before PHP-side truncation kicks in (no CSS line-clamp anywhere in this theme).
 define('GA_HOME_HERO_TITLE_MAX', 100);
 define('GA_HOME_LIST_TITLE_MAX', 80);

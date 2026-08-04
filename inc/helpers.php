@@ -358,11 +358,33 @@ function ga_render_ad(string $zone): void
     $landingUrl = $ad['landingUrl'] ?? '';
     $name = $ad['name'] ?? 'Advertisement';
 
+    // Fixed width/height attributes per zone (GA_AD_ZONE_IMAGE_DIMENSIONS), matching what was
+    // hardcoded in the static markup this replaced — e.g. sidebar images are width="160"
+    // regardless of their fixed-position wrapper's narrower width, not stretched to fit it.
+    // Zones with no entry (e.g. HOMEPAGE_SECTION_INLINE, which never had an explicit size)
+    // render responsively instead.
+    $dims = GA_AD_ZONE_IMAGE_DIMENSIONS[$zone] ?? null;
+    $imgAttrs = '';
+    if ($dims !== null) {
+        if ($dims['width'] !== null) {
+            $imgAttrs .= ' width="' . (int) $dims['width'] . '"';
+        }
+        if ($dims['height'] !== null) {
+            $imgAttrs .= ' height="' . (int) $dims['height'] . '"';
+        }
+        $style = $dims['width'] === null ? 'max-width: 100%;' : '';
+    } else {
+        $style = 'max-width: 100%; height: auto;';
+    }
+    if ($style !== '') {
+        $imgAttrs .= ' style="' . $style . '"';
+    }
+
     echo '<p style="font-size: 11px;text-align: center;">Advertisement</p>';
     if ($landingUrl !== '') {
         echo '<a href="' . ga_e($landingUrl) . '" target="_blank" rel="noopener">';
     }
-    echo '<img alt="' . ga_e($name) . '" src="' . ga_e($imageUrl) . '" style="max-width: 100%; height: auto;" border="0" />';
+    echo '<img alt="' . ga_e($name) . '" src="' . ga_e($imageUrl) . '"' . $imgAttrs . ' border="0" />';
     if ($landingUrl !== '') {
         echo '</a>';
     }
