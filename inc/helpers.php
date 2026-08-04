@@ -285,16 +285,85 @@ function ga_sanitize_local_path(?string $path, string $fallback = '/'): string
 // Called at the top of every page (before any API fetch or output): first visit in this
 // cookie window gets redirected to the roadblock ad instead of the page they asked for;
 // advertisement.php sends them on to their original destination once the ad's done.
-// Skips entirely once the cookie is set, so it only ever fires once per GA_ROADBLOCK_COOKIE_TTL.
+// Skips entirely once the cookie is set — the cookie's own TTL is the admin-managed roadblock
+// ad's roadblockCookieTTL when one is active (falls back to GA_ROADBLOCK_COOKIE_TTL otherwise),
+// so a "show again after N minutes" edit in the admin panel takes effect on the very next visit.
 function ga_maybe_show_roadblock_ad(): void
 {
     if (!GA_ROADBLOCK_AD_ENABLED || isset($_COOKIE[GA_ROADBLOCK_COOKIE_NAME])) {
         return;
     }
 
-    setcookie(GA_ROADBLOCK_COOKIE_NAME, '1', time() + GA_ROADBLOCK_COOKIE_TTL, '/');
+    require_once __DIR__ . '/api-client.php';
+    $ad = ga_fetch_roadblock_ad(!ga_is_mobile());
+    $ad = $ad ?? (GA_AD_FALLBACKS['ROADBLOCK'] ?? null);
+
+    // No active roadblock ad in the admin panel and no fallback configured — skip the
+    // interstitial entirely rather than redirect to an empty ad page.
+    if ($ad === null) {
+        return;
+    }
+
+    $cookieTtl = (int) ($ad['roadblockCookieTTL'] ?? GA_ROADBLOCK_COOKIE_TTL);
+    setcookie(GA_ROADBLOCK_COOKIE_NAME, '1', time() + $cookieTtl, '/');
 
     $returnTo = ga_sanitize_local_path($_SERVER['REQUEST_URI'] ?? '/');
     header('Location: /advertisement.php?return=' . rawurlencode($returnTo));
     exit;
+}
+
+// Detects a mobile user agent (used to pick imageUrlMobile vs imageUrlDesktop and the
+// showOnMobile/showOnDesktop zone toggle). Memoized — called from multiple places per request.
+function ga_is_mobile(): bool
+{
+    static $isMobile = null;
+    if ($isMobile !== null) {
+        return $isMobile;
+    }
+    $userAgent = $_SERVER['HTTP_USER_AGENT'] ?? '';
+    $isMobile = (bool) preg_match('/Mobi|Android|iPhone|iPad|iPod|BlackBerry|Windows Phone/i', $userAgent);
+    return $isMobile;
+}
+
+// Renders one ad slot for $zone (an AdZone string matching the backend's enum, e.g.
+// 'HOMEPAGE_SIDEBAR_LEFT'): fetches the active admin-managed ad, falls back to
+// GA_AD_FALLBACKS[$zone] if none is active, and renders nothing if neither exists. IMAGE ads
+// render as a linked <img> (desktop or mobile source based on ga_is_mobile()); SCRIPT ads
+// output the stored embed code as-is — trusted admin-authored content, not user input.
+function ga_render_ad(string $zone): void
+{
+    $isMobile = ga_is_mobile();
+    $ad = ga_fetch_ad($zone, !$isMobile);
+    $ad = $ad ?? (GA_AD_FALLBACKS[$zone] ?? null);
+
+    if ($ad === null) {
+        return;
+    }
+
+    if (($ad['type'] ?? 'IMAGE') === 'SCRIPT') {
+        $script = $ad['scriptCode'] ?? '';
+        if ($script !== '') {
+            echo $script;
+        }
+        return;
+    }
+
+    $imageUrl = $isMobile
+        ? ($ad['imageUrlMobile'] ?? $ad['imageUrlDesktop'] ?? '')
+        : ($ad['imageUrlDesktop'] ?? $ad['imageUrlMobile'] ?? '');
+    if ($imageUrl === '') {
+        return;
+    }
+
+    $landingUrl = $ad['landingUrl'] ?? '';
+    $name = $ad['name'] ?? 'Advertisement';
+
+    echo '<p style="font-size: 11px;text-align: center;">Advertisement</p>';
+    if ($landingUrl !== '') {
+        echo '<a href="' . ga_e($landingUrl) . '" target="_blank" rel="noopener">';
+    }
+    echo '<img alt="' . ga_e($name) . '" src="' . ga_e($imageUrl) . '" style="max-width: 100%; height: auto;" border="0" />';
+    if ($landingUrl !== '') {
+        echo '</a>';
+    }
 }

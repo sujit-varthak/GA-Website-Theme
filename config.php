@@ -23,6 +23,93 @@ define('GA_ROADBLOCK_AD_LINK', 'https://www.imdb.com/title/tt22084616/');
 // instead of waiting out the TTL. Change this to your own value before going live.
 define('GA_CACHE_CLEAR_KEY', 'ga-dev-clear-2026');
 
+// Admin-managed advertisements (ga_render_ad() in inc/helpers.php). Shorter TTL than articles
+// since an editor toggling an ad active/inactive or changing its schedule should take effect
+// fairly quickly, not sit behind the same cache window as content.
+define('GA_AD_CACHE_TTL', 60); // seconds
+
+// Static backup ads shown only when the admin API has no active ad for a zone (API down, or
+// nothing configured there yet) — keeps every placement looking intentional instead of blank
+// during the admin panel's rollout. Same shape ga_render_ad() reads off a real ad record.
+// Remove an entry once real ads are consistently configured for that zone.
+define('GA_AD_FALLBACKS', [
+    'HOMEPAGE_SIDEBAR_LEFT' => [
+        'type' => 'IMAGE',
+        'imageUrlDesktop' => 'images/msn_new_160_2.jpg',
+        'landingUrl' => 'https://www.msnrealty.com/new-lp/GreatAndhra',
+        'name' => 'MSN Realty',
+    ],
+    'HOMEPAGE_SIDEBAR_RIGHT' => [
+        'type' => 'IMAGE',
+        'imageUrlDesktop' => 'images/msn_new_160_2.jpg',
+        'landingUrl' => 'https://www.msnrealty.com/new-lp/GreatAndhra',
+        'name' => 'MSN Realty',
+    ],
+    'HOMEPAGE_TOP_BANNER' => [
+        'type' => 'IMAGE',
+        'imageUrlDesktop' => 'images/Best_Brains_728_12242025_1.jpg',
+        'landingUrl' => 'https://bestbrains.com/promotions/newyearoffer',
+        'name' => 'Best Brains',
+    ],
+    'HOMEPAGE_MOBILE_BANNER' => [
+        'type' => 'IMAGE',
+        'imageUrlMobile' => 'images/IndianClicks_BestBrains_380x250_12242025_1.webp',
+        'landingUrl' => 'https://bestbrains.com/promotions/newyearoffer',
+        'name' => 'Best Brains',
+    ],
+    'HOMEPAGE_SECTION_INLINE' => [
+        'type' => 'IMAGE',
+        'imageUrlDesktop' => 'images/16260515895400254651.jpg',
+        'landingUrl' => '',
+        'name' => 'Advertisement',
+    ],
+    'INNER_SIDEBAR_LEFT' => [
+        'type' => 'IMAGE',
+        'imageUrlDesktop' => 'images/msn_new_160_2.jpg',
+        'landingUrl' => 'https://www.msnrealty.com/new-lp/GreatAndhra',
+        'name' => 'MSN Realty',
+    ],
+    'INNER_SIDEBAR_RIGHT' => [
+        'type' => 'IMAGE',
+        'imageUrlDesktop' => 'images/msn_new_160_2.jpg',
+        'landingUrl' => 'https://www.msnrealty.com/new-lp/GreatAndhra',
+        'name' => 'MSN Realty',
+    ],
+    'INNER_TOP_BANNER' => [
+        'type' => 'IMAGE',
+        'imageUrlDesktop' => 'images/msn_728.jpg',
+        'landingUrl' => 'https://www.msnrealty.com/new-lp/GreatAndhra',
+        'name' => 'MSN Reality',
+    ],
+    'INNER_MOBILE_BANNER' => [
+        'type' => 'IMAGE',
+        'imageUrlMobile' => 'images/IndianClicks_BestBrains_380x250_12242025_1.webp',
+        'landingUrl' => 'https://bestbrains.com/promotions/newyearoffer',
+        'name' => 'Best Brains',
+    ],
+    'BOXOFFICE_TOP_BANNER' => [
+        'type' => 'IMAGE',
+        'imageUrlDesktop' => 'images/msn_728.jpg',
+        'landingUrl' => 'https://www.msnrealty.com/new-lp/GreatAndhra',
+        'name' => 'MSN Reality',
+    ],
+    'BOXOFFICE_MOBILE_BANNER' => [
+        'type' => 'IMAGE',
+        'imageUrlMobile' => 'images/IndianClicks_BestBrains_380x250_12242025_1.webp',
+        'landingUrl' => 'https://bestbrains.com/promotions/newyearoffer',
+        'name' => 'Best Brains',
+    ],
+    'ROADBLOCK' => [
+        'type' => 'IMAGE',
+        'imageUrlMobile' => 'images/spiderman-brand-new-day-poster.jpg',
+        'imageUrlDesktop' => 'images/spiderman-brand-new-day-landscape.jpg',
+        'landingUrl' => 'https://www.imdb.com/title/tt22084616/',
+        'name' => 'Spider-Man: Brand New Day',
+        'roadblockDelayMs' => 15000,
+        'roadblockCookieTTL' => 900,
+    ],
+]);
+
 // Max title length before PHP-side truncation kicks in (no CSS line-clamp anywhere in this theme).
 define('GA_HOME_HERO_TITLE_MAX', 100);
 define('GA_HOME_LIST_TITLE_MAX', 80);

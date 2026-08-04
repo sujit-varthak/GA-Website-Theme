@@ -259,3 +259,65 @@ function ga_fetch_all_tags(): array
 
     return $tags;
 }
+
+// Returns the active admin-managed ad for a zone ({ id, name, type, imageUrlDesktop,
+// imageUrlMobile, landingUrl, scriptCode, ... }), or null if none is active/configured — callers
+// (ga_render_ad() in inc/helpers.php) fall back to GA_AD_FALLBACKS in that case. The public
+// endpoint returns {} rather than 404 when nothing matches, so an empty decode means "no ad"
+// rather than "API failure" — only a hard failure falls back to a stale cache.
+function ga_fetch_ad(string $zone, bool $isDesktop = true): ?array
+{
+    $safeZone = preg_replace('/[^A-Z0-9_]/', '', strtoupper($zone));
+    $cacheFile = ga_cache_path('ad_' . strtolower($safeZone) . '_' . ($isDesktop ? 'desktop' : 'mobile'));
+
+    $isFresh = is_file($cacheFile) && (time() - filemtime($cacheFile)) < GA_AD_CACHE_TTL;
+    if ($isFresh) {
+        $cached = ga_cache_read($cacheFile);
+        if ($cached !== null) {
+            return empty($cached) ? null : $cached;
+        }
+    }
+
+    $url = rtrim(GA_API_BASE_URL, '/') . '/api/public/advertisements/' . rawurlencode($safeZone)
+        . '?isDesktop=' . ($isDesktop ? 'true' : 'false');
+    $data = ga_http_get_json($url);
+
+    if ($data === null) {
+        // API unreachable/erroring — fall back to a stale cache if we have one.
+        $stale = ga_cache_read($cacheFile);
+        return $stale !== null ? (empty($stale) ? null : $stale) : null;
+    }
+
+    file_put_contents($cacheFile, json_encode($data));
+
+    return empty($data) ? null : $data;
+}
+
+// Same shape as ga_fetch_ad() but for the roadblock zone specifically — also carries
+// roadblockDelayMs/roadblockCookieTTL, which advertisement.php uses in place of the static
+// GA_ROADBLOCK_AD_* config constants when an active roadblock ad exists.
+function ga_fetch_roadblock_ad(bool $isDesktop = true): ?array
+{
+    $cacheFile = ga_cache_path('ad_roadblock_' . ($isDesktop ? 'desktop' : 'mobile'));
+
+    $isFresh = is_file($cacheFile) && (time() - filemtime($cacheFile)) < GA_AD_CACHE_TTL;
+    if ($isFresh) {
+        $cached = ga_cache_read($cacheFile);
+        if ($cached !== null) {
+            return empty($cached) ? null : $cached;
+        }
+    }
+
+    $url = rtrim(GA_API_BASE_URL, '/') . '/api/public/advertisements/roadblock/active'
+        . '?isDesktop=' . ($isDesktop ? 'true' : 'false');
+    $data = ga_http_get_json($url);
+
+    if ($data === null) {
+        $stale = ga_cache_read($cacheFile);
+        return $stale !== null ? (empty($stale) ? null : $stale) : null;
+    }
+
+    file_put_contents($cacheFile, json_encode($data));
+
+    return empty($data) ? null : $data;
+}

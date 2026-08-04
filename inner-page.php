@@ -194,21 +194,12 @@ if ($ga_article && !empty($ga_article['category']['id'])) {
 
     <div class="local_great" style="position:fixed; width:100%; float:left; width:80px;">
         <div class="source-image-left" style="float:left">
-            <!--<a href="https://www.indianclicks.com/clicks.php?url=https://www.giridhariconstructions.com/prospera-county.php&sid=GALeft"><img src="images/general/Giridhari_Constructions_160_07222023_1_1.jpg" width="160" alt="Andhra Pradesh Number One" /> </a> 	-->
-            <a href="https://www.msnrealty.com/new-lp/GreatAndhra"><img alt="MSN Realty" src="images/msn_new_160_2.jpg"
-                    width="160" /> </a>
-            <!--<div id="vuukle-ad-3"></div>-->
-            <!-- LHS AD 1 ==> Ends -->
+            <?php ga_render_ad('INNER_SIDEBAR_LEFT'); ?>
         </div>
     </div>
     <div class="local_great" style="position:fixed; width:120px; right:0;">
         <div class="source-image-right" style="float:right">
-            <!-- RHS AD 1 ==> Starts -->
-            <!--<a href="https://www.indianclicks.com/clicks.php?url=https://www.giridhariconstructions.com/prospera-county.php&sid=GARight"><img src="images/general/Giridhari_Constructions_160_07222023_1_1.jpg" width="160" alt="Andhra Pradesh Number One" /> </a> -->
-            <a href="https://www.msnrealty.com/new-lp/GreatAndhra"><img alt="MSN Realty" src="images/msn_new_160_2.jpg"
-                    width="160" /> </a>
-            <!--<div id="vuukle-ad-4"></div>-->
-            <!-- RHS AD 1 ==> Ends -->
+            <?php ga_render_ad('INNER_SIDEBAR_RIGHT'); ?>
         </div>
     </div>
 
@@ -222,11 +213,7 @@ if ($ga_article && !empty($ga_article['category']['id'])) {
                     <img src="images/great_andhra.gif" title="Greatandhra website logo" alt="Greatandhra logo">
                 </a>
                 <div class="AdinHedare">
-                    <span class="a-label-header"
-                        style="font-size: 10px;text-align: center;display: block;">Advertisement</span>
-                    <a href="https://www.msnrealty.com/new-lp/GreatAndhra" target="_blank"><img border="0"
-                            src="images/msn_728.jpg" width="728" height="90" alt="MSN Reality"> </a>
-                    <!--<div id="vuukle-ad-6"></div>-->
+                    <?php ga_render_ad('INNER_TOP_BANNER'); ?>
                 </div>
             </div>
             
@@ -323,11 +310,7 @@ if ($ga_article && !empty($ga_article['category']['id'])) {
 
             <!-- Second Row: Advertisement -->
             <div class="_201223_">
-                <p style="font-size: 11px; text-align: center;">Advertisement</p>
-                <a href="https://bestbrains.com/promotions/newyearoffer" target="_blank">
-                    <img alt="Best Brains" border="0" src="images/IndianClicks_BestBrains_380x250_12242025_1.webp"
-                        style="max-width: 100%; height: 250px;" />
-                </a>
+                <?php ga_render_ad('INNER_MOBILE_BANNER'); ?>
             </div>
         </div>
 

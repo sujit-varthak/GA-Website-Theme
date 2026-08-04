@@ -337,11 +337,7 @@ function ga_box_office_url(int $page): string
                     <img src="images/great_andhra.gif" title="Greatandhra website logo" alt="Greatandhra logo">
                 </a>
                 <div class="AdinHedare">
-                    <span class="a-label-header"
-                        style="font-size: 10px;text-align: center;display: block;">Advertisement</span>
-                    <a href="https://www.msnrealty.com/new-lp/GreatAndhra" target="_blank"><img border="0"
-                            src="images/msn_728.jpg" width="728" height="90" alt="MSN Reality"> </a>
-                    <!--<div id="vuukle-ad-6"></div>-->
+                    <?php ga_render_ad('BOXOFFICE_TOP_BANNER'); ?>
                 </div>
             </div>
 
@@ -1035,11 +1031,7 @@ function ga_box_office_url(int $page): string
 
             <!-- Second Row: Advertisement -->
             <div class="_201223_">
-                <p style="font-size: 11px; text-align: center;">Advertisement</p>
-                <a href="https://bestbrains.com/promotions/newyearoffer" target="_blank">
-                    <img alt="Best Brains" border="0" src="images/IndianClicks_BestBrains_380x250_12242025_1.webp"
-                        style="max-width: 100%; height: 250px;" />
-                </a>
+                <?php ga_render_ad('BOXOFFICE_MOBILE_BANNER'); ?>
             </div>
         </div>
 

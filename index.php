@@ -115,20 +115,12 @@ $ga_trending_articles = array_slice($ga_trending_articles, 0, GA_TAB_ARTICLE_LIM
     <div id="fb-root"></div>
     <div class="local_great" style="position:fixed; width:100%; float:left; width:80px;">
         <div class="source-image-left" style="float:left; display:block; left:69px;">
-            <!--<a href="https://www.indianclicks.com/clicks.php?url=https://www.giridhariconstructions.com/prospera-county.php&sid=GALeft"><img src="images/general/Giridhari_Constructions_160_07222023_1_1.jpg" width="160" alt="Andhra Pradesh Number One" /> </a> 	-->
-            <a href="https://www.msnrealty.com/new-lp/GreatAndhra"><img alt="MSN Realty" src="images/msn_new_160_2.jpg"
-                    width="160" /> </a>
-
+            <?php ga_render_ad('HOMEPAGE_SIDEBAR_LEFT'); ?>
         </div>
     </div>
     <div class="local_great" style="position:fixed; width:120px; right:0;">
         <div class="source-image-right" style="float:right; display:block; right:69px;">
-            <!-- RHS AD 1 ==> Starts -->
-            <!--<a href="https://www.indianclicks.com/clicks.php?url=https://www.giridhariconstructions.com/prospera-county.php&sid=GARight"><img src="images/general/Giridhari_Constructions_160_07222023_1_1.jpg" width="160" alt="Andhra Pradesh Number One" /> </a> -->
-            <a href="https://www.msnrealty.com/new-lp/GreatAndhra"><img alt="MSN Realty" src="images/msn_new_160_2.jpg"
-                    width="160" /> </a>
-            <!--<div id="vuukle-ad-4"></div>-->
-            <!-- RHS AD 1 ==> Ends -->
+            <?php ga_render_ad('HOMEPAGE_SIDEBAR_RIGHT'); ?>
         </div>
     </div>
     <!--great_andhra_body-->
@@ -148,9 +140,7 @@ $ga_trending_articles = array_slice($ga_trending_articles, 0, GA_TAB_ARTICLE_LIM
 
             </div>
             <div class="_201223_">
-                <p style="font-size: 11px;text-align: center;"> Advertisement</p>
-                <a href="https://bestbrains.com/promotions/newyearoffer" target="_blank"><img alt="Best Brains"
-                        border="0" height="90" src="images/Best_Brains_728_12242025_1.jpg" width="728" /> </a>
+                <?php ga_render_ad('HOMEPAGE_TOP_BANNER'); ?>
             </div>
 
         </div>
@@ -249,11 +239,7 @@ $ga_trending_articles = array_slice($ga_trending_articles, 0, GA_TAB_ARTICLE_LIM
 
             <!-- Second Row: Advertisement -->
             <div class="_201223_">
-                <p style="font-size: 11px; text-align: center;">Advertisement</p>
-                <a href="https://bestbrains.com/promotions/newyearoffer" target="_blank">
-                    <img alt="Best Brains" border="0" src="images/IndianClicks_BestBrains_380x250_12242025_1.webp"
-                        style="max-width: 100%; height: 250px;" />
-                </a>
+                <?php ga_render_ad('HOMEPAGE_MOBILE_BANNER'); ?>
             </div>
         </div>
 
@@ -739,19 +725,7 @@ $ga_trending_articles = array_slice($ga_trending_articles, 0, GA_TAB_ARTICLE_LIM
                     </li>
                     <div class="display-inline-block padding-top-bot">
                         <li class="sortable-item">
-                            <p style="/* float: left; */font-size: 11px;text-align: center;"> Advertisement</p>
-                            <!-- <script type="text/javascript">
-                                google_ad_client = "ca-pub-1239645388568087";
-                                /* Mediumrectangle */
-                                google_ad_slot = "0742396642";
-                                google_ad_width = 300;
-                                google_ad_height = 250;
-
-
-                            </script>
-                            <script src="assets/show_ads.js" type="text/javascript">
-                            </script> -->
-                            <img class="temp-class" src="images/16260515895400254651.jpg" />
+                            <?php ga_render_ad('HOMEPAGE_SECTION_INLINE'); ?>
                         </li>
                     </div>
                 </ul>
