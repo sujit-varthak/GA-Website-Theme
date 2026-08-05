@@ -726,3 +726,57 @@
     margin-bottom: 10px !important;
   }
 }
+
+/* ========================================
+   MOBILE-ONLY "LATEST NEWS" LIST
+   Shown between Big Story and the Top News/Most Read/Telugu tabs on index.php.
+   Hidden on desktop; the .header bar styling is inherited from the existing
+   .sortable-item_style_1 .header rule (main-single.css), same as "Big Story".
+   ======================================== */
+
+.mobile-latest-news {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .mobile-latest-news {
+    display: block;
+  }
+
+  .mobile-latest-news-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .mobile-latest-news-item {
+    border-bottom: 1px solid #e0e0e0;
+  }
+
+  .mobile-latest-news-item:last-child {
+    border-bottom: none;
+  }
+
+  .mobile-latest-news-item a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 4px;
+    text-decoration: none;
+  }
+
+  .mobile-latest-news-thumb {
+    width: 90px;
+    height: 90px;
+    object-fit: cover;
+    border-radius: 4px;
+    flex-shrink: 0;
+  }
+
+  .mobile-latest-news-title {
+    color: #222;
+    font-family: Lato, sans-serif;
+    font-size: 15px;
+    line-height: 1.4;
+  }
+}

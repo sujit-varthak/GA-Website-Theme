@@ -55,6 +55,11 @@ $ga_most_read_articles = array_slice($ga_popular_sorted, 0, GA_TAB_ARTICLE_LIMIT
 // Top News: back to the isTrending flag (via the homepage aggregate's trending key) — the
 // "Latest News" category filter was tried and then reverted back to this.
 $ga_trending_articles = array_slice($ga_trending_articles, 0, GA_TAB_ARTICLE_LIMIT);
+
+// Mobile-only "Latest News" list (hidden on desktop via CSS) — mirrors the Top News tab's own
+// content ($ga_trending_articles, already capped to GA_TAB_ARTICLE_LIMIT above), just capped
+// further to GA_MOBILE_LATEST_NEWS_COUNT for this shorter list.
+$ga_mobile_latest_news_articles = array_slice($ga_trending_articles, 0, GA_MOBILE_LATEST_NEWS_COUNT);
 ?>
 <!DOCTYPE html
     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -454,6 +459,34 @@ $ga_trending_articles = array_slice($ga_trending_articles, 0, GA_TAB_ARTICLE_LIM
                             <!--related Articles end-->
                             </li>
                         </ul>
+                    </div>
+                    <div class="home_left_column mobile-latest-news">
+                        <div class="sortable-item_style_1">
+                            <div class="header">Latest News</div>
+                            <ul class="mobile-latest-news-list">
+                                <?php if (!empty($ga_mobile_latest_news_articles)): ?>
+                                    <?php foreach ($ga_mobile_latest_news_articles as $ga_i => $ga_article): ?>
+                                        <?php
+                                        $ga_mln_fallback = GA_MOST_POPULAR_FALLBACK_IMAGES[$ga_i % count(GA_MOST_POPULAR_FALLBACK_IMAGES)];
+                                        $ga_mln_img = ga_image($ga_article, $ga_mln_fallback);
+                                        $ga_mln_title = ga_truncate($ga_article['title'] ?? '', GA_MOBILE_LATEST_NEWS_TITLE_MAX);
+                                        ?>
+                                        <li class="mobile-latest-news-item">
+                                            <a href="<?php echo ga_e(ga_inner_link($ga_article)); ?>">
+                                                <img alt="<?php echo ga_e($ga_article['title'] ?? ''); ?>"
+                                                    src="<?php echo ga_e($ga_mln_img['src']); ?>"
+                                                    class="mobile-latest-news-thumb" />
+                                                <span class="mobile-latest-news-title"><?php echo ga_e($ga_mln_title); ?></span>
+                                            </a>
+                                        </li>
+                                    <?php endforeach; ?>
+                                <?php else: ?>
+                                    <li class="ga-unavailable">
+                                        <p class="ga-unavailable-msg">Content temporarily unavailable</p>
+                                    </li>
+                                <?php endif; ?>
+                            </ul>
+                        </div>
                     </div>
                     <div class="home_left_column">
                         <ul class="sortable-list ui-sortable">

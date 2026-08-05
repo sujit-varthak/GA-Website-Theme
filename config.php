@@ -171,6 +171,12 @@ define('GA_MOST_POPULAR_TITLE_MAX', 90);
 define('GA_OPINION_TITLE_MAX', 90);
 define('GA_CATEGORY_SECTION_TITLE_MAX', 90);
 
+// Mobile-only "Latest News" list shown between Big Story and the Top News/Most Read/Telugu
+// tabs (index.php) - hidden on desktop via CSS. Mirrors the Top News tab's own content
+// ($ga_trending_articles), capped to this count.
+define('GA_MOBILE_LATEST_NEWS_COUNT', 10);
+define('GA_MOBILE_LATEST_NEWS_TITLE_MAX', 80);
+
 // Most Popular / Most Read: no dedicated backend endpoint yet, so we pull this many latest
 // articles and sort by viewCount in PHP (same "could miss an older high-view article" caveat
 // as any client-side scan — revisit if this ever needs to be exhaustive rather than latest-N).
