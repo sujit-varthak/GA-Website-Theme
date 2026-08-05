@@ -330,7 +330,10 @@ function ga_is_mobile(): bool
 // GA_AD_FALLBACKS[$zone] if none is active, and renders nothing if neither exists. IMAGE ads
 // render as a linked <img> (desktop or mobile source based on ga_is_mobile()); SCRIPT ads
 // output the stored embed code as-is — trusted admin-authored content, not user input.
-function ga_render_ad(string $zone): void
+// $showLabel controls the "Advertisement" caption above the image — most zones had one in
+// their original static markup, but a few (the above-header banner, the 3-ad strip row, the
+// big-story banner) were always plain linked images with no label, so those pass false.
+function ga_render_ad(string $zone, bool $showLabel = true): void
 {
     $isMobile = ga_is_mobile();
     $ad = ga_fetch_ad($zone, !$isMobile);
@@ -380,7 +383,9 @@ function ga_render_ad(string $zone): void
         $imgAttrs .= ' style="' . $style . '"';
     }
 
-    echo '<p style="font-size: 11px;text-align: center;">Advertisement</p>';
+    if ($showLabel) {
+        echo '<p style="font-size: 11px;text-align: center;">Advertisement</p>';
+    }
     if ($landingUrl !== '') {
         echo '<a href="' . ga_e($landingUrl) . '" target="_blank" rel="noopener">';
     }

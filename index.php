@@ -126,9 +126,7 @@ $ga_trending_articles = array_slice($ga_trending_articles, 0, GA_TAB_ARTICLE_LIM
     <!--great_andhra_body-->
     <div class="great_andhra_body">
         <div class="great_andhra_logo_panel_top_box_201223_">
-            <a href="https://www.msnrealty.com/new-lp/GreatAndhra">
-                <img alt="MSN Reality" src="images/msn_990_2.jpg" width="990" />
-            </a>
+            <?php ga_render_ad('HOMEPAGE_ABOVE_HEADER_BANNER', false); ?>
         </div>
 
         <!--great_andhra_logo_panel-->
@@ -366,16 +364,13 @@ $ga_trending_articles = array_slice($ga_trending_articles, 0, GA_TAB_ARTICLE_LIM
 
         <div class="great_andhra_main_201223_">
             <div class="_201223_1">
-                <a href="https://www.garudavega.com/" target="_blank"><img alt="GVega" border="0" height="40"
-                        src="images/GVega_320x40_03122025_1.gif" width="330" /> </a>
+                <?php ga_render_ad('HOMEPAGE_STRIP_BANNER_1', false); ?>
             </div>
             <div class="_201223_2">
-                <a href="http://www.sankaranethralayausa.org/" target="_blank"><img alt="Sankara Nethralaya" border="0"
-                        height="40" src="images/Sankara_Nethralaya_320x40_04172023_1_2.gif" width="330" /> </a>
+                <?php ga_render_ad('HOMEPAGE_STRIP_BANNER_2', false); ?>
             </div>
             <div class="_201223_3">
-                <a href="https://urthindia.com/" target="_blank"><img alt="TANA" border="0" height="40"
-                        src="images/urth_spices.gif" width="300" /> </a>
+                <?php ga_render_ad('HOMEPAGE_STRIP_BANNER_3', false); ?>
             </div>
 
             <!-- <div class="local2">
@@ -425,8 +420,7 @@ $ga_trending_articles = array_slice($ga_trending_articles, 0, GA_TAB_ARTICLE_LIM
                                     <?php endif; ?>
                                 </div>
                             <li class="sortable-item_clear123">
-                                <a href="https://www.learntek.org/masterprograms/" target="_blank"><img alt="Learntek"
-                                        src="images/Learntek_320_03292026_1.gif" /></a>
+                                <?php ga_render_ad('HOMEPAGE_BIG_STORY_BANNER', false); ?>
                             </li>
                             <li>
                                 <ul class="big-galist bg-unlist">
