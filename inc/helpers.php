@@ -333,7 +333,11 @@ function ga_is_mobile(): bool
 // $showLabel controls the "Advertisement" caption above the image — most zones had one in
 // their original static markup, but a few (the above-header banner, the 3-ad strip row, the
 // big-story banner) were always plain linked images with no label, so those pass false.
-function ga_render_ad(string $zone, bool $showLabel = true): void
+// $dimensionZone overrides which GA_AD_ZONE_IMAGE_DIMENSIONS entry sizes the <img> — for a
+// call site that fetches one zone's ad but needs a different fixed size than that zone's own
+// primary placement (e.g. the homepage phone-view banner reuses HOMEPAGE_TOP_BANNER's ad but
+// sizes it like the old HOMEPAGE_MOBILE_BANNER slot, not the 728x90 desktop banner).
+function ga_render_ad(string $zone, bool $showLabel = true, ?string $dimensionZone = null): void
 {
     $isMobile = ga_is_mobile();
     $ad = ga_fetch_ad($zone, !$isMobile);
@@ -366,7 +370,7 @@ function ga_render_ad(string $zone, bool $showLabel = true): void
     // regardless of their fixed-position wrapper's narrower width, not stretched to fit it.
     // Zones with no entry (e.g. HOMEPAGE_SECTION_INLINE, which never had an explicit size)
     // render responsively instead.
-    $dims = GA_AD_ZONE_IMAGE_DIMENSIONS[$zone] ?? null;
+    $dims = GA_AD_ZONE_IMAGE_DIMENSIONS[$dimensionZone ?? $zone] ?? null;
     $imgAttrs = '';
     if ($dims !== null) {
         if ($dims['width'] !== null) {

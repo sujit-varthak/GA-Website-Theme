@@ -324,11 +324,8 @@ function ga_list_page_url(string $cleanPath, array $legacyParams, int $page): st
                     <img src="./images/great_andhra.gif" title="Greatandhra website logo" alt="Greatandhra logo">
                 </a>
                 <div class="AdinHedare">
-                    <span class="a-label-header"
-                        style="font-size: 10px;text-align: center;display: block;">Advertisement</span>
-                    <a href="https://www.msnrealty.com/new-lp/GreatAndhra" target="_blank"><img border="0"
-                            src="./images/msn_728.jpg" width="728" height="90" alt="MSN Reality"> </a>
-                    <!--<div id="vuukle-ad-6"></div>-->
+                    <?php // Same ad as the homepage's top banner - not independently manageable. ?>
+                    <?php ga_render_ad('HOMEPAGE_TOP_BANNER'); ?>
                 </div>
             </div>
 
@@ -1016,11 +1013,8 @@ function ga_list_page_url(string $cleanPath, array $legacyParams, int $page): st
 
             <!-- Second Row: Advertisement -->
             <div class="_201223_">
-                <p style="font-size: 11px; text-align: center;">Advertisement</p>
-                <a href="https://bestbrains.com/promotions/newyearoffer" target="_blank">
-                    <img alt="Best Brains" border="0" src="images/IndianClicks_BestBrains_380x250_12242025_1.webp"
-                        style="max-width: 100%; height: 250px;" />
-                </a>
+                <?php // Reuses the Homepage Top Banner ad's mobile image - same pattern as index.php/inner-page.php. ?>
+                <?php ga_render_ad('HOMEPAGE_TOP_BANNER', true, 'HOMEPAGE_MOBILE_BANNER'); ?>
             </div>
         </div>
             <!--great_andhra_main_menu_panel-->
@@ -1153,77 +1147,8 @@ function ga_list_page_url(string $cleanPath, array $legacyParams, int $page): st
 
 
                         <li class="sortable-item">
-                            <div id="vuukle-ad-13" style="min-width: 300px; min-height: 250px;">
-                                <div class="vuukle-ads"
-                                    style="display: block !important;height: auto;margin: 0px auto;text-align: center; clear: both; overflow: hidden;">
-                                    <div class="vuukle-ad-label"
-                                        style="display: flex; justify-content: space-evenly; flex-basis: 100%; margin: 0px auto 5px; width: 300px; height: 11px; padding: 0px; line-height: 1.1 !important;">
-                                        <span style="display: none;"><a aria-label="Vuukle" href="https://vuukle.com"
-                                                target="_blank" rel="noopener nofollow"
-                                                style="background-color: transparent; box-shadow: none;">
-                                                <svg width="11px" viewBox="0 0 30 30" version="1.1"
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    xmlns:xlink="http://www.w3.org/1999/xlink">
-                                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                                        <g transform="translate(-150.000000, -31.000000)"
-                                                            fill-rule="nonzero">
-                                                            <g transform="translate(150.000000, 31.000000)">
-                                                                <path
-                                                                    d="M41.8097027,29.0691892 L42.3657568,29.0691892 L54.204,1.80093081 L48.8013243,1.80093081 L44.2726216,12.2153514 C43.2397297,14.5605405 42.2069189,18.3368108 42.2069189,18.3368108 C42.2069189,18.3368108 41.1342973,14.5208108 40.1014865,12.2153514 L35.4535946,1.80093081 L29.4948649,1.80093081 L41.8097027,29.0691892 Z M59.7741892,29.1883784 C62.118,29.1883784 64.0645946,28.0754595 65.0974054,26.0481892 L64.9782162,28.8307297 L70.3412432,28.8307297 L70.3412432,11.8972703 L64.9782162,11.8972703 L64.9782162,20.9602703 C64.9782162,23.1067297 63.7864865,24.339 61.6413243,24.339 C59.7345405,24.339 58.8207568,23.226 58.8207568,21.318 L58.8207568,11.8972703 L53.4578919,11.8972703 L53.4578919,21.6757297 C53.4578919,26.4854595 56.0797297,29.1883784 59.7741892,29.1883784 Z M80.7617838,29.1883784 C83.1056757,29.1883784 85.0524324,28.0754595 86.0845946,26.0481892 L85.9662162,28.8307297 L91.3289189,28.8307297 L91.3289189,11.8972703 L85.9662162,11.8972703 L85.9662162,20.9602703 C85.9662162,23.1067297 84.7743243,24.339 82.6289189,24.339 C80.7218919,24.339 79.8081892,23.226 79.8081892,21.318 L79.8081892,11.8972703 L74.4458919,11.8972703 L74.4458919,21.6757297 C74.4458919,26.4854595 77.0671622,29.1883784 80.7617838,29.1883784 Z M100.915946,23.9414595 L102.345405,22.431 L106.556757,28.8307297 L112.793514,28.8307297 L106.158649,18.8138108 L112.157838,11.8972703 L106.198378,11.8972703 L100.637838,18.4162703 C100.796757,17.343 100.915946,16.0312703 100.915946,14.7592703 L100.915946,0.131416216 L95.5524324,0.131416216 L95.5524324,28.8307297 L100.915946,28.8307297 L100.915946,23.9414595 Z M115.301351,28.8307297 L120.624324,28.8307297 L120.624324,0.131416216 L115.301351,0.131416216 L115.301351,28.8307297 Z M129.844865,21.9937297 L142.675946,21.9937297 C143.073243,16.071 139.776486,11.5395405 133.697838,11.5395405 C128.454324,11.5395405 124.362973,15.1965405 124.362973,20.3242703 C124.362973,25.5314595 128.256486,29.1883784 134.293784,29.1883784 C137.82973,29.1883784 139.894865,28.1151892 141.524595,26.6841892 L138.465405,23.3849189 C137.631081,23.9811892 136.161081,24.7364595 134.214324,24.7364595 C131.790811,24.7364595 130.361351,23.7427297 129.844865,21.9937297 Z M129.765405,18.8931892 C130.202432,16.866 131.631892,15.9120811 133.738378,15.9120811 C135.843243,15.9120811 137.035135,17.0250811 137.272703,18.8931892 L129.765405,18.8931892 Z"
-                                                                    id="Shape" fill="#FACC2B"></path>
-                                                                <path
-                                                                    d="M12.4448919,5.99524054 C5.66632703,5.99524054 0.171030811,10.9249459 0.171030811,17.0061892 C0.171030811,19.2473514 0.919248649,21.3307297 2.20112432,23.0697568 C2.03273514,25.079027 1.54816216,27.9091622 0.171030811,29.2876216 C0.171030811,29.2876216 4.37897838,28.6966216 7.22951351,26.9742973 C8.81278378,27.6419189 10.5797838,28.0171622 12.4448919,28.0171622 C19.2235135,28.0171622 24.7187838,23.0874324 24.7187838,17.0061892 C24.7187838,10.9249459 19.2235135,5.99524054 12.4448919,5.99524054 Z"
-                                                                    id="Path" fill="#FACC2B"></path>
-                                                                <path
-                                                                    d="M12.4448919,5.99524054 C5.66632703,5.99524054 0.171030811,10.9249459 0.171030811,17.0061892 C0.171030811,19.2473514 0.919248649,21.3307297 2.20112432,23.0697568 C2.03273514,25.079027 1.54816216,27.9091622 0.171030811,29.2876216 C0.171030811,29.2876216 4.37897838,28.6966216 7.22951351,26.9742973 C8.81278378,27.6419189 10.5797838,28.0171622 12.4448919,28.0171622 C19.2235135,28.0171622 24.7187838,23.0874324 24.7187838,17.0061892 C24.7187838,10.9249459 19.2235135,5.99524054 12.4448919,5.99524054 Z"
-                                                                    id="Path" fill="#4885ED"></path>
-                                                                <path
-                                                                    d="M12.4421351,24.8694324 L12.7312703,24.8694324 L18.8872703,10.6898108 L16.0778919,10.6898108 L13.7228919,16.1052973 C13.1858108,17.3249189 12.6487297,19.2884595 12.6487297,19.2884595 C12.6487297,19.2884595 12.0908919,17.3041622 11.5538108,16.1052973 L9.13686486,10.6898108 L6.03832703,10.6898108 L12.4421351,24.8694324 Z"
-                                                                    id="Path" fill="#FFFFFF"></path>
-                                                                <path
-                                                                    d="M28.6454595,12.7881892 C28.6454595,6.70699459 23.1501892,1.77718703 16.3715676,1.77718703 C11.4767027,1.77718703 7.25202973,4.34843514 5.28135405,8.06723514 C7.29767838,6.76494324 9.7697027,5.99514324 12.4439189,5.99514324 C19.2225405,5.99514324 24.7178108,10.9248649 24.7178108,17.0061892 C24.7178108,19.3322432 23.9117027,21.4883514 22.5394054,23.2662162 C25.2882973,24.594973 28.6454595,25.0696216 28.6454595,25.0696216 C27.2682973,23.6915676 26.7837568,20.8614324 26.6153514,18.8517568 C27.8972432,17.1127297 28.6454595,15.0293514 28.6454595,12.7881892 Z"
-                                                                    id="Path" fill="#FACC2B"></path>
-                                                            </g>
-                                                        </g>
-                                                    </g>
-                                                </svg>
-                                            </a></span><span
-                                            style="display: block; color: rgb(108, 117, 125); margin: 0px; text-align: center; flex: 1 1 0%; padding: 0px; font-size: 10px !important; line-height: 1 !important;">Advertisement</span>
-                                    </div>
-                                    <div id="div-gpt-ad-1497448474263-13-wrapper"
-                                        style="position: relative; width: 100%; display: flex; justify-content: space-between; flex-direction: column;">
-                                        <div id="div-gpt-ad-1497448474263-13-pre"
-                                            style="background-color: black; color: white; text-align: center;">
-                                            ADVERTISEMENT</div>
-                                        <div style="height: 250px; display: flex; justify-content: center;">
-                                            <div id="div-gpt-ad-1497448474263-13-overlay"
-                                                style="position: absolute; height: 250px; width: 300px; clip: rect(0px, 300px, 250px, 0px);">
-                                                <div id="div-gpt-ad-1497448474263-13" class="vuukle-interscroller"
-                                                    data-google-query-id="CMbA34TN4JMDFde7rAIdKt0QYA"
-                                                    style="position: fixed; top: 50vh; transform: translate(0px, -50%);">
-                                                    <div id="google_ads_iframe_/213794966,123116330/vuukle-widget/greatandhra.com-13_0__container__"
-                                                        style="border: 0pt none; margin: auto; text-align: center;">
-                                                        <iframe
-                                                            id="google_ads_iframe_/213794966,123116330/vuukle-widget/greatandhra.com-13_0"
-                                                            name="google_ads_iframe_/213794966,123116330/vuukle-widget/greatandhra.com-13_0"
-                                                            title="3rd party ad content" width="300" height="600"
-                                                            scrolling="no" marginwidth="0" marginheight="0"
-                                                            frameborder="0" aria-label="Advertisement" tabindex="0"
-                                                            allow="private-state-token-redemption;attribution-reporting"
-                                                            data-load-complete="true" data-google-container-id="1"
-                                                            style="border: 0px; vertical-align: bottom; max-width: none; margin: 0px auto; width: 300px !important;"
-                                                            data-a-adroot="2aeacecbyqhn2q5xwf"
-                                                            data-integralas-id-e5541688-2640-7433-8fe1-ed1590eb7cd8=""></iframe>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div id="div-gpt-ad-1497448474263-13-post"
-                                            style="background-color: black; color: white; text-align: center;">SCROLL TO
-                                            CONTINUE WITH CONTENT</div>
-                                    </div>
-                                </div>
-                            </div>
+                            <?php // New admin-manageable zone, no content configured yet - renders nothing until an ad is added. ?>
+                            <?php ga_render_ad('LISTPAGE_CONTENT_AD'); ?>
                         </li>
 
                         <li class="sortable-item">

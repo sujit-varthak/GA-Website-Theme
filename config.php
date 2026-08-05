@@ -48,9 +48,16 @@ define('GA_AD_FALLBACKS', [
     'HOMEPAGE_TOP_BANNER' => [
         'type' => 'IMAGE',
         'imageUrlDesktop' => 'images/Best_Brains_728_12242025_1.jpg',
+        // Used by the phone-view banner slot (index.php reuses this same zone's ad there,
+        // sized via the HOMEPAGE_MOBILE_BANNER dimension entry below) when the active ad
+        // has no imageUrlMobile of its own set.
+        'imageUrlMobile' => 'images/IndianClicks_BestBrains_380x250_12242025_1.webp',
         'landingUrl' => 'https://bestbrains.com/promotions/newyearoffer',
         'name' => 'Best Brains',
     ],
+    // Zone unused since the homepage phone-view banner slot was switched to reuse
+    // HOMEPAGE_TOP_BANNER's ad instead (see index.php) - kept here, not deleted, since the
+    // admin plans to bring this back as its own manageable zone later.
     'HOMEPAGE_MOBILE_BANNER' => [
         'type' => 'IMAGE',
         'imageUrlMobile' => 'images/IndianClicks_BestBrains_380x250_12242025_1.webp',
@@ -93,6 +100,11 @@ define('GA_AD_FALLBACKS', [
         'landingUrl' => 'https://www.learntek.org/masterprograms/',
         'name' => 'Learntek',
     ],
+    // The 6 zones below (INNER_SIDEBAR_LEFT/RIGHT, INNER_TOP_BANNER, INNER_MOBILE_BANNER,
+    // BOXOFFICE_TOP_BANNER, BOXOFFICE_MOBILE_BANNER) are unused since inner-page.php and
+    // box-office.php were switched to reuse HOMEPAGE_SIDEBAR_LEFT/RIGHT and
+    // HOMEPAGE_TOP_BANNER's ads directly - kept here, not deleted, in case the admin wants
+    // these back as independently manageable zones later.
     'INNER_SIDEBAR_LEFT' => [
         'type' => 'IMAGE',
         'imageUrlDesktop' => 'images/msn_new_160_2.jpg',
@@ -129,6 +141,17 @@ define('GA_AD_FALLBACKS', [
         'landingUrl' => 'https://bestbrains.com/promotions/newyearoffer',
         'name' => 'Best Brains',
     ],
+    // Static placeholder that always sat under the byline (add_place_650X60) - kept as the
+    // fallback so the slot doesn't just disappear before a real ad is configured.
+    'INNER_ARTICLE_BANNER' => [
+        'type' => 'IMAGE',
+        'imageUrlDesktop' => 'images/650-60.jpg',
+        'landingUrl' => '',
+        'name' => 'Advertisement',
+    ],
+    // No fallback for LISTPAGE_CONTENT_AD - it replaces a live third-party (Vuukle) script
+    // slot, not a static image, so there's nothing sensible to show until a real ad exists;
+    // the slot renders empty until then.
     'ROADBLOCK' => [
         'type' => 'IMAGE',
         'imageUrlMobile' => 'images/spiderman-brand-new-day-poster.jpg',
@@ -162,6 +185,8 @@ define('GA_AD_ZONE_IMAGE_DIMENSIONS', [
     'INNER_MOBILE_BANNER' => ['width' => null, 'height' => 250],
     'BOXOFFICE_TOP_BANNER' => ['width' => 728, 'height' => 90],
     'BOXOFFICE_MOBILE_BANNER' => ['width' => null, 'height' => 250],
+    'INNER_ARTICLE_BANNER' => ['width' => 650, 'height' => 60],
+    'LISTPAGE_CONTENT_AD' => ['width' => 300, 'height' => 250],
 ]);
 
 // Max title length before PHP-side truncation kicks in (no CSS line-clamp anywhere in this theme).

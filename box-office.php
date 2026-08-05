@@ -337,7 +337,8 @@ function ga_box_office_url(int $page): string
                     <img src="images/great_andhra.gif" title="Greatandhra website logo" alt="Greatandhra logo">
                 </a>
                 <div class="AdinHedare">
-                    <?php ga_render_ad('BOXOFFICE_TOP_BANNER'); ?>
+                    <?php // Same ad as the homepage's top banner - not independently manageable. ?>
+                    <?php ga_render_ad('HOMEPAGE_TOP_BANNER'); ?>
                 </div>
             </div>
 
@@ -1031,7 +1032,8 @@ function ga_box_office_url(int $page): string
 
             <!-- Second Row: Advertisement -->
             <div class="_201223_">
-                <?php ga_render_ad('BOXOFFICE_MOBILE_BANNER'); ?>
+                <?php // Reuses the Homepage Top Banner ad's mobile image - same pattern as index.php/inner-page.php/list-page.php. ?>
+                <?php ga_render_ad('HOMEPAGE_TOP_BANNER', true, 'HOMEPAGE_MOBILE_BANNER'); ?>
             </div>
         </div>
 

@@ -242,7 +242,10 @@ $ga_mobile_latest_news_articles = array_slice($ga_trending_articles, 0, GA_MOBIL
 
             <!-- Second Row: Advertisement -->
             <div class="_201223_">
-                <?php ga_render_ad('HOMEPAGE_MOBILE_BANNER'); ?>
+                <?php // Reuses the Homepage Top Banner ad's mobile image, not a separate zone -
+                // see GA_AD_ZONE_IMAGE_DIMENSIONS['HOMEPAGE_MOBILE_BANNER'] for why the 3rd
+                // arg still references that zone name (sizing only, no ad is fetched under it). ?>
+                <?php ga_render_ad('HOMEPAGE_TOP_BANNER', true, 'HOMEPAGE_MOBILE_BANNER'); ?>
             </div>
         </div>
 
