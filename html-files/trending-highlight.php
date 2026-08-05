@@ -65,12 +65,13 @@
     </div>
 
     <div class="trending_scroll">
-        <div class="trending_item"><a href="#">Ecopreneur</a></div>
-        <div class="trending_item"><a href="#">US Iran War</a></div>
-        <div class="trending_item"><a href="#">Tamil Nadu Election 2026</a></div>
-        <div class="trending_item"><a href="#">Parentology</a></div>
-        <div class="trending_item"><a href="#">AP SSC Result</a></div>
-        <div class="trending_item"><a href="#">Raghav Chadha</a></div>
+        <?php if (!empty($ga_trending_tags)): ?>
+            <?php foreach ($ga_trending_tags as $ga_th_tag): ?>
+                <div class="trending_item">
+                    <a href="<?php echo ga_e(ga_tag_link($ga_th_tag['slug'] ?? '')); ?>"><?php echo ga_e($ga_th_tag['name'] ?? ''); ?></a>
+                </div>
+            <?php endforeach; ?>
+        <?php endif; ?>
     </div>
 
 </div>
