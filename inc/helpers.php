@@ -157,26 +157,50 @@ function ga_e(?string $value): string
 // the template renders body raw, plain-text paragraph breaks were collapsing into one wall
 // of text. Detect which shape we have and only reformat the plain-text case — HTML bodies
 // pass through untouched. Fixes every current and future plain-text article with no data migration.
-function ga_render_article_body(?string $body): string
+//
+// $adZone, when given, injects ga_render_ad($adZone)'s output between two paragraphs — only
+// for the plain-text case above (HTML bodies pass through untouched, no ad injected — reliably
+// splitting arbitrary existing markup is a different, riskier problem than splitting text we
+// paragraph-ized ourselves). Articles with at most GA_ARTICLE_MIDCONTENT_AD_SHORT_THRESHOLD
+// paragraphs get the ad after the last one (i.e. at the end); longer articles get it at the
+// midpoint paragraph.
+function ga_render_article_body(?string $body, ?string $adZone = null): string
 {
     $body = (string) $body;
     if (trim($body) === '') {
         return '';
     }
 
-    // Already has real HTML tags — leave it exactly as-is.
+    // Already has real HTML tags — leave it exactly as-is, no ad injected.
     if ($body !== strip_tags($body)) {
         return $body;
     }
 
-    $paragraphs = preg_split('/\r\n\s*\r\n|\n\s*\n/', trim($body));
-    $html = '';
-    foreach ($paragraphs as $paragraph) {
-        $paragraph = trim($paragraph);
-        if ($paragraph === '') {
-            continue;
+    $paragraphs = array_values(array_filter(
+        array_map('trim', preg_split('/\r\n\s*\r\n|\n\s*\n/', trim($body))),
+        function ($paragraph) {
+            return $paragraph !== '';
         }
+    ));
+
+    $adHtml = '';
+    if ($adZone !== null) {
+        ob_start();
+        ga_render_ad($adZone);
+        $adHtml = ob_get_clean();
+    }
+
+    $count = count($paragraphs);
+    $insertAfter = ($adHtml === '' || $count === 0)
+        ? null
+        : ($count <= GA_ARTICLE_MIDCONTENT_AD_SHORT_THRESHOLD ? $count : (int) floor($count / 2));
+
+    $html = '';
+    foreach ($paragraphs as $i => $paragraph) {
         $html .= '<p>' . nl2br(ga_e($paragraph)) . '</p>';
+        if ($insertAfter !== null && ($i + 1) === $insertAfter) {
+            $html .= $adHtml;
+        }
     }
     return $html;
 }
@@ -329,15 +353,13 @@ function ga_is_mobile(): bool
 // 'HOMEPAGE_SIDEBAR_LEFT'): fetches the active admin-managed ad, falls back to
 // GA_AD_FALLBACKS[$zone] if none is active, and renders nothing if neither exists. IMAGE ads
 // render as a linked <img> (desktop or mobile source based on ga_is_mobile()); SCRIPT ads
-// output the stored embed code as-is — trusted admin-authored content, not user input.
-// $showLabel controls the "Advertisement" caption above the image — most zones had one in
-// their original static markup, but a few (the above-header banner, the 3-ad strip row, the
-// big-story banner) were always plain linked images with no label, so those pass false.
+// output the stored embed code as-is — trusted admin-authored content, not user input. No
+// "Advertisement" caption is ever printed — removed site-wide per admin request.
 // $dimensionZone overrides which GA_AD_ZONE_IMAGE_DIMENSIONS entry sizes the <img> — for a
 // call site that fetches one zone's ad but needs a different fixed size than that zone's own
 // primary placement (e.g. the homepage phone-view banner reuses HOMEPAGE_TOP_BANNER's ad but
 // sizes it like the old HOMEPAGE_MOBILE_BANNER slot, not the 728x90 desktop banner).
-function ga_render_ad(string $zone, bool $showLabel = true, ?string $dimensionZone = null): void
+function ga_render_ad(string $zone, ?string $dimensionZone = null): void
 {
     $isMobile = ga_is_mobile();
     $ad = ga_fetch_ad($zone, !$isMobile);
@@ -370,26 +392,30 @@ function ga_render_ad(string $zone, bool $showLabel = true, ?string $dimensionZo
     // regardless of their fixed-position wrapper's narrower width, not stretched to fit it.
     // Zones with no entry (e.g. HOMEPAGE_SECTION_INLINE, which never had an explicit size)
     // render responsively instead.
+    // Inline !important styles (not just bare HTML width/height attributes) so a zone's
+    // fixed size always wins over broad container-level image resets elsewhere in the CSS
+    // (e.g. mobile-responsive.css's ".great_andhra_main_body_container img { height: auto
+    // !important }") regardless of which page/container that zone happens to render inside.
     $dims = GA_AD_ZONE_IMAGE_DIMENSIONS[$dimensionZone ?? $zone] ?? null;
     $imgAttrs = '';
+    $styleParts = [];
     if ($dims !== null) {
         if ($dims['width'] !== null) {
             $imgAttrs .= ' width="' . (int) $dims['width'] . '"';
+            $styleParts[] = 'width: ' . (int) $dims['width'] . 'px !important';
+        } else {
+            $styleParts[] = 'max-width: 100% !important';
         }
         if ($dims['height'] !== null) {
             $imgAttrs .= ' height="' . (int) $dims['height'] . '"';
+            $styleParts[] = 'height: ' . (int) $dims['height'] . 'px !important';
         }
-        $style = $dims['width'] === null ? 'max-width: 100%;' : '';
     } else {
-        $style = 'max-width: 100%; height: auto;';
+        $styleParts[] = 'max-width: 100% !important';
+        $styleParts[] = 'height: auto !important';
     }
-    if ($style !== '') {
-        $imgAttrs .= ' style="' . $style . '"';
-    }
+    $imgAttrs .= ' style="' . implode('; ', $styleParts) . ';"';
 
-    if ($showLabel) {
-        echo '<p style="font-size: 11px;text-align: center;">Advertisement</p>';
-    }
     if ($landingUrl !== '') {
         echo '<a href="' . ga_e($landingUrl) . '" target="_blank" rel="noopener">';
     }

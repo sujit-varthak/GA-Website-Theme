@@ -100,6 +100,16 @@ define('GA_AD_FALLBACKS', [
         'landingUrl' => 'https://www.learntek.org/masterprograms/',
         'name' => 'Learntek',
     ],
+    // Fallback is the exact AdSense unit that sat here before this zone existed, saved as a
+    // SCRIPT-type ad so nothing changes visually until a real ad is configured.
+    'HOMEPAGE_OPINION_BANNER' => [
+        'type' => 'SCRIPT',
+        'scriptCode' => '<div style="text-align: center;"><script async crossorigin="anonymous" src="js/adsbygoogle.js"></script><ins class="adsbygoogle" data-ad-client="ca-pub-1239645388568087" data-ad-slot="4304682596" style="display:inline-block;width:728px;height:90px"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>',
+        'name' => 'AdSense - Opinion Banner',
+    ],
+    // No fallback for HOMEPAGE_LATEST_NEWS_INLINE_AD, HOMEPAGE_ARTICLE_WIDGET_AD,
+    // INNER_ARTICLE_MIDCONTENT_AD, INNER_SIDEBAR_BOTTOM_AD - all brand new slots with no prior
+    // static content, so they render empty until a real ad is configured (same as LISTPAGE_CONTENT_AD).
     // The 6 zones below (INNER_SIDEBAR_LEFT/RIGHT, INNER_TOP_BANNER, INNER_MOBILE_BANNER,
     // BOXOFFICE_TOP_BANNER, BOXOFFICE_MOBILE_BANNER) are unused since inner-page.php and
     // box-office.php were switched to reuse HOMEPAGE_SIDEBAR_LEFT/RIGHT and
@@ -187,6 +197,11 @@ define('GA_AD_ZONE_IMAGE_DIMENSIONS', [
     'BOXOFFICE_MOBILE_BANNER' => ['width' => null, 'height' => 250],
     'INNER_ARTICLE_BANNER' => ['width' => 650, 'height' => 60],
     'LISTPAGE_CONTENT_AD' => ['width' => 300, 'height' => 250],
+    'HOMEPAGE_LATEST_NEWS_INLINE_AD' => ['width' => 300, 'height' => 250],
+    'HOMEPAGE_OPINION_BANNER' => ['width' => 728, 'height' => 90],
+    'HOMEPAGE_ARTICLE_WIDGET_AD' => ['width' => 300, 'height' => 250],
+    'INNER_ARTICLE_MIDCONTENT_AD' => ['width' => 300, 'height' => 250],
+    'INNER_SIDEBAR_BOTTOM_AD' => ['width' => 300, 'height' => 250],
 ]);
 
 // Max title length before PHP-side truncation kicks in (no CSS line-clamp anywhere in this theme).
@@ -198,9 +213,19 @@ define('GA_CATEGORY_SECTION_TITLE_MAX', 90);
 
 // Mobile-only "Latest News" list shown between Big Story and the Top News/Most Read/Telugu
 // tabs (index.php) - hidden on desktop via CSS. Mirrors the Top News tab's own content
-// ($ga_trending_articles), capped to this count.
-define('GA_MOBILE_LATEST_NEWS_COUNT', 10);
+// ($ga_trending_articles), capped to this count. An ad (HOMEPAGE_LATEST_NEWS_INLINE_AD) is
+// inserted after the Nth item - see GA_MOBILE_LATEST_NEWS_AD_AFTER_INDEX below.
+define('GA_MOBILE_LATEST_NEWS_COUNT', 15);
 define('GA_MOBILE_LATEST_NEWS_TITLE_MAX', 80);
+// 0-based index - 6 means "after the 7th article".
+define('GA_MOBILE_LATEST_NEWS_AD_AFTER_INDEX', 6);
+
+// Mid-article-content ad (inner-page.php, INNER_ARTICLE_MIDCONTENT_AD) - only applies to
+// plain-text article bodies (ga_render_article_body() already detects this shape); HTML
+// bodies pass through untouched, no ad injected. If the body has this many paragraphs or
+// fewer, the ad is placed after the last one (i.e. at the end); otherwise it's placed after
+// the paragraph at the midpoint.
+define('GA_ARTICLE_MIDCONTENT_AD_SHORT_THRESHOLD', 3);
 
 // Most Popular / Most Read: no dedicated backend endpoint yet, so we pull this many latest
 // articles and sort by viewCount in PHP (same "could miss an older high-view article" caveat

@@ -418,6 +418,13 @@
     object-fit: cover;
   }
 
+  /* Most Popular only (not Recommended For You, which shares the same markup/classes above) -
+     scoped via the .most-popular-widget class added to its wrapper in index.php. */
+  .most-popular-widget ul.top_story_option2_3story li .top_newsbox_img {
+    width: 111px !important;
+    height: 62px !important;
+  }
+
   ul.top_story_option2_3story li .top_news_txt {
     margin-bottom: 0 !important;
     font-size: 13px !important;
@@ -765,9 +772,9 @@
     text-decoration: none;
   }
 
-  .mobile-latest-news-thumb {
-    width: 90px;
-    height: 90px;
+  .mobile-latest-news .mobile-latest-news-thumb {
+    width: 111px !important;
+    height: 62px !important;
     object-fit: cover;
     border-radius: 4px;
     flex-shrink: 0;
@@ -778,5 +785,16 @@
     font-family: Lato, sans-serif;
     font-size: 15px;
     line-height: 1.4;
+  }
+
+  .mobile-latest-news-ad {
+    text-align: center;
+    padding: 10px 4px;
+  }
+
+  /* Top News/Most Read/Telugu tabs - hidden below the mobile-only "Latest News" list;
+     desktop keeps this section (no .mobile-hide-tabs rule outside this media query). */
+  .mobile-hide-tabs {
+    display: none !important;
   }
 }

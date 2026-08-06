@@ -131,7 +131,7 @@ $ga_mobile_latest_news_articles = array_slice($ga_trending_articles, 0, GA_MOBIL
     <!--great_andhra_body-->
     <div class="great_andhra_body">
         <div class="great_andhra_logo_panel_top_box_201223_">
-            <?php ga_render_ad('HOMEPAGE_ABOVE_HEADER_BANNER', false); ?>
+            <?php ga_render_ad('HOMEPAGE_ABOVE_HEADER_BANNER'); ?>
         </div>
 
         <!--great_andhra_logo_panel-->
@@ -245,7 +245,7 @@ $ga_mobile_latest_news_articles = array_slice($ga_trending_articles, 0, GA_MOBIL
                 <?php // Reuses the Homepage Top Banner ad's mobile image, not a separate zone -
                 // see GA_AD_ZONE_IMAGE_DIMENSIONS['HOMEPAGE_MOBILE_BANNER'] for why the 3rd
                 // arg still references that zone name (sizing only, no ad is fetched under it). ?>
-                <?php ga_render_ad('HOMEPAGE_TOP_BANNER', true, 'HOMEPAGE_MOBILE_BANNER'); ?>
+                <?php ga_render_ad('HOMEPAGE_TOP_BANNER', 'HOMEPAGE_MOBILE_BANNER'); ?>
             </div>
         </div>
 
@@ -372,13 +372,13 @@ $ga_mobile_latest_news_articles = array_slice($ga_trending_articles, 0, GA_MOBIL
 
         <div class="great_andhra_main_201223_">
             <div class="_201223_1">
-                <?php ga_render_ad('HOMEPAGE_STRIP_BANNER_1', false); ?>
+                <?php ga_render_ad('HOMEPAGE_STRIP_BANNER_1'); ?>
             </div>
             <div class="_201223_2">
-                <?php ga_render_ad('HOMEPAGE_STRIP_BANNER_2', false); ?>
+                <?php ga_render_ad('HOMEPAGE_STRIP_BANNER_2'); ?>
             </div>
             <div class="_201223_3">
-                <?php ga_render_ad('HOMEPAGE_STRIP_BANNER_3', false); ?>
+                <?php ga_render_ad('HOMEPAGE_STRIP_BANNER_3'); ?>
             </div>
 
             <!-- <div class="local2">
@@ -428,7 +428,7 @@ $ga_mobile_latest_news_articles = array_slice($ga_trending_articles, 0, GA_MOBIL
                                     <?php endif; ?>
                                 </div>
                             <li class="sortable-item_clear123">
-                                <?php ga_render_ad('HOMEPAGE_BIG_STORY_BANNER', false); ?>
+                                <?php ga_render_ad('HOMEPAGE_BIG_STORY_BANNER'); ?>
                             </li>
                             <li>
                                 <ul class="big-galist bg-unlist">
@@ -482,6 +482,11 @@ $ga_mobile_latest_news_articles = array_slice($ga_trending_articles, 0, GA_MOBIL
                                                 <span class="mobile-latest-news-title"><?php echo ga_e($ga_mln_title); ?></span>
                                             </a>
                                         </li>
+                                        <?php if ($ga_i === GA_MOBILE_LATEST_NEWS_AD_AFTER_INDEX): ?>
+                                            <li class="mobile-latest-news-ad">
+                                                <?php ga_render_ad('HOMEPAGE_LATEST_NEWS_INLINE_AD'); ?>
+                                            </li>
+                                        <?php endif; ?>
                                     <?php endforeach; ?>
                                 <?php else: ?>
                                     <li class="ga-unavailable">
@@ -493,7 +498,7 @@ $ga_mobile_latest_news_articles = array_slice($ga_trending_articles, 0, GA_MOBIL
                     </div>
                     <div class="home_left_column">
                         <ul class="sortable-list ui-sortable">
-                            <li class="sortable-item clear">
+                            <li class="sortable-item clear mobile-hide-tabs">
                                 <div class="sortable-item_style_2">
                                     <!--<div class="header"> <h1>Top Stories</h1> </div>-->
                                     <div class="content">
@@ -764,16 +769,7 @@ $ga_mobile_latest_news_articles = array_slice($ga_trending_articles, 0, GA_MOBIL
         <!--great_andhra_main_body_container-->
         <div class="great_andhra_main_body_container ad-opinion">
             <div class="full_width_home editors_pick_full_width border-topbottom margin-top-bot">
-                <p style="/* float: left; */font-size: 11px;text-align: center;"> Advertisement</p>
-                <div style="text-align: center;">
-                    <script async="" crossorigin="anonymous" src="js/adsbygoogle.js"></script>
-                    <!-- Top 728x90 -->
-                    <ins class="adsbygoogle" data-ad-client="ca-pub-1239645388568087" data-ad-slot="4304682596"
-                        style="display:inline-block;width:728px;height:90px"></ins>
-                    <script>
-                        (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-                </div>
+                <?php ga_render_ad('HOMEPAGE_OPINION_BANNER'); ?>
             </div>
             <div class="full_width_home editors_pick_full_width" style="padding-top: 10px;">
                 <style>
@@ -1222,7 +1218,7 @@ $ga_mobile_latest_news_articles = array_slice($ga_trending_articles, 0, GA_MOBIL
                     </style>
                     <div class="display-inline-block padding-top-bot">
                         <li class="sortable-item sortable-item_top_add123">
-                            <div id="vuukle-ad-13" style="min-width: 300px; min-height: 250px;"></div>
+                            <?php ga_render_ad('HOMEPAGE_ARTICLE_WIDGET_AD'); ?>
                         </li>
                     </div>
                     <li class="sortable-item clear">
@@ -1249,7 +1245,7 @@ $ga_mobile_latest_news_articles = array_slice($ga_trending_articles, 0, GA_MOBIL
 
 					</li>-->
                     <li class="sortable-item">
-                        <div class="sortable-item_style_14">
+                        <div class="sortable-item_style_14 most-popular-widget">
                             <div class="header"> Most Popular </div>
                             <div class="hm_topstory_3_story">
                                 <ul class="top_story_option2_3story list_top_news_mrgn">

@@ -313,7 +313,7 @@ if ($ga_article && !empty($ga_article['category']['id'])) {
             <!-- Second Row: Advertisement -->
             <div class="_201223_">
                 <?php // Reuses the Homepage Top Banner ad's mobile image - see index.php's own phone-view slot for the same pattern. ?>
-                <?php ga_render_ad('HOMEPAGE_TOP_BANNER', true, 'HOMEPAGE_MOBILE_BANNER'); ?>
+                <?php ga_render_ad('HOMEPAGE_TOP_BANNER', 'HOMEPAGE_MOBILE_BANNER'); ?>
             </div>
         </div>
 
@@ -480,7 +480,7 @@ if ($ga_article && !empty($ga_article['category']['id'])) {
                         </div>
 
                         <div class="add_place_650X60">
-                            <?php ga_render_ad('INNER_ARTICLE_BANNER', false); ?>
+                            <?php ga_render_ad('INNER_ARTICLE_BANNER'); ?>
                         </div>
 
                         <div class="content">
@@ -493,7 +493,7 @@ if ($ga_article && !empty($ga_article['category']['id'])) {
                                     </div>
                                 </div>
 
-                                <?php echo ga_render_article_body($ga_article['body'] ?? ''); ?>
+                                <?php echo ga_render_article_body($ga_article['body'] ?? '', 'INNER_ARTICLE_MIDCONTENT_AD'); ?>
 
                                 <div class="vuukle-powerbar" style="min-height: 50px;"></div>
 
@@ -666,8 +666,7 @@ if ($ga_article && !empty($ga_article['category']['id'])) {
                         </li>
 
                         <li class="sortable-item">
-                            <div id="vuukle-ad-15" style="min-width: 300px; min-height: 250px;" class="margin-top-bot">
-                            </div>
+                            <?php ga_render_ad('INNER_SIDEBAR_BOTTOM_AD'); ?>
                         </li>
 
 
