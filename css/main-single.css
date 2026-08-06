@@ -836,3 +836,10 @@ ul {
   width: 300px;
   height: 250px;
 }
+
+/* Mid-article ad (INNER_ARTICLE_MIDCONTENT_AD) - full-width, auto height, same on
+   desktop and mobile (no override needed in mobile-responsive.css). */
+.article-midcontent-ad {
+  margin: 15px 0;
+  text-align: center;
+}

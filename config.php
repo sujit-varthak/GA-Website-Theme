@@ -200,7 +200,8 @@ define('GA_AD_ZONE_IMAGE_DIMENSIONS', [
     'HOMEPAGE_LATEST_NEWS_INLINE_AD' => ['width' => 300, 'height' => 250],
     'HOMEPAGE_OPINION_BANNER' => ['width' => 728, 'height' => 90],
     'HOMEPAGE_ARTICLE_WIDGET_AD' => ['width' => 300, 'height' => 250],
-    'INNER_ARTICLE_MIDCONTENT_AD' => ['width' => 300, 'height' => 250],
+    // INNER_ARTICLE_MIDCONTENT_AD intentionally has no entry - full width, auto height,
+    // same as HOMEPAGE_SECTION_INLINE, on both desktop and mobile.
     'INNER_SIDEBAR_BOTTOM_AD' => ['width' => 300, 'height' => 250],
 ]);
 
