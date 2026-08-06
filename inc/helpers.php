@@ -153,17 +153,24 @@ function ga_e(?string $value): string
 }
 
 // Migrated articles store `body` as plain text (blank-line-separated paragraphs, no HTML
-// at all), while native articles already store it as real HTML (<div>/<span> blocks). Since
-// the template renders body raw, plain-text paragraph breaks were collapsing into one wall
-// of text. Detect which shape we have and only reformat the plain-text case — HTML bodies
-// pass through untouched. Fixes every current and future plain-text article with no data migration.
+// at all), while native articles already store it as real HTML (<div>/<span> blocks, from
+// the admin's contentEditable rich text editor). Since the template renders body raw,
+// plain-text paragraph breaks were collapsing into one wall of text. Detect which shape we
+// have and only reformat the plain-text case.
 //
-// $adZone, when given, injects ga_render_ad($adZone)'s output between two paragraphs — only
-// for the plain-text case above (HTML bodies pass through untouched, no ad injected — reliably
-// splitting arbitrary existing markup is a different, riskier problem than splitting text we
-// paragraph-ized ourselves). Articles with at most GA_ARTICLE_MIDCONTENT_AD_SHORT_THRESHOLD
-// paragraphs get the ad after the last one (i.e. at the end); longer articles get it at the
-// midpoint paragraph.
+// $adZone, when given, injects ga_render_ad($adZone)'s output between two paragraphs, in
+// both cases above:
+// - Plain text: split on blank lines, count the resulting paragraphs.
+// - HTML: parsed with DOMDocument (ga_inject_ad_into_html_body) rather than string-split,
+//   since the rich text editor's actual output is inconsistent — plain <p> tags for some
+//   articles, but for others a mix of <div><span>text</span></div> blocks with blank-line
+//   spacer divs, and it sometimes nests a later paragraph's <div> inside an earlier one's
+//   instead of as a sibling (a contentEditable quirk). String-splitting on that would
+//   corrupt the markup; DOM manipulation finds and counts real paragraphs regardless of
+//   nesting and inserts the ad as a proper sibling node.
+//
+// Either way, articles with at most GA_ARTICLE_MIDCONTENT_AD_SHORT_THRESHOLD paragraphs get
+// the ad after the last one (i.e. at the end); longer articles get it at the midpoint.
 function ga_render_article_body(?string $body, ?string $adZone = null): string
 {
     $body = (string) $body;
@@ -171,9 +178,8 @@ function ga_render_article_body(?string $body, ?string $adZone = null): string
         return '';
     }
 
-    // Already has real HTML tags — leave it exactly as-is, no ad injected.
     if ($body !== strip_tags($body)) {
-        return $body;
+        return $adZone !== null ? ga_inject_ad_into_html_body($body, $adZone) : $body;
     }
 
     $paragraphs = array_values(array_filter(
@@ -201,6 +207,84 @@ function ga_render_article_body(?string $body, ?string $adZone = null): string
         if ($insertAfter !== null && ($i + 1) === $insertAfter) {
             $html .= $adHtml;
         }
+    }
+    return $html;
+}
+
+// HTML-body counterpart to the plain-text paragraph splitting above. "Paragraph" here means
+// any <p> or <div> node with real text content and no <p>/<div> of its own nested inside it
+// (a leaf content block) — found via XPath so mixed <p>/<div> siblings stay in true document
+// order, unlike collecting each tag separately. Blank-line spacer divs (just a bare <br>) have
+// no text content and are correctly skipped. The ad is inserted as a new sibling <div> right
+// after the target paragraph's own node, wherever that node actually lives in the tree — so a
+// paragraph the editor happened to nest inside an earlier one still gets the ad placed
+// immediately after it, not at the wrong depth.
+function ga_inject_ad_into_html_body(string $body, string $adZone): string
+{
+    $previousLibxmlSetting = libxml_use_internal_errors(true);
+    $dom = new DOMDocument();
+    $dom->loadHTML('<?xml encoding="utf-8"?><html><body>' . $body . '</body></html>');
+    libxml_clear_errors();
+    libxml_use_internal_errors($previousLibxmlSetting);
+
+    $bodyNode = $dom->getElementsByTagName('body')->item(0);
+    if ($bodyNode === null) {
+        return $body;
+    }
+
+    $xpath = new DOMXPath($dom);
+    $candidates = $xpath->query('.//p | .//div', $bodyNode);
+
+    $paragraphs = [];
+    if ($candidates !== false) {
+        foreach ($candidates as $el) {
+            if (trim($el->textContent) === '') {
+                continue;
+            }
+            $hasNestedBlock = $el->getElementsByTagName('p')->length > 0
+                || $el->getElementsByTagName('div')->length > 0;
+            if ($hasNestedBlock) {
+                continue;
+            }
+            $paragraphs[] = $el;
+        }
+    }
+
+    $count = count($paragraphs);
+    if ($count === 0) {
+        return $body;
+    }
+
+    ob_start();
+    ga_render_ad($adZone);
+    $adHtml = ob_get_clean();
+    if ($adHtml === '') {
+        return $body;
+    }
+
+    $insertAfter = $count <= GA_ARTICLE_MIDCONTENT_AD_SHORT_THRESHOLD ? $count : (int) floor($count / 2);
+    $targetNode = $paragraphs[$insertAfter - 1];
+
+    $previousLibxmlSetting = libxml_use_internal_errors(true);
+    $adDom = new DOMDocument();
+    $adDom->loadHTML('<?xml encoding="utf-8"?><html><body>' . $adHtml . '</body></html>');
+    libxml_clear_errors();
+    libxml_use_internal_errors($previousLibxmlSetting);
+    $adBodyNode = $adDom->getElementsByTagName('body')->item(0);
+
+    $adWrapper = $dom->createElement('div');
+    $adWrapper->setAttribute('class', 'article-midcontent-ad');
+    if ($adBodyNode !== null) {
+        foreach ($adBodyNode->childNodes as $child) {
+            $adWrapper->appendChild($dom->importNode($child, true));
+        }
+    }
+
+    $targetNode->parentNode->insertBefore($adWrapper, $targetNode->nextSibling);
+
+    $html = '';
+    foreach ($bodyNode->childNodes as $child) {
+        $html .= $dom->saveHTML($child);
     }
     return $html;
 }
