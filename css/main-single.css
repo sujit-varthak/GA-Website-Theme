@@ -843,15 +843,3 @@ ul {
   margin: 15px 0;
   text-align: center;
 }
-
-/* Box office sticky ad (BOXOFFICE_STICKY_AD) - stays fixed in the viewport at vertical
-   center as the user scrolls the page, same behavior as the old Vuukle interscroller unit
-   it replaces. The <li> wrapping it keeps its normal place in the layout flow (so removing
-   this ad doesn't leave a gap), but the ad itself is pinned via position: fixed. */
-.boxoffice-sticky-ad {
-  position: fixed;
-  top: 50vh;
-  right: 20px;
-  transform: translateY(-50%);
-  z-index: 10;
-}
