@@ -325,7 +325,7 @@ function ga_list_page_url(string $cleanPath, array $legacyParams, int $page): st
                 </a>
                 <div class="AdinHedare">
                     <?php // Same ad as the homepage's top banner - not independently manageable. ?>
-                    <?php ga_render_ad('HOMEPAGE_TOP_BANNER'); ?>
+                    <?php ga_render_ad('LISTPAGE_TOP_BANNER'); ?>
                 </div>
             </div>
 
@@ -1014,7 +1014,7 @@ function ga_list_page_url(string $cleanPath, array $legacyParams, int $page): st
             <!-- Second Row: Advertisement -->
             <div class="_201223_">
                 <?php // Reuses the Homepage Top Banner ad's mobile image - same pattern as index.php/inner-page.php. ?>
-                <?php ga_render_ad('HOMEPAGE_TOP_BANNER', 'HOMEPAGE_MOBILE_BANNER'); ?>
+                <?php ga_render_ad('LISTPAGE_MOBILE_BANNER'); ?>
             </div>
         </div>
             <!--great_andhra_main_menu_panel-->

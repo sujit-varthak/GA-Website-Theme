@@ -195,12 +195,12 @@ if ($ga_article && !empty($ga_article['category']['id'])) {
     <div class="local_great" style="position:fixed; width:100%; float:left; width:80px;">
         <div class="source-image-left" style="float:left">
             <?php // Same ad as the homepage's left sidebar - not independently manageable. ?>
-            <?php ga_render_ad('HOMEPAGE_SIDEBAR_LEFT'); ?>
+            <?php ga_render_ad('INNER_SIDEBAR_LEFT'); ?>
         </div>
     </div>
     <div class="local_great" style="position:fixed; width:120px; right:0;">
         <div class="source-image-right" style="float:right">
-            <?php ga_render_ad('HOMEPAGE_SIDEBAR_RIGHT'); ?>
+            <?php ga_render_ad('INNER_SIDEBAR_RIGHT'); ?>
         </div>
     </div>
 
@@ -215,7 +215,7 @@ if ($ga_article && !empty($ga_article['category']['id'])) {
                 </a>
                 <div class="AdinHedare">
                     <?php // Same ad as the homepage's top banner - not independently manageable. ?>
-                    <?php ga_render_ad('HOMEPAGE_TOP_BANNER'); ?>
+                    <?php ga_render_ad('INNER_TOP_BANNER'); ?>
                 </div>
             </div>
             
@@ -313,7 +313,7 @@ if ($ga_article && !empty($ga_article['category']['id'])) {
             <!-- Second Row: Advertisement -->
             <div class="_201223_">
                 <?php // Reuses the Homepage Top Banner ad's mobile image - see index.php's own phone-view slot for the same pattern. ?>
-                <?php ga_render_ad('HOMEPAGE_TOP_BANNER', 'HOMEPAGE_MOBILE_BANNER'); ?>
+                <?php ga_render_ad('INNER_MOBILE_BANNER'); ?>
             </div>
         </div>
 

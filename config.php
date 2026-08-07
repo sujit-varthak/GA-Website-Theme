@@ -55,9 +55,6 @@ define('GA_AD_FALLBACKS', [
         'landingUrl' => 'https://bestbrains.com/promotions/newyearoffer',
         'name' => 'Best Brains',
     ],
-    // Zone unused since the homepage phone-view banner slot was switched to reuse
-    // HOMEPAGE_TOP_BANNER's ad instead (see index.php) - kept here, not deleted, since the
-    // admin plans to bring this back as its own manageable zone later.
     'HOMEPAGE_MOBILE_BANNER' => [
         'type' => 'IMAGE',
         'imageUrlMobile' => 'images/IndianClicks_BestBrains_380x250_12242025_1.webp',
@@ -110,11 +107,9 @@ define('GA_AD_FALLBACKS', [
     // No fallback for HOMEPAGE_LATEST_NEWS_INLINE_AD, HOMEPAGE_ARTICLE_WIDGET_AD,
     // INNER_ARTICLE_MIDCONTENT_AD, INNER_SIDEBAR_BOTTOM_AD - all brand new slots with no prior
     // static content, so they render empty until a real ad is configured (same as LISTPAGE_CONTENT_AD).
-    // The 6 zones below (INNER_SIDEBAR_LEFT/RIGHT, INNER_TOP_BANNER, INNER_MOBILE_BANNER,
-    // BOXOFFICE_TOP_BANNER, BOXOFFICE_MOBILE_BANNER) are unused since inner-page.php and
-    // box-office.php were switched to reuse HOMEPAGE_SIDEBAR_LEFT/RIGHT and
-    // HOMEPAGE_TOP_BANNER's ads directly - kept here, not deleted, in case the admin wants
-    // these back as independently manageable zones later.
+    // Every page is independently manageable again (2026-08-07) - inner-page.php and
+    // box-office.php each have their own sidebar/top-banner zones instead of reusing the
+    // homepage's.
     'INNER_SIDEBAR_LEFT' => [
         'type' => 'IMAGE',
         'imageUrlDesktop' => 'images/msn_new_160_2.jpg',
@@ -146,6 +141,18 @@ define('GA_AD_FALLBACKS', [
         'name' => 'MSN Reality',
     ],
     'BOXOFFICE_MOBILE_BANNER' => [
+        'type' => 'IMAGE',
+        'imageUrlMobile' => 'images/IndianClicks_BestBrains_380x250_12242025_1.webp',
+        'landingUrl' => 'https://bestbrains.com/promotions/newyearoffer',
+        'name' => 'Best Brains',
+    ],
+    'LISTPAGE_TOP_BANNER' => [
+        'type' => 'IMAGE',
+        'imageUrlDesktop' => 'images/msn_728.jpg',
+        'landingUrl' => 'https://www.msnrealty.com/new-lp/GreatAndhra',
+        'name' => 'MSN Reality',
+    ],
+    'LISTPAGE_MOBILE_BANNER' => [
         'type' => 'IMAGE',
         'imageUrlMobile' => 'images/IndianClicks_BestBrains_380x250_12242025_1.webp',
         'landingUrl' => 'https://bestbrains.com/promotions/newyearoffer',
@@ -197,6 +204,8 @@ define('GA_AD_ZONE_IMAGE_DIMENSIONS', [
     'BOXOFFICE_MOBILE_BANNER' => ['width' => null, 'height' => 250],
     'INNER_ARTICLE_BANNER' => ['width' => 650, 'height' => 60],
     'LISTPAGE_CONTENT_AD' => ['width' => 300, 'height' => 250],
+    'LISTPAGE_TOP_BANNER' => ['width' => 728, 'height' => 90],
+    'LISTPAGE_MOBILE_BANNER' => ['width' => null, 'height' => 250],
     'HOMEPAGE_LATEST_NEWS_INLINE_AD' => ['width' => 300, 'height' => 250],
     'HOMEPAGE_OPINION_BANNER' => ['width' => 728, 'height' => 90],
     'HOMEPAGE_ARTICLE_WIDGET_AD' => ['width' => 300, 'height' => 250],
