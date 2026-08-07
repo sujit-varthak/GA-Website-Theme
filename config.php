@@ -203,6 +203,8 @@ define('GA_AD_ZONE_IMAGE_DIMENSIONS', [
     // INNER_ARTICLE_MIDCONTENT_AD intentionally has no entry - full width, auto height,
     // same as HOMEPAGE_SECTION_INLINE, on both desktop and mobile.
     'INNER_SIDEBAR_BOTTOM_AD' => ['width' => 300, 'height' => 250],
+    'BOXOFFICE_STICKY_AD' => ['width' => 300, 'height' => 250],
+    'BOXOFFICE_REVIEW_AD' => ['width' => 300, 'height' => 250],
 ]);
 
 // Max title length before PHP-side truncation kicks in (no CSS line-clamp anywhere in this theme).
