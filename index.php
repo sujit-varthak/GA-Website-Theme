@@ -370,6 +370,7 @@ $ga_mobile_latest_news_articles = array_slice($ga_trending_articles, 0, GA_MOBIL
 
 
 
+        <?php if (!ga_is_mobile()): ?>
         <div class="great_andhra_main_201223_">
             <div class="_201223_1">
                 <?php ga_render_ad('HOMEPAGE_STRIP_BANNER_1'); ?>
@@ -389,6 +390,7 @@ $ga_mobile_latest_news_articles = array_slice($ga_trending_articles, 0, GA_MOBIL
 
             </div> -->
         </div>
+        <?php endif; ?>
         <!--great_andhra_main_add_rotator-->
         <!--great_andhra_main_body_container-->
         <div class="great_andhra_main_body_container">
@@ -428,7 +430,11 @@ $ga_mobile_latest_news_articles = array_slice($ga_trending_articles, 0, GA_MOBIL
                                     <?php endif; ?>
                                 </div>
                             <li class="sortable-item_clear123">
-                                <?php ga_render_ad('HOMEPAGE_BIG_STORY_BANNER'); ?>
+                                <?php if (ga_is_mobile()): ?>
+                                    <?php ga_render_ad('HOMEPAGE_MOBILE_AFTER_BIGSTORY_AD'); ?>
+                                <?php else: ?>
+                                    <?php ga_render_ad('HOMEPAGE_BIG_STORY_BANNER'); ?>
+                                <?php endif; ?>
                             </li>
                             <li>
                                 <ul class="big-galist bg-unlist">
@@ -758,18 +764,22 @@ $ga_mobile_latest_news_articles = array_slice($ga_trending_articles, 0, GA_MOBIL
                             } */
                         </style>
                     </li>
+                    <?php if (!ga_is_mobile()): ?>
                     <div class="display-inline-block padding-top-bot">
                         <li class="sortable-item">
                             <?php ga_render_ad('HOMEPAGE_SECTION_INLINE'); ?>
                         </li>
                     </div>
+                    <?php endif; ?>
                 </ul>
             </div>
         </div>
         <!--great_andhra_main_body_container-->
         <div class="great_andhra_main_body_container ad-opinion">
             <div class="full_width_home editors_pick_full_width border-topbottom margin-top-bot">
-                <?php ga_render_ad('HOMEPAGE_OPINION_BANNER'); ?>
+                <?php if (!ga_is_mobile()): ?>
+                    <?php ga_render_ad('HOMEPAGE_OPINION_BANNER'); ?>
+                <?php endif; ?>
             </div>
             <div class="full_width_home editors_pick_full_width" style="padding-top: 10px;">
                 <style>
@@ -1216,11 +1226,13 @@ $ga_mobile_latest_news_articles = array_slice($ga_trending_articles, 0, GA_MOBIL
 
                         } */
                     </style>
+                    <?php if (!ga_is_mobile()): ?>
                     <div class="display-inline-block padding-top-bot">
                         <li class="sortable-item sortable-item_top_add123">
                             <?php ga_render_ad('HOMEPAGE_ARTICLE_WIDGET_AD'); ?>
                         </li>
                     </div>
+                    <?php endif; ?>
                     <li class="sortable-item clear">
                         <div class="sortable-item_style_13">
                             <div class="header"> Article </div>
