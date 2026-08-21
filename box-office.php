@@ -6,6 +6,24 @@ require_once __DIR__ . '/inc/api-client.php';
 
 $ga_bo_page = max(1, isset($_GET['page']) ? (int) $_GET['page'] : 1);
 $ga_bo_skip = ($ga_bo_page - 1) * GA_BOX_OFFICE_TAKE;
+
+// Fires the box-office listing feed + sidebar reviews feed + the 3 small Movie Rankings
+// endpoints + every ad zone on this page concurrently, instead of the ~6 sequential blocking
+// calls this page used to make one at a time.
+ga_prefetch_page([
+    'movieRankings' => true,
+    'articles' => [
+        [GA_BOX_OFFICE_TAKE, $ga_bo_skip, GA_NAV_CATEGORY_IDS['movies'], true],
+        [GA_LIST_SIDEBAR_COUNT, 0, GA_NAV_CATEGORY_IDS['reviews']],
+    ],
+    'adZones' => [
+        'BOXOFFICE_TOP_BANNER',
+        'BOXOFFICE_MOBILE_BANNER',
+        'BOXOFFICE_STICKY_AD',
+        'BOXOFFICE_REVIEW_AD',
+    ],
+]);
+
 $ga_bo_result = ga_fetch_articles(GA_BOX_OFFICE_TAKE, $ga_bo_skip, GA_NAV_CATEGORY_IDS['movies'], true);
 $ga_bo_articles = $ga_bo_result['items'] ?? [];
 $ga_bo_total = $ga_bo_result['total'] ?? 0;
@@ -15,11 +33,13 @@ $ga_bo_total_pages = $ga_bo_total > 0 ? (int) ceil($ga_bo_total / GA_BOX_OFFICE_
 $ga_bo_sidebar_reviews = ga_fetch_articles(GA_LIST_SIDEBAR_COUNT, 0, GA_NAV_CATEGORY_IDS['reviews'])['items'] ?? [];
 
 // Movie Rankings (confirmed live 2026-08-02) — admin-curated link lists, not articles, same
-// shape as usaMovieSchedule (title/movieName + linkUrl + openInNewTab), capped at 5 server-side.
-$ga_bo_home_data = ga_fetch_homepage();
-$ga_weekly_top_five = $ga_bo_home_data['weeklyTopFive'] ?? [];
-$ga_all_time_top_films = $ga_bo_home_data['allTimeTopFilms'] ?? [];
-$ga_usa_box_office = $ga_bo_home_data['usaBoxOffice'] ?? [];
+// shape as usaMovieSchedule (title/movieName + linkUrl + openInNewTab), capped at 5
+// server-side. Each is its own small dedicated endpoint rather than reading it off the full
+// homepage aggregate (load-audit finding #3/#7 — this used to pull all ~16 homepage sections,
+// including all 10 full article-list sections, just to read these 3 small arrays).
+$ga_weekly_top_five = ga_fetch_weekly_top_five() ?? [];
+$ga_all_time_top_films = ga_fetch_movie_box_office('ALL_TIME') ?? [];
+$ga_usa_box_office = ga_fetch_movie_box_office('USA_BOX_OFFICE') ?? [];
 
 function ga_box_office_url(int $page): string
 {
@@ -1176,6 +1196,19 @@ function ga_box_office_url(int $page): string
                             <div class="boxoffice-sticky-ad">
                                 <?php ga_render_ad('BOXOFFICE_STICKY_AD'); ?>
                             </div>
+                            <script>
+                            (function () {
+                                var box = document.currentScript.previousElementSibling;
+                                if (!box || !box.classList.contains('boxoffice-sticky-ad')) return;
+                                var img = box.querySelector('img');
+                                if (!img || !img.src) return;
+                                function applyBg() {
+                                    box.style.backgroundImage = 'url(' + img.src + ')';
+                                }
+                                if (img.complete) applyBg();
+                                else img.addEventListener('load', applyBg);
+                            })();
+                            </script>
                         </li>
                         <li class="un-sortable-item sortable-item_right_top_panel">
                             <div class="innerpage_latestnews1">

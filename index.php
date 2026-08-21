@@ -4,6 +4,34 @@ require_once __DIR__ . '/inc/helpers.php';
 ga_maybe_show_roadblock_ad();
 require_once __DIR__ . '/inc/api-client.php';
 
+// Fires the homepage aggregate + both article feeds + every ad zone below concurrently
+// (curl_multi) instead of the 17 sequential blocking calls this page used to make one at a
+// time. Every ga_fetch_*()/ga_render_ad() call below is unchanged — they just see a cache
+// warmed a moment ago instead of doing their own network round trip.
+ga_prefetch_page([
+    'homepage' => true,
+    'articles' => [
+        [GA_EDITORS_PICK_SCAN_COUNT, 0, GA_NAV_CATEGORY_IDS['reviews']],
+        [GA_MOST_POPULAR_FEED_SIZE, 0],
+    ],
+    'adZones' => [
+        'HOMEPAGE_SIDEBAR_LEFT',
+        'HOMEPAGE_SIDEBAR_RIGHT',
+        'HOMEPAGE_ABOVE_HEADER_BANNER',
+        'HOMEPAGE_TOP_BANNER',
+        'HOMEPAGE_MOBILE_BANNER',
+        'HOMEPAGE_STRIP_BANNER_1',
+        'HOMEPAGE_STRIP_BANNER_2',
+        'HOMEPAGE_STRIP_BANNER_3',
+        'HOMEPAGE_MOBILE_AFTER_BIGSTORY_AD',
+        'HOMEPAGE_BIG_STORY_BANNER',
+        'HOMEPAGE_LATEST_NEWS_INLINE_AD',
+        'HOMEPAGE_SECTION_INLINE',
+        'HOMEPAGE_OPINION_BANNER',
+        'HOMEPAGE_ARTICLE_WIDGET_AD',
+    ],
+]);
+
 // Big Story hero + the flagged articles below the ad, and the "Top News" tab's trending
 // articles — all resolved server-side (filtering, sorting, hero-exclusion) by the same
 // /api/public/homepage call, cached once and read for both.
@@ -97,10 +125,10 @@ $ga_mobile_latest_news_articles = array_slice($ga_trending_articles, 0, GA_MOBIL
     <link href="https://www.greatandhra.com/favicon.png" rel="icon" type="image/png" />
     <link href="assets/css" rel="stylesheet">
     <link href="assets/css2" rel="stylesheet" />
-    <link href="css/main-single.css?v=<?php echo date('His'); ?>" rel="stylesheet" />
-    <link href="css/footer.css?v=<?php echo date('His'); ?>" rel="stylesheet" />
-    <link href="css/mobile-responsive.css?v=<?php echo date('His'); ?>" rel="stylesheet">
-    <link href="css/header-mob.css?v=<?php echo date('His'); ?>" rel="stylesheet">
+    <link href="css/main-single.css?v=<?php echo ga_asset_version('css/main-single.css'); ?>" rel="stylesheet" />
+    <link href="css/footer.css?v=<?php echo ga_asset_version('css/footer.css'); ?>" rel="stylesheet" />
+    <link href="css/mobile-responsive.css?v=<?php echo ga_asset_version('css/mobile-responsive.css'); ?>" rel="stylesheet">
+    <link href="css/header-mob.css?v=<?php echo ga_asset_version('css/header-mob.css'); ?>" rel="stylesheet">
     <script src="js/drawer.js"></script>
 
     <!-- <link href="css/great_andhra_style_lato_font.css" rel="stylesheet" />

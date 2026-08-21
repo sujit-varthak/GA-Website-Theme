@@ -101,6 +101,29 @@ $ga_page_heading = $ga_is_tag_mode ? $ga_tag_name : $ga_category_name;
 // "fetch one extra row" workaround.
 $ga_page = max(1, isset($_GET['page']) ? (int) $_GET['page'] : 1);
 $ga_skip = ($ga_page - 1) * GA_LIST_PAGE_TAKE;
+
+// Fires whichever main-list feed this request resolved to (tag/trending/category — only one
+// applies) + both sidebar feeds + every ad zone on this page concurrently, instead of the
+// ~5-6 sequential blocking calls this page used to make one at a time.
+$ga_prefetch_articles = [
+    [GA_LIST_SIDEBAR_COUNT, 0, GA_NAV_CATEGORY_IDS['movie-gossip']],
+    [GA_LIST_SIDEBAR_COUNT, 0, GA_NAV_CATEGORY_IDS['reviews']],
+];
+if ($ga_is_tag_mode) {
+    $ga_prefetch_articles[] = [GA_LIST_PAGE_TAKE, $ga_skip, null, false, $ga_tag_id];
+} elseif (!$ga_is_latest_news_trending && $ga_category_id !== '') {
+    $ga_prefetch_articles[] = [GA_LIST_PAGE_TAKE, $ga_skip, $ga_category_id, $ga_include_children];
+}
+ga_prefetch_page([
+    'homepage' => $ga_is_latest_news_trending,
+    'articles' => $ga_prefetch_articles,
+    'adZones' => [
+        'LISTPAGE_TOP_BANNER',
+        'LISTPAGE_MOBILE_BANNER',
+        'LISTPAGE_CONTENT_AD',
+    ],
+]);
+
 $ga_list_articles = [];
 $ga_total = 0;
 if ($ga_is_tag_mode) {

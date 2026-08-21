@@ -1,7 +1,7 @@
 <?php
 define('GA_API_BASE_URL', 'https://great-andhra-uat.onrender.com');
 define('GA_CACHE_DIR', __DIR__ . '/cache');
-define('GA_CACHE_TTL', 30); // seconds — lowered for demo purposes, bump back up before real traffic
+define('GA_CACHE_TTL', 120); // seconds — was 30 ("lowered for demo purposes"), raised now that real traffic is in scope (load-audit fix #6, 2026-08-20); the cache-stampede lock in ga_cache_lock_try() makes a longer TTL safe instead of just less-fresh
 define('GA_TAGS_CACHE_TTL', 3600); // seconds — the full tag list (ga_fetch_all_tags()) changes far less often than articles
 
 // Full-page roadblock ad (advertisement.php), shown once per cookie window before any page
@@ -24,9 +24,11 @@ define('GA_ROADBLOCK_AD_LINK', 'https://www.imdb.com/title/tt22084616/');
 define('GA_CACHE_CLEAR_KEY', 'ga-dev-clear-2026');
 
 // Admin-managed advertisements (ga_render_ad() in inc/helpers.php). Shorter TTL than articles
-// since an editor toggling an ad active/inactive or changing its schedule should take effect
-// fairly quickly, not sit behind the same cache window as content.
-define('GA_AD_CACHE_TTL', 60); // seconds
+// (GA_CACHE_TTL) since an editor toggling an ad active/inactive or changing its schedule
+// should take effect fairly quickly, not sit behind the same cache window as content. Was 60
+// (already longer than the old 30s article TTL, contradicting this comment) - raised to 90 to
+// stay under the new 120s article TTL while still being materially shorter (load-audit fix #6).
+define('GA_AD_CACHE_TTL', 90); // seconds
 
 // Static backup ads shown only when the admin API has no active ad for a zone (API down, or
 // nothing configured there yet) — keeps every placement looking intentional instead of blank

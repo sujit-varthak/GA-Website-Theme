@@ -1,5 +1,19 @@
 <?php
 
+// Cache-busting query string for a static asset (CSS/JS), based on the file's own last-
+// modified time instead of the current second (date('His') on index.php's stylesheet
+// <link> tags meant the version string changed on every single request, so browsers could
+// never cache those files across requests at all - load-audit fix #6, 2026-08-20). Only
+// changes when the file itself actually changes, so normal browser caching works between
+// deploys. Falls back to the current time if the file can't be found, so a missing/moved
+// asset never breaks the page - it just loses the caching benefit for that one request.
+function ga_asset_version(string $relativePath): string
+{
+    $fullPath = __DIR__ . '/../' . $relativePath;
+    $mtime = @filemtime($fullPath);
+    return (string) ($mtime !== false ? $mtime : time());
+}
+
 function ga_truncate(?string $text, int $maxLength): string
 {
     $text = trim((string) $text);

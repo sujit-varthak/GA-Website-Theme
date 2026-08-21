@@ -14,6 +14,27 @@ if ($ga_path_info !== '') {
 } else {
     $ga_id = isset($_GET['id']) ? trim((string) $_GET['id']) : '';
 }
+// Fires the article-detail fetch + homepage sidebar aggregate + recommended-articles feed +
+// every ad zone on this page concurrently, instead of the ~7 sequential blocking calls this
+// page used to make one at a time. The "related articles" feed further below can't be
+// included here — its categoryId isn't known until the article response above resolves — so
+// that one stays a single sequential call after this batch.
+ga_prefetch_page([
+    'homepage' => true,
+    'articleId' => $ga_id !== '' ? $ga_id : null,
+    'articles' => [
+        [GA_RECOMMENDED_COUNT, 0, GA_ARTICLES_CATEGORY_ID],
+    ],
+    'adZones' => [
+        'INNER_SIDEBAR_LEFT',
+        'INNER_SIDEBAR_RIGHT',
+        'INNER_TOP_BANNER',
+        'INNER_MOBILE_BANNER',
+        'INNER_ARTICLE_BANNER',
+        'INNER_SIDEBAR_BOTTOM_AD',
+    ],
+]);
+
 $ga_result = $ga_id !== '' ? ga_fetch_article_by_id($ga_id) : ['status' => 'not_found', 'article' => null];
 $ga_status = $ga_result['status'];
 $ga_article = $ga_result['article'];
