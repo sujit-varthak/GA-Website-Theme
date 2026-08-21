@@ -1,0 +1,11 @@
+{
+    "name": "greatandhra/ga-website-theme",
+    "description": "Core-PHP frontend for GreatAndhra.com - declares required PHP extensions for hosts (e.g. DigitalOcean App Platform's Heroku-compatible PHP buildpack) that provision extensions based on this file rather than enabling a full default set.",
+    "require": {
+        "php": ">=8.0",
+        "ext-mbstring": "*",
+        "ext-curl": "*",
+        "ext-json": "*",
+        "ext-openssl": "*"
+    }
+}

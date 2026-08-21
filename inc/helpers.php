@@ -14,16 +14,27 @@ function ga_asset_version(string $relativePath): string
     return (string) ($mtime !== false ? $mtime : time());
 }
 
+// Falls back to byte-based strlen/substr if the mbstring extension isn't loaded, instead of
+// fatally crashing the whole page (happened live on a host whose PHP build didn't have
+// mbstring enabled, composer.json now declares it so this shouldn't trigger again - but a
+// missing extension should degrade a title's truncation, not take down the entire page).
+// Byte-based truncation can split a multi-byte UTF-8 character (e.g. in Telugu text) - only
+// relevant in that fallback case, mb_* is used whenever it's actually available.
 function ga_truncate(?string $text, int $maxLength): string
 {
+    $hasMbstring = function_exists('mb_strlen');
+    $strlen = $hasMbstring ? 'mb_strlen' : 'strlen';
+    $substr = $hasMbstring ? 'mb_substr' : 'substr';
+    $strrpos = $hasMbstring ? 'mb_strrpos' : 'strrpos';
+
     $text = trim((string) $text);
-    if (mb_strlen($text) <= $maxLength) {
+    if ($strlen($text) <= $maxLength) {
         return $text;
     }
-    $truncated = mb_substr($text, 0, $maxLength);
-    $lastSpace = mb_strrpos($truncated, ' ');
+    $truncated = $substr($text, 0, $maxLength);
+    $lastSpace = $strrpos($truncated, ' ');
     if ($lastSpace !== false) {
-        $truncated = mb_substr($truncated, 0, $lastSpace);
+        $truncated = $substr($truncated, 0, $lastSpace);
     }
     return rtrim($truncated) . '…';
 }
