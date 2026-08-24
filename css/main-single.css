@@ -604,8 +604,12 @@ ul.top_story_option2_3story li .top_news_txt {
 
 /* This ad wrapper (the banner above the Opinion section) had no layout rule at
    all anywhere, so its <img> sat at the block's default left edge instead of
-   centered in the row. */
-.editors_pick_full_width {
+   centered in the row. Scoped to .border-topbottom too, NOT bare
+   .editors_pick_full_width - that class is reused on the Opinion section's
+   whole container (heading + article grid) right below it in index.php, and a
+   bare rule centered that heading's text too, which wasn't wanted. Only the ad
+   div also carries .border-topbottom, so this combination targets it alone. */
+.editors_pick_full_width.border-topbottom {
   text-align: center;
 }
 
