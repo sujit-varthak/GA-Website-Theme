@@ -299,16 +299,30 @@ define('GA_TRENDING_TAGS_COUNT', 12);
 // Nav category IDs. Leaf categories are filtered exact-match; 'politics' and 'movies' are
 // parent categories meant to be used with ga_nav_category_link(..., includeChildren: true)
 // so their listing also pulls in their children's articles (confirmed live 2026-07-31).
+// Re-synced 2026-08-24: categories were cleared and recreated as part of a data migration
+// (Vercel->R2 image migration + a fresh WordPress XML re-import), so every category got a new
+// UUID and every value below went stale - any code reading this constant directly was silently
+// querying deleted category IDs (confirmed live: Editor's Pick, and every nav-driven list page,
+// were returning zero results). Values re-confirmed directly against the live
+// /api/public/categories response. 'latest-news' is intentionally null - that "category" never
+// existed as a real one in the database; it was WordPress's own "newly published" marker, not a
+// topic, and isn't in this import. Nothing currently reads this value for a real fetch (list-page.php's
+// Latest News page branches on the URL path string, not this ID), but keep it null rather than a
+// guessed UUID so a future caller fails loudly/predictably instead of querying a wrong category.
+//
+// This hardcoded-UUID approach re-breaks every time categories are regenerated on the backend -
+// worth resolving category IDs by slug at request time (or on a cache refresh) instead, so this
+// doesn't need manual re-syncing after future data operations.
 define('GA_NAV_CATEGORY_IDS', [
-    'latest-news' => '7cb7575e-3833-449c-9879-735f8358572d',
-    'andhra-news' => 'e361f8ee-2628-424c-9ef8-70ac74de3467',
-    'telangana-news' => 'f0bad803-1efd-417e-abc0-f5685bc548de',
-    'movie-news' => '0f5e2282-bd0f-4485-b3a1-fdb097f64fa1',
-    'movie-gossip' => '41355071-df49-44b5-90cc-a3f54d960b84',
-    'reviews' => 'f2cb5c9c-c2a5-4a8e-88a3-9f0b75fd3cff',
-    'opinion' => '473631fd-cf8c-4b45-be7b-229bcae015f4',
-    'politics' => 'd0c0f169-82ac-4bb3-8d9f-5350e97c07ea',
-    'movies' => '4a49a6ff-53f8-4d5b-be10-dea88bae7a18',
+    'latest-news' => null,
+    'andhra-news' => '6e250f68-c9be-439d-854e-08def23574e2',
+    'telangana-news' => '1ccf4e94-3792-4716-b4be-33061625a25a',
+    'movie-news' => '4ca31e89-2fa9-453f-a63c-67a59fa2f095',
+    'movie-gossip' => '0c57a1b9-2177-47ef-98ab-cc2679c0ff34',
+    'reviews' => '9707921d-55b6-477b-9aff-a913cdf7b5b5',
+    'opinion' => '5afbbece-78ef-4c74-890d-61be86eef330',
+    'politics' => '409f81ef-5a53-4d24-8c5e-68485b7a074d',
+    'movies' => '4bb8805d-e01d-42aa-b31b-5e3f1de298b8',
 ]);
 
 // Clean-URL routing for list-page.php, keyed by the same category key as GA_NAV_CATEGORY_IDS
