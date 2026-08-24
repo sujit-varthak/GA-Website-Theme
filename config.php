@@ -1,5 +1,12 @@
 <?php
-define('GA_API_BASE_URL', 'https://great-andhra-uat.onrender.com');
+// Was pointed at the old Render deployment (great-andhra-uat.onrender.com) -
+// the backend actually moved to DigitalOcean App Platform as part of the
+// Postgres/Valkey migration, but this URL was never updated to follow it.
+// The Render instance still runs but is disconnected/stale (its own Redis
+// was unreachable - unrelated to the working DO Valkey instance). Confirmed
+// live 2026-08-24: the DO backend responds healthy (db/redis both "ok") at
+// ~0.3-0.9s per call vs. the Render instance's 4-30s.
+define('GA_API_BASE_URL', 'https://ga-backend-dnaa7.ondigitalocean.app');
 define('GA_CACHE_DIR', __DIR__ . '/cache');
 define('GA_CACHE_TTL', 120); // seconds — was 30 ("lowered for demo purposes"), raised now that real traffic is in scope (load-audit fix #6, 2026-08-20); the cache-stampede lock in ga_cache_lock_try() makes a longer TTL safe instead of just less-fresh
 define('GA_TAGS_CACHE_TTL', 3600); // seconds — the full tag list (ga_fetch_all_tags()) changes far less often than articles
