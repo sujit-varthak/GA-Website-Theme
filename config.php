@@ -261,7 +261,10 @@ define('GA_TAB_ARTICLE_LIMIT', 17);
 // "Recommended For You" widget (filtered to the "Articles" category).
 define('GA_INNER_TOP_NEWS_COUNT', 3);
 define('GA_RECOMMENDED_COUNT', 8);
-define('GA_ARTICLES_CATEGORY_ID', '43a01cf4-66a6-460b-8816-8c22518ad33c');
+// Re-synced 2026-08-24 - same stale-UUID issue as GA_NAV_CATEGORY_IDS above (categories were
+// cleared and recreated during a data migration). Re-confirmed against the live
+// /api/public/categories response ("articles" category).
+define('GA_ARTICLES_CATEGORY_ID', 'f858d35e-e695-44a2-a7b0-d7a19d1e5b71');
 
 // "Related Articles" widget — other articles from the same category as the one being read.
 define('GA_RELATED_ARTICLES_COUNT', 3);

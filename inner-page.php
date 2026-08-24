@@ -23,7 +23,7 @@ ga_prefetch_page([
     'homepage' => true,
     'articleId' => $ga_id !== '' ? $ga_id : null,
     'articles' => [
-        [GA_RECOMMENDED_COUNT, 0, GA_ARTICLES_CATEGORY_ID],
+        [GA_RECOMMENDED_COUNT, 0, GA_ARTICLES_CATEGORY_ID, true],
     ],
     'adZones' => [
         'INNER_SIDEBAR_LEFT',
@@ -60,8 +60,11 @@ $ga_sidebar_top_news = array_slice($ga_home_data_sidebar['trending'] ?? [], 0, G
 // "Top Trending Topics" — same data/cap as the homepage (see index.php).
 $ga_trending_tags = array_slice($ga_home_data_sidebar['trendingTags'] ?? [], 0, GA_TRENDING_TAGS_COUNT);
 
-// "Recommended For You" — articles filtered to the "Articles" category.
-$ga_recommended_articles = ga_fetch_articles(GA_RECOMMENDED_COUNT, 0, GA_ARTICLES_CATEGORY_ID)['items'] ?? [];
+// "Recommended For You" — articles filtered to the "Articles" category. includeChildren=true
+// because the "articles" category itself currently holds 0 directly-assigned published
+// articles - only its "special-articles" child does (confirmed live 2026-08-24) - same
+// parent+children rollup pattern already used for Movies/Politics elsewhere on this site.
+$ga_recommended_articles = ga_fetch_articles(GA_RECOMMENDED_COUNT, 0, GA_ARTICLES_CATEGORY_ID, true)['items'] ?? [];
 
 // "Related Articles" — other articles from the same category as this one. Fetches one extra
 // so excluding the current article (always present in its own category's feed) still leaves
