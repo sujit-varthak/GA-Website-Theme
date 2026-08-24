@@ -602,6 +602,13 @@ ul.top_story_option2_3story li .top_news_txt {
   padding: 8px;
 }
 
+/* This ad wrapper (the banner above the Opinion section) had no layout rule at
+   all anywhere, so its <img> sat at the block's default left edge instead of
+   centered in the row. */
+.editors_pick_full_width {
+  text-align: center;
+}
+
 .great_andhra_main_body_container .sortable-item_style_13 {
   width: 298px;
   padding-bottom: 8px;
@@ -616,6 +623,13 @@ ul.top_story_option2_3story li .top_news_txt {
   font-weight: 700;
   position: absolute;
   bottom: 6px;
+  /* No left/width before meant this absolutely-positioned overlay shrink-wrapped
+     to its text instead of spanning the hero image it sits on - .content1 (its
+     positioning ancestor) is position: relative, so left:0 + width:100% anchors
+     it to that container's full width. */
+  left: 0;
+  width: 100%;
+  box-sizing: border-box;
 }
 .great_andhra_main_body_container
   .sortable-item_style_1
