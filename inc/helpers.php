@@ -177,22 +177,26 @@ function ga_e(?string $value): string
     return htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
 }
 
-// Migrated articles store `body` as plain text (blank-line-separated paragraphs, no HTML
-// at all), while native articles already store it as real HTML (<div>/<span> blocks, from
-// the admin's contentEditable rich text editor). Since the template renders body raw,
-// plain-text paragraph breaks were collapsing into one wall of text. Detect which shape we
-// have and only reformat the plain-text case.
+// `body` arrives in one of two shapes: already block-structured HTML (native articles,
+// from the admin's contentEditable rich text editor - <div>/<span> blocks, or plain <p>
+// tags), or plain-text paragraphs with at most inline-level tags mixed in (legacy-migrated
+// articles with genuinely no HTML at all, and WordPress-XML-imported articles, whose raw
+// `content:encoded` - stored verbatim by scripts/import-articles-from-xml.ts - commonly
+// carries a stray <a>/<img>/<strong>/<br> from the original post alongside otherwise
+// blank-line-separated plain text). Since the template renders body raw, the second shape's
+// paragraph breaks were collapsing into one wall of text unless reformatted. Detect which
+// shape we have (a real block-level tag = already structured) and only reformat the other.
 //
 // $adZone, when given, injects ga_render_ad($adZone)'s output between two paragraphs, in
 // both cases above:
-// - Plain text: split on blank lines, count the resulting paragraphs.
-// - HTML: parsed with DOMDocument (ga_inject_ad_into_html_body) rather than string-split,
-//   since the rich text editor's actual output is inconsistent — plain <p> tags for some
-//   articles, but for others a mix of <div><span>text</span></div> blocks with blank-line
-//   spacer divs, and it sometimes nests a later paragraph's <div> inside an earlier one's
-//   instead of as a sibling (a contentEditable quirk). String-splitting on that would
-//   corrupt the markup; DOM manipulation finds and counts real paragraphs regardless of
-//   nesting and inserts the ad as a proper sibling node.
+// - Plain text (+ inline tags): split on blank lines, count the resulting paragraphs.
+// - Block HTML: parsed with DOMDocument (ga_inject_ad_into_html_body) rather than
+//   string-split, since the rich text editor's actual output is inconsistent — plain <p>
+//   tags for some articles, but for others a mix of <div><span>text</span></div> blocks with
+//   blank-line spacer divs, and it sometimes nests a later paragraph's <div> inside an
+//   earlier one's instead of as a sibling (a contentEditable quirk). String-splitting on
+//   that would corrupt the markup; DOM manipulation finds and counts real paragraphs
+//   regardless of nesting and inserts the ad as a proper sibling node.
 //
 // Either way, articles with at most GA_ARTICLE_MIDCONTENT_AD_SHORT_THRESHOLD paragraphs get
 // the ad after the last one (i.e. at the end); longer articles get it at the midpoint.
@@ -203,7 +207,19 @@ function ga_render_article_body(?string $body, ?string $adZone = null): string
         return '';
     }
 
-    if ($body !== strip_tags($body)) {
+    // A real block-level tag (native contentEditable output always wraps each
+    // paragraph in its own <div>) means the body already has genuine paragraph
+    // structure - render it as-is via the DOM-based path below. A body with only
+    // inline tags (<a>/<img>/<strong>/<em>/<br>/bare <span>) is the WordPress-XML-
+    // import case: raw `content:encoded`, stored verbatim by
+    // scripts/import-articles-from-xml.ts - plain-text paragraphs (blank-line
+    // separated) with occasional inline HTML left in from the original WordPress
+    // content, never run through WordPress's own wpautop() or anything
+    // equivalent. Treating "has any tag at all" as "already formatted" (the
+    // previous check) meant a single inline tag anywhere in an otherwise
+    // plain-text body skipped paragraph-wrapping entirely, collapsing the whole
+    // article into one unbroken blob - this is what was reported.
+    if (preg_match('/<(div|p|ul|ol|li|blockquote|h[1-6]|table|pre|figure)\b/i', $body)) {
         return $adZone !== null ? ga_inject_ad_into_html_body($body, $adZone) : $body;
     }
 
@@ -226,9 +242,14 @@ function ga_render_article_body(?string $body, ?string $adZone = null): string
         ? null
         : ($count <= GA_ARTICLE_MIDCONTENT_AD_SHORT_THRESHOLD ? $count : (int) floor($count / 2));
 
+    // Not run through ga_e() - a paragraph here may carry genuine inline HTML
+    // (a WordPress-imported <a> link, <strong>, etc.) that escaping would turn
+    // into visible literal text instead of real markup. body is admin/import-
+    // controlled content (RBAC-gated CMS, not raw public input), same trust
+    // boundary the already-HTML branch above already renders unescaped.
     $html = '';
     foreach ($paragraphs as $i => $paragraph) {
-        $html .= '<p>' . nl2br(ga_e($paragraph)) . '</p>';
+        $html .= '<p>' . nl2br($paragraph) . '</p>';
         if ($insertAfter !== null && ($i + 1) === $insertAfter) {
             $html .= $adHtml;
         }
