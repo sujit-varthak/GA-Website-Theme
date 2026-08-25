@@ -234,7 +234,7 @@ if ($ga_article && !empty($ga_article['category']['id'])) {
         <div class="great_andhra_movie_inner_body">
             <!--great_andhra_logo_panel-->
             <div class="great_andhra_logo_panel">
-                <a href="index.php" class="logo">
+                <a href="/" class="logo">
                     <img src="images/great_andhra.gif" title="Greatandhra website logo" alt="Greatandhra logo">
                 </a>
                 <div class="AdinHedare">
@@ -246,7 +246,7 @@ if ($ga_article && !empty($ga_article['category']['id'])) {
             <div class="great_andhra_logo_panel-mob">
             <!-- First Row: Logo and Hamburger -->
             <div class="logo-bar">
-                <a class="logo" href="index.php">
+                <a class="logo" href="/">
                     <img alt="Greatandhra logo" src="images/great_andhra.gif" title="Greatandhra website Logo" />
                 </a>
 

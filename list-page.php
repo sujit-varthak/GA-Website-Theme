@@ -118,6 +118,8 @@ ga_prefetch_page([
     'homepage' => $ga_is_latest_news_trending,
     'articles' => $ga_prefetch_articles,
     'adZones' => [
+        'LISTPAGE_SIDEBAR_LEFT',
+        'LISTPAGE_SIDEBAR_RIGHT',
         'LISTPAGE_TOP_BANNER',
         'LISTPAGE_MOBILE_BANNER',
         'LISTPAGE_CONTENT_AD',
@@ -330,6 +332,17 @@ function ga_list_page_url(string $cleanPath, array $legacyParams, int $page): st
         }
     </style> -->
 
+    <div class="local_great" style="position:fixed; width:100%; float:left; width:80px;">
+        <div class="source-image-left" style="float:left">
+            <?php ga_render_ad('LISTPAGE_SIDEBAR_LEFT'); ?>
+        </div>
+    </div>
+    <div class="local_great" style="position:fixed; width:120px; right:0;">
+        <div class="source-image-right" style="float:right">
+            <?php ga_render_ad('LISTPAGE_SIDEBAR_RIGHT'); ?>
+        </div>
+    </div>
+
     <!--great_andhra_body-->
     <div class="great_andhra_movie_body">
         <!--great_andhra_inner_body-->
@@ -343,7 +356,7 @@ function ga_list_page_url(string $cleanPath, array $legacyParams, int $page): st
                 } */
             </style>
             <div class="great_andhra_logo_panel">
-                <a href="index.php" class="logo">
+                <a href="/" class="logo">
                     <img src="./images/great_andhra.gif" title="Greatandhra website logo" alt="Greatandhra logo">
                 </a>
                 <div class="AdinHedare">
@@ -946,7 +959,7 @@ function ga_list_page_url(string $cleanPath, array $legacyParams, int $page): st
             <div class="great_andhra_logo_panel-mob">
             <!-- First Row: Logo and Hamburger -->
             <div class="logo-bar">
-                <a class="logo" href="index.php">
+                <a class="logo" href="/">
                     <img alt="Greatandhra logo" src="images/great_andhra.gif" title="Greatandhra website Logo" />
                 </a>
 

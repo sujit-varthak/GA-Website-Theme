@@ -164,7 +164,7 @@ $ga_mobile_latest_news_articles = array_slice($ga_trending_articles, 0, GA_MOBIL
 
         <!--great_andhra_logo_panel-->
         <div class="great_andhra_logo_panel">
-            <a class="logo" href="index.php">
+            <a class="logo" href="/">
                 <img alt="Greatandhra logo" src="images/great_andhra.gif" title="Greatandhra ebsite Logo" />
             </a>
             <div>
@@ -180,7 +180,7 @@ $ga_mobile_latest_news_articles = array_slice($ga_trending_articles, 0, GA_MOBIL
         <div class="great_andhra_logo_panel-mob">
             <!-- First Row: Logo and Hamburger -->
             <div class="logo-bar">
-                <a class="logo" href="index.php">
+                <a class="logo" href="/">
                     <img alt="Greatandhra logo" src="images/great_andhra.gif" title="Greatandhra website Logo" />
                 </a>
 
