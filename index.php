@@ -171,9 +171,11 @@ $ga_mobile_latest_news_articles = array_slice($ga_trending_articles, 0, GA_MOBIL
             <div>
 
             </div>
+            <?php if (!ga_is_mobile()): ?>
             <div class="_201223_">
                 <?php ga_render_ad('HOMEPAGE_TOP_BANNER'); ?>
             </div>
+            <?php endif; ?>
 
         </div>
 
@@ -270,12 +272,11 @@ $ga_mobile_latest_news_articles = array_slice($ga_trending_articles, 0, GA_MOBIL
             <div class="mobile-overlay" id="mobileOverlay"></div>
 
             <!-- Second Row: Advertisement -->
+            <?php if (ga_is_mobile()): ?>
             <div class="_201223_">
-                <?php // Reuses the Homepage Top Banner ad's mobile image, not a separate zone -
-                // see GA_AD_ZONE_IMAGE_DIMENSIONS['HOMEPAGE_MOBILE_BANNER'] for why the 3rd
-                // arg still references that zone name (sizing only, no ad is fetched under it). ?>
                 <?php ga_render_ad('HOMEPAGE_MOBILE_BANNER'); ?>
             </div>
+            <?php endif; ?>
         </div>
 
 
