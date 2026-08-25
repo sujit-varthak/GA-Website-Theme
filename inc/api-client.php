@@ -240,12 +240,13 @@ function ga_fetch_homepage(): ?array
 // Builds the {url, cacheFile, ttl} triple for a ga_fetch_articles() call without performing
 // it — shared by ga_fetch_articles() itself and ga_prefetch_page() so the cache key/URL
 // construction can never drift between the two.
-function ga_articles_request(int $take = 4, int $skip = 0, ?string $categoryId = null, bool $includeChildren = false, ?string $tagId = null): array
+function ga_articles_request(int $take = 4, int $skip = 0, ?string $categoryId = null, bool $includeChildren = false, ?string $tagId = null, bool $isTrending = false): array
 {
     $cacheKey = "articles_take{$take}_skip{$skip}"
         . ($categoryId ? "_cat{$categoryId}" : '')
         . ($includeChildren ? '_children' : '')
-        . ($tagId ? "_tag{$tagId}" : '');
+        . ($tagId ? "_tag{$tagId}" : '')
+        . ($isTrending ? '_trending' : '');
 
     $query = ['take' => $take, 'skip' => $skip];
     if ($categoryId) {
@@ -257,6 +258,9 @@ function ga_articles_request(int $take = 4, int $skip = 0, ?string $categoryId =
     if ($tagId) {
         $query['tagId'] = $tagId;
     }
+    if ($isTrending) {
+        $query['isTrending'] = 'true';
+    }
 
     return [
         'url' => rtrim(GA_API_BASE_URL, '/') . '/api/public/articles?' . http_build_query($query),
@@ -267,13 +271,16 @@ function ga_articles_request(int $take = 4, int $skip = 0, ?string $categoryId =
 
 // Returns ['items' => article[], 'total' => int], or null if the API failed AND no cache
 // (fresh or stale) exists. total is the count matching the given filter (categoryId/
-// includeChildren/tagId applied), not the whole site — confirmed live 2026-08-01.
+// includeChildren/tagId/isTrending applied), not the whole site — confirmed live 2026-08-01.
 // $categoryId is optional — confirmed working server-side filter.
 // $includeChildren (opt-in, confirmed live 2026-07-31) also returns the category's direct children's articles.
 // $tagId (opt-in, confirmed live 2026-08-02 — was silently ignored before that) filters by tag instead.
-function ga_fetch_articles(int $take = 4, int $skip = 0, ?string $categoryId = null, bool $includeChildren = false, ?string $tagId = null): ?array
+// $isTrending (opt-in, added 2026-08-25 alongside the backend's isTrending filter support) -
+// "Latest News" has no real category, this is what backs its listing page with real
+// server-side pagination instead of slicing the homepage's fixed-size trending widget.
+function ga_fetch_articles(int $take = 4, int $skip = 0, ?string $categoryId = null, bool $includeChildren = false, ?string $tagId = null, bool $isTrending = false): ?array
 {
-    $req = ga_articles_request($take, $skip, $categoryId, $includeChildren, $tagId);
+    $req = ga_articles_request($take, $skip, $categoryId, $includeChildren, $tagId, $isTrending);
     $cacheFile = $req['cacheFile'];
 
     $isFresh = is_file($cacheFile) && (time() - filemtime($cacheFile)) < GA_CACHE_TTL;

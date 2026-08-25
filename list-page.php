@@ -22,10 +22,9 @@ $ga_tag_id = '';
 $ga_tag_name = '';
 $ga_is_tag_mode = false;
 // "Latest News" shows whatever's currently flagged trending — same source as the homepage's
-// Top News tab — not a literal category filter. The backend has no working trending filter on
-// the paginated articles endpoint (confirmed: ?isTrending=/?trending= are both silently
-// ignored, same as the tag/slug filters checked earlier), so this fetches the homepage
-// aggregate's trending array whole and paginates it in PHP instead (see the fetch block below).
+// Top News tab — not a literal category filter. Backed by the paginated articles endpoint's
+// isTrending filter (added 2026-08-25), same real total-based pagination as a category listing
+// gets - not the homepage's small fixed-size trending widget.
 $ga_is_latest_news_trending = false;
 
 if ($ga_path_info !== '') {
@@ -111,11 +110,12 @@ $ga_prefetch_articles = [
 ];
 if ($ga_is_tag_mode) {
     $ga_prefetch_articles[] = [GA_LIST_PAGE_TAKE, $ga_skip, null, false, $ga_tag_id];
-} elseif (!$ga_is_latest_news_trending && $ga_category_id !== '') {
+} elseif ($ga_is_latest_news_trending) {
+    $ga_prefetch_articles[] = [GA_LIST_PAGE_TAKE, $ga_skip, null, false, null, true];
+} elseif ($ga_category_id !== '') {
     $ga_prefetch_articles[] = [GA_LIST_PAGE_TAKE, $ga_skip, $ga_category_id, $ga_include_children];
 }
 ga_prefetch_page([
-    'homepage' => $ga_is_latest_news_trending,
     'articles' => $ga_prefetch_articles,
     'adZones' => [
         'LISTPAGE_SIDEBAR_LEFT',
@@ -133,9 +133,13 @@ if ($ga_is_tag_mode) {
     $ga_list_articles = $ga_result['items'] ?? [];
     $ga_total = $ga_result['total'] ?? 0;
 } elseif ($ga_is_latest_news_trending) {
-    $ga_all_trending = ga_fetch_homepage()['trending'] ?? [];
-    $ga_total = count($ga_all_trending);
-    $ga_list_articles = array_slice($ga_all_trending, $ga_skip, GA_LIST_PAGE_TAKE);
+    // Real server-side pagination via the backend's isTrending filter (added 2026-08-25) -
+    // previously sliced the homepage's trending widget, which is hard-capped at 17 regardless
+    // of how many articles are actually flagged trending, so pagination could never surface
+    // more than that no matter how it was implemented on top.
+    $ga_result = ga_fetch_articles(GA_LIST_PAGE_TAKE, $ga_skip, null, false, null, true);
+    $ga_list_articles = $ga_result['items'] ?? [];
+    $ga_total = $ga_result['total'] ?? 0;
 } elseif ($ga_category_id !== '') {
     $ga_result = ga_fetch_articles(GA_LIST_PAGE_TAKE, $ga_skip, $ga_category_id, $ga_include_children);
     $ga_list_articles = $ga_result['items'] ?? [];
