@@ -24,6 +24,7 @@ ga_prefetch_page([
         'HOMEPAGE_STRIP_BANNER_2',
         'HOMEPAGE_STRIP_BANNER_3',
         'HOMEPAGE_MOBILE_AFTER_BIGSTORY_AD',
+        'HOMEPAGE_MOBILE_BEFORE_LATEST_NEWS_AD',
         'HOMEPAGE_BIG_STORY_BANNER',
         'HOMEPAGE_LATEST_NEWS_INLINE_AD',
         'HOMEPAGE_SECTION_INLINE',
@@ -497,6 +498,9 @@ $ga_mobile_latest_news_articles = array_slice($ga_trending_articles, 0, GA_MOBIL
                             </li>
                         </ul>
                     </div>
+                    <?php if (ga_is_mobile()): ?>
+                        <?php ga_render_ad('HOMEPAGE_MOBILE_BEFORE_LATEST_NEWS_AD'); ?>
+                    <?php endif; ?>
                     <div class="home_left_column mobile-latest-news">
                         <div class="sortable-item_style_1">
                             <div class="header">Latest News</div>
