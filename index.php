@@ -25,6 +25,10 @@ ga_prefetch_page([
         'HOMEPAGE_STRIP_BANNER_3',
         'HOMEPAGE_MOBILE_AFTER_BIGSTORY_AD',
         'HOMEPAGE_MOBILE_BEFORE_LATEST_NEWS_AD',
+        'HOMEPAGE_MOBILE_LATEST_NEWS_END_AD',
+        'HOMEPAGE_MOBILE_AFTER_TALK_OF_TOWN_AD',
+        'HOMEPAGE_MOBILE_AFTER_OPINION_AD',
+        'HOMEPAGE_MOBILE_BETWEEN_MOVIE_NEWS_GOSSIP_AD',
         'HOMEPAGE_BIG_STORY_BANNER',
         'HOMEPAGE_LATEST_NEWS_INLINE_AD',
         'HOMEPAGE_SECTION_INLINE',
@@ -532,6 +536,11 @@ $ga_mobile_latest_news_articles = array_slice($ga_trending_articles, 0, GA_MOBIL
                                         <p class="ga-unavailable-msg">Content temporarily unavailable</p>
                                     </li>
                                 <?php endif; ?>
+                                <?php if (ga_is_mobile()): ?>
+                                    <li class="mobile-latest-news-ad">
+                                        <?php ga_render_ad('HOMEPAGE_MOBILE_LATEST_NEWS_END_AD'); ?>
+                                    </li>
+                                <?php endif; ?>
                             </ul>
                         </div>
                     </div>
@@ -803,6 +812,10 @@ $ga_mobile_latest_news_articles = array_slice($ga_trending_articles, 0, GA_MOBIL
                             <?php ga_render_ad('HOMEPAGE_SECTION_INLINE'); ?>
                         </li>
                     </div>
+                    <?php else: ?>
+                    <li class="sortable-item clear">
+                        <?php ga_render_ad('HOMEPAGE_MOBILE_AFTER_TALK_OF_TOWN_AD'); ?>
+                    </li>
                     <?php endif; ?>
                 </ul>
             </div>
@@ -901,6 +914,11 @@ $ga_mobile_latest_news_articles = array_slice($ga_trending_articles, 0, GA_MOBIL
                 </div>
             </div>
         </div>
+        <?php if (ga_is_mobile()): ?>
+            <div class="great_andhra_main_body_container">
+                <?php ga_render_ad('HOMEPAGE_MOBILE_AFTER_OPINION_AD'); ?>
+            </div>
+        <?php endif; ?>
         <div class="great_andhra_main_body_container category_section">
             <!--two_column_home-->
             <div class="two_column_home">
@@ -1047,6 +1065,11 @@ $ga_mobile_latest_news_articles = array_slice($ga_trending_articles, 0, GA_MOBIL
                             </li>
                         </ul>
                     </div>
+                    <?php if (ga_is_mobile()): ?>
+                        <div class="home_left_column">
+                            <?php ga_render_ad('HOMEPAGE_MOBILE_BETWEEN_MOVIE_NEWS_GOSSIP_AD'); ?>
+                        </div>
+                    <?php endif; ?>
                     <div class="home_left_column news-section">
                         <ul class="sortable-list ui-sortable">
                             <li class="sortable-item">
