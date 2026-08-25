@@ -29,6 +29,7 @@ ga_prefetch_page([
         'HOMEPAGE_MOBILE_AFTER_TALK_OF_TOWN_AD',
         'HOMEPAGE_MOBILE_AFTER_OPINION_AD',
         'HOMEPAGE_MOBILE_BETWEEN_MOVIE_NEWS_GOSSIP_AD',
+        'HOMEPAGE_MOBILE_AFTER_TRENDING_TOPICS_AD',
         'HOMEPAGE_BIG_STORY_BANNER',
         'HOMEPAGE_LATEST_NEWS_INLINE_AD',
         'HOMEPAGE_SECTION_INLINE',
@@ -1243,6 +1244,11 @@ $ga_mobile_latest_news_articles = array_slice($ga_trending_articles, 0, GA_MOBIL
                             </div>
                         </div>
                     </li>
+                    <?php if (ga_is_mobile()): ?>
+                        <li class="sortable-item clear">
+                            <?php ga_render_ad('HOMEPAGE_MOBILE_AFTER_TRENDING_TOPICS_AD'); ?>
+                        </li>
+                    <?php endif; ?>
                     <style>
                         /* .content.trending_topics {
 
