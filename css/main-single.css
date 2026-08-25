@@ -499,6 +499,11 @@ i.fab.fa-facebook-f {
 
 .ga-featured-videos .big-galist-rgt p {
   width: 175px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
 }
 
 .great_andhra_main_body_container li.editors_pick_li:not(.main-story) > a {
