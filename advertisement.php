@@ -55,15 +55,15 @@ $ga_delay_seconds = max(1, (int) round($ga_delay_ms / 1000));
         a { text-decoration: none; color: #039; font-size: 11px; font-family: arial; }
         a:hover { text-decoration: underline; }
         .copyright { font-size: 11px; font-family: arial; }
-        .ad-page-wrap { max-width: 800px; margin: 0 auto; text-align: center; }
+        .ad-page-wrap { max-width: 1200px; margin: 0 auto; text-align: center; }
         .ad-page-banner { background: #dbdbdb; font-family: Arial; font-size: 12px; padding: 8px 0; }
         .ad-page-topnav { display: flex; align-items: center; justify-content: center; padding: 10px 0; font-family: Arial; font-size: 12px; }
         .ad-page-topnav img { width: 200px; }
         .ad-page-topnav a { padding-left: 12px; color: #000; }
-        .ad-page-media img { max-width: min(100%, 420px); height: auto; }
-        @media (min-width: 769px) {
-            .ad-page-media img { max-width: min(100%, 900px); }
-        }
+        /* Edge-to-edge within the page wrap, on both mobile and desktop - no
+           inner pixel cap below the wrap's own width, matching the reference
+           screenshots (full-bleed poster, not a small centered box). */
+        .ad-page-media img { max-width: 100%; width: 100%; height: auto; }
     </style>
 </head>
 
