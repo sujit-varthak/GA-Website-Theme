@@ -466,6 +466,183 @@ function ga_maybe_show_roadblock_ad(): void
     exit;
 }
 
+// Classifies $_SERVER['HTTP_REFERER']'s path the same way .htaccess routes it, for the
+// interstitial's TRANSITION trigger (matched against the ad's configured "From Page"). No
+// referrer, a referrer from a different host, or an unrecognized path all return null -
+// callers should treat null as "doesn't match anything except a From Page of ANY".
+function ga_classify_referer_page_type(): ?string
+{
+    $referer = $_SERVER['HTTP_REFERER'] ?? '';
+    if ($referer === '') {
+        return null;
+    }
+
+    $refererHost = parse_url($referer, PHP_URL_HOST);
+    $currentHost = $_SERVER['HTTP_HOST'] ?? '';
+    if ($refererHost === null || ($currentHost !== '' && strcasecmp($refererHost, $currentHost) !== 0)) {
+        return null;
+    }
+
+    $path = trim((string) parse_url($referer, PHP_URL_PATH), '/');
+    if ($path === '' || $path === 'index.php') {
+        return 'HOME';
+    }
+    if ($path === 'box-office' || strpos($path, 'box-office.php') === 0) {
+        return 'BOXOFFICE';
+    }
+    if (
+        preg_match('#^([0-9]+|[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})(/|$)#', $path)
+        || strpos($path, 'inner-page.php') === 0
+    ) {
+        return 'ARTICLE';
+    }
+
+    // Everything else (category/tag paths, list-page.php?..., "tag/...") matches the
+    // .htaccess catch-all that forwards to list-page.php.
+    return 'LISTPAGE';
+}
+
+// Decides whether the full-screen interstitial should show on this request - must be called
+// early, at the top of the page before any HTML output (same spot as
+// ga_maybe_show_roadblock_ad()), because TRANSITION mode sets a cookie here and setcookie()
+// fails once headers are already sent. The actual markup is echoed later, from within <body>,
+// by ga_render_interstitial_overlay() - passed this function's return value.
+//
+// Two independent trigger modes, chosen per-ad in the admin panel:
+//   - TRANSITION: only when the visitor's referrer page-type and the current page-type match
+//     the ad's configured From/To Page (ANY matches everything on that side). Cookie is set
+//     here, immediately, since the decision is already final.
+//   - TIMER: always eligible - the overlay renders hidden and a client-side timer reveals it
+//     (and only then sets the frequency cookie itself, via document.cookie - a visitor who
+//     leaves before the timer fires never saw it and shouldn't be cookie-capped out of seeing
+//     it on a later visit).
+// Returns null (render nothing) if the cookie is already set, the zone has no active ad, or a
+// TRANSITION ad's trigger doesn't match this visit.
+function ga_prepare_interstitial_ad(string $currentPageType): ?array
+{
+    if (!GA_INTERSTITIAL_AD_ENABLED || isset($_COOKIE[GA_INTERSTITIAL_COOKIE_NAME])) {
+        return null;
+    }
+
+    require_once __DIR__ . '/api-client.php';
+    $ad = ga_fetch_ad('FULLSCREEN_INTERSTITIAL_AD', !ga_is_mobile());
+    if ($ad === null) {
+        return null;
+    }
+
+    $frequencyHours = max(1, (int) ($ad['interstitialFrequencyHours'] ?? GA_INTERSTITIAL_FREQUENCY_DEFAULT_HOURS));
+    $cookieTtlSeconds = $frequencyHours * 3600;
+    $triggerType = $ad['interstitialTriggerType'] ?? 'TRANSITION';
+    $timerSeconds = null;
+
+    if ($triggerType === 'TIMER') {
+        $timerSeconds = max(1, (int) ($ad['interstitialTimerSeconds'] ?? 10));
+    } else {
+        $fromPage = $ad['interstitialFromPage'] ?? 'ANY';
+        $toPage = $ad['interstitialToPage'] ?? 'ANY';
+        $refererPageType = ga_classify_referer_page_type();
+        $matches = ($fromPage === 'ANY' || $fromPage === $refererPageType)
+            && ($toPage === 'ANY' || $toPage === $currentPageType);
+
+        // Doesn't match this visit's transition - render nothing, and don't set the cookie
+        // either, so a later matching transition in the same visit can still trigger it.
+        if (!$matches) {
+            return null;
+        }
+
+        setcookie(GA_INTERSTITIAL_COOKIE_NAME, '1', time() + $cookieTtlSeconds, '/');
+    }
+
+    return ['ad' => $ad, 'timerSeconds' => $timerSeconds, 'cookieTtlSeconds' => $cookieTtlSeconds];
+}
+
+// Echoes the overlay markup from within <body>, using the decision ga_prepare_interstitial_ad()
+// already made (and already acted on, cookie-wise) at the top of the page. No-ops on null.
+function ga_render_interstitial_overlay(?array $decision): void
+{
+    if ($decision === null) {
+        return;
+    }
+
+    $adName = $decision['ad']['name'] ?? 'Advertisement';
+    $timerSeconds = $decision['timerSeconds'];
+    $cookieTtlSeconds = $decision['cookieTtlSeconds'];
+    ?>
+    <div id="ga-interstitial-overlay" class="ga-interstitial-overlay"<?php echo $timerSeconds !== null ? ' style="display:none;"' : ''; ?> role="dialog" aria-label="<?php echo ga_e($adName); ?>">
+        <div class="ga-interstitial-box">
+            <button type="button" class="ga-interstitial-close" aria-label="Close">&times;</button>
+            <div class="ga-interstitial-media">
+                <?php ga_render_ad('FULLSCREEN_INTERSTITIAL_AD'); ?>
+            </div>
+        </div>
+    </div>
+    <script>
+    (function () {
+        var overlay = document.getElementById('ga-interstitial-overlay');
+        if (!overlay) return;
+        var closeBtn = overlay.querySelector('.ga-interstitial-close');
+        closeBtn.addEventListener('click', function () {
+            overlay.style.display = 'none';
+        });
+        <?php if ($timerSeconds !== null): ?>
+        setTimeout(function () {
+            overlay.style.display = 'flex';
+            try {
+                document.cookie = <?php echo json_encode(GA_INTERSTITIAL_COOKIE_NAME); ?> + '=1; max-age=' + <?php echo (int) $cookieTtlSeconds; ?> + '; path=/';
+            } catch (e) {}
+        }, <?php echo (int) $timerSeconds * 1000; ?>);
+        <?php endif; ?>
+    })();
+    </script>
+    <?php
+}
+
+// Sitewide fixed-position ad (BOTTOM_STICKY_AD). Always rendered server-side when an active ad
+// exists (the spec only asked for a close button, not a display-frequency cap like the
+// interstitial's); a small inline script hides it if the visitor already closed it earlier
+// this browser session. No existing site convention for "dismissed this session" to match, so
+// this is a new, minimal one: sessionStorage, cleared when the tab/browser session ends.
+function ga_render_bottom_sticky_ad(): void
+{
+    if (!GA_STICKY_AD_ENABLED) {
+        return;
+    }
+
+    require_once __DIR__ . '/api-client.php';
+    $ad = ga_fetch_ad('BOTTOM_STICKY_AD', !ga_is_mobile());
+    if ($ad === null) {
+        return;
+    }
+
+    $adName = $ad['name'] ?? 'Advertisement';
+    ?>
+    <div id="ga-sticky-ad" class="ga-sticky-ad" role="complementary" aria-label="<?php echo ga_e($adName); ?>">
+        <button type="button" class="ga-sticky-ad-close" aria-label="Close">&times;</button>
+        <div class="ga-sticky-ad-media">
+            <?php ga_render_ad('BOTTOM_STICKY_AD'); ?>
+        </div>
+    </div>
+    <script>
+    (function () {
+        var KEY = 'ga_sticky_ad_dismissed';
+        var box = document.getElementById('ga-sticky-ad');
+        if (!box) return;
+        try {
+            if (sessionStorage.getItem(KEY) === '1') {
+                box.style.display = 'none';
+                return;
+            }
+        } catch (e) {}
+        var closeBtn = box.querySelector('.ga-sticky-ad-close');
+        closeBtn.addEventListener('click', function () {
+            box.style.display = 'none';
+            try { sessionStorage.setItem(KEY, '1'); } catch (e) {}
+        });
+    })();
+    </script>
+    <?php
+}
+
 // Detects a mobile user agent (used to pick imageUrlMobile vs imageUrlDesktop and the
 // showOnMobile/showOnDesktop zone toggle). Memoized — called from multiple places per request.
 function ga_is_mobile(): bool

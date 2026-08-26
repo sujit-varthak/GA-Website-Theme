@@ -2,6 +2,7 @@
 require_once __DIR__ . '/config.php';
 require_once __DIR__ . '/inc/helpers.php';
 ga_maybe_show_roadblock_ad();
+$ga_interstitial_decision = ga_prepare_interstitial_ad('LISTPAGE');
 require_once __DIR__ . '/inc/api-client.php';
 
 // Clean URL path ("movies/gossip", "politics", "tag/{slug}") arrives via PATH_INFO from the
@@ -124,6 +125,8 @@ ga_prefetch_page([
         'LISTPAGE_MOBILE_BANNER',
         'LISTPAGE_CONTENT_AD',
         'LISTPAGE_MOBILE_MIDDLE_AD',
+        'FULLSCREEN_INTERSTITIAL_AD',
+        'BOTTOM_STICKY_AD',
     ],
 ]);
 
@@ -201,6 +204,7 @@ function ga_list_page_url(string $cleanPath, array $legacyParams, int $page): st
     <!-- <meta name="robots" content="index, follow"> -->
     <link href="./css/great_andhra_style_landing_pages.css" rel="stylesheet">
     <link href="./css/footer.css" rel="stylesheet">
+    <link href="css/site-ads.css?v=<?php echo ga_asset_version('css/site-ads.css'); ?>" rel="stylesheet">
     <link href="css/header-mob.css" rel="stylesheet">
     <script src="js/drawer.js"> </script>
     <!-- <link href="https://www.greatandhra.com/css/image_preview.css" rel="stylesheet" type="text/css">
@@ -322,6 +326,8 @@ function ga_list_page_url(string $cleanPath, array $legacyParams, int $page): st
 </head>
 
 <body class="home_bg">
+    <?php ga_render_interstitial_overlay($ga_interstitial_decision); ?>
+    <?php ga_render_bottom_sticky_ad(); ?>
     <!-- Global site tag (gtag.js) - Google Analytics
 	<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-PX1LPBMH02"></script>
 	<script>

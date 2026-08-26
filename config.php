@@ -26,6 +26,20 @@ define('GA_ROADBLOCK_AD_IMAGE_MOBILE', 'images/spiderman-brand-new-day-poster.jp
 define('GA_ROADBLOCK_AD_IMAGE_DESKTOP', 'images/spiderman-brand-new-day-landscape.jpg');
 define('GA_ROADBLOCK_AD_LINK', 'https://www.imdb.com/title/tt22084616/');
 
+// Full-screen interstitial (FULLSCREEN_INTERSTITIAL_AD) - an in-page overlay, completely
+// independent of the roadblock above (own kill switch/cookie, never redirects, closes with an
+// X instead of navigating away). See ga_maybe_render_interstitial_ad() in inc/helpers.php.
+define('GA_INTERSTITIAL_AD_ENABLED', true);
+define('GA_INTERSTITIAL_COOKIE_NAME', 'gaint');
+// Fallback only for an ad saved with no interstitialFrequencyHours set (shouldn't normally
+// happen - the admin form defaults it to 24) - hours before the same visitor can be shown it again.
+define('GA_INTERSTITIAL_FREQUENCY_DEFAULT_HOURS', 24);
+
+// Bottom sticky/floating ad (BOTTOM_STICKY_AD) - fixed-position corner/bar unit, no cookie
+// gate (always eligible to render; visibility is a pure client-side sessionStorage dismiss via
+// its close button). See ga_render_bottom_sticky_ad() in inc/helpers.php.
+define('GA_STICKY_AD_ENABLED', true);
+
 // Manual cache-clear trigger: hit clear-cache.php?key=<this> to force-refresh instantly
 // instead of waiting out the TTL. Change this to your own value before going live.
 define('GA_CACHE_CLEAR_KEY', 'ga-dev-clear-2026');

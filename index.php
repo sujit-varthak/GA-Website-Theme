@@ -2,6 +2,7 @@
 require_once __DIR__ . '/config.php';
 require_once __DIR__ . '/inc/helpers.php';
 ga_maybe_show_roadblock_ad();
+$ga_interstitial_decision = ga_prepare_interstitial_ad('HOME');
 require_once __DIR__ . '/inc/api-client.php';
 
 // Fires the homepage aggregate + both article feeds + every ad zone below concurrently
@@ -36,6 +37,8 @@ ga_prefetch_page([
         'HOMEPAGE_SECTION_INLINE',
         'HOMEPAGE_OPINION_BANNER',
         'HOMEPAGE_ARTICLE_WIDGET_AD',
+        'FULLSCREEN_INTERSTITIAL_AD',
+        'BOTTOM_STICKY_AD',
     ],
 ]);
 
@@ -135,6 +138,7 @@ $ga_mobile_latest_news_articles = array_slice($ga_trending_articles, 0, GA_MOBIL
     <link href="css/main-single.css?v=<?php echo ga_asset_version('css/main-single.css'); ?>" rel="stylesheet" />
     <link href="css/footer.css?v=<?php echo ga_asset_version('css/footer.css'); ?>" rel="stylesheet" />
     <link href="css/mobile-responsive.css?v=<?php echo ga_asset_version('css/mobile-responsive.css'); ?>" rel="stylesheet">
+    <link href="css/site-ads.css?v=<?php echo ga_asset_version('css/site-ads.css'); ?>" rel="stylesheet">
     <link href="css/header-mob.css?v=<?php echo ga_asset_version('css/header-mob.css'); ?>" rel="stylesheet">
     <script src="js/drawer.js"></script>
 
@@ -152,6 +156,8 @@ $ga_mobile_latest_news_articles = array_slice($ga_trending_articles, 0, GA_MOBIL
 </head>
 
 <body>
+    <?php ga_render_interstitial_overlay($ga_interstitial_decision); ?>
+    <?php ga_render_bottom_sticky_ad(); ?>
     <div id="fb-root"></div>
     <div class="local_great" style="position:fixed; width:100%; float:left; width:80px;">
         <div class="source-image-left" style="float:left; display:block; left:69px;">

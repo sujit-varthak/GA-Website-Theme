@@ -2,6 +2,7 @@
 require_once __DIR__ . '/config.php';
 require_once __DIR__ . '/inc/helpers.php';
 ga_maybe_show_roadblock_ad();
+$ga_interstitial_decision = ga_prepare_interstitial_ad('BOXOFFICE');
 require_once __DIR__ . '/inc/api-client.php';
 
 $ga_bo_page = max(1, isset($_GET['page']) ? (int) $_GET['page'] : 1);
@@ -21,6 +22,8 @@ ga_prefetch_page([
         'BOXOFFICE_MOBILE_BANNER',
         'BOXOFFICE_STICKY_AD',
         'BOXOFFICE_REVIEW_AD',
+        'FULLSCREEN_INTERSTITIAL_AD',
+        'BOTTOM_STICKY_AD',
     ],
 ]);
 
@@ -63,6 +66,7 @@ function ga_box_office_url(int $page): string
     <link href="css/footer.css" rel="stylesheet" type="text/css">
     <link href="css/main-box-office.css" rel="stylesheet" type="text/css">
     <link href="css/box-office-mobile-responsive.css" rel="stylesheet">
+    <link href="css/site-ads.css?v=<?php echo ga_asset_version('css/site-ads.css'); ?>" rel="stylesheet">
     <link href="css/header-mob.css" rel="stylesheet">
     <script src="js/drawer.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -331,6 +335,8 @@ function ga_box_office_url(int $page): string
 </head>
 
 <body class="home_bg">
+    <?php ga_render_interstitial_overlay($ga_interstitial_decision); ?>
+    <?php ga_render_bottom_sticky_ad(); ?>
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <!-- <script async="" src="assets/js"></script>
 	<script>

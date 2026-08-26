@@ -1,0 +1,130 @@
+/* Sitewide ad units (FULLSCREEN_INTERSTITIAL_AD, BOTTOM_STICKY_AD) - kept in their own file
+   rather than appended to any per-page CSS, since these two render on every page (index.php,
+   inner-page.php, box-office.php, list-page.php) and a per-page file's classes aren't safe to
+   assume unique to that page (see .editors_pick_full_width history in main-single.css). */
+
+/* Full-Screen Interstitial - dimmed backdrop overlay, closes without navigating away or
+   affecting the page underneath (position: fixed, removed from layout flow entirely). */
+.ga-interstitial-overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 999999;
+  background: rgba(0, 0, 0, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+.ga-interstitial-box {
+  position: relative;
+  max-width: 500px;
+  width: 100%;
+  background: #fff;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.ga-interstitial-media {
+  max-height: 80vh;
+  overflow: auto;
+  line-height: 0;
+  text-align: center;
+}
+
+.ga-interstitial-media img {
+  display: inline-block;
+  max-width: 100%;
+  height: auto;
+}
+
+.ga-interstitial-close {
+  position: absolute;
+  top: -14px;
+  right: -14px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.75);
+  color: #ffffff;
+  border: 2px solid #ffffff;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  z-index: 1;
+}
+
+@media (max-width: 768px) {
+  .ga-interstitial-box {
+    max-width: 100%;
+  }
+}
+
+/* Bottom Sticky / Floating Ad - fixed to the bottom-right corner on desktop (flush to both
+   edges, matching a standard Google anchor/corner ad unit), collapses to a shallow full-width
+   bar on mobile so it never covers the whole screen. Stays above page content (z-index below
+   the interstitial's, so the interstitial always wins if both are configured to show at once)
+   but never dims or blocks the rest of the page - it's just a box layered on top. */
+.ga-sticky-ad {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  z-index: 99999;
+  width: 336px;
+  max-width: 100vw;
+  background: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+}
+
+.ga-sticky-ad-media {
+  line-height: 0;
+}
+
+.ga-sticky-ad-media img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.ga-sticky-ad-close {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  width: 22px;
+  height: 22px;
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.7);
+  color: #ffffff;
+  border: none;
+  font-size: 15px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  z-index: 1;
+}
+
+@media (max-width: 768px) {
+  .ga-sticky-ad {
+    width: 100%;
+    max-height: 100px;
+  }
+
+  .ga-sticky-ad-media img {
+    max-height: 100px;
+    width: auto;
+    max-width: 100%;
+    margin: 0 auto;
+    object-fit: contain;
+  }
+}

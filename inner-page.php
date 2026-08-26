@@ -2,6 +2,7 @@
 require_once __DIR__ . '/config.php';
 require_once __DIR__ . '/inc/helpers.php';
 ga_maybe_show_roadblock_ad();
+$ga_interstitial_decision = ga_prepare_interstitial_ad('ARTICLE');
 require_once __DIR__ . '/inc/api-client.php';
 
 // New URL shape: inner-page.php/{id}/{categorySlug}/{subCategorySlug?}/{titleSlug} — the
@@ -32,6 +33,8 @@ ga_prefetch_page([
         'INNER_MOBILE_BANNER',
         'INNER_ARTICLE_BANNER',
         'INNER_SIDEBAR_BOTTOM_AD',
+        'FULLSCREEN_INTERSTITIAL_AD',
+        'BOTTOM_STICKY_AD',
     ],
 ]);
 
@@ -127,6 +130,7 @@ if ($ga_article && !empty($ga_article['category']['id'])) {
     <link href="css/image_preview.css" rel="stylesheet" type="text/css">
     <link href="css/inner-page-main.css" rel="stylesheet">
     <link href="css/inner-page-mobile-responsive.css" rel="stylesheet">
+    <link href="css/site-ads.css?v=<?php echo ga_asset_version('css/site-ads.css'); ?>" rel="stylesheet">
     <link href="css/header-mob.css" rel="stylesheet">
     <script src="js/drawer.js"></script>
  
@@ -134,6 +138,8 @@ if ($ga_article && !empty($ga_article['category']['id'])) {
 </head>
 
 <body>
+    <?php ga_render_interstitial_overlay($ga_interstitial_decision); ?>
+    <?php ga_render_bottom_sticky_ad(); ?>
     <div id="fb-root" class=" fb_reset">
         <div style="position: absolute; top: -10000px; width: 0px; height: 0px;">
             <div></div>
