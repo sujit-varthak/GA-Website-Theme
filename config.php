@@ -204,7 +204,9 @@ define('GA_AD_ZONE_IMAGE_DIMENSIONS', [
     'HOMEPAGE_STRIP_BANNER_1' => ['width' => 330, 'height' => 40],
     'HOMEPAGE_STRIP_BANNER_2' => ['width' => 330, 'height' => 40],
     'HOMEPAGE_STRIP_BANNER_3' => ['width' => 300, 'height' => 40],
-    'HOMEPAGE_BIG_STORY_BANNER' => ['width' => 320, 'height' => null],
+    // No fixed width (was 320) so ga_render_ad() emits max-width:100% instead of a fixed
+    // inline width - the ad in this slot needs to render full width, centered, on desktop.
+    'HOMEPAGE_BIG_STORY_BANNER' => ['width' => null, 'height' => null],
     'INNER_SIDEBAR_LEFT' => ['width' => 160, 'height' => null],
     'INNER_SIDEBAR_RIGHT' => ['width' => 160, 'height' => null],
     'INNER_TOP_BANNER' => ['width' => 728, 'height' => 90],
@@ -255,7 +257,7 @@ define('GA_ARTICLE_MIDCONTENT_AD_SHORT_THRESHOLD', 3);
 define('GA_MOST_POPULAR_FEED_SIZE', 40);
 
 // Top News / Most Read tabs: hard cap so the list doesn't overflow past Big Story's height.
-define('GA_TAB_ARTICLE_LIMIT', 17);
+define('GA_TAB_ARTICLE_LIMIT', 19);
 
 // Inner-page.php's own "Top News" sidebar widget (reuses the homepage's trending data) and
 // "Recommended For You" widget (filtered to the "Articles" category).
@@ -320,6 +322,10 @@ define('GA_NAV_CATEGORY_IDS', [
     'latest-news' => null,
     'andhra-news' => '6e250f68-c9be-439d-854e-08def23574e2',
     'telangana-news' => '1ccf4e94-3792-4716-b4be-33061625a25a',
+    // India News is a top-level category in the DB (not a child of politics like
+    // andhra-news/telangana-news), but sits under the Politics nav dropdown for UX
+    // consistency - see GA_CATEGORY_ROUTES below for the same choice.
+    'india-news' => 'd38ee1cb-90f2-4326-8efc-5d30b0a70bce',
     'movie-news' => '4ca31e89-2fa9-453f-a63c-67a59fa2f095',
     'movie-gossip' => '0c57a1b9-2177-47ef-98ab-cc2679c0ff34',
     'reviews' => '9707921d-55b6-477b-9aff-a913cdf7b5b5',
@@ -341,6 +347,10 @@ define('GA_CATEGORY_ROUTES', [
     'movie-gossip' => ['urlPath' => 'movies/gossip', 'name' => 'Movie Gossip', 'includeChildren' => false],
     'andhra-news' => ['urlPath' => 'politics/andhra', 'name' => 'Andhra News', 'includeChildren' => false],
     'telangana-news' => ['urlPath' => 'politics/telangana', 'name' => 'Telangana News', 'includeChildren' => false],
+    // Top-level urlPath (not "politics/india") since india-news really is a top-level
+    // category in the DB, unlike andhra-news/telangana-news which are real children of
+    // politics - only its nav placement is under the Politics dropdown, not its URL/data.
+    'india-news' => ['urlPath' => 'india-news', 'name' => 'India News', 'includeChildren' => false],
     'reviews' => ['urlPath' => 'reviews', 'name' => 'Reviews', 'includeChildren' => false],
     'opinion' => ['urlPath' => 'opinion', 'name' => 'Opinion', 'includeChildren' => false],
     'latest-news' => ['urlPath' => 'latest-news', 'name' => 'Latest News', 'includeChildren' => false],

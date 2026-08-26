@@ -522,6 +522,8 @@
      (zone resized from 380x250 to match; see admin's AD_ZONE_DIMENSIONS). */
   .great_andhra_main_body_container .sortable-item_clear123 {
     text-align: center !important;
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
   }
 
   .great_andhra_main_body_container .sortable-item_clear123 img {

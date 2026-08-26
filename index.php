@@ -1292,7 +1292,7 @@ $ga_mobile_latest_news_articles = array_slice($ga_trending_articles, 0, GA_MOBIL
                         } */
                     </style>
                     <?php if (!ga_is_mobile()): ?>
-                    <div class="display-inline-block padding-top-bot">
+                    <div class="display-inline-block padding-top-bot no-padding-top-bot">
                         <li class="sortable-item sortable-item_top_add123">
                             <?php ga_render_ad('HOMEPAGE_ARTICLE_WIDGET_AD'); ?>
                         </li>

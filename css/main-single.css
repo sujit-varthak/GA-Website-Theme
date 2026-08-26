@@ -366,6 +366,14 @@ ul.bg-unlist.ga-grply a p {
   padding-bottom: 20px;
 }
 
+/* .padding-top-bot is reused on two unrelated ad slots (HOMEPAGE_SECTION_INLINE and this
+   one, HOMEPAGE_ARTICLE_WIDGET_AD) - this second class (added only to this slot's wrapper
+   in index.php) scopes the override to just this one instead of removing padding from both. */
+.padding-top-bot.no-padding-top-bot {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
 ul.bg-unlist.ga-grply li:nth-child(3) {
   padding-right: 0;
   margin-right: 5px;
@@ -516,6 +524,15 @@ i.fab.fa-facebook-f {
   background-color: #0a2149;
   color: #ffffff;
   box-sizing: border-box;
+}
+
+/* .great_andhra_main_body_container .news_style li a:hover (below, unchanged) sets a red
+   hover color for every .news_style link site-wide - the Editor's Pick card is itself
+   inside a .news_style list, so it inherited that red instead of staying white. This more
+   specific selector (adds .editors_pick_li) wins without needing !important, scoped to only
+   this card - every other .news_style link's hover color is untouched. */
+.great_andhra_main_body_container .news_style li.editors_pick_li a:hover {
+  color: #ffffff;
 }
 
 .editors_pick {
@@ -807,6 +824,10 @@ ul {
   line-height: 29px;
   color: #333333;
   border-bottom: 1px #d9d9d9 solid;
+}
+
+.great_andhra_main_body_container .sortable-item_clear123 {
+  text-align: center;
 }
 
 .great_andhra_main_body_container .sortable-item_clear123 img {

@@ -276,7 +276,7 @@ if ($ga_article && !empty($ga_article['category']['id'])) {
                             <ul class="submenu">
                                 <li><a href="<?php echo ga_e(ga_nav_category_link('andhra-news', 'Andhra News')); ?>">Andhra</a></li>
                                 <li><a href="<?php echo ga_e(ga_nav_category_link('telangana-news', 'Telangana News')); ?>">Telangana</a></li>
-                                <li><a href="https://www.greatandhra.com/india-news">India</a></li>
+                                <li><a href="<?php echo ga_e(ga_nav_category_link('india-news', 'India News')); ?>">India</a></li>
                             </ul>
                         </li>
                         <li class="has-submenu">
@@ -376,7 +376,7 @@ if ($ga_article && !empty($ga_article['category']['id'])) {
                         <ul class="dropdown">
                             <li><a href="<?php echo ga_e(ga_nav_category_link('andhra-news', 'Andhra News')); ?>" itemprop="url">andhra</a></li>
                             <li><a href="<?php echo ga_e(ga_nav_category_link('telangana-news', 'Telangana News')); ?>" itemprop="url">telangana</a></li>
-                            <li><a href="https://www.greatandhra.com/india-news" itemprop="url">india</a></li>
+                            <li><a href="<?php echo ga_e(ga_nav_category_link('india-news', 'India News')); ?>" itemprop="url">india</a></li>
                         </ul>
                     </li>
 
