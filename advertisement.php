@@ -56,10 +56,39 @@ $ga_delay_seconds = max(1, (int) round($ga_delay_ms / 1000));
         a:hover { text-decoration: underline; }
         .copyright { font-size: 11px; font-family: arial; }
         .ad-page-wrap { max-width: 1200px; margin: 0 auto; text-align: center; }
-        .ad-page-banner { background: #dbdbdb; font-family: Arial; font-size: 12px; padding: 8px 0; }
-        .ad-page-topnav { display: flex; align-items: center; justify-content: center; padding: 10px 0; font-family: Arial; font-size: 12px; }
-        .ad-page-topnav img { width: 200px; }
-        .ad-page-topnav a { padding-left: 12px; color: #000; }
+        /* 3-column header matching the reference: logo left, ad name
+           center, countdown text + Skip button right (countdown text drops
+           on narrow screens - the mobile reference doesn't show it, just
+           logo/title/Skip, to keep the bar compact). */
+        .ad-page-topnav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 10px 16px;
+            font-family: Arial, sans-serif;
+            border-bottom: 1px solid #e5e5e5;
+        }
+        .ad-page-logo img { width: 130px; display: block; }
+        .ad-page-title { flex: 1; min-width: 0; font-size: 15px; font-weight: 700; color: #111; text-align: center; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .ad-page-skip-area { display: flex; align-items: center; gap: 10px; font-size: 12px; color: #666; white-space: nowrap; }
+        .ad-page-brand { color: #d0021b; font-weight: 700; }
+        .ad-page-skip-btn {
+            display: inline-block;
+            border: 1px solid #d0021b;
+            color: #d0021b !important;
+            font-weight: 700;
+            font-size: 12px;
+            padding: 4px 14px;
+            border-radius: 14px;
+            text-decoration: none !important;
+        }
+        .ad-page-skip-btn:hover { background: #d0021b; color: #fff !important; }
+        @media (max-width: 480px) {
+            .ad-page-countdown { display: none; }
+            .ad-page-logo img { width: 100px; }
+            .ad-page-title { font-size: 13px; }
+        }
         /* Edge-to-edge within the page wrap, on both mobile and desktop - no
            inner pixel cap below the wrap's own width, matching the reference
            screenshots (full-bleed poster, not a small centered box). */
@@ -70,10 +99,15 @@ $ga_delay_seconds = max(1, (int) round($ga_delay_ms / 1000));
 <body>
     <div class="ad-page-wrap">
         <div class="ad-page-topnav">
-            <a href="<?php echo ga_e($ga_return_to); ?>"><img border="0" src="images/great_andhra.gif" alt="GreatAndhra"></a>
-            <a href="<?php echo ga_e($ga_return_to); ?>">click here to go to greatandhra.com</a>
+            <a class="ad-page-logo" href="<?php echo ga_e($ga_return_to); ?>">
+                <img border="0" src="images/great_andhra.gif" alt="GreatAndhra">
+            </a>
+            <div class="ad-page-title"><?php echo ga_e($ga_ad_name); ?></div>
+            <div class="ad-page-skip-area">
+                <span class="ad-page-countdown"><span class="ad-page-brand">Great Andhra</span> will load in a few seconds.</span>
+                <a class="ad-page-skip-btn" href="<?php echo ga_e($ga_return_to); ?>">Skip</a>
+            </div>
         </div>
-        <div class="ad-page-banner">Advertisement</div>
 
         <div class="ad-page-media" id="ad1">
             <?php if ($ga_ad_type === 'SCRIPT' && $ga_ad_script !== ''): ?>
