@@ -257,7 +257,7 @@ define('GA_ARTICLE_MIDCONTENT_AD_SHORT_THRESHOLD', 3);
 define('GA_MOST_POPULAR_FEED_SIZE', 40);
 
 // Top News / Most Read tabs: hard cap so the list doesn't overflow past Big Story's height.
-define('GA_TAB_ARTICLE_LIMIT', 19);
+define('GA_TAB_ARTICLE_LIMIT', 18);
 
 // Inner-page.php's own "Top News" sidebar widget (reuses the homepage's trending data) and
 // "Recommended For You" widget (filtered to the "Articles" category).

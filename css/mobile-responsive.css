@@ -793,8 +793,20 @@
   display: none;
 }
 
+/* Ad rendered just above the list above (HOMEPAGE_MOBILE_BEFORE_LATEST_NEWS_AD) - PHP already
+   gates this block behind ga_is_mobile(), but that's a UA sniff that can be wrong (proxies,
+   cached responses, etc.); this CSS guarantee is the actual "never show mobile ads on
+   desktop" backstop. */
+.mobile-before-latest-news-ad {
+  display: none;
+}
+
 @media (max-width: 768px) {
   .mobile-latest-news {
+    display: block;
+  }
+
+  .mobile-before-latest-news-ad {
     display: block;
   }
 
