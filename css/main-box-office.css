@@ -447,14 +447,36 @@ img {
   border: none;
 }
 
-/* Box office sticky ad (BOXOFFICE_STICKY_AD) - stays fixed in the viewport at vertical
-   center as the user scrolls the page, same behavior as the old Vuukle interscroller unit
-   it replaces. The <li> wrapping it keeps its normal place in the layout flow (so removing
-   this ad doesn't leave a gap), but the ad itself is pinned via position: fixed. */
+/* Box office sticky ad (BOXOFFICE_STICKY_AD) - parallax window effect. The box is a
+   fixed-size viewport that scrolls normally with the page; the ad image is applied as a
+   background-image with background-attachment: fixed so it stays put in the viewport,
+   revealing a different vertical slice as the box scrolls past it. overflow: hidden here
+   correctly clips a background image (unlike position: fixed content, which escapes an
+   ancestor's overflow clipping entirely - that was the previous bug). The <img> rendered
+   by ga_render_ad() is made invisible but kept in place (see box-office.php inline script)
+   so its wrapping <a> link/click target and alt text still work.
+   NOTE: local-only experiment, not committed - see box-office.php's inline script. */
 .boxoffice-sticky-ad {
-  position: fixed;
-  top: 50vh;
-  right: 20px;
-  transform: translateY(-50%);
-  z-index: 10;
+  position: relative;
+  height: 300px;
+  width: 300px;
+  overflow: hidden;
+  border: 1px solid #333;
+  margin: 20px auto;
+  background-repeat: no-repeat;
+  background-position: center top;
+  background-attachment: fixed;
+}
+
+.boxoffice-sticky-ad a {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.boxoffice-sticky-ad img {
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }

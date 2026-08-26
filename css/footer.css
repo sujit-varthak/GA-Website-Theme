@@ -84,13 +84,6 @@
   letter-spacing: 0.5px;
 }
 
-/* The White Part at the very end */
-.footer-bottom-spacer {
-  background-color: #ffffff;
-  height: 20px; /* Adjust height as needed */
-  width: 100%;
-}
-
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .footer-nav-links {
