@@ -30,6 +30,7 @@ ga_prefetch_page([
         'HOMEPAGE_MOBILE_AFTER_OPINION_AD',
         'HOMEPAGE_MOBILE_BETWEEN_MOVIE_NEWS_GOSSIP_AD',
         'HOMEPAGE_MOBILE_AFTER_TRENDING_TOPICS_AD',
+        'HOMEPAGE_AFTER_POLITICS_GOSSIP_AD',
         'HOMEPAGE_BIG_STORY_BANNER',
         'HOMEPAGE_LATEST_NEWS_INLINE_AD',
         'HOMEPAGE_SECTION_INLINE',
@@ -218,7 +219,7 @@ $ga_mobile_latest_news_articles = array_slice($ga_trending_articles, 0, GA_MOBIL
                             <ul class="submenu">
                                 <li><a href="<?php echo ga_e(ga_nav_category_link('andhra-news', 'Andhra News')); ?>">Andhra</a></li>
                                 <li><a href="<?php echo ga_e(ga_nav_category_link('telangana-news', 'Telangana News')); ?>">Telangana</a></li>
-                                <li><a href="https://www.greatandhra.com/india-news">India</a></li>
+                                <li><a href="<?php echo ga_e(ga_nav_category_link('india-news', 'India News')); ?>">India</a></li>
                             </ul>
                         </li>
                         <li class="has-submenu">
@@ -333,7 +334,7 @@ $ga_mobile_latest_news_articles = array_slice($ga_trending_articles, 0, GA_MOBIL
                     <ul class="dropdown">
                         <li><a href="<?php echo ga_e(ga_nav_category_link('andhra-news', 'Andhra News')); ?>" itemprop="url">andhra</a></li>
                         <li><a href="<?php echo ga_e(ga_nav_category_link('telangana-news', 'Telangana News')); ?>" itemprop="url">telangana</a></li>
-                        <li><a href="https://www.greatandhra.com/india-news" itemprop="url">india</a></li>
+                        <li><a href="<?php echo ga_e(ga_nav_category_link('india-news', 'India News')); ?>" itemprop="url">india</a></li>
                     </ul>
                 </li>
 
@@ -1144,15 +1145,17 @@ $ga_mobile_latest_news_articles = array_slice($ga_trending_articles, 0, GA_MOBIL
                         </ul>
                     </div>
                 </div>
-                <div class="paras float-left clear" style="max-width: 675px !important;">
-                    <ul class="sortable-list ui-sortable">
-                        <li class="sortable-item text-center">
-                            <div class="add_place_50 margin-top-bot">
-                                <div id="vuukle-ad-9"></div>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
+                <?php if (!ga_is_mobile()): ?>
+                    <div class="paras float-left clear" style="max-width: 675px !important;">
+                        <ul class="sortable-list ui-sortable">
+                            <li class="sortable-item text-center">
+                                <div class="add_place_50 margin-top-bot">
+                                    <?php ga_render_ad('HOMEPAGE_AFTER_POLITICS_GOSSIP_AD'); ?>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                <?php endif; ?>
                 <div class="paras float-left clear">
                     <div class="home_left_column news-section">
                         <ul class="sortable-list ui-sortable">
