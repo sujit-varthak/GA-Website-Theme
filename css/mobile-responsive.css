@@ -533,6 +533,23 @@
     display: inline-block !important;
   }
 
+  /* HOMEPAGE_MOBILE_AFTER_TALK_OF_TOWN_AD and HOMEPAGE_MOBILE_AFTER_TRENDING_TOPICS_AD -
+     centered, scaled to fill the full width of the container (not just constrained to a
+     fixed box like the after-bigstory ad above). Scoped to .ad-center-mobile specifically -
+     .sortable-item.clear is shared with unrelated list sections (Talk of the Town, USA
+     Movie Schedules, Featured, Article), so this must not be a bare .sortable-item.clear
+     rule or it would center-align those too. */
+  .great_andhra_main_body_container .sortable-item.ad-center-mobile {
+    text-align: center !important;
+  }
+
+  .great_andhra_main_body_container .sortable-item.ad-center-mobile img {
+    width: 100% !important;
+    height: auto !important;
+    margin: 0 auto !important;
+    display: block !important;
+  }
+
   /* ========================================
      BREADCRUMBS
      ======================================== */

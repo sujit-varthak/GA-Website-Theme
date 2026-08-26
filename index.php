@@ -815,7 +815,7 @@ $ga_mobile_latest_news_articles = array_slice($ga_trending_articles, 0, GA_MOBIL
                         </li>
                     </div>
                     <?php else: ?>
-                    <li class="sortable-item clear">
+                    <li class="sortable-item clear ad-center-mobile">
                         <?php ga_render_ad('HOMEPAGE_MOBILE_AFTER_TALK_OF_TOWN_AD'); ?>
                     </li>
                     <?php endif; ?>
@@ -1248,7 +1248,7 @@ $ga_mobile_latest_news_articles = array_slice($ga_trending_articles, 0, GA_MOBIL
                         </div>
                     </li>
                     <?php if (ga_is_mobile()): ?>
-                        <li class="sortable-item clear">
+                        <li class="sortable-item clear ad-center-mobile">
                             <?php ga_render_ad('HOMEPAGE_MOBILE_AFTER_TRENDING_TOPICS_AD'); ?>
                         </li>
                     <?php endif; ?>
