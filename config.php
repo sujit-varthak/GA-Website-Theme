@@ -211,9 +211,17 @@ define('GA_AD_ZONE_IMAGE_DIMENSIONS', [
     'INNER_SIDEBAR_RIGHT' => ['width' => 160, 'height' => null],
     'INNER_TOP_BANNER' => ['width' => 728, 'height' => 90],
     'INNER_MOBILE_BANNER' => ['width' => null, 'height' => 250],
+    // Missing until 2026-08-26 - these two zones were added after the sidebar-dimension
+    // comment above was written and never got an entry, so their images shrank to fit the
+    // narrow 80px/120px fixed-position wrapper instead of overflowing outward at 160px like
+    // every other sidebar zone (see HOMEPAGE_SIDEBAR_LEFT/RIGHT, INNER_SIDEBAR_LEFT/RIGHT above).
+    'BOXOFFICE_SIDEBAR_LEFT' => ['width' => 160, 'height' => null],
+    'BOXOFFICE_SIDEBAR_RIGHT' => ['width' => 160, 'height' => null],
     'BOXOFFICE_TOP_BANNER' => ['width' => 728, 'height' => 90],
     'BOXOFFICE_MOBILE_BANNER' => ['width' => null, 'height' => 250],
     'INNER_ARTICLE_BANNER' => ['width' => 650, 'height' => 60],
+    'LISTPAGE_SIDEBAR_LEFT' => ['width' => 160, 'height' => null],
+    'LISTPAGE_SIDEBAR_RIGHT' => ['width' => 160, 'height' => null],
     'LISTPAGE_CONTENT_AD' => ['width' => 300, 'height' => 250],
     'LISTPAGE_TOP_BANNER' => ['width' => 728, 'height' => 90],
     'LISTPAGE_MOBILE_BANNER' => ['width' => null, 'height' => 250],
