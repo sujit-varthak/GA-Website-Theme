@@ -261,9 +261,20 @@
      ======================================== */
 
   .great_andhra_main_body_container .movies_column_middle {
-    width: 100% !important;
-    float: none !important;
-    margin-top: 20px !important;
+    display: none !important;
+  }
+
+  /* Phone-only ad dropped into the middle of the main article list
+     (LISTPAGE_MOBILE_MIDDLE_AD) - centered, full-width of its column. */
+  .listpage-mobile-middle-ad {
+    width: 100%;
+    text-align: center;
+    margin: 15px 0;
+  }
+
+  .listpage-mobile-middle-ad img {
+    max-width: 100%;
+    height: auto;
   }
 
   /* Sortable Items in Sidebar */

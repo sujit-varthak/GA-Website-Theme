@@ -123,6 +123,7 @@ ga_prefetch_page([
         'LISTPAGE_TOP_BANNER',
         'LISTPAGE_MOBILE_BANNER',
         'LISTPAGE_CONTENT_AD',
+        'LISTPAGE_MOBILE_MIDDLE_AD',
     ],
 ]);
 
@@ -1081,7 +1082,14 @@ function ga_list_page_url(string $cleanPath, array $legacyParams, int $page): st
 
                                     <div class="content">
                                         <?php if (!empty($ga_list_articles)): ?>
-                                        <?php foreach ($ga_list_articles as $ga_article): ?>
+                                        <?php
+                                            // Phone-only ad dropped at the true middle of however many articles
+                                            // this page actually has (varies with pagination) - never fires on
+                                            // desktop, and simply doesn't fire on a near-empty last page (index
+                                            // never matched) rather than needing a special-cased minimum.
+                                            $ga_list_mobile_ad_after_index = (int) floor(count($ga_list_articles) / 2) - 1;
+                                        ?>
+                                        <?php foreach ($ga_list_articles as $ga_list_i => $ga_article): ?>
                                         <?php
                                             $ga_list_img = ga_image($ga_article, GA_LIST_PAGE_FALLBACK_IMAGE);
                                             $ga_list_date = ga_format_date($ga_article['publishedAt'] ?? null, 'd-M-Y H:i:s');
@@ -1105,6 +1113,11 @@ function ga_list_page_url(string $cleanPath, array $legacyParams, int $page): st
                                                 <?php echo ga_e(ga_article_excerpt($ga_article, 220)); ?>
                                             </div>
                                         </div>
+                                        <?php if ($ga_list_i === $ga_list_mobile_ad_after_index && ga_is_mobile()): ?>
+                                        <div class="listpage-mobile-middle-ad">
+                                            <?php ga_render_ad('LISTPAGE_MOBILE_MIDDLE_AD'); ?>
+                                        </div>
+                                        <?php endif; ?>
                                         <?php endforeach; ?>
                                         <?php else: ?>
                                         <div class="ga-unavailable" style="min-height:150px;">
