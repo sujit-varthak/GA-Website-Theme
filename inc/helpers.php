@@ -335,8 +335,26 @@ function ga_inject_ad_into_html_body(string $body, string $adZone): string
     return $html;
 }
 
-// excerpt is null for almost every article (confirmed 2026-07-31) — fall back to a plain-text
-// preview of body, same "field is empty, use what IS available" pattern as the image fallback.
+// Plain-text of just the first paragraph of an article body, not the whole thing - the first
+// <p>...</p> block if the body has one (true for nearly all imported articles), otherwise the
+// text up to the first blank line / <br><br> as a fallback for anything not paragraph-tagged.
+function ga_article_first_paragraph(string $body): string
+{
+    if (preg_match('/<p\b[^>]*>(.*?)<\/p>/is', $body, $matches)) {
+        $text = trim(preg_replace('/\s+/', ' ', strip_tags($matches[1])));
+        if ($text !== '') {
+            return $text;
+        }
+    }
+
+    $normalized = preg_replace('/(<br\s*\/?>\s*){2,}/i', "\n\n", $body);
+    $plain = strip_tags($normalized);
+    $firstBlock = preg_split('/\n\s*\n/', trim($plain), 2)[0] ?? '';
+    return trim(preg_replace('/\s+/', ' ', $firstBlock));
+}
+
+// excerpt is null for almost every article (confirmed 2026-07-31) — fall back to the article's
+// first paragraph, same "field is empty, use what IS available" pattern as the image fallback.
 function ga_article_excerpt(array $article, int $maxLength): string
 {
     $excerpt = trim((string) ($article['excerpt'] ?? ''));
@@ -345,8 +363,7 @@ function ga_article_excerpt(array $article, int $maxLength): string
     }
 
     $body = (string) ($article['body'] ?? '');
-    $plainBody = trim(preg_replace('/\s+/', ' ', strip_tags($body)));
-    return ga_truncate($plainBody, $maxLength);
+    return ga_truncate(ga_article_first_paragraph($body), $maxLength);
 }
 
 function ga_format_date(?string $iso, string $format = 'F d, Y'): string

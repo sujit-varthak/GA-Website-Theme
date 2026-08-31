@@ -132,8 +132,11 @@ ga_prefetch_page([
 
 $ga_list_articles = [];
 $ga_total = 0;
+// includeBody=true on all three branches below - this page's main list is the one place
+// on the whole site that shows a publish date and an excerpt (see ga_article_excerpt() in
+// helpers.php), so it's the one caller of ga_fetch_articles() that needs `body` back.
 if ($ga_is_tag_mode) {
-    $ga_result = ga_fetch_articles(GA_LIST_PAGE_TAKE, $ga_skip, null, false, $ga_tag_id);
+    $ga_result = ga_fetch_articles(GA_LIST_PAGE_TAKE, $ga_skip, null, false, $ga_tag_id, false, true);
     $ga_list_articles = $ga_result['items'] ?? [];
     $ga_total = $ga_result['total'] ?? 0;
 } elseif ($ga_is_latest_news_trending) {
@@ -141,11 +144,11 @@ if ($ga_is_tag_mode) {
     // previously sliced the homepage's trending widget, which is hard-capped at 17 regardless
     // of how many articles are actually flagged trending, so pagination could never surface
     // more than that no matter how it was implemented on top.
-    $ga_result = ga_fetch_articles(GA_LIST_PAGE_TAKE, $ga_skip, null, false, null, true);
+    $ga_result = ga_fetch_articles(GA_LIST_PAGE_TAKE, $ga_skip, null, false, null, true, true);
     $ga_list_articles = $ga_result['items'] ?? [];
     $ga_total = $ga_result['total'] ?? 0;
 } elseif ($ga_category_id !== '') {
-    $ga_result = ga_fetch_articles(GA_LIST_PAGE_TAKE, $ga_skip, $ga_category_id, $ga_include_children);
+    $ga_result = ga_fetch_articles(GA_LIST_PAGE_TAKE, $ga_skip, $ga_category_id, $ga_include_children, null, false, true);
     $ga_list_articles = $ga_result['items'] ?? [];
     $ga_total = $ga_result['total'] ?? 0;
 }

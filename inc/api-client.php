@@ -240,13 +240,14 @@ function ga_fetch_homepage(): ?array
 // Builds the {url, cacheFile, ttl} triple for a ga_fetch_articles() call without performing
 // it — shared by ga_fetch_articles() itself and ga_prefetch_page() so the cache key/URL
 // construction can never drift between the two.
-function ga_articles_request(int $take = 4, int $skip = 0, ?string $categoryId = null, bool $includeChildren = false, ?string $tagId = null, bool $isTrending = false): array
+function ga_articles_request(int $take = 4, int $skip = 0, ?string $categoryId = null, bool $includeChildren = false, ?string $tagId = null, bool $isTrending = false, bool $includeBody = false): array
 {
     $cacheKey = "articles_take{$take}_skip{$skip}"
         . ($categoryId ? "_cat{$categoryId}" : '')
         . ($includeChildren ? '_children' : '')
         . ($tagId ? "_tag{$tagId}" : '')
-        . ($isTrending ? '_trending' : '');
+        . ($isTrending ? '_trending' : '')
+        . ($includeBody ? '_body' : '');
 
     $query = ['take' => $take, 'skip' => $skip];
     if ($categoryId) {
@@ -260,6 +261,9 @@ function ga_articles_request(int $take = 4, int $skip = 0, ?string $categoryId =
     }
     if ($isTrending) {
         $query['isTrending'] = 'true';
+    }
+    if ($includeBody) {
+        $query['includeBody'] = 'true';
     }
 
     return [
@@ -278,9 +282,13 @@ function ga_articles_request(int $take = 4, int $skip = 0, ?string $categoryId =
 // $isTrending (opt-in, added 2026-08-25 alongside the backend's isTrending filter support) -
 // "Latest News" has no real category, this is what backs its listing page with real
 // server-side pagination instead of slicing the homepage's fixed-size trending widget.
-function ga_fetch_articles(int $take = 4, int $skip = 0, ?string $categoryId = null, bool $includeChildren = false, ?string $tagId = null, bool $isTrending = false): ?array
+// $includeBody (opt-in, added 2026-08-29) - the public /articles response no longer carries
+// `body` by default (a field-usage audit found nothing reads it except list-page.php's own
+// main list, via ga_article_excerpt()'s fallback - real excerpts are null for almost every
+// article). Every other caller of this function should leave this false.
+function ga_fetch_articles(int $take = 4, int $skip = 0, ?string $categoryId = null, bool $includeChildren = false, ?string $tagId = null, bool $isTrending = false, bool $includeBody = false): ?array
 {
-    $req = ga_articles_request($take, $skip, $categoryId, $includeChildren, $tagId, $isTrending);
+    $req = ga_articles_request($take, $skip, $categoryId, $includeChildren, $tagId, $isTrending, $includeBody);
     $cacheFile = $req['cacheFile'];
 
     $isFresh = is_file($cacheFile) && (time() - filemtime($cacheFile)) < GA_CACHE_TTL;
