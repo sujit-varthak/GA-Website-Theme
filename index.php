@@ -140,7 +140,7 @@ $ga_mobile_latest_news_articles = array_slice($ga_trending_articles, 0, GA_MOBIL
     <link href="css/mobile-responsive.css?v=<?php echo ga_asset_version('css/mobile-responsive.css'); ?>" rel="stylesheet">
     <link href="css/site-ads.css?v=<?php echo ga_asset_version('css/site-ads.css'); ?>" rel="stylesheet">
     <link href="css/header-mob.css?v=<?php echo ga_asset_version('css/header-mob.css'); ?>" rel="stylesheet">
-    <script src="js/drawer.js"></script>
+    <script src="js/drawer.js?v=<?php echo ga_asset_version('js/drawer.js'); ?>"></script>
 
     <!-- <link href="css/great_andhra_style_lato_font.css" rel="stylesheet" />
     <link href="css/home-style-lato-font.css" rel="stylesheet"> -->
@@ -493,7 +493,8 @@ $ga_mobile_latest_news_articles = array_slice($ga_trending_articles, 0, GA_MOBIL
                                                             alt="<?php echo ga_e($ga_article['title'] ?? ''); ?>"
                                                             height="<?php echo (int) $ga_list_img['height']; ?>"
                                                             src="<?php echo ga_e($ga_list_img['src']); ?>"
-                                                            width="<?php echo (int) $ga_list_img['width']; ?>" /> </div>
+                                                            width="<?php echo (int) $ga_list_img['width']; ?>"
+                                                            loading="lazy" /> </div>
                                                     <div class="big-galist-rgt">
                                                         <p><?php echo ga_e($ga_list_title); ?></p>
                                                     </div>
@@ -531,7 +532,7 @@ $ga_mobile_latest_news_articles = array_slice($ga_trending_articles, 0, GA_MOBIL
                                             <a href="<?php echo ga_e(ga_inner_link($ga_article)); ?>">
                                                 <img alt="<?php echo ga_e($ga_article['title'] ?? ''); ?>"
                                                     src="<?php echo ga_e($ga_mln_img['src']); ?>"
-                                                    class="mobile-latest-news-thumb" />
+                                                    class="mobile-latest-news-thumb" loading="lazy" />
                                                 <span class="mobile-latest-news-title"><?php echo ga_e($ga_mln_title); ?></span>
                                             </a>
                                         </li>
@@ -905,7 +906,8 @@ $ga_mobile_latest_news_articles = array_slice($ga_trending_articles, 0, GA_MOBIL
                                                 <img alt="<?php echo ga_e($ga_article['title'] ?? ''); ?>"
                                                     height="<?php echo (int) $ga_img['height']; ?>"
                                                     src="<?php echo ga_e($ga_img['src']); ?>"
-                                                    width="<?php echo (int) $ga_img['width']; ?>">
+                                                    width="<?php echo (int) $ga_img['width']; ?>"
+                                                    loading="lazy">
                                                 </img>
                                             </div>
                                             <div class="big-galist-rgt">
@@ -1042,7 +1044,7 @@ $ga_mobile_latest_news_articles = array_slice($ga_trending_articles, 0, GA_MOBIL
                                                     <a href="<?php echo $ga_ep_link; ?>"
                                                         title="<?php echo $ga_ep_full_title; ?>">
                                                         <img alt="<?php echo $ga_ep_full_title; ?>" height="<?php echo (int) $ga_ep_img['height']; ?>"
-                                                            src="<?php echo ga_e($ga_ep_img['src']); ?>" width="<?php echo (int) $ga_ep_img['width']; ?>" />
+                                                            src="<?php echo ga_e($ga_ep_img['src']); ?>" width="<?php echo (int) $ga_ep_img['width']; ?>" loading="lazy" />
                                                     </a>
                                                 </li>
                                             <?php else: ?>
@@ -1348,7 +1350,8 @@ $ga_mobile_latest_news_articles = array_slice($ga_trending_articles, 0, GA_MOBIL
                                                         <img alt="<?php echo ga_e($ga_article['title'] ?? ''); ?>" border="0"
                                                             height="<?php echo (int) $ga_img['height']; ?>"
                                                             src="<?php echo ga_e($ga_img['src']); ?>"
-                                                            width="<?php echo (int) $ga_img['width']; ?>" />
+                                                            width="<?php echo (int) $ga_img['width']; ?>"
+                                                            loading="lazy" />
                                                     </div>
                                                     <div class="top_news_txt">
                                                         <?php echo ga_e($ga_title); ?>
@@ -1517,7 +1520,7 @@ $ga_mobile_latest_news_articles = array_slice($ga_trending_articles, 0, GA_MOBIL
 </body>
 <script src="js/jquery-ui-1.8.custom.min.js" type="text/javascript"> </script>
 <script src="js/jquery.marquee.js" type="text/javascript"> </script>
-<script src="js/great_andhra_view_js_160_1.js" type="text/javascript"> </script>
+<script src="js/great_andhra_view_js_160_1.js?v=<?php echo ga_asset_version('js/great_andhra_view_js_160_1.js'); ?>" type="text/javascript"> </script>
 <link href="js/font-awesome.min.css" rel="stylesheet" />
 <style>
     /* .great_andhra_main_menu_panel_2019 {

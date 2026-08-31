@@ -126,13 +126,13 @@ if ($ga_article && !empty($ga_article['category']['id'])) {
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
     <meta name="dcterms.identifier" content="<?php echo ga_e($ga_article ? ga_inner_link($ga_article) : ''); ?>">
 
-    <link href="css/footer.css" rel="stylesheet" type="text/css">
-    <link href="css/image_preview.css" rel="stylesheet" type="text/css">
-    <link href="css/inner-page-main.css" rel="stylesheet">
-    <link href="css/inner-page-mobile-responsive.css" rel="stylesheet">
+    <link href="css/footer.css?v=<?php echo ga_asset_version('css/footer.css'); ?>" rel="stylesheet" type="text/css">
+    <link href="css/image_preview.css?v=<?php echo ga_asset_version('css/image_preview.css'); ?>" rel="stylesheet" type="text/css">
+    <link href="css/inner-page-main.css?v=<?php echo ga_asset_version('css/inner-page-main.css'); ?>" rel="stylesheet">
+    <link href="css/inner-page-mobile-responsive.css?v=<?php echo ga_asset_version('css/inner-page-mobile-responsive.css'); ?>" rel="stylesheet">
     <link href="css/site-ads.css?v=<?php echo ga_asset_version('css/site-ads.css'); ?>" rel="stylesheet">
-    <link href="css/header-mob.css" rel="stylesheet">
-    <script src="js/drawer.js"></script>
+    <link href="css/header-mob.css?v=<?php echo ga_asset_version('css/header-mob.css'); ?>" rel="stylesheet">
+    <script src="js/drawer.js?v=<?php echo ga_asset_version('js/drawer.js'); ?>"></script>
  
     
 </head>
@@ -618,7 +618,8 @@ if ($ga_article && !empty($ga_article['category']['id'])) {
                                                     <img alt="<?php echo ga_e($ga_sb_article['title'] ?? ''); ?>" border="0"
                                                         src="<?php echo ga_e($ga_sb_img['src']); ?>"
                                                         width="<?php echo (int) $ga_sb_img['width']; ?>"
-                                                        height="<?php echo (int) $ga_sb_img['height']; ?>">
+                                                        height="<?php echo (int) $ga_sb_img['height']; ?>"
+                                                        loading="lazy">
                                                 </div>
                                                 <div class="top_news_txt">
                                                     <?php echo ga_e($ga_sb_article['title'] ?? ''); ?> </div>
@@ -680,7 +681,8 @@ if ($ga_article && !empty($ga_article['category']['id'])) {
                                                         src="<?php echo ga_e($ga_rec_img['src']); ?>"
                                                         width="<?php echo (int) $ga_rec_img['width']; ?>"
                                                         height="<?php echo (int) $ga_rec_img['height']; ?>"
-                                                        alt="<?php echo ga_e($ga_rec_article['title'] ?? ''); ?>">
+                                                        alt="<?php echo ga_e($ga_rec_article['title'] ?? ''); ?>"
+                                                        loading="lazy">
                                                 </div>
                                                 <div class="top_news_txt">
                                                     <?php echo ga_e($ga_rec_article['title'] ?? ''); ?> </div>
@@ -797,7 +799,7 @@ if ($ga_article && !empty($ga_article['category']['id'])) {
         </script>
 
         <script type="text/javascript" src="./js/jquery-ui-1.8.custom.min.js"> </script>
-        <script type="text/javascript" src="./js/great_andhra_view_js_160_ad_1.js"> </script>
+        <script type="text/javascript" src="./js/great_andhra_view_js_160_ad_1.js?v=<?php echo ga_asset_version('js/great_andhra_view_js_160_ad_1.js'); ?>"> </script>
 
     </div><iframe scrolling="no" frameborder="0" allowtransparency="true"
         src="https://platform.twitter.com/widgets/widget_iframe.2f70fb173b9000da126c79afe2098f02.html?origin=https%3A%2F%2Fwww.greatandhra.com"

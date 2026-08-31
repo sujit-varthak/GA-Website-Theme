@@ -1,17 +1,25 @@
 <?php
 
-// Cache-busting query string for a static asset (CSS/JS), based on the file's own last-
-// modified time instead of the current second (date('His') on index.php's stylesheet
-// <link> tags meant the version string changed on every single request, so browsers could
-// never cache those files across requests at all - load-audit fix #6, 2026-08-20). Only
-// changes when the file itself actually changes, so normal browser caching works between
-// deploys. Falls back to the current time if the file can't be found, so a missing/moved
-// asset never breaks the page - it just loses the caching benefit for that one request.
+// Cache-busting query string for a static asset (CSS/JS) - a short hash of the file's own
+// bytes, not its filesystem mtime. mtime was the original fix for date('His') (see below),
+// but this deployment's containers all report the same frozen mtime for every file
+// (confirmed live 2026-08-31: every static asset's Last-Modified header reads exactly
+// "Tue, 01 Jan 1980 00:00:01 GMT" - a reproducible-build artifact, not a real timestamp),
+// so filemtime() silently produced the *same* version string on every deploy regardless of
+// whether the file actually changed. A content hash can't have that failure mode - it's
+// computed from what's actually on disk right now, so it changes if and only if the file's
+// bytes changed, with no dependency on the container's clock or build process. Falls back to
+// the current time if the file can't be found, so a missing/moved asset never breaks the
+// page - it just loses the caching benefit for that one request.
+//
+// (Original problem this replaced: date('His') on index.php's stylesheet <link> tags meant
+// the version string changed on every single request, so browsers could never cache those
+// files across requests at all at all - load-audit fix #6, 2026-08-20.)
 function ga_asset_version(string $relativePath): string
 {
     $fullPath = __DIR__ . '/../' . $relativePath;
-    $mtime = @filemtime($fullPath);
-    return (string) ($mtime !== false ? $mtime : time());
+    $hash = @md5_file($fullPath);
+    return $hash !== false ? substr($hash, 0, 10) : (string) time();
 }
 
 // Falls back to byte-based strlen/substr if the mbstring extension isn't loaded, instead of
@@ -397,7 +405,7 @@ function ga_render_category_section(array $articles, array $heroFallbackImage, i
 
     echo '<li class="main-story clearfix">';
     echo '<a href="' . $heroLink . '" title="' . $heroTitleAttr . '">';
-    echo '<img alt="' . $heroTitleAttr . '" height="' . (int) $heroImg['height'] . '" src="' . ga_e($heroImg['src']) . '" width="' . (int) $heroImg['width'] . '" />';
+    echo '<img alt="' . $heroTitleAttr . '" height="' . (int) $heroImg['height'] . '" src="' . ga_e($heroImg['src']) . '" width="' . (int) $heroImg['width'] . '" loading="lazy" />';
     echo '</a></li>';
 
     foreach ($articles as $article) {

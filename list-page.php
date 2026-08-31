@@ -205,11 +205,11 @@ function ga_list_page_url(string $cleanPath, array $legacyParams, int $page): st
         href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&amp;display=swap"
         rel="stylesheet">
     <!-- <meta name="robots" content="index, follow"> -->
-    <link href="./css/great_andhra_style_landing_pages.css" rel="stylesheet">
-    <link href="./css/footer.css" rel="stylesheet">
+    <link href="./css/great_andhra_style_landing_pages.css?v=<?php echo ga_asset_version('css/great_andhra_style_landing_pages.css'); ?>" rel="stylesheet">
+    <link href="./css/footer.css?v=<?php echo ga_asset_version('css/footer.css'); ?>" rel="stylesheet">
     <link href="css/site-ads.css?v=<?php echo ga_asset_version('css/site-ads.css'); ?>" rel="stylesheet">
-    <link href="css/header-mob.css" rel="stylesheet">
-    <script src="js/drawer.js"> </script>
+    <link href="css/header-mob.css?v=<?php echo ga_asset_version('css/header-mob.css'); ?>" rel="stylesheet">
+    <script src="js/drawer.js?v=<?php echo ga_asset_version('js/drawer.js'); ?>"> </script>
     <!-- <link href="https://www.greatandhra.com/css/image_preview.css" rel="stylesheet" type="text/css">
 	<script async="" src="//cdn.confiant-integrations.net/gptprebidnative/202603241056/wrap.js"></script>
 	<script
@@ -231,8 +231,8 @@ function ga_list_page_url(string $cleanPath, array $legacyParams, int $page): st
 			height="1" width="1" alt="" /></noscript> -->
     <!-- End Alexa Certify Javascript -->
 
-    <link href="./css/main-list-page.css" rel="stylesheet" />
-    <link href="./css/list-page-mobile-responsive.css" rel="stylesheet" />
+    <link href="./css/main-list-page.css?v=<?php echo ga_asset_version('css/main-list-page.css'); ?>" rel="stylesheet" />
+    <link href="./css/list-page-mobile-responsive.css?v=<?php echo ga_asset_version('css/list-page-mobile-responsive.css'); ?>" rel="stylesheet" />
 
     <!-- <meta http-equiv="origin-trial"
 		content="AlK2UR5SkAlj8jjdEc9p3F3xuFYlF6LYjAML3EOqw1g26eCwWPjdmecULvBH5MVPoqKYrOfPhYVL71xAXI1IBQoAAAB8eyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiV2ViVmlld1hSZXF1ZXN0ZWRXaXRoRGVwcmVjYXRpb24iLCJleHBpcnkiOjE3NTgwNjcxOTksImlzU3ViZG9tYWluIjp0cnVlfQ==">
@@ -1125,7 +1125,8 @@ function ga_list_page_url(string $cleanPath, array $legacyParams, int $page): st
                                                     <img border="0" src="<?php echo ga_e($ga_list_img['src']); ?>"
                                                         align="absmiddle" width="<?php echo (int) $ga_list_img['width']; ?>"
                                                         height="<?php echo (int) $ga_list_img['height']; ?>"
-                                                        alt="<?php echo ga_e($ga_article['title'] ?? ''); ?>">
+                                                        alt="<?php echo ga_e($ga_article['title'] ?? ''); ?>"
+                                                        <?php if ($ga_list_i > 0): ?>loading="lazy"<?php endif; ?>>
                                                 </div>
                                             </div>
                                             <div>
@@ -2290,6 +2291,6 @@ function ga_list_page_url(string $cleanPath, array $legacyParams, int $page): st
           // above) relative to the page's centered 990px content column - same script the
           // homepage uses. Without it these panels have no left/right offset at all and never
           // "stick" against the content edges the way they do on index.php. ?>
-    <script src="js/great_andhra_view_js_160_1.js" type="text/javascript"></script>
+    <script src="js/great_andhra_view_js_160_1.js?v=<?php echo ga_asset_version('js/great_andhra_view_js_160_1.js'); ?>" type="text/javascript"></script>
 </body>
 </html>

@@ -63,12 +63,12 @@ function ga_box_office_url(int $page): string
     <meta content="width=device-width, initial-scale=1" name="viewport" />
     <link href="assets/css2" rel="stylesheet">
     <!-- <link href="css/great_andhra_style_landing_pages.css" rel="stylesheet" type="text/css"> -->
-    <link href="css/footer.css" rel="stylesheet" type="text/css">
-    <link href="css/main-box-office.css" rel="stylesheet" type="text/css">
-    <link href="css/box-office-mobile-responsive.css" rel="stylesheet">
+    <link href="css/footer.css?v=<?php echo ga_asset_version('css/footer.css'); ?>" rel="stylesheet" type="text/css">
+    <link href="css/main-box-office.css?v=<?php echo ga_asset_version('css/main-box-office.css'); ?>" rel="stylesheet" type="text/css">
+    <link href="css/box-office-mobile-responsive.css?v=<?php echo ga_asset_version('css/box-office-mobile-responsive.css'); ?>" rel="stylesheet">
     <link href="css/site-ads.css?v=<?php echo ga_asset_version('css/site-ads.css'); ?>" rel="stylesheet">
-    <link href="css/header-mob.css" rel="stylesheet">
-    <script src="js/drawer.js"></script>
+    <link href="css/header-mob.css?v=<?php echo ga_asset_version('css/header-mob.css'); ?>" rel="stylesheet">
+    <script src="js/drawer.js?v=<?php echo ga_asset_version('js/drawer.js'); ?>"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <!-- <link href="assets/image_preview.css" rel="stylesheet" type="text/css">
     <script async="" src="//cdn.confiant-integrations.net/gptprebidnative/202603241056/wrap.js"></script>
@@ -1083,7 +1083,7 @@ function ga_box_office_url(int $page): string
                                     <div class="header"> Box Office</div>
                                     <div class="gal_body_box">
                                         <?php if (!empty($ga_bo_articles)): ?>
-                                        <?php foreach ($ga_bo_articles as $ga_bo_article): ?>
+                                        <?php foreach ($ga_bo_articles as $ga_bo_i => $ga_bo_article): ?>
                                         <?php $ga_bo_img = ga_image($ga_bo_article, GA_BOX_OFFICE_FALLBACK_IMAGE); ?>
                                         <div class="thumb_container_box">
                                             <div class="img_container_box"> <a
@@ -1092,7 +1092,8 @@ function ga_box_office_url(int $page): string
                                                         src="<?php echo ga_e($ga_bo_img['src']); ?>"
                                                         width="<?php echo (int) $ga_bo_img['width']; ?>"
                                                         height="<?php echo (int) $ga_bo_img['height']; ?>"
-                                                        alt="<?php echo ga_e($ga_bo_article['title'] ?? ''); ?>"> </a>
+                                                        alt="<?php echo ga_e($ga_bo_article['title'] ?? ''); ?>"
+                                                        <?php if ($ga_bo_i > 0): ?>loading="lazy"<?php endif; ?>> </a>
                                             </div>
 
                                             <div class="img_text_cont_box">

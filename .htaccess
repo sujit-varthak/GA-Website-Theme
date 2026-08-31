@@ -1,3 +1,47 @@
+# Browser caching for static assets - previously every CSS/JS/image response came back
+# Cache-Control: private with no max-age (confirmed live 2026-08-31), so browsers re-fetched
+# or at minimum revalidated every one of them on every single page load, even for a
+# returning visitor with nothing changed. Deliberately does NOT touch .php files or
+# extension-less requests - those all still hit dynamic PHP/API responses, which this must
+# never cache (see ga_maybe_show_roadblock_ad()'s cookie-gated redirect and the roadblock/
+# interstitial ad logic, which would break if a page response got cached and reused across
+# visitors).
+#
+# Images/fonts: truly static, essentially-immutable assets (logo, ad fallback images, any
+# local fonts) - a full year is safe since they're the kind of file that gets replaced with a
+# new filename when it changes, not edited in place.
+#
+# CSS/JS: only the first-party GreatAndhra files (see ga_asset_version() in inc/helpers.php)
+# get a cache-busting content-hash query param that guarantees a changed file is fetched
+# fresh even under long caching - the many third-party/vendor scripts on this site
+# (jQuery and its plugins, ad-network SDKs, etc.) have NOT been through that yet, so this
+# stays at a bounded 1-week window rather than a full year, to cap how stale any of those
+# could ever get in the meantime. Revisit once those get their own versioning pass.
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType image/jpeg "access plus 1 year"
+    ExpiresByType image/png "access plus 1 year"
+    ExpiresByType image/gif "access plus 1 year"
+    ExpiresByType image/webp "access plus 1 year"
+    ExpiresByType image/svg+xml "access plus 1 year"
+    ExpiresByType image/x-icon "access plus 1 year"
+    ExpiresByType font/woff "access plus 1 year"
+    ExpiresByType font/woff2 "access plus 1 year"
+    ExpiresByType application/font-woff "access plus 1 year"
+    ExpiresByType text/css "access plus 1 week"
+    ExpiresByType application/javascript "access plus 1 week"
+    ExpiresByType text/javascript "access plus 1 week"
+</IfModule>
+
+<IfModule mod_headers.c>
+    <FilesMatch "\.(jpg|jpeg|png|gif|webp|svg|ico|woff|woff2)$">
+        Header set Cache-Control "public, max-age=31536000, immutable"
+    </FilesMatch>
+    <FilesMatch "\.(css|js)$">
+        Header set Cache-Control "public, max-age=604800"
+    </FilesMatch>
+</IfModule>
+
 RewriteEngine On
 RewriteBase /
 
