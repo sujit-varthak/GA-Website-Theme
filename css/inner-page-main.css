@@ -203,6 +203,7 @@
 }
 
 .great_andhra_main_body_container .page_news .header h1 {
+  margin: 0;
   padding: 0 0 2px;
   font-size: 28px;
   color: #333333;
