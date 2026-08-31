@@ -5,6 +5,18 @@ p {
   padding: 0;
 }
 
+/* LISTPAGE_SIDEBAR_LEFT/RIGHT (fixed skyscraper ad panels, .local_great > .source-image-left/
+   right, rendered near the top of list-page.php). great_andhra_style_landing_pages.css also
+   defines position:absolute for these classes, but that rule wasn't reliably taking effect here
+   - defined directly in this page's own stylesheet as the authoritative source instead. Without
+   position:absolute, great_andhra_view_js_160_1.js's computed `left`/`right` offset (which
+   centers the panel against the page's content column, matching index.php) has no visual
+   effect on a statically-positioned element. */
+.source-image-left,
+.source-image-right {
+  position: absolute;
+}
+
 i.fas.fa-home {
   font-size: 16px;
   margin-top: 2px;
