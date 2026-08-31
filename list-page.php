@@ -326,6 +326,13 @@ function ga_list_page_url(string $cleanPath, array $legacyParams, int $page): st
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script> -->
+    <?php // jQuery, loaded here (head) same as index.php - every inline script below the top
+          // banner ad assumes it's already available. Previously loaded from
+          // https://www.greatandhra.com/js/jquery.min.1.8.2.js, the old WordPress domain's copy
+          // of this file - confirmed that now 404s there, so jQuery silently never loaded on
+          // this page at all, breaking every $()-dependent script on it (sticky nav, search
+          // toggle, dropdowns, and the sidebar-ad positioning script added below). ?>
+    <script type="text/javascript" src="assets/jquery.min.1.8.2.js"></script>
 </head>
 
 <body class="home_bg">
@@ -385,10 +392,20 @@ function ga_list_page_url(string $cleanPath, array $legacyParams, int $page): st
                 integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ"
                 crossorigin="anonymous">
             <script>
+                <?php // #great_andhra_main_menu_panel_2019 doesn't exist on this page (it's
+                      // homepage-only markup) - $(...).offset() on an empty jQuery set returns
+                      // undefined, so .top threw uncaught here on every load. That silently
+                      // aborted every OTHER $(document).ready() handler registered later in the
+                      // page too (jQuery 1.8's ready-queue stops on an unhandled exception),
+                      // which is why the sidebar-ad positioning script below never ran. ?>
                 $(function () {
+                    var $stickyNav = $('#great_andhra_main_menu_panel_2019');
+                    if ($stickyNav.length === 0) {
+                        return;
+                    }
 
                     // grab the initial top offset of the navigation
-                    var sticky_navigation_offset_top = $('#great_andhra_main_menu_panel_2019').offset().top;
+                    var sticky_navigation_offset_top = $stickyNav.offset().top;
 
                     // our function that decides weather the navigation bar should have "fixed" css position or not.
                     var great_andhra_main_menu_panel_2019 = function () {
@@ -420,7 +437,6 @@ function ga_list_page_url(string $cleanPath, array $legacyParams, int $page): st
             </script>
 
             <!---Search button-->
-            <script type="text/javascript" src="https://www.greatandhra.com/js/jquery.min.1.8.2.js"></script>
             <script type="text/javascript">
                 $(document).ready(function (e) {
                     $('.search_img').click(function () {
@@ -2270,5 +2286,10 @@ function ga_list_page_url(string $cleanPath, array $legacyParams, int $page): st
     <div
         style="background-color: transparent; border: none; bottom: 15px; display: block; margin: 0px; opacity: 1; padding: 0px; position: fixed; right: 15px; z-index: 2147483647;">
     </div>
+    <?php // Positions .source-image-left/.source-image-right (the fixed skyscraper ad panels
+          // above) relative to the page's centered 990px content column - same script the
+          // homepage uses. Without it these panels have no left/right offset at all and never
+          // "stick" against the content edges the way they do on index.php. ?>
+    <script src="js/great_andhra_view_js_160_1.js" type="text/javascript"></script>
 </body>
 </html>
