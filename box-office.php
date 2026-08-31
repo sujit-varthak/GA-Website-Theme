@@ -2282,27 +2282,5 @@ function ga_box_office_url(int $page): string
     <div
         style="background-color: transparent; border: none; bottom: 15px; display: block; margin: 0px; opacity: 1; padding: 0px; position: fixed; right: 15px; z-index: 2147483647;">
     </div>
-</body><iframe id="google_esf" name="google_esf"
-    src="https://googleads.g.doubleclick.net/pagead/html/r20260408/r20190131/zrt_lookup_fy2021.html"
-    style="display: none;"></iframe><iframe id="goog_plcm_frame"
-    src="https://cm.g.doubleclick.net/partnerpixels?gdpr=0&amp;us_privacy=1---&amp;gpp_sid=-1&amp;url=https%3A%2F%2Fwww.greatandhra.com%2Fboxoffice"
-    style="display: none;"></iframe><iframe sandbox="allow-scripts allow-same-origin" id="27791233da35a87"
-    frameborder="0" allowtransparency="true" marginheight="0" marginwidth="0" width="0" hspace="0" vspace="0" height="0"
-    style="height:0px;width:0px;display:none;" scrolling="no"
-    src="//sync.adkernel.com/user-sync?zone=180530&amp;auid=A3678335633822992448&amp;r=%2F%2Fcpm.vuukle.net%2Fuser-synced%3Fzone%3D180530%26uid%3D%7BUID%7D">
-</iframe><iframe sandbox="allow-scripts allow-same-origin" id="28e3dfcd7d79691" frameborder="0" allowtransparency="true"
-    marginheight="0" marginwidth="0" width="0" hspace="0" vspace="0" height="0"
-    style="height:0px;width:0px;display:none;" scrolling="no"
-    src="https://prebid.a-mo.net/isyn?gdpr_consent=&amp;gdpr=0&amp;us_privacy=&amp;gpp=&amp;gpp_sid=">
-</iframe><iframe sandbox="allow-scripts allow-same-origin" id="29ecbbb2fba4c86" frameborder="0" allowtransparency="true"
-    marginheight="0" marginwidth="0" width="0" hspace="0" vspace="0" height="0"
-    style="height:0px;width:0px;display:none;" scrolling="no" src="https://vuukle-d.openx.net/w/1.0/pd">
-</iframe><iframe sandbox="allow-scripts allow-same-origin" id="30e502d3b7d2dfe" frameborder="0" allowtransparency="true"
-    marginheight="0" marginwidth="0" width="0" hspace="0" vspace="0" height="0"
-    style="height:0px;width:0px;display:none;" scrolling="no" src="https://acdn.adnxs.com/dmp/async_usersync.html">
-</iframe><iframe sandbox="allow-scripts allow-same-origin" id="31cd0b57aa878ac8" frameborder="0"
-    allowtransparency="true" marginheight="0" marginwidth="0" width="0" hspace="0" vspace="0" height="0"
-    style="height:0px;width:0px;display:none;" scrolling="no" src="https://eus.rubiconproject.com/usync.html">
-</iframe>
-
+</body>
 </html>
