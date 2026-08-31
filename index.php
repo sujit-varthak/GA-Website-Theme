@@ -925,7 +925,7 @@ $ga_mobile_latest_news_articles = array_slice($ga_trending_articles, 0, GA_MOBIL
             </div>
         </div>
         <?php if (ga_is_mobile()): ?>
-            <div class="great_andhra_main_body_container">
+            <div class="great_andhra_main_body_container ad-center-mobile-block">
                 <?php ga_render_ad('HOMEPAGE_MOBILE_AFTER_OPINION_AD'); ?>
             </div>
         <?php endif; ?>
@@ -1076,7 +1076,7 @@ $ga_mobile_latest_news_articles = array_slice($ga_trending_articles, 0, GA_MOBIL
                         </ul>
                     </div>
                     <?php if (ga_is_mobile()): ?>
-                        <div class="home_left_column">
+                        <div class="home_left_column ad-center-mobile-block">
                             <?php ga_render_ad('HOMEPAGE_MOBILE_BETWEEN_MOVIE_NEWS_GOSSIP_AD'); ?>
                         </div>
                     <?php endif; ?>

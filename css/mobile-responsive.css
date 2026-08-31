@@ -566,6 +566,19 @@
     display: block !important;
   }
 
+  /* HOMEPAGE_MOBILE_AFTER_OPINION_AD and HOMEPAGE_MOBILE_BETWEEN_MOVIE_NEWS_GOSSIP_AD - each
+     wrapper div here exists solely to hold one ad call (no other content), so it's safe to
+     pair this marker with the shared .great_andhra_main_body_container/.home_left_column
+     classes without affecting their other, unrelated uses elsewhere on the page. */
+  .ad-center-mobile-block {
+    text-align: center !important;
+  }
+
+  .ad-center-mobile-block img {
+    display: block !important;
+    margin: 0 auto !important;
+  }
+
   /* ========================================
      BREADCRUMBS
      ======================================== */
