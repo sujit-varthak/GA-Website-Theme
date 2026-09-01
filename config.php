@@ -223,7 +223,7 @@ define('GA_AD_ZONE_IMAGE_DIMENSIONS', [
     'HOMEPAGE_BIG_STORY_BANNER' => ['width' => null, 'height' => null],
     'INNER_SIDEBAR_LEFT' => ['width' => 160, 'height' => null],
     'INNER_SIDEBAR_RIGHT' => ['width' => 160, 'height' => null],
-    'INNER_TOP_BANNER' => ['width' => 728, 'height' => 90],
+    'INNER_TOP_BANNER' => ['width' => 714, 'height' => 90],
     'INNER_MOBILE_BANNER' => ['width' => null, 'height' => 250],
     // Missing until 2026-08-26 - these two zones were added after the sidebar-dimension
     // comment above was written and never got an entry, so their images shrank to fit the
@@ -237,7 +237,7 @@ define('GA_AD_ZONE_IMAGE_DIMENSIONS', [
     'LISTPAGE_SIDEBAR_LEFT' => ['width' => 160, 'height' => null],
     'LISTPAGE_SIDEBAR_RIGHT' => ['width' => 160, 'height' => null],
     'LISTPAGE_CONTENT_AD' => ['width' => 300, 'height' => 250],
-    'LISTPAGE_TOP_BANNER' => ['width' => 728, 'height' => 90],
+    'LISTPAGE_TOP_BANNER' => ['width' => 714, 'height' => 90],
     'LISTPAGE_MOBILE_BANNER' => ['width' => null, 'height' => 250],
     'HOMEPAGE_LATEST_NEWS_INLINE_AD' => ['width' => 300, 'height' => 250],
     'HOMEPAGE_OPINION_BANNER' => ['width' => 728, 'height' => 90],

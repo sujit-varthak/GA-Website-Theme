@@ -17,6 +17,17 @@ p {
   position: absolute;
 }
 
+/* Fixed 59px offset, overriding great_andhra_view_js_160_1.js's viewport-width-based
+   calculation (that script still runs and sets its own left/right via plain .css(), which
+   !important here always wins over) - requested exact value rather than the dynamic one. */
+.source-image-left {
+  left: 59px !important;
+}
+
+.source-image-right {
+  right: 59px !important;
+}
+
 i.fas.fa-home {
   font-size: 16px;
   margin-top: 2px;
@@ -47,6 +58,7 @@ i.fas.fa-home {
   padding: 0 0 0 1px;
   height: 37px;
   overflow: visible; /* IMPORTANT */
+  width: 714px;
 }
 
 /* Menu List */
