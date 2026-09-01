@@ -55,7 +55,7 @@ $ga_delay_seconds = max(1, (int) round($ga_delay_ms / 1000));
         a { text-decoration: none; color: #039; font-size: 11px; font-family: arial; }
         a:hover { text-decoration: underline; }
         .copyright { font-size: 11px; font-family: arial; }
-        .ad-page-wrap { max-width: 1200px; margin: 0 auto; text-align: center; }
+        .ad-page-wrap { max-width: 1000px; margin: 0 auto; text-align: center; }
         /* 3-column header matching the reference: logo left, ad name
            center, countdown text + Skip button right (countdown text drops
            on narrow screens - the mobile reference doesn't show it, just
@@ -89,10 +89,9 @@ $ga_delay_seconds = max(1, (int) round($ga_delay_ms / 1000));
             .ad-page-logo img { width: 100px; }
             .ad-page-title { font-size: 13px; }
         }
-        /* Edge-to-edge within the page wrap, on both mobile and desktop - no
-           inner pixel cap below the wrap's own width, matching the reference
-           screenshots (full-bleed poster, not a small centered box). */
-        .ad-page-media img { max-width: 100%; width: 100%; height: auto; }
+        /* Capped at 1000x600 - scales down to fit narrower viewports (mobile) via
+           width:100%, but never exceeds this on desktop. */
+        .ad-page-media img { max-width: 1000px; max-height: 600px; width: 100%; height: auto; }
     </style>
 </head>
 

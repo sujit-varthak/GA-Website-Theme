@@ -1,7 +1,8 @@
 <?php
 require_once __DIR__ . '/config.php';
 require_once __DIR__ . '/inc/helpers.php';
-ga_maybe_show_roadblock_ad();
+// Roadblock (full-page interstitial before render) only fires on the homepage now - was
+// showing on every page type, which the user found intrusive on list/box-office/article pages.
 $ga_interstitial_decision = ga_prepare_interstitial_ad('LISTPAGE');
 require_once __DIR__ . '/inc/api-client.php';
 
