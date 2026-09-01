@@ -30,6 +30,10 @@ ga_prefetch_page([
         'HOMEPAGE_MOBILE_AFTER_TALK_OF_TOWN_AD',
         'HOMEPAGE_MOBILE_AFTER_OPINION_AD',
         'HOMEPAGE_MOBILE_BETWEEN_MOVIE_NEWS_GOSSIP_AD',
+        'HOMEPAGE_MOBILE_AFTER_MOVIE_GOSSIP_AD',
+        'HOMEPAGE_MOBILE_AFTER_TELANGANA_NEWS_AD',
+        'HOMEPAGE_MOBILE_AFTER_USA_SCHEDULE_AD',
+        'HOMEPAGE_MOBILE_AFTER_MOST_POPULAR_AD',
         'HOMEPAGE_MOBILE_AFTER_TRENDING_TOPICS_AD',
         'HOMEPAGE_AFTER_POLITICS_GOSSIP_AD',
         'HOMEPAGE_BIG_STORY_BANNER',
@@ -1101,6 +1105,11 @@ $ga_mobile_latest_news_articles = array_slice($ga_trending_articles, 0, GA_MOBIL
                         </ul>
                     </div>
                 </div>
+                <?php if (ga_is_mobile()): ?>
+                    <div class="home_left_column ad-center-mobile-block">
+                        <?php ga_render_ad('HOMEPAGE_MOBILE_AFTER_MOVIE_GOSSIP_AD'); ?>
+                    </div>
+                <?php endif; ?>
                 <div class="paras float-left clear">
                     <div class="home_left_column news-section">
                         <ul class="sortable-list ui-sortable">
@@ -1136,6 +1145,11 @@ $ga_mobile_latest_news_articles = array_slice($ga_trending_articles, 0, GA_MOBIL
                         </ul>
                     </div>
                 </div>
+                <?php if (ga_is_mobile()): ?>
+                    <div class="home_left_column ad-center-mobile-block">
+                        <?php ga_render_ad('HOMEPAGE_MOBILE_AFTER_TELANGANA_NEWS_AD'); ?>
+                    </div>
+                <?php endif; ?>
                 <div class="paras float-left clear">
                     <div class="home_left_column news-section">
                         <ul class="sortable-list ui-sortable">
@@ -1207,6 +1221,11 @@ $ga_mobile_latest_news_articles = array_slice($ga_trending_articles, 0, GA_MOBIL
                             </div>
                         </div>
                     </li>
+                    <?php if (ga_is_mobile()): ?>
+                        <li class="sortable-item clear ad-center-mobile">
+                            <?php ga_render_ad('HOMEPAGE_MOBILE_AFTER_USA_SCHEDULE_AD'); ?>
+                        </li>
+                    <?php endif; ?>
                     <li class="sortable-item clear">
                         <div class="sortable-item_style_13">
                             <div class="header"> Featured </div>
@@ -1368,6 +1387,11 @@ $ga_mobile_latest_news_articles = array_slice($ga_trending_articles, 0, GA_MOBIL
                             </div>
                         </div>
                     </li>
+                    <?php if (ga_is_mobile()): ?>
+                        <li class="sortable-item clear ad-center-mobile">
+                            <?php ga_render_ad('HOMEPAGE_MOBILE_AFTER_MOST_POPULAR_AD'); ?>
+                        </li>
+                    <?php endif; ?>
                     <!--<li class="sortable-item">
 
 						<div id="vuukle-ad-16" style="min-width: 300px; min-height: 250px;" class="margin-top-bot">                    
