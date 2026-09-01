@@ -239,6 +239,7 @@ define('GA_AD_ZONE_IMAGE_DIMENSIONS', [
     'LISTPAGE_CONTENT_AD' => ['width' => 300, 'height' => 250],
     'LISTPAGE_TOP_BANNER' => ['width' => 714, 'height' => 90],
     'LISTPAGE_MOBILE_BANNER' => ['width' => null, 'height' => 250],
+    'LISTPAGE_REVIEW_AD' => ['width' => 300, 'height' => 600],
     'HOMEPAGE_LATEST_NEWS_INLINE_AD' => ['width' => 300, 'height' => 250],
     'HOMEPAGE_OPINION_BANNER' => ['width' => 728, 'height' => 90],
     'HOMEPAGE_ARTICLE_WIDGET_AD' => ['width' => 300, 'height' => 250],

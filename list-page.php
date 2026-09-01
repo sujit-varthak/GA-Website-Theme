@@ -125,6 +125,7 @@ ga_prefetch_page([
         'LISTPAGE_MOBILE_BANNER',
         'LISTPAGE_CONTENT_AD',
         'LISTPAGE_MOBILE_MIDDLE_AD',
+        'LISTPAGE_REVIEW_AD',
         'FULLSCREEN_INTERSTITIAL_AD',
         'BOTTOM_STICKY_AD',
     ],
@@ -1236,14 +1237,9 @@ function ga_list_page_url(string $cleanPath, array $legacyParams, int $page): st
                         </li>
 
                         <li class="sortable-item">
-                            <p style="float: left;font-size: 7px;"> ADVERTISEMENT</p>
-                            <script async="" src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-                            <!-- Review ad -->
-                            <ins class="adsbygoogle" style="display:inline-block;width:300px;height:600px"
-                                data-ad-client="ca-pub-1239645388568087" data-ad-slot="3746403796"></ins>
-                            <script>
-                                (adsbygoogle = window.adsbygoogle || []).push({});
-                            </script>
+                            <?php // Was a hardcoded AdSense unit (ca-pub-1239645388568087, slot 3746403796) -
+                                  // now admin-managed like every other zone on this page. ?>
+                            <?php ga_render_ad('LISTPAGE_REVIEW_AD'); ?>
                         </li>
 
 
