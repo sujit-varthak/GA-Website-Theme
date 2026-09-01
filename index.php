@@ -2,13 +2,15 @@
 require_once __DIR__ . '/config.php';
 require_once __DIR__ . '/inc/helpers.php';
 ga_maybe_show_roadblock_ad();
-$ga_interstitial_decision = ga_prepare_interstitial_ad('HOME');
 require_once __DIR__ . '/inc/api-client.php';
 
 // Fires the homepage aggregate + both article feeds + every ad zone below concurrently
 // (curl_multi) instead of the 17 sequential blocking calls this page used to make one at a
 // time. Every ga_fetch_*()/ga_render_ad() call below is unchanged — they just see a cache
-// warmed a moment ago instead of doing their own network round trip.
+// warmed a moment ago instead of doing their own network round trip. FULLSCREEN_INTERSTITIAL_AD
+// is included below specifically so ga_prepare_interstitial_ad() (called right after, not
+// before) hits this warm cache instead of its own separate blocking request - it previously ran
+// before this batch even started, adding a full sequential network round trip to every page load.
 ga_prefetch_page([
     'homepage' => true,
     'articles' => [
@@ -45,6 +47,8 @@ ga_prefetch_page([
         'BOTTOM_STICKY_AD',
     ],
 ]);
+
+$ga_interstitial_decision = ga_prepare_interstitial_ad('HOME');
 
 // Big Story hero + the flagged articles below the ad, and the "Top News" tab's trending
 // articles — all resolved server-side (filtering, sorting, hero-exclusion) by the same

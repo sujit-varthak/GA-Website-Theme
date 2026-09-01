@@ -3,7 +3,6 @@ require_once __DIR__ . '/config.php';
 require_once __DIR__ . '/inc/helpers.php';
 // Roadblock (full-page interstitial before render) only fires on the homepage now - was
 // showing on every page type, which the user found intrusive on list/box-office/article pages.
-$ga_interstitial_decision = ga_prepare_interstitial_ad('BOXOFFICE');
 require_once __DIR__ . '/inc/api-client.php';
 
 $ga_bo_page = max(1, isset($_GET['page']) ? (int) $_GET['page'] : 1);
@@ -27,6 +26,11 @@ ga_prefetch_page([
         'BOTTOM_STICKY_AD',
     ],
 ]);
+
+// Reads the FULLSCREEN_INTERSTITIAL_AD zone from the cache the batch above just warmed,
+// instead of its own separate blocking request (previously called before ga_prefetch_page(),
+// adding a full sequential network round trip to every page load).
+$ga_interstitial_decision = ga_prepare_interstitial_ad('BOXOFFICE');
 
 $ga_bo_result = ga_fetch_articles(GA_BOX_OFFICE_TAKE, $ga_bo_skip, GA_NAV_CATEGORY_IDS['movies'], true);
 $ga_bo_articles = $ga_bo_result['items'] ?? [];
