@@ -416,6 +416,57 @@ function ga_render_category_section(array $articles, array $heroFallbackImage, i
     }
 }
 
+// HomepageV2: the homepage's two_column_home category boxes (Movie News, Movie Gossip,
+// Andhra News, Telangana News, Gossip, Reviews) all share this exact markup - only the nav
+// link, header label, article set and fallback image differ per section. $liId reproduces
+// the one section (Reviews) that carries a specific id="sortable-item_5" on its <li>.
+function ga_render_homepage_category_box(
+    string $navSlug,
+    string $navName,
+    string $headerLabel,
+    array $articles,
+    array $fallbackImage,
+    int $titleMax,
+    bool $includeChildren = false,
+    ?string $liId = null
+): void {
+    $idAttr = $liId !== null ? ' id="' . ga_e($liId) . '"' : '';
+    ?>
+    <div class="home_left_column news-section">
+        <ul class="sortable-list ui-sortable">
+            <li class="sortable-item"<?php echo $idAttr; ?>>
+                <div class="sortable-item_style_3">
+                    <a href="<?php echo ga_e(ga_nav_category_link($navSlug, $navName, $includeChildren)); ?>">
+                        <div class="header"> <?php echo ga_e($headerLabel); ?> <span class="more_arrow"></span> </div>
+                    </a>
+                    <div class="content">
+                        <ul class="news_style news_section_ul" style="padding-top:3px;">
+                            <?php ga_render_category_section($articles, $fallbackImage, $titleMax); ?>
+                        </ul>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <?php
+}
+
+// HomepageV2: a mobile-only ad slot - renders nothing at all on desktop. Repeats ~10 times
+// across the homepage with only the wrapper tag/class and zone differing (a <li> when it's a
+// direct child of a sortable <ul>, a <div> everywhere else - the tag matters for HTML
+// validity, not just styling, so it's a parameter rather than assumed).
+function ga_render_mobile_ad_slot(string $zone, string $tag, string $wrapperClass): void
+{
+    if (!ga_is_mobile()) {
+        return;
+    }
+    ?>
+    <<?php echo $tag; ?> class="<?php echo ga_e($wrapperClass); ?>">
+        <?php ga_render_ad($zone); ?>
+    </<?php echo $tag; ?>>
+    <?php
+}
+
 // Homepage "Editor's Pick" card only features articles with schemaData.movieName and
 // schemaData.rating populated (most Reviews articles don't have this yet). Returns the most
 // recently published qualifying article, or null if none of $articles qualify.
