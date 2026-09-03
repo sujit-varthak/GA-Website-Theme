@@ -648,8 +648,6 @@ if ($ga_article && !empty($ga_article['category']['id'])) {
 
 
                         <li class="sortable-item clear">
-
-                            </style>
                             <div class="sortable-item_style_13">
                                 <div class="header"> Top Trending Topics </div>
                                 <div class="content trending_topics">

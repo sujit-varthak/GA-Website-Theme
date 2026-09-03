@@ -1,3 +1,12 @@
+/* --hover-bg/--border-color are used below (.menu-link:hover, .dropdown, .dropdown a:hover)
+   but were only ever defined in the homepage's own stylesheet (main-single.css), which this
+   page doesn't load - both declarations were silently invalid here (no fallback, so the
+   whole background/border rule was dropped). Same values as main-single.css for consistency. */
+:root {
+  --hover-bg: #efefef;
+  --border-color: #ddd;
+}
+
 .temp-ads {
   width: 100%;
 }
@@ -10,11 +19,15 @@
   column-gap: 5px;
   display: inline-flex;
   flex-direction: row;
-  height: 110px;
+  height: auto;
 }
 
 .great_andhra_logo_panel .logo {
   align-self: center;
+}
+
+.great_andhra_logo_panel img {
+  width: auto;
 }
 
 .ga-nav {
@@ -181,28 +194,31 @@
 
 .great_andhra_main_body_container .breade_crumb {
   margin-bottom: 10px;
-}
-
-.great_andhra_main_body_container .breade_crumb a {
   font-family: "Lato";
   font-size: 12px;
   color: #222222;
-  background: url(https://www.greatandhra.com/images/breadcrum.png) right center
-    no-repeat;
-  margin: 0 5px 0 0;
-  padding: 0 10px 0 0;
 }
 
+.great_andhra_main_body_container .breade_crumb a,
 .great_andhra_main_body_container .breade_crumb span {
   font-family: "Lato";
   font-size: 12px;
   color: #222222;
+  text-decoration: none;
 }
 
-/* Only appears when there's a subcategory (parent + category both rendered as spans) —
-   the existing arrow separator only follows <a> tags, so two adjacent spans need their own. */
+.great_andhra_main_body_container .breade_crumb a:hover {
+  text-decoration: underline;
+}
+
+/* One consistent " / " separator after every crumb except the last - previously the link
+   used a background-image arrow (images/breadcrum.png, which 404s - it's on the old
+   WordPress domain) while the spans used a text " / ", so "Home" had no visible separator
+   at all while the category spans did. Same rule now covers both. */
+.great_andhra_main_body_container .breade_crumb a::after,
 .great_andhra_main_body_container .breade_crumb span:not(:last-child)::after {
   content: " / ";
+  color: #999;
   margin: 0 2px;
 }
 
@@ -382,35 +398,39 @@
 }
 
 ul.top_story_option2_3story li .top_news_txt {
-  line-height: 21px;
+  flex: 1 1 auto;
+  min-width: 0;
+  line-height: 20px;
   color: #333333;
-  text-decoration: none;
-  padding-top: 15px;
-  display: block;
   font-size: 14px;
   font-family: "Lato";
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .great_andhra_main_body_container .sortable-item_style_13 {
   width: 100%;
   border: 1px solid #d5d5d5;
-  padding: 0px 0px 10px 10px;
+  border-radius: 4px;
+  padding: 12px;
+  box-sizing: border-box;
 }
 
 .great_andhra_main_body_container .sortable-item_style_13 .header {
-  width: 278px;
-  height: 28px;
   color: #000;
   font-size: 17px;
   font-weight: 700;
-  line-height: 28px;
+  line-height: 1.3;
+  margin-bottom: 10px;
 }
 
 .great_andhra_main_body_container .sortable-item_style_13 .content {
   width: 100%;
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
+  gap: 8px;
 }
 
 .trending_topics a,
@@ -457,25 +477,38 @@ ul.top_story_option2_3story li .top_news_txt {
 ul.top_story_option2_3story {
   list-style: none;
   padding: 0;
+  margin: 0;
 }
 
 ul.top_story_option2_3story li {
-  margin-bottom: 0px;
-  display: block;
-  height: 80px;
-  border-top: 1px #d9d9d9 solid;
+  margin: 0;
+  border-top: 1px solid #d9d9d9;
+}
+
+ul.top_story_option2_3story li:first-child {
+  border-top: none;
 }
 
 ul.top_story_option2_3story li .top_newsbox_img {
-  float: left;
-  margin-right: 24px;
-  height: 75px;
+  flex: 0 0 auto;
   width: 100px;
-  position: relative;
-  margin-top: 5px;
+  height: 75px;
+  overflow: hidden;
+  border-radius: 4px;
+}
+
+ul.top_story_option2_3story li .top_newsbox_img img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 ul.top_story_option2_3story a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
   text-decoration: none;
 }
 
