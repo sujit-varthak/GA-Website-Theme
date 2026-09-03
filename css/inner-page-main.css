@@ -25,7 +25,7 @@
   padding: 0 0 0 1px;
   height: 37px;
   overflow: visible; /* IMPORTANT */
-  width: 714px;
+  width: auto;
 }
 
 /* Menu List */
@@ -166,13 +166,16 @@
 /* main body */
 .great_andhra_main_body_container {
   width: 990px;
+  gap: 12px;
+  margin-top: 10px;
   display: flex;
 }
 
 /* two-column main body content */
 .great_andhra_main_body_container .two_column {
-  width: 670px;
-  margin-top: 6px;
+  width: auto;
+
+  /* margin-top: 6px; */
   /* border-right: 1px solid #ededed; */
 }
 
@@ -352,7 +355,7 @@
 }
 
 .great_andhra_main_body_container .column {
-  width: 310px;
+  width: auto;
 }
 
 .great_andhra_main_body_container .sortable-list,
