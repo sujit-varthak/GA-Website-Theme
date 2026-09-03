@@ -233,11 +233,11 @@
 
 .great_andhra_main_body_container .page_news .byline {
   font-family: "Lato";
-  padding: 0 0 4px;
+  padding: 0 0 10px;
   font-size: 13px;
   font-weight: 400;
-  width: 420px;
-  line-height: 28px;
+  line-height: 1.6;
+  color: #666;
 }
 
 /* ads section */
@@ -277,44 +277,56 @@
 
 .great_andhra_main_body_container .page_news .header_re {
   width: 650px;
-  padding: 3px 0 2px;
-  font-family: Roboto Condensed;
+  padding: 10px 12px;
+  font-family: "Roboto Condensed", Roboto, sans-serif;
   font-size: 15px;
   color: #000;
   font-weight: 700;
-  border-top: 1px #a8a8a8 solid;
-  background: url(https://www.greatandhra.com/images/box-header.png) repeat-x
-    #fff;
+  letter-spacing: 0.3px;
+  border: 1px solid #a8a8a8;
+  border-bottom: none;
+  background: #f2f2f2;
+  box-sizing: border-box;
 }
 
 .great_andhra_main_body_container .page_news .content_re {
   width: 650px;
-  margin: 1px 0 6px;
-  font-family: roboto;
+  margin: 0 0 6px;
+  font-family: Roboto, sans-serif;
   font-size: 16px;
   line-height: 24px;
   border: 1px solid #a8a8a8;
   background: #f9f9f9;
+  box-sizing: border-box;
 }
 
 .great_andhra_main_body_container .news_style_re {
   display: block;
-  padding: 0;
+  padding: 4px 12px;
   margin: 0;
 }
 
 .great_andhra_main_body_container .news_style_re li {
   display: block;
-  padding: 0 0 5px 18px;
-  margin: 2px 4px 0;
-  background: url(https://www.greatandhra.com/images/button.png) 0 5px no-repeat;
+  padding: 8px 0;
+  margin: 0;
+  border-top: 1px solid #e5e5e5;
+}
+
+.great_andhra_main_body_container .news_style_re li:first-child {
+  border-top: none;
 }
 
 .great_andhra_main_body_container .news_style_re li a {
   color: #bb1a00;
   font-family: "Open Sans", HelveticaNeue, Helvetica, Arial, sans-serif;
   font-size: 14px;
+  line-height: 1.4;
   text-decoration: none;
+}
+
+.great_andhra_main_body_container .news_style_re li a:hover {
+  text-decoration: underline;
 }
 
 .tags {
