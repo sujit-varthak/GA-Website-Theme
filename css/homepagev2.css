@@ -1,0 +1,1576 @@
+/* ========================================
+   HOMEPAGE V2 - combined stylesheet
+   Merges main-single.css (desktop) + mobile-responsive.css (mobile) into one
+   file, in the same cascade order as before (desktop rules first, then the
+   mobile @media overrides) so nothing about how conflicts resolve changes.
+
+   Removed vs. the two source files: comment-only dead rule blocks, and rules
+   for classes confirmed to never appear anywhere on the homepage (checked
+   against the rendered markup for both mobile and desktop, the PHP source,
+   and every JS file the homepage actually loads - including ones injected
+   client-side, like .close_button, which stayed for exactly that reason):
+   .temp-class, .article-midcontent-ad (an INNER-PAGE ad zone, not homepage),
+   .add_place_650X60/.local_place_650X60/.temp-ads, .page_news/.byline/
+   .img_plc/.header_re/.content_re (article-page classes), .breade_crumb,
+   .tags. Everything else is unchanged from the source files.
+   ======================================== */
+
+:root {
+  --nav-bg: #f8f8f8;
+  --text-color: #333;
+  --hover-bg: #efefef;
+  --border-color: #ddd;
+  --footer-bg: #292221;
+  --footer-text: #ffffff;
+  --footer-link-hover: #cc0032; /* Branding Red */
+  --footer-border: rgba(255, 255, 255, 0.1);
+}
+
+a {
+  text-decoration: none;
+  margin: 0;
+  padding: 0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: #ffffff;
+  background-position: center center;
+  background-attachment: fixed;
+  background-repeat: repeat-y;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+div,
+li {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+/* great_andhra_logo_panel */
+
+.great_andhra_logo_panel {
+  width: 990px;
+  padding: 0;
+  float: left;
+  background: #fff;
+  margin: 5px 0px;
+  column-gap: 5px;
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  height: 100px;
+}
+
+/* 201223 section */
+.great_andhra_main_201223_ {
+  width: 990px;
+  display: flex;
+  align-items: center;
+  height: 50px;
+  justify-content: space-between;
+  background: #fff;
+}
+
+._201223_1,
+._201223_2,
+._201223_3 {
+  height: 40px;
+}
+
+/* Main body content  */
+.great_andhra_main_body_container {
+  width: 990px;
+  float: left;
+  background: #fff;
+}
+
+.great_andhra_main_body_container .two_column_home .paras {
+  width: 688px;
+  background: #fff;
+}
+
+.paras.float-left.clear.hero {
+  display: flex;
+  align-items: stretch;
+}
+
+.great_andhra_main_body_container .home_left_column {
+  width: 330px;
+  margin: 0 14px 0 0;
+  background: #fff;
+}
+
+/* ads and aopinion section  */
+.great_andhra_main_body_container.ad-opinion {
+  display: flex;
+  flex-direction: column;
+}
+
+/* category section */
+.great_andhra_main_body_container.category_section {
+  display: flex;
+  gap: 3px;
+}
+
+.great_andhra_main_body_container.category_section
+  ul.sortable-list.ui-sortable {
+  float: left;
+  margin-top: 5px;
+}
+
+/* Navbar container */
+.ga-nav {
+  background: var(--nav-bg);
+  border: 1px solid #e6e6e6;
+  display: flex;
+  align-items: center;
+  padding: 0 0 0 1px;
+  height: 37px;
+  overflow: visible; /* IMPORTANT */
+}
+
+/* Menu List */
+.menu {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  align-items: center;
+}
+
+/* Menu item */
+.menu-item {
+  position: relative;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+/* Links */
+.menu-link {
+  text-decoration: none;
+  color: #000000 !important;
+  padding: 0 15px;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: capitalize;
+  font-family: "Lato", sans-serif !important;
+  line-height: 33px;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  transition: background 0.2s;
+}
+
+/* Hover */
+.menu-link:hover {
+  background: var(--hover-bg);
+}
+
+/* Dropdown icon */
+.menu-link i.fa-caret-down {
+  margin-left: 5px;
+  font-size: 12px;
+}
+
+/* Dropdown */
+.dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: #ffffff;
+  min-width: 160px;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  display: block;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(5px);
+  transition: all 0.2s ease;
+  z-index: 9999;
+  list-style: none;
+  padding: 5px 0;
+  margin: 0;
+}
+
+/* Show dropdown */
+.menu-item:hover .dropdown {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+/* Dropdown items */
+.dropdown li {
+  display: block;
+}
+
+.dropdown a {
+  display: block;
+  padding: 0px 13px;
+  text-decoration: none;
+  text-transform: capitalize;
+  color: #000 !important;
+  font-size: 14px;
+  font-size: 11px;
+  line-height: 33px;
+  font-family: "lato" !important ;
+}
+
+.dropdown a:hover {
+  background: var(--hover-bg);
+  color: red !important;
+}
+
+/* Logo */
+.nav-print-img {
+  height: 17px;
+  vertical-align: middle;
+}
+
+/* Social Icons */
+.social-group {
+  margin-left: auto;
+  display: flex;
+  gap: 15px;
+  padding-right: 15px;
+}
+
+.social-group a {
+  color: #555;
+  font-size: 18px;
+  transition: opacity 0.2s;
+}
+
+.social-group a:hover {
+  opacity: 0.7;
+}
+
+h1.big_content {
+  padding: 5px 0 5px 4px;
+}
+
+h1.big_content a {
+  color: #000;
+  font-size: 15px;
+  font-family: "lato";
+}
+
+.close_button {
+  display: none;
+}
+
+ul.big-galist li {
+  width: 100%;
+  float: left;
+  background: #f2f2f2;
+  padding: 3px 3px;
+  border: 1px solid #f2f2f2;
+}
+
+ul.big-galist li a {
+  font-size: 13px;
+  color: #231f20;
+  font-family: "Lato", sans-serif;
+}
+
+.great_andhra_main_body_container .news_style.news_section_ul li:first-child {
+  border-bottom: 0px;
+  margin-left: 0px;
+}
+
+.great_andhra_main_body_container .news_style.news_section_ul li:nth-child(2) {
+  font-weight: bold;
+}
+
+.great_andhra_main_body_container .home_left_column.news-section {
+  width: 680px;
+}
+.great_andhra_main_body_container .news_style.news_section_ul li.main-story {
+  width: 255px;
+}
+
+/* Plain headline items had no width cap, so a long title (common with real dynamic
+   content, unlike the short hand-picked static titles) wouldn't fit beside the 255px
+   hero image and dropped below it instead of wrapping within the gap. */
+.great_andhra_main_body_container
+  .news_style.news_section_ul
+  li:not(.main-story) {
+  max-width: 400px;
+  word-wrap: break-word;
+}
+
+li.main-story.clearfix img {
+  width: 100%;
+  height: 145px;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+.great_andhra_main_body_container .news_style.news_section_ul li {
+  float: left;
+  width: 100%;
+  margin-left: 8px;
+}
+
+.great_andhra_main_body_container.category_section
+  ul.sortable-list.ui-sortable {
+  float: left;
+  width: 100%;
+  margin-top: 5px;
+}
+
+ul.bg-unlist.ga-featured-videos li {
+  background: #f2f2f2;
+  width: 188px;
+  float: left;
+  padding: 2px;
+  margin: 4px 5px;
+  min-height: 190px;
+}
+
+ul.bg-unlist.ga-grply a p {
+  color: #333333;
+  font-family: "Lato", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  margin: 10px 0 0 0;
+}
+
+.mobile-before-latest-news-ad {
+  display: none;
+}
+
+.display-inline-block {
+  display: inline-block;
+}
+
+.margin-top-bot {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.padding-top-bot {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+/* .padding-top-bot is reused on two unrelated ad slots (HOMEPAGE_SECTION_INLINE and this
+   one, HOMEPAGE_ARTICLE_WIDGET_AD) - this second class (added only to this slot's wrapper
+   in index.php/homepagev2.php) scopes the override to just this one instead of removing
+   padding from both. */
+.padding-top-bot.no-padding-top-bot {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+ul.bg-unlist.ga-grply li:nth-child(3) {
+  padding-right: 0;
+  margin-right: 5px;
+}
+ul.bg-unlist.ga-grply li:nth-child(3n + 4) {
+  border-left: 0;
+}
+
+ul.bg-unlist.ga-grply li:nth-child(5) {
+  border-left: 0;
+  margin-right: 5px;
+}
+
+i.fab.fa-youtube:hover {
+  color: #e02a26;
+}
+
+i.fab.fa-twitter:hover {
+  color: #4099ff;
+}
+
+i.fab.fa-facebook-f:hover {
+  color: #3b5998;
+}
+i.fab.fa-youtube {
+  color: #e02a26;
+}
+
+i.fab.fa-twitter {
+  color: #4099ff;
+}
+
+i.fab.fa-facebook-f {
+  color: #3b5998;
+}
+
+.tab {
+  overflow: hidden;
+  border-bottom: 1px #d9d9d9 solid;
+  background-color: #ffffff;
+}
+
+.tab button {
+  float: left;
+  border: none;
+  cursor: pointer;
+  padding: 5px 5px;
+  font-family: "Lato";
+  width: 33.333333333%;
+  font-size: 12.5px;
+  color: #666666;
+  letter-spacing: 0.5px;
+}
+
+.tab button:hover {
+  font-weight: 600;
+  background: #f2f2f2;
+  color: #000;
+}
+
+.tab button.active {
+  font-weight: 600;
+  border-bottom: 2px solid #000000;
+  background: #f2f2f2;
+  color: #000;
+}
+
+.tabcontent {
+  display: none;
+  padding: 6px 0px;
+}
+
+.great_andhra_main_body_container .news_style li a.oneline-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+
+.ga-featured-videos .big-galist-lft {
+  height: 110px;
+  width: 185px;
+}
+
+.big-galist-lft {
+  width: 111px;
+  height: 62px;
+  float: left;
+  margin-right: 10px;
+  overflow: hidden;
+}
+
+.big-galist-lft img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+.ga-unavailable {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f2f2f2;
+  text-align: center;
+}
+
+.ga-unavailable-msg {
+  color: #888;
+  font-size: 13px;
+  font-style: italic;
+  margin: 0;
+  padding: 8px;
+}
+
+.ga-featured-videos .big-galist-rgt {
+  width: 100%;
+  padding: 0 5px 0 5px;
+}
+
+.ga-featured-videos .big-galist-rgt p {
+  width: 175px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+.great_andhra_main_body_container li.editors_pick_li:not(.main-story) > a {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 14px;
+  height: 210px;
+  padding: 20px;
+  background-color: #0a2149;
+  color: #ffffff;
+  box-sizing: border-box;
+}
+
+/* .great_andhra_main_body_container .news_style li a:hover (below, unchanged) sets a red
+   hover color for every .news_style link site-wide - the Editor's Pick card is itself
+   inside a .news_style list, so it inherited that red instead of staying white. This more
+   specific selector (adds .editors_pick_li) wins without needing !important, scoped to only
+   this card - every other .news_style link's hover color is untouched. */
+.great_andhra_main_body_container .news_style li.editors_pick_li a:hover {
+  color: #ffffff;
+}
+
+.editors_pick {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.editor_pick_review {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.great_andhra_main_body_container
+  .news_style.news_section_ul
+  li.editors_pick_li {
+  width: 50%;
+  margin: 0px;
+  padding: 0px;
+}
+
+li.editors_pick_li.clearfix img {
+  width: 100%;
+  height: 210px;
+}
+
+span.editors_pick_post_title {
+  display: block;
+  font-size: 25px;
+  line-height: 30px;
+  font-weight: bold;
+}
+
+span.editors_pick_title {
+  display: block;
+  font-size: 16px;
+  line-height: 22px;
+  font-weight: bold;
+}
+
+span.editors_pick_desc,
+span.editors_pick_release {
+  display: block;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.trending_topics a,
+.trending_topics span {
+  color: #727272 !important;
+  font-size: 11px;
+  padding: 5px 10px;
+  border-radius: 18px;
+  background-color: #fff;
+  text-transform: capitalize;
+  border: 1px solid #d3d3d3;
+  margin-top: 6px;
+  display: inline-block;
+}
+
+.trending_topics a:hover {
+  text-decoration: underline;
+}
+
+.content.trending_topics {
+  margin-bottom: 10px;
+}
+
+.ga-mdcenter {
+  width: 990px;
+}
+
+ul.top_story_option2_3story li .top_news_txt {
+  line-height: 21px;
+  color: #262626;
+  text-decoration: none;
+  padding-top: 10px;
+  display: block;
+  font-family: "Lato";
+  font-size: 14px;
+  margin-bottom: -21px;
+}
+
+.border-topbottom {
+  border-top: 1px #d9d9d9 solid;
+  border-bottom: 1px #d9d9d9 solid;
+  padding: 8px;
+}
+
+/* This ad wrapper (the banner above the Opinion section) had no layout rule at
+   all anywhere, so its <img> sat at the block's default left edge instead of
+   centered in the row. Scoped to .border-topbottom too, NOT bare
+   .editors_pick_full_width - that class is reused on the Opinion section's
+   whole container (heading + article grid) right below it, and a bare rule
+   centered that heading's text too, which wasn't wanted. Only the ad div also
+   carries .border-topbottom, so this combination targets it alone. */
+.editors_pick_full_width.border-topbottom {
+  text-align: center;
+}
+
+.great_andhra_main_body_container .sortable-item_style_13 {
+  width: 298px;
+  padding-bottom: 8px;
+}
+
+.big_description {
+  background-color: rgba(250, 250, 250, 0.85);
+  font-family: Roboto, sans-serif;
+  font-size: 15px;
+  color: #fff;
+  line-height: 1.5;
+  font-weight: 700;
+  position: absolute;
+  bottom: 6px;
+  /* No left/width before meant this absolutely-positioned overlay shrink-wrapped
+     to its text instead of spanning the hero image it sits on - .content1 (its
+     positioning ancestor) is position: relative, so left:0 + width:100% anchors
+     it to that container's full width. */
+  left: 0;
+  width: 100%;
+  box-sizing: border-box;
+}
+.great_andhra_main_body_container
+  .sortable-item_style_1
+  .content1
+  .todays_picture
+  img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+.great_andhra_main_body_container
+  .sortable-item_style_1
+  .content1
+  .todays_picture {
+  height: 240px;
+  bottom: 6px;
+  position: relative;
+  margin-top: 10px;
+  overflow: hidden;
+}
+
+.great_andhra_main_body_container .sortable-item_style_1 .content1 {
+  position: relative;
+}
+
+.great_andhra_main_body_container .sortable-item_style_14 .header {
+  display: block;
+  width: 300px;
+  height: 28px;
+  padding: 0 0 0 4px;
+  background: #f2f2f2;
+  color: #404040;
+  font-family: "Helvetica Neue", Helvetica, Arial, Utkal, sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 28px;
+}
+
+ul.top_story_option2_3story li .top_newsbox_img {
+  float: left;
+  margin-right: 24px;
+  height: 75px;
+  width: 100px;
+  position: relative;
+  margin-top: 5px;
+  overflow: hidden;
+}
+
+ul.top_story_option2_3story li .top_newsbox_img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+ul.top_story_option2_3story li {
+  margin-bottom: 8px;
+  height: 80px;
+  border-top: 1px #d9d9d9 solid;
+}
+
+.more_arrow {
+  width: 13px;
+  height: 9px;
+  background: url(https://www.greatandhra.com/images/ga_sprite_images.png) -96px
+    0 no-repeat;
+  margin-right: 6px;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.source-image-left {
+  position: absolute;
+  margin-left: -16px;
+  padding-top: 20px;
+  display: none;
+}
+
+.ga-mdcenter h3 {
+  font-family: Lato, sans-serif;
+  color: #333333;
+}
+
+.source-image-right {
+  position: absolute;
+  margin-right: -16px;
+  padding-top: 20px;
+  display: none;
+}
+
+.great_andhra_main_body_container .news_style li a {
+  font-size: 14px;
+  line-height: 24px;
+  text-decoration: none;
+  font-family: "Lato", sans-serif;
+  color: #333333;
+}
+
+.great_andhra_main_body_container .news_style li a:hover {
+  color: #cc0032;
+}
+.great_andhra_main_body_container .news_style li:last-child {
+  border-bottom: none;
+}
+
+.home_left_column .sortable-item_style_2 .news_style li:last-child {
+  border-bottom: 1px #d9d9d9 solid;
+}
+
+.great_andhra_main_body_container .news_style li {
+  display: block;
+  padding: 0 0 2px 1px;
+  margin: 2px 0;
+  color: #024d99;
+  font-family: Georgia, "Times New Roman", Times, serif;
+  font-size: 12px;
+  border-bottom: 1px #d9d9d9 solid;
+}
+
+.great_andhra_main_body_container .sortable-item_style_13 .header {
+  height: 28px;
+  padding: 0 0 0 4px;
+  background: #f2f2f2;
+  color: #333333;
+  font-family: Lato, sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 28px;
+  border-bottom: 1px #d9d9d9 solid;
+}
+
+.great_andhra_main_body_container .sortable-item_style_2 {
+  margin-top: 2px;
+}
+
+.great_andhra_main_body_container .sortable-item_style_3 .header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 27px;
+  padding: 0 0 0 4px;
+  background: #f2f2f2;
+  font-family: Lato, sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 29px;
+  color: #333333;
+  border-bottom: 1px #d9d9d9 solid;
+}
+
+.great_andhra_main_body_container .sortable-item_clear123 {
+  text-align: center;
+}
+
+.great_andhra_main_body_container .sortable-item_clear123 img {
+  width: 100%;
+}
+
+.great_andhra_main_body_container .sortable-item {
+  margin: 0 0 4px;
+}
+
+.great_andhra_main_body_container .home_right_column {
+  width: 300px;
+  margin: 0 0 6px;
+  float: right;
+}
+
+.great_andhra_logo_panel .logo {
+  width: 256px;
+  height: 90px;
+}
+
+.great_andhra_main_body_container .sortable-item_style_1 .header {
+  display: block;
+  width: 100%;
+  height: 28px;
+  padding: 0 0 0 4px;
+  margin: 0;
+  background: #f2f2f2;
+  color: #333333;
+  font-family: Lato, sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 28px;
+  border-bottom: 1px #d9d9d9 solid;
+}
+
+.great_andhra_body,
+.great_andhra_inner_body,
+.great_andhra_movie_body {
+  width: 990px;
+  margin: 0 auto;
+  padding: 0;
+}
+
+.float-left {
+  float: left;
+}
+
+/* ========================================
+   MOBILE OVERRIDES (from mobile-responsive.css, plus main-single.css's own
+   small embedded mobile block right below - .ga-nav/.social-group)
+   ======================================== */
+
+@media (max-width: 768px) {
+  .ga-nav {
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .social-group {
+    margin-left: 20px;
+  }
+
+  /* GLOBAL RESETS FOR MOBILE */
+
+  html,
+  body {
+    overflow-x: hidden;
+    width: 100%;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  /* Hide Desktop Sidebar Ads on Mobile */
+  .local_great,
+  .source-image-left,
+  .source-image-right {
+    display: none !important;
+  }
+
+  /* MAIN CONTAINER */
+
+  .great_andhra_body,
+  .great_andhra_inner_body,
+  .great_andhra_movie_body {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* TOP BANNER AD */
+
+  .great_andhra_logo_panel_top_box_201223_ {
+    display: none;
+  }
+
+  /* LOGO PANEL / HEADER */
+
+  .great_andhra_logo_panel {
+    width: 100% !important;
+    height: auto !important;
+    padding: 10px !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 10px !important;
+  }
+
+  .great_andhra_logo_panel .logo {
+    width: 200px !important;
+    height: auto !important;
+    margin: 0 auto !important;
+  }
+
+  .great_andhra_logo_panel .logo img {
+    width: 100% !important;
+    height: auto !important;
+  }
+
+  /* Header Ad Section */
+
+  ._201223_ img {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+
+  /* NAVIGATION MENU */
+
+  .ga-nav {
+    width: 100% !important;
+    height: auto !important;
+    padding: 0 !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .menu {
+    width: auto !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .menu-item {
+    flex-shrink: 0 !important;
+  }
+
+  .menu-link {
+    padding: 0 12px !important;
+    font-size: 12px !important;
+    white-space: nowrap !important;
+  }
+
+  /* Dropdown adjustments for mobile */
+  .dropdown {
+    position: fixed !important;
+    left: 0 !important;
+    right: 0 !important;
+    top: auto !important;
+    min-width: 100% !important;
+    max-height: 300px;
+    overflow-y: auto;
+  }
+
+  /* Social Icons in Nav */
+  .social-group {
+    display: none !important;
+  }
+
+  /* 201223 SECTION */
+
+  .great_andhra_main_201223_ {
+    width: 100% !important;
+    height: auto !important;
+    flex-direction: column !important;
+    padding: 10px !important;
+    gap: 10px !important;
+  }
+
+  ._201223_1,
+  ._201223_2,
+  ._201223_3 {
+    width: 100% !important;
+    height: auto !important;
+  }
+
+  ._201223_1 img,
+  ._201223_2 img,
+  ._201223_3 img {
+    width: 100% !important;
+    height: auto !important;
+  }
+
+  /* MAIN BODY CONTAINER */
+
+  .great_andhra_main_body_container {
+    width: 100% !important;
+    padding: 10px !important;
+    float: none !important;
+  }
+
+  .mobile-before-latest-news-ad {
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+
+  .mobile-before-latest-news-ad img {
+    display: inline-block;
+    margin: 0 auto;
+  }
+
+  .full_width_home.editors_pick_full_width.border-topbottom.margin-top-bot {
+    display: none;
+  }
+
+  .great_andhra_main_body_container .two_column_home .paras {
+    width: 100% !important;
+  }
+
+  .paras.float-left.clear.hero {
+    flex-direction: column !important;
+  }
+
+  /* LEFT AND RIGHT COLUMNS */
+
+  .great_andhra_main_body_container .home_left_column,
+  .great_andhra_main_body_container .home_right_column {
+    width: 100% !important;
+    float: none !important;
+  }
+
+  .great_andhra_main_body_container .home_left_column.news-section {
+    width: 100% !important;
+  }
+
+  /* NEWS SECTIONS */
+
+  .great_andhra_main_body_container .news_style.news_section_ul {
+    width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+
+  .great_andhra_main_body_container .news_style.news_section_ul li {
+    width: 100% !important;
+    margin: 0 0 10px 0 !important;
+    float: none !important;
+  }
+
+  .great_andhra_main_body_container .news_style.news_section_ul li.main-story {
+    width: 100% !important;
+  }
+
+  li.main-story.clearfix img {
+    width: 100% !important;
+    height: auto !important;
+  }
+
+  /* SORTABLE ITEMS / WIDGETS */
+
+  .great_andhra_main_body_container .sortable-item,
+  .great_andhra_main_body_container .sortable-item_style_1,
+  .great_andhra_main_body_container .sortable-item_style_2,
+  .great_andhra_main_body_container .sortable-item_style_3,
+  .great_andhra_main_body_container .sortable-item_style_13,
+  .great_andhra_main_body_container .sortable-item_style_14 {
+    width: 100% !important;
+  }
+
+  .great_andhra_main_body_container .sortable-item_style_13 .header,
+  .great_andhra_main_body_container .sortable-item_style_14 .header {
+    width: 100% !important;
+  }
+
+  .great_andhra_main_body_container .sortable-item_style_1 .header,
+  .great_andhra_main_body_container .sortable-item_style_2 .header,
+  .great_andhra_main_body_container .sortable-item_style_3 .header {
+    width: 100% !important;
+  }
+
+  /* CATEGORY SECTION */
+
+  .great_andhra_main_body_container.category_section {
+    flex-direction: column !important;
+    gap: 10px !important;
+  }
+
+  .great_andhra_main_body_container.category_section
+    ul.sortable-list.ui-sortable {
+    width: 100% !important;
+    float: none !important;
+  }
+
+  /* EDITORS PICK */
+
+  .great_andhra_main_body_container li.editors_pick_li:not(.main-story) > a {
+    height: auto !important;
+    min-height: 180px !important;
+  }
+
+  .great_andhra_main_body_container
+    .news_style.news_section_ul
+    li.editors_pick_li {
+    width: 100% !important;
+    margin: 0 !important;
+  }
+
+  li.editors_pick_li.clearfix img {
+    width: 100% !important;
+    height: auto !important;
+  }
+
+  span.editors_pick_post_title {
+    font-size: 20px !important;
+    line-height: 26px !important;
+  }
+
+  span.editors_pick_title {
+    font-size: 14px !important;
+    line-height: 19px !important;
+  }
+
+  span.editors_pick_desc,
+  span.editors_pick_release {
+    font-size: 14px !important;
+    line-height: 18px !important;
+  }
+
+  /* GALLERY / VIDEO SECTIONS */
+
+  /* Desktop stacks these as a wrapping grid of 188px tiles (image on top, caption below —
+     see ul.bg-unlist.ga-featured-videos li above). On mobile this switches to a single
+     column of full-width rows instead, image fixed on the left and caption to its right —
+     same row treatment as ul.big-galist below, just for this widget's own classes since
+     its <ul> doesn't carry the big-galist class. */
+  ul.bg-unlist.ga-featured-videos,
+  ul.bg-unlist.ga-grply {
+    width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 10px !important;
+  }
+
+  ul.bg-unlist.ga-featured-videos li,
+  ul.bg-unlist.ga-grply li {
+    width: 100% !important;
+    margin: 0 !important;
+    float: none !important;
+    min-height: auto !important;
+  }
+
+  ul.bg-unlist.ga-featured-videos li a,
+  ul.bg-unlist.ga-grply li a {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+  }
+
+  /* Image stays exactly as it already is (185x110, same as desktop) — flex-shrink:0 just
+     stops it getting squeezed by caption length, same issue fixed for .big-galist-lft below. */
+  .ga-featured-videos .big-galist-lft {
+    flex-shrink: 0 !important;
+    flex-grow: 0 !important;
+    width: 185px !important;
+    height: 110px !important;
+  }
+
+  .ga-featured-videos .big-galist-rgt {
+    width: auto !important;
+    flex: 1 !important;
+    min-width: 0 !important;
+  }
+
+  ul.big-galist li a {
+    display: flex;
+    flex-direction: row;
+    font-size: 13px;
+    color: #231f20;
+    font-family: "Lato", sans-serif;
+  }
+
+  /* BIG LIST ITEMS */
+
+  ul.big-galist {
+    width: 100% !important;
+  }
+
+  ul.big-galist li {
+    width: 100% !important;
+    margin-bottom: 5px !important;
+  }
+
+  /* .big-galist-lft keeps its 111x62 box from above, but ul.big-galist li a above turns it
+     into a flex item — without flex-shrink:0 it gets squeezed by however long each item's
+     title happens to be, so the "same" 111x62 box (and the object-fit:cover image inside
+     it) renders at a different visual size per item. Locking it stops that; min-width:0 on
+     the text side lets the title wrap instead of forcing the image to shrink. */
+  ul.big-galist li a .big-galist-lft {
+    flex-shrink: 0 !important;
+    flex-grow: 0 !important;
+    width: 111px !important;
+    height: 62px !important;
+  }
+
+  ul.big-galist li a .big-galist-rgt {
+    min-width: 0 !important;
+  }
+
+  /* TOP STORY / NEWS ITEMS */
+
+  ul.top_story_option2_3story {
+    width: 100% !important;
+  }
+
+  ul.top_story_option2_3story li {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 80px !important;
+    padding: 10px 0 !important;
+  }
+
+  ul.top_story_option2_3story li .top_newsbox_img {
+    width: 80px !important;
+    height: 60px !important;
+    margin-right: 15px !important;
+  }
+
+  ul.top_story_option2_3story li .top_newsbox_img img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover;
+  }
+
+  /* Most Popular only (not Recommended For You, which shares the same markup/classes above) -
+     scoped via the .most-popular-widget class added to its wrapper. */
+  .most-popular-widget ul.top_story_option2_3story li .top_newsbox_img {
+    width: 111px !important;
+    height: 62px !important;
+  }
+
+  ul.top_story_option2_3story li .top_news_txt {
+    margin-bottom: 0 !important;
+    font-size: 13px !important;
+    line-height: 18px !important;
+    padding-top: 0 !important;
+  }
+
+  /* TRENDING TOPICS */
+
+  .trending_topics {
+    width: 100% !important;
+  }
+
+  .trending_topics a,
+  .trending_topics span {
+    font-size: 11px !important;
+    padding: 4px 8px !important;
+    margin: 3px !important;
+  }
+
+  .content.trending_topics {
+    margin-bottom: 15px !important;
+  }
+
+  /* TABS */
+
+  .tab {
+    width: 100% !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .tab button {
+    font-size: 11px !important;
+    padding: 8px 5px !important;
+    min-width: 80px !important;
+  }
+
+  .tabcontent {
+    width: 100% !important;
+    padding: 10px 0 !important;
+  }
+
+  /* TODAY'S PICTURE */
+
+  .great_andhra_main_body_container
+    .sortable-item_style_1
+    .content1
+    .todays_picture {
+    width: 100% !important;
+    height: auto !important;
+  }
+
+  .great_andhra_main_body_container
+    .sortable-item_style_1
+    .content1
+    .todays_picture
+    img {
+    width: 100% !important;
+    height: auto !important;
+  }
+
+  .big_description {
+    width: 100%;
+    padding: 10px !important;
+    font-size: 14px !important;
+  }
+
+  /* IMAGES */
+
+  .great_andhra_main_body_container .sortable-item_clear123 img,
+  .great_andhra_main_body_container img {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+
+  /* HOMEPAGE_MOBILE_AFTER_BIGSTORY_AD display box - 330x40, centered
+     (zone resized from 380x250 to match; see admin's AD_ZONE_DIMENSIONS). */
+  .great_andhra_main_body_container .sortable-item_clear123 {
+    text-align: center !important;
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+  }
+
+  .great_andhra_main_body_container .sortable-item_clear123 img {
+    max-width: 330px !important;
+    max-height: 40px !important;
+    width: auto !important;
+    height: auto !important;
+    margin: 0 auto !important;
+    display: inline-block !important;
+  }
+
+  /* HOMEPAGE_MOBILE_AFTER_TALK_OF_TOWN_AD and HOMEPAGE_MOBILE_AFTER_TRENDING_TOPICS_AD -
+     centered, scaled to fill the full width of the container (not just constrained to a
+     fixed box like the after-bigstory ad above). Scoped to .ad-center-mobile specifically -
+     .sortable-item.clear is shared with unrelated list sections (Talk of the Town, USA
+     Movie Schedules, Featured, Article), so this must not be a bare .sortable-item.clear
+     rule or it would center-align those too. */
+  .great_andhra_main_body_container .sortable-item.ad-center-mobile {
+    text-align: center !important;
+  }
+
+  .great_andhra_main_body_container .sortable-item.ad-center-mobile img {
+    width: 100% !important;
+    height: auto !important;
+    margin: 0 auto !important;
+    display: block !important;
+  }
+
+  /* HOMEPAGE_MOBILE_AFTER_OPINION_AD and HOMEPAGE_MOBILE_BETWEEN_MOVIE_NEWS_GOSSIP_AD - each
+     wrapper div here exists solely to hold one ad call (no other content), so it's safe to
+     pair this marker with the shared .great_andhra_main_body_container/.home_left_column
+     classes without affecting their other, unrelated uses elsewhere on the page. */
+  .ad-center-mobile-block {
+    text-align: center !important;
+  }
+
+  .ad-center-mobile-block img {
+    display: block !important;
+    margin: 0 auto !important;
+  }
+
+  /* UTILITIES */
+
+  .float-left {
+    float: none !important;
+  }
+
+  .display-inline-block {
+    display: block !important;
+  }
+
+  .margin-top-bot {
+    margin-top: 15px !important;
+    margin-bottom: 15px !important;
+  }
+
+  .padding-top-bot {
+    padding-top: 15px !important;
+    padding-bottom: 15px !important;
+  }
+
+  /* SOCIAL ICONS (STANDALONE) */
+
+  i.fab.fa-youtube,
+  i.fab.fa-twitter,
+  i.fab.fa-facebook-f {
+    font-size: 20px !important;
+  }
+
+  /* BORDER ADJUSTMENTS */
+
+  .border-topbottom {
+    padding: 10px !important;
+  }
+
+  /* H1 BIG CONTENT */
+
+  h1.big_content {
+    padding: 5px !important;
+  }
+
+  h1.big_content a {
+    font-size: 14px !important;
+  }
+
+  /* CLOSE BUTTON */
+
+  .close_button {
+    display: block !important;
+    padding: 8px !important;
+    background: #000 !important;
+    color: #fff !important;
+    text-align: center !important;
+    cursor: pointer !important;
+    margin-top: 5px !important;
+  }
+
+  /* MORE ARROW */
+
+  .more_arrow {
+    display: inline-block !important;
+  }
+
+  /* MOBILE-ONLY "LATEST NEWS" LIST
+     Shown between Big Story and the Top News/Most Read/Telugu tabs.
+     The .header bar styling is inherited from the existing
+     .sortable-item_style_1 .header rule above, same as "Big Story". */
+
+  .mobile-latest-news {
+    display: block;
+  }
+
+  .mobile-before-latest-news-ad {
+    display: block;
+  }
+
+  .mobile-latest-news-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .mobile-latest-news-item {
+    border-bottom: 1px solid #e0e0e0;
+  }
+
+  .mobile-latest-news-item:last-child {
+    border-bottom: none;
+  }
+
+  .mobile-latest-news-item a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 4px;
+    text-decoration: none;
+  }
+
+  .mobile-latest-news .mobile-latest-news-thumb {
+    width: 111px !important;
+    height: 62px !important;
+    object-fit: cover;
+    border-radius: 4px;
+    flex-shrink: 0;
+  }
+
+  .mobile-latest-news-title {
+    color: #222;
+    font-family: Lato, sans-serif;
+    font-size: 15px;
+    line-height: 1.4;
+  }
+
+  .mobile-latest-news-ad {
+    text-align: center;
+    padding: 10px 4px;
+  }
+
+  /* Top News/Most Read/Telugu tabs - hidden below the mobile-only "Latest News" list;
+     desktop keeps this section (no .mobile-hide-tabs rule outside this media query). */
+  .mobile-hide-tabs {
+    display: none !important;
+  }
+}
+
+/* Hidden by default (desktop); the block above shows it on mobile. PHP already gates this
+   block behind ga_is_mobile(), but that's a UA sniff that can be wrong (proxies, cached
+   responses, etc.); this CSS is the actual "never show mobile ads/list on desktop" backstop. */
+.mobile-latest-news {
+  display: none;
+}
+
+.mobile-before-latest-news-ad {
+  display: none;
+}
+
+/* ========================================
+   EXTRA SMALL MOBILE (< 480px)
+   ======================================== */
+
+@media (max-width: 480px) {
+  /* Make gallery items full width on very small screens */
+  ul.bg-unlist.ga-featured-videos li,
+  ul.bg-unlist.ga-grply li {
+    width: 100% !important;
+  }
+
+  /* Reduce font sizes further */
+  .menu-link {
+    font-size: 11px !important;
+    padding: 0 10px !important;
+  }
+
+  /* Stack tabs vertically if needed */
+  .tab button {
+    min-width: 60px !important;
+    font-size: 10px !important;
+  }
+}
+
+/* ========================================
+   TABLET (481px - 768px)
+   ======================================== */
+
+@media (min-width: 481px) and (max-width: 768px) {
+  /* Two columns for gallery items on tablets */
+  ul.bg-unlist.ga-featured-videos li,
+  ul.bg-unlist.ga-grply li {
+    width: calc(50% - 5px) !important;
+  }
+}
+
+/* ========================================
+   LANDSCAPE MODE OPTIMIZATIONS
+   ======================================== */
+
+@media (max-width: 768px) and (orientation: landscape) {
+  /* Optimize navigation for landscape */
+  .ga-nav {
+    height: 35px !important;
+  }
+
+  .menu-link {
+    line-height: 35px !important;
+  }
+
+  /* Reduce vertical spacing in landscape */
+  .great_andhra_main_body_container {
+    padding: 5px !important;
+  }
+
+  .great_andhra_main_body_container .sortable-item {
+    margin-bottom: 10px !important;
+  }
+}

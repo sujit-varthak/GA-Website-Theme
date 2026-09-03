@@ -143,9 +143,8 @@ $ga_mobile_latest_news_articles = array_slice($ga_trending_articles, 0, GA_MOBIL
     <link href="https://www.greatandhra.com/favicon.png" rel="icon" type="image/png" />
     <link href="assets/css" rel="stylesheet">
     <link href="assets/css2" rel="stylesheet" />
-    <link href="css/main-single.css?v=<?php echo ga_asset_version('css/main-single.css'); ?>" rel="stylesheet" />
+    <link href="css/homepagev2.css?v=<?php echo ga_asset_version('css/homepagev2.css'); ?>" rel="stylesheet" />
     <link href="css/footer.css?v=<?php echo ga_asset_version('css/footer.css'); ?>" rel="stylesheet" />
-    <link href="css/mobile-responsive.css?v=<?php echo ga_asset_version('css/mobile-responsive.css'); ?>" rel="stylesheet">
     <link href="css/site-ads.css?v=<?php echo ga_asset_version('css/site-ads.css'); ?>" rel="stylesheet">
     <link href="css/header-mob.css?v=<?php echo ga_asset_version('css/header-mob.css'); ?>" rel="stylesheet">
     <script src="js/drawer.js?v=<?php echo ga_asset_version('js/drawer.js'); ?>"></script>
