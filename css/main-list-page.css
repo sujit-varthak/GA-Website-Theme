@@ -58,7 +58,7 @@ i.fas.fa-home {
   padding: 0 0 0 1px;
   height: 37px;
   overflow: visible; /* IMPORTANT */
-  width: 714px;
+  width: auto;
 }
 
 /* Menu List */
@@ -200,15 +200,16 @@ i.fas.fa-home {
 .great_andhra_main_body_container {
   width: 990px;
   display: flex;
+  gap: 12px;
 }
 
 .great_andhra_main_body_container .movies_column {
-  width: 660px;
+  width: auto;
   padding: 6px;
 }
 
 .great_andhra_main_body_container .movies_column_middle {
-  width: 310px;
+  width: 100%;
 }
 
 .great_andhra_main_body_container .movies_news_description_container {
@@ -467,7 +468,6 @@ a:visited {
   margin: 0 0 10px;
 }
 
-.great_andhra_main_body_container .sortable-list,
 .great_andhra_main_body_container .un-sortable-list {
   margin: 0;
   min-height: 10px;
@@ -488,20 +488,8 @@ a:visited {
   margin: 0 auto;
   padding: 0;
 }
-.clear {
-  clear: both;
-}
-.clear-left {
-  clear: left;
-}
-.clear-right {
-  clear: right;
-}
 .float-left {
   float: left;
-}
-.float-right {
-  float: right;
 }
 h1,
 h2,
@@ -519,36 +507,19 @@ html {
   font-family: "Lato", Arial, Helvetica, sans-serif;
   background: center center repeat-y fixed #fff;
 }
-.nopadding,
 body,
 html,
 p {
   padding: 0;
 }
-.bold,
-.font_weight_bold {
-  font-weight: 700;
-}
-.color_000000,
 a {
   color: #000;
 }
-.outline_none,
 a,
 input {
   outline: 0;
 }
 
-.great_andhra_main_body_container .page_news .img_plc {
-  margin: 1px 10px 1px 0;
-  padding: 0;
-  float: left;
-  width: 300px;
-  text-align: left;
-}
 .img_plc img {
   width: 150px;
-}
-.great_andhra_main_body_container .page_news .img_plc_cat_26 {
-  margin: 10px 10px 1px 0;
 }
