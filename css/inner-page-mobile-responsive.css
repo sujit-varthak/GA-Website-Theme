@@ -30,27 +30,11 @@
      MAIN CONTAINER
      ======================================== */
 
-  .great_andhra_inner_body,
   .great_andhra_movie_body {
     width: 100% !important;
     max-width: 100% !important;
     margin: 0 !important;
     padding: 0 !important;
-  }
-
-  /* ========================================
-     TOP BANNER AD
-     ======================================== */
-
-  .temp-ads {
-    width: 100% !important;
-    padding: 10px 0 !important;
-    overflow: hidden;
-  }
-
-  .temp-ads img {
-    width: 100% !important;
-    height: auto !important;
   }
 
   /* ========================================
@@ -286,13 +270,6 @@
     margin-bottom: 10px !important;
   }
 
-  .tags a {
-    font-size: 11px !important;
-    padding: 3px 6px !important;
-    margin: 2px 1px !important;
-    line-height: 22px !important;
-  }
-
   /* ========================================
      SIDEBAR SECTIONS
      ======================================== */
@@ -304,7 +281,6 @@
   }
 
   /* Sortable Lists */
-  .great_andhra_main_body_container .sortable-list,
   .great_andhra_main_body_container .un-sortable-list {
     width: 100% !important;
   }
@@ -419,13 +395,8 @@
      UTILITY CLASSES
      ======================================== */
 
-  .clear,
-  .like_page {
+  .clear {
     clear: both;
-  }
-
-  .float-left {
-    float: none !important;
   }
 
   .close_button {
@@ -544,12 +515,6 @@
   .trending_topics span {
     font-size: 10px !important;
     padding: 4px 8px !important;
-  }
-
-  /* Tags */
-  .tags a {
-    font-size: 10px !important;
-    padding: 2px 5px !important;
   }
 
   /* Footer */

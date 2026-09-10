@@ -7,9 +7,6 @@
   --border-color: #ddd;
 }
 
-.temp-ads {
-  width: 100%;
-}
 .great_andhra_logo_panel {
   width: 990px;
   padding: 0;
@@ -335,20 +332,6 @@
   font-size: 14px;
 }
 
-.tags a {
-  background: #e6e6e6;
-  border-radius: 5px;
-  color: #069;
-  line-height: 26px;
-  margin: 0 1px;
-  padding: 2px 3px;
-  text-decoration: none;
-}
-
-.tags a:hover {
-  text-decoration: underline;
-}
-
 /* Tags currently have no working filter endpoint on the backend, so they render as
    non-clickable chips (same look as .tags a) instead of dead/misleading links. */
 .tags .tag-chip {
@@ -386,7 +369,6 @@
   width: auto;
 }
 
-.great_andhra_main_body_container .sortable-list,
 .great_andhra_main_body_container .un-sortable-list {
   margin: 0;
   min-height: 10px;
@@ -546,14 +528,12 @@ i.fas.fa-home {
   position: absolute;
 }
 
-.great_andhra_inner_body,
 .great_andhra_movie_body {
   width: 990px;
   margin: 0 auto;
   padding: 0;
 }
-.clear,
-.like_page {
+.clear {
   clear: both;
 }
 

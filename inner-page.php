@@ -110,6 +110,10 @@ if ($ga_article && !empty($ga_article['category']['id'])) {
 
     <meta name="description" content="<?php echo ga_e($ga_meta_desc); ?>">
 
+    <?php if ($ga_article): ?>
+    <link rel="canonical" href="https://www.greatandhra.com/<?php echo ga_e(ga_inner_link($ga_article)); ?>">
+    <?php endif; ?>
+
     <meta property="fb:app_id" content="588741781200880">
     <meta property="og:title" content="<?php echo ga_e($ga_meta_title); ?>">
     <meta property="og:type" content="article">
@@ -157,77 +161,7 @@ if ($ga_article && !empty($ga_article['category']['id'])) {
             js.src = "//connect.facebook.net/en_GB/all.js#xfbml=1";
             fjs.parentNode.insertBefore(js, fjs);
         }(document, 'script', 'facebook-jssdk'));</script>
-    <script>
-        $(document).ready(function () {
-
-            //Check to see if the window is top if not then display button
-            $(window).scroll(function () {
-                if ($(this).scrollTop() > 100) {
-                    $('.scrollToTop').fadeIn();
-                } else {
-                    $('.scrollToTop').fadeOut();
-                }
-            });
-
-            //Click event to scroll to top
-            $('.scrollToTop').click(function () {
-                $('html, body').animate({ scrollTop: 0 }, 400);
-                return false;
-            });
-
-            $(window).scroll(function () {
-                if ($(this).scrollTop() > 100) {
-                    $('.scrollToHome').fadeIn();
-                } else {
-                    $('.scrollToHome').fadeOut();
-                }
-            });
-
-            //Click event to scroll to top
-            $('.scrollToHome').click(function () {
-                window.location = 'index.php';
-            });
-
-        });
-    </script>
-    <link href="./css/css" rel="stylesheet">
-
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <!-- <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-PX1LPBMH02"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-PX1LPBMH02');
-</script> -->
-
-    <!-- <div style="position:fixed; width:100%; float:left; width:80px;" class="local_great">
-        <div class="source-image-left" style="float: left; left: 69px; display: block;">
-            
-
-            <a href="https://www.msnrealty.com/new-lp/GreatAndhra"><img src="images/msn_new_160_2.jpg" width="160"
-                    alt="MSN Realty"> </a>
-
-           
-
-            <div class="close_button">[X] Close</div>
-        </div>
-    </div>
-
-    <div style="position:fixed; width:120px; right:0;" class="local_great">
-        <div class="source-image-right" style="float: right; right: 69px; display: block;">
-            
-
-            <a href="https://www.msnrealty.com/new-lp/GreatAndhra"><img src="images/msn_new_160_2.jpg" width="160"
-                    alt="MSN Realty"> </a>
-
-           
-            <div class="close_button">[X] Close</div>
-        </div>
-    </div> -->
-
-    <div class="local_great" style="position:fixed; width:100%; float:left; width:80px;">
+    <div class="local_great" style="position:fixed; width:80px; float:left;">
         <div class="source-image-left" style="float:left">
             <?php // Same ad as the homepage's left sidebar - not independently manageable. ?>
             <?php ga_render_ad('INNER_SIDEBAR_LEFT'); ?>
@@ -423,12 +357,6 @@ if ($ga_article && !empty($ga_article['category']['id'])) {
                     <!-- Logo Link -->
                     <li class="menu-item">
                         <a href="http://epaper.greatandhra.com/" class="menu-link">
-                            <!-- <span style="display: flex; align-items: center; gap: 2px;">
-                            <span style="color: #333; font-weight: 800; font-size: 16px;">గ్రేట్<span
-                                    style="color:red; font-style: italic;">ఆంధ్ర</span></span>
-                            <span
-                                style="color: #ff4500; font-weight: 900; font-size: 20px; font-family: sans-serif;">Print</span>
-                        </span> -->
                             <img alt="greatandhra print" src="images/ga-print.png" class="nav-print-img"
                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
                         </a>
@@ -473,6 +401,29 @@ if ($ga_article && !empty($ga_article['category']['id'])) {
                         }
                         $ga_breadcrumb_items[] = ['name' => $ga_meta_title, 'id' => ga_inner_link($ga_article)];
                     ?>
+                    <?php
+                        $ga_schema_published = ga_format_date($ga_article['publishedAt'] ?? null, 'c');
+                        $ga_schema_modified = ga_format_date($ga_article['updatedAt'] ?? null, 'c') ?: $ga_schema_published;
+                        $ga_schema_url = 'https://www.greatandhra.com/' . ga_inner_link($ga_article);
+                    ?>
+                    <script type="application/ld+json">
+                    <?php echo json_encode([
+                        '@context' => 'https://schema.org',
+                        '@type' => 'NewsArticle',
+                        'headline' => $ga_meta_title,
+                        'description' => $ga_meta_desc,
+                        'image' => [$ga_img_src],
+                        'datePublished' => $ga_schema_published,
+                        'dateModified' => $ga_schema_modified,
+                        'author' => ['@type' => 'Person', 'name' => $ga_article['author']['name'] ?? 'GreatAndhra'],
+                        'publisher' => [
+                            '@type' => 'Organization',
+                            'name' => 'GreatAndhra',
+                            'logo' => ['@type' => 'ImageObject', 'url' => 'https://www.greatandhra.com/images/great_andhra.gif'],
+                        ],
+                        'mainEntityOfPage' => ['@type' => 'WebPage', '@id' => $ga_schema_url],
+                    ]); ?>
+                    </script>
                     <script type="application/ld+json">{
 						"@context": "http://schema.org",
 						"@type": "BreadcrumbList",
@@ -600,12 +551,6 @@ if ($ga_article && !empty($ga_article['category']['id'])) {
                 <div class="column">
                     <ul class="un-sortable-list ui-sortable">
                         <li class="sortable-item">
-                            <!--<div>				
-
-			 	<a href="https://bit.ly/4ifpV1D"><img src="https://www.greatandhra.com/images/general/Artium_Academy_300_04242025_2.gif" width="300" /> </a>
-			 	
-			 	</div>-->
-
                             <div class="innerpage_latestnews">
                                 <div class="header">Top News</div>
                                 <div class="hm_topstory_3_story">
@@ -703,14 +648,6 @@ if ($ga_article && !empty($ga_article['category']['id'])) {
                         <li class="sortable-item">
                             <?php ga_render_ad('INNER_SIDEBAR_BOTTOM_AD'); ?>
                         </li>
-
-
-
-                        <!-- Newly Added Placeholder for Ad -->
-                        <!-- Newly Added Placeholder for Ad -->
-
-
-
                     </ul>
                 </div>
             </div>
@@ -723,7 +660,7 @@ if ($ga_article && !empty($ga_article['category']['id'])) {
                 <!-- Navigation Links: Lato 13px White -->
                 <nav>
                     <ul class="footer-nav-links">
-                        <li><a href="https://www.greatandhra.com/aboutus.php" target="_blank">About Us</a></li>
+                        <li><a href="https://www.greatandhra.com/about%20us/" target="_blank">About Us</a></li>
                         <li><a href="https://www.greatandhra.com/disclaimer.php" target="_blank">Disclaimer</a></li>
                         <li><a href="https://www.greatandhra.com/contactus.php" target="_blank">Contact Us</a></li>
                         <li><a href="https://www.greatandhra.com/convergence/index.php" target="_blank">Advertise
