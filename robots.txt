@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /cache/
+Disallow: /inc/
+Disallow: /clear-cache.php
+Disallow: /advertisement.php
+
+Sitemap: https://www.greatandhra.com/sitemap.xml

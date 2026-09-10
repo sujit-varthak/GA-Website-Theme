@@ -45,6 +45,11 @@
 RewriteEngine On
 RewriteBase /
 
+# Branded 404 page for any request Apache itself can't route anywhere below (an
+# extension that doesn't exist, a path with more segments than any rule here matches,
+# etc). 404.php sends its own real 404 status - this only decides what page renders it.
+ErrorDocument 404 /404.php
+
 # Canonicalize old inner-page.php/{id}/... links to the new bare form. Matched against
 # THE_REQUEST (the original request line as the browser sent it) rather than the current
 # rewritten URI — THE_REQUEST never changes across internal rewrite passes, so this rule
@@ -66,6 +71,10 @@ RewriteRule ^ /box-office%1 [R=301,L]
 RewriteCond %{REQUEST_FILENAME} -f [OR]
 RewriteCond %{REQUEST_FILENAME} -d
 RewriteRule ^ - [L]
+
+# /sitemap.xml is generated on demand (sitemap.php), not a real file, so it needs its own
+# rule rather than relying on the passthrough above.
+RewriteRule ^sitemap\.xml$ sitemap.php [L]
 
 # Bare article URLs: /{id}/{category}/{subcategory?}/{title-slug}, where {id} is either
 # the numeric shortId or a full UUID. Internally forwarded to inner-page.php with the same
