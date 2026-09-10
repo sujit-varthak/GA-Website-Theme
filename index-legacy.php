@@ -132,7 +132,7 @@ $ga_mobile_latest_news_articles = array_slice($ga_trending_articles, 0, GA_MOBIL
     <meta content="https://www.greatandhra.com/index.php" property="og:url" />
     <meta content="www.greatandhra.com" property="og:site_name" />
     <meta
-        content="Greatandhra.com provides latest news from India and the world. Get today's news headlines from Business, Technology,Telugu news, Cricket, videos, photos, live news coverage and exclusive breaking news from India."
+        content="Greatandhra.com provides latest news from India and the world. Get todayÃ¢â‚¬â„¢s news headlines from Business, Technology,Telugu news, Cricket, videos, photos, live news coverage and exclusive breaking news from India."
         property="og:description" />
     <link href="https://www.greatandhra.com/" rel="canonical" />
     <meta content="--d1HbcWFdwBumVtTHK5L1MxZr-K-vhVSii3cr2XGEw" name="google-site-verification" />
@@ -143,13 +143,19 @@ $ga_mobile_latest_news_articles = array_slice($ga_trending_articles, 0, GA_MOBIL
     <link href="https://www.greatandhra.com/favicon.png" rel="icon" type="image/png" />
     <link href="assets/css" rel="stylesheet">
     <link href="assets/css2" rel="stylesheet" />
-    <link href="css/homepagev2.css?v=<?php echo ga_asset_version('css/homepagev2.css'); ?>" rel="stylesheet" />
+    <link href="css/main-single.css?v=<?php echo ga_asset_version('css/main-single.css'); ?>" rel="stylesheet" />
     <link href="css/footer.css?v=<?php echo ga_asset_version('css/footer.css'); ?>" rel="stylesheet" />
+    <link href="css/mobile-responsive.css?v=<?php echo ga_asset_version('css/mobile-responsive.css'); ?>" rel="stylesheet">
     <link href="css/site-ads.css?v=<?php echo ga_asset_version('css/site-ads.css'); ?>" rel="stylesheet">
     <link href="css/header-mob.css?v=<?php echo ga_asset_version('css/header-mob.css'); ?>" rel="stylesheet">
     <script src="js/drawer.js?v=<?php echo ga_asset_version('js/drawer.js'); ?>"></script>
 
+    <!-- <link href="css/great_andhra_style_lato_font.css" rel="stylesheet" />
+    <link href="css/home-style-lato-font.css" rel="stylesheet"> -->
+    <!-- <link href="assets/poll.css" rel="stylesheet" /> -->
     <link href="assets/watch_video1234.css" rel="stylesheet" />
+    <!-- <link href="css/great-block.css" rel="stylesheet"> -->
+    <!-- <link href="https://m.greatandhra.com/" hreflang="en" media="only screen and (max-width: 640px)" rel="alternate"> -->
     <meta content="width=device-width, initial-scale=1" name="viewport" />
     <meta content="noodp,noydir" name="robots" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -161,7 +167,7 @@ $ga_mobile_latest_news_articles = array_slice($ga_trending_articles, 0, GA_MOBIL
     <?php ga_render_interstitial_overlay($ga_interstitial_decision); ?>
     <?php ga_render_bottom_sticky_ad(); ?>
     <div id="fb-root"></div>
-    <div class="local_great" style="position:fixed; width:80px; float:left;">
+    <div class="local_great" style="position:fixed; width:100%; float:left; width:80px;">
         <div class="source-image-left" style="float:left; display:block; left:69px;">
             <?php ga_render_ad('HOMEPAGE_SIDEBAR_LEFT'); ?>
         </div>
@@ -721,6 +727,53 @@ $ga_mobile_latest_news_articles = array_slice($ga_trending_articles, 0, GA_MOBIL
                                                 </li>
                                             </ul>
                                         </div>
+                                        <style>
+                                            /* Style the tab */
+                                            /* .tab {
+                                                overflow: hidden;
+                                                border-bottom: 1px #d9d9d9 solid;
+                                                background-color: #ffffff;
+                                            } */
+
+                                            /* Style the buttons that are used to open the tab content */
+                                            /* .tab button {
+                                                background-color: #ffffff;
+                                                float: left;
+                                                border: none;
+                                                outline: none;
+                                                cursor: pointer;
+                                                padding: 5px 5px;
+                                                font-family: 'Lato';
+                                                width: 33.333333333%;
+                                                margin: 0px;
+                                                font-size: 12.5px;
+                                                color: #666666;
+                                                letter-spacing: 0.5px;
+                                            } */
+
+                                            /* Change background color of buttons on hover */
+                                            /* .tab button:hover {
+                                                font-weight: 600;
+                                                background: #f2f2f2;
+                                                color: #000;
+                                            } */
+
+                                            /* Create an active/current tablink class */
+                                            /* .tab button.active {
+                                                font-weight: 600;
+                                                border-bottom: 2px solid #000000;
+                                                background: #f2f2f2;
+                                                color: #000;
+                                            } */
+
+                                            /* Style the tab content */
+                                            /* .tabcontent {
+                                                display: none;
+                                                padding: 6px 0px;
+                                                border: 0px solid #ccc;
+                                                border-top: none;
+                                            } */
+                                        </style>
                                     </div>
                                 </div>
                             </li>
@@ -762,6 +815,15 @@ $ga_mobile_latest_news_articles = array_slice($ga_trending_articles, 0, GA_MOBIL
                                 </ul>
                             </div>
                         </div>
+                        <style>
+                            /* .great_andhra_main_body_container .news_style li a.oneline-title {
+                                overflow: hidden;
+                                text-overflow: ellipsis;
+                                display: -webkit-box;
+                                -webkit-line-clamp: 1;
+                                -webkit-box-orient: vertical;
+                            } */
+                        </style>
                     </li>
                     <?php if (!ga_is_mobile()): ?>
                         <div class="display-inline-block padding-top-bot">
@@ -770,7 +832,9 @@ $ga_mobile_latest_news_articles = array_slice($ga_trending_articles, 0, GA_MOBIL
                             </li>
                         </div>
                     <?php else: ?>
-                        <?php ga_render_mobile_ad_slot('HOMEPAGE_MOBILE_AFTER_TALK_OF_TOWN_AD', 'li', 'sortable-item clear ad-center-mobile'); ?>
+                        <li class="sortable-item clear ad-center-mobile">
+                            <?php ga_render_ad('HOMEPAGE_MOBILE_AFTER_TALK_OF_TOWN_AD'); ?>
+                        </li>
                     <?php endif; ?>
                 </ul>
             </div>
@@ -783,6 +847,55 @@ $ga_mobile_latest_news_articles = array_slice($ga_trending_articles, 0, GA_MOBIL
                 <?php endif; ?>
             </div>
             <div class="full_width_home editors_pick_full_width" style="padding-top: 10px;">
+                <style>
+                    /* ul.bg-unlist.ga-featured-videos li {
+                        background: #f2f2f2;
+                        width: 188px;
+                        float: left;
+                        padding: 2px;
+                        margin: 4px 0px;
+                        margin-left: 6px;
+                        min-height: 190px;
+                    } */
+
+                    /* .ga-featured-videos .big-galist-lft {
+                        float: left;
+                        margin-right: 0px;
+                        height: 110px;
+                        width: 185px;
+                    } */
+
+                    /* .ga-featured-videos .big-galist-rgt {
+                        float: left;
+                        width: 100%;
+                        min-height: 50px;
+                        padding: 0 5px 0 5px;
+                    } */
+                    /* 
+                    i.fa.fa-play-circle-o.fa-play-circle-oo {
+                        font-size: 30px;
+                        top: -35px;
+                        position: relative;
+                        clear: both;
+                        color: #ffffff;
+                    } */
+
+                    /* .editors_pick_full {
+                        width: 100% !important;
+                    } */
+
+                    /* ul.editors_pick_full li:nth-child(1) {
+                        margin-left: 0px;
+                    } */
+
+                    /* ul.editors_pick_full li {
+                        margin-right: 5px !important;
+                    } */
+
+                    /* ul.bg-unlist.ga-grply a p {
+                        font-weight: 600;
+                    } */
+                </style>
                 <div class="ga-gallery">
                     <div class="ga-mdcenter">
                         <h3 style="font-size: 14px; background: none;"> OPINION </h3>
@@ -821,10 +934,87 @@ $ga_mobile_latest_news_articles = array_slice($ga_trending_articles, 0, GA_MOBIL
                 </div>
             </div>
         </div>
-        <?php ga_render_mobile_ad_slot('HOMEPAGE_MOBILE_AFTER_OPINION_AD', 'div', 'great_andhra_main_body_container ad-center-mobile-block'); ?>
+        <?php if (ga_is_mobile()): ?>
+            <div class="great_andhra_main_body_container ad-center-mobile-block">
+                <?php ga_render_ad('HOMEPAGE_MOBILE_AFTER_OPINION_AD'); ?>
+            </div>
+        <?php endif; ?>
         <div class="great_andhra_main_body_container category_section">
             <!--two_column_home-->
             <div class="two_column_home">
+                <style>
+                    /* .editors_pick {
+
+                        background-color: #0a2149;
+
+                        height: 210px;
+
+                        color: #ffffff;
+
+                    } */
+
+                    /* .great_andhra_main_body_container .news_style.news_section_ul li.editors_pick_li {
+
+                        width: 50%;
+
+                        margin: 0px;
+
+                        padding: 0px;
+
+                    } */
+
+                    /* li.editors_pick_li.clearfix img {
+
+                        width: 100%;
+
+                        height: 210px;
+
+                    }
+
+                    span.editors_pick_cat {
+
+                        margin: 10px;
+
+                        text-transform: uppercase;
+
+                        width: 90%;
+
+                        display: inline-block;
+
+                    }
+
+                    span.editors_pick_title {
+
+                        width: 90%;
+
+                        display: inline-block;
+
+                        margin-left: 10px;
+
+                        font-size: 25px;
+
+                        line-height: 30px;
+
+                        font-weight: bold;
+
+                    }
+
+                    span.editors_pick_desc {
+
+                        width: 90%;
+
+                        display: inline-block;
+
+                        margin-left: 10px;
+
+                        font-size: 14px;
+
+                        line-height: 20px;
+
+                        margin-top: 0px;
+
+                    } */
+                </style>
                 <div class="paras float-left clear">
                     <div class="home_left_column news-section">
                         <ul class="sortable-list ui-sortable">
@@ -879,18 +1069,109 @@ $ga_mobile_latest_news_articles = array_slice($ga_trending_articles, 0, GA_MOBIL
                 </div>
                 <!-- categories Start-->
                 <div class="paras float-left clear">
-                    <?php ga_render_homepage_category_box('movie-news', 'Movie News', 'Movie News', $ga_movie_news_articles, GA_MOVIE_NEWS_FALLBACK_IMAGE, GA_CATEGORY_SECTION_TITLE_MAX); ?>
-                    <?php ga_render_mobile_ad_slot('HOMEPAGE_MOBILE_BETWEEN_MOVIE_NEWS_GOSSIP_AD', 'div', 'home_left_column ad-center-mobile-block'); ?>
-                    <?php ga_render_homepage_category_box('movie-gossip', 'Movie Gossip', 'Movie Gossip', $ga_movie_gossip_articles, GA_MOVIE_GOSSIP_FALLBACK_IMAGE, GA_CATEGORY_SECTION_TITLE_MAX); ?>
+                    <div class="home_left_column news-section">
+                        <ul class="sortable-list ui-sortable">
+                            <li class="sortable-item">
+                                <div class="sortable-item_style_3">
+                                    <a href="<?php echo ga_e(ga_nav_category_link('movie-news', 'Movie News')); ?>">
+                                        <div class="header"> Movie News <span class="more_arrow"></span> </div>
+                                    </a>
+                                    <div class="content">
+                                        <ul class="news_style news_section_ul" style="padding-top:3px;">
+                                            <?php ga_render_category_section($ga_movie_news_articles, GA_MOVIE_NEWS_FALLBACK_IMAGE, GA_CATEGORY_SECTION_TITLE_MAX); ?>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <?php if (ga_is_mobile()): ?>
+                        <div class="home_left_column ad-center-mobile-block">
+                            <?php ga_render_ad('HOMEPAGE_MOBILE_BETWEEN_MOVIE_NEWS_GOSSIP_AD'); ?>
+                        </div>
+                    <?php endif; ?>
+                    <div class="home_left_column news-section">
+                        <ul class="sortable-list ui-sortable">
+                            <li class="sortable-item">
+                                <div class="sortable-item_style_3">
+                                    <!-- Moview Gossip -->
+                                    <a href="<?php echo ga_e(ga_nav_category_link('movie-gossip', 'Movie Gossip')); ?>">
+                                        <div class="header"> Movie Gossip <span class="more_arrow"></span> </div>
+                                    </a>
+                                    <div class="content">
+                                        <ul class="news_style news_section_ul" style="padding-top:3px;">
+                                            <?php ga_render_category_section($ga_movie_gossip_articles, GA_MOVIE_GOSSIP_FALLBACK_IMAGE, GA_CATEGORY_SECTION_TITLE_MAX); ?>
+                                        </ul>
+                                        <!--<div class="more"> <a href="https://www.greatandhra.com/movie-gossip-5.html"> more </a> </div>-->
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-                <?php ga_render_mobile_ad_slot('HOMEPAGE_MOBILE_AFTER_MOVIE_GOSSIP_AD', 'div', 'home_left_column ad-center-mobile-block'); ?>
+                <?php if (ga_is_mobile()): ?>
+                    <div class="home_left_column ad-center-mobile-block">
+                        <?php ga_render_ad('HOMEPAGE_MOBILE_AFTER_MOVIE_GOSSIP_AD'); ?>
+                    </div>
+                <?php endif; ?>
                 <div class="paras float-left clear">
-                    <?php ga_render_homepage_category_box('andhra-news', 'Andhra News', 'Andhra News', $ga_andhra_news_articles, GA_ANDHRA_NEWS_FALLBACK_IMAGE, GA_CATEGORY_SECTION_TITLE_MAX); ?>
-                    <?php ga_render_homepage_category_box('telangana-news', 'Telangana News', 'Telangana News', $ga_telangana_news_articles, GA_TELANGANA_NEWS_FALLBACK_IMAGE, GA_CATEGORY_SECTION_TITLE_MAX); ?>
+                    <div class="home_left_column news-section">
+                        <ul class="sortable-list ui-sortable">
+                            <li class="sortable-item">
+                                <div class="sortable-item_style_3">
+                                    <a href="<?php echo ga_e(ga_nav_category_link('andhra-news', 'Andhra News')); ?>">
+                                        <div class="header"> Andhra News <span class="more_arrow"></span> </div>
+                                    </a>
+                                    <div class="content">
+                                        <ul class="news_style news_section_ul" style="padding-top:3px;">
+                                            <?php ga_render_category_section($ga_andhra_news_articles, GA_ANDHRA_NEWS_FALLBACK_IMAGE, GA_CATEGORY_SECTION_TITLE_MAX); ?>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="home_left_column news-section">
+                        <ul class="sortable-list ui-sortable">
+                            <li class="sortable-item">
+                                <div class="sortable-item_style_3">
+                                    <!-- telangana-news -->
+                                    <a href="<?php echo ga_e(ga_nav_category_link('telangana-news', 'Telangana News')); ?>">
+                                        <div class="header"> Telangana News <span class="more_arrow"></span> </div>
+                                    </a>
+                                    <div class="content">
+                                        <ul class="news_style news_section_ul" style="padding-top:3px;">
+                                            <?php ga_render_category_section($ga_telangana_news_articles, GA_TELANGANA_NEWS_FALLBACK_IMAGE, GA_CATEGORY_SECTION_TITLE_MAX); ?>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-                <?php ga_render_mobile_ad_slot('HOMEPAGE_MOBILE_AFTER_TELANGANA_NEWS_AD', 'div', 'home_left_column ad-center-mobile-block'); ?>
+                <?php if (ga_is_mobile()): ?>
+                    <div class="home_left_column ad-center-mobile-block">
+                        <?php ga_render_ad('HOMEPAGE_MOBILE_AFTER_TELANGANA_NEWS_AD'); ?>
+                    </div>
+                <?php endif; ?>
                 <div class="paras float-left clear">
-                    <?php ga_render_homepage_category_box('politics', 'Politics', 'Gossip', $ga_politics_gossip_articles, GA_POLITICS_GOSSIP_FALLBACK_IMAGE, GA_CATEGORY_SECTION_TITLE_MAX, true); ?>
+                    <div class="home_left_column news-section">
+                        <ul class="sortable-list ui-sortable">
+                            <li class="sortable-item">
+                                <div class="sortable-item_style_3">
+                                    <!-- Gossip -->
+                                    <a href="<?php echo ga_e(ga_nav_category_link('politics', 'Politics', true)); ?>">
+                                        <div class="header"> Gossip <span class="more_arrow"></span> </div>
+                                    </a>
+                                    <div class="content">
+                                        <ul class="news_style news_section_ul" style="padding-top:3px;">
+                                            <?php ga_render_category_section($ga_politics_gossip_articles, GA_POLITICS_GOSSIP_FALLBACK_IMAGE, GA_CATEGORY_SECTION_TITLE_MAX); ?>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
                 <?php if (!ga_is_mobile()): ?>
                     <div class="paras float-left clear" style="max-width: 675px !important;">
@@ -904,7 +1185,22 @@ $ga_mobile_latest_news_articles = array_slice($ga_trending_articles, 0, GA_MOBIL
                     </div>
                 <?php endif; ?>
                 <div class="paras float-left clear">
-                    <?php ga_render_homepage_category_box('reviews', 'Reviews', 'Reviews', $ga_reviews_articles, GA_REVIEWS_FALLBACK_IMAGE, GA_CATEGORY_SECTION_TITLE_MAX, false, 'sortable-item_5'); ?>
+                    <div class="home_left_column news-section">
+                        <ul class="sortable-list ui-sortable">
+                            <li class="sortable-item" id="sortable-item_5">
+                                <div class="sortable-item_style_3">
+                                    <a href="<?php echo ga_e(ga_nav_category_link('reviews', 'Reviews')); ?>">
+                                        <div class="header"> Reviews <span class="more_arrow"></span> </div>
+                                    </a>
+                                    <div class="content">
+                                        <ul class="news_style news_section_ul" style="padding-top:3px;">
+                                            <?php ga_render_category_section($ga_reviews_articles, GA_REVIEWS_FALLBACK_IMAGE, GA_CATEGORY_SECTION_TITLE_MAX); ?>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
             <!--two_column_home-->
@@ -929,7 +1225,11 @@ $ga_mobile_latest_news_articles = array_slice($ga_trending_articles, 0, GA_MOBIL
                             </div>
                         </div>
                     </li>
-                    <?php ga_render_mobile_ad_slot('HOMEPAGE_MOBILE_AFTER_USA_SCHEDULE_AD', 'li', 'sortable-item clear ad-center-mobile'); ?>
+                    <?php if (ga_is_mobile()): ?>
+                        <li class="sortable-item clear ad-center-mobile">
+                            <?php ga_render_ad('HOMEPAGE_MOBILE_AFTER_USA_SCHEDULE_AD'); ?>
+                        </li>
+                    <?php endif; ?>
                     <li class="sortable-item clear">
                         <div class="sortable-item_style_13">
                             <div class="header"> Featured </div>
@@ -950,6 +1250,23 @@ $ga_mobile_latest_news_articles = array_slice($ga_trending_articles, 0, GA_MOBIL
                         </div>
                     </li>
                     <li class="sortable-item clear">
+                        <style>
+                            /* .trending_topics a {
+                                color: #727272;
+                                font-size: 11px;
+                                padding: 4px 11px;
+                                border-radius: 17.5px;
+                                background-color: #fff;
+                                text-transform: capitalize;
+                                border: 1px solid #d3d3d3;
+                                margin-top: 6px;
+                                display: inline-block;
+                            }
+
+                            .trending_topics a:hover {
+                                text-decoration: underline;
+                            } */
+                        </style>
                         <div class="sortable-item_style_13">
                             <div class="header"> Top Trending Topics </div>
                             <div class="content trending_topics">
@@ -963,7 +1280,50 @@ $ga_mobile_latest_news_articles = array_slice($ga_trending_articles, 0, GA_MOBIL
                             </div>
                         </div>
                     </li>
-                    <?php ga_render_mobile_ad_slot('HOMEPAGE_MOBILE_AFTER_TRENDING_TOPICS_AD', 'li', 'sortable-item clear ad-center-mobile'); ?>
+                    <?php if (ga_is_mobile()): ?>
+                        <li class="sortable-item clear ad-center-mobile">
+                            <?php ga_render_ad('HOMEPAGE_MOBILE_AFTER_TRENDING_TOPICS_AD'); ?>
+                        </li>
+                    <?php endif; ?>
+                    <style>
+                        /* .content.trending_topics {
+
+                            margin-bottom: 10px;
+
+                        } */
+
+                        /* .trending_topics a {
+
+                            color: #727272;
+
+                            font-size: 11px;
+
+                            padding: 5px 10px;
+
+                            border-radius: 18px;
+
+                            background-color: #fff;
+
+                            text-transform: capitalize;
+
+                            border: 1px solid #d3d3d3;
+
+                            margin-top: 6px;
+
+                            display: inline-block;
+
+                            text-decoration: none;
+
+                            font-family: 'Lato';
+
+                        } */
+
+                        /* .trending_topics a:hover {
+
+                            text-decoration: underline;
+
+                        } */
+                    </style>
                     <?php if (!ga_is_mobile()): ?>
                         <div class="display-inline-block padding-top-bot no-padding-top-bot">
                             <li class="sortable-item sortable-item_top_add123">
@@ -1031,7 +1391,11 @@ $ga_mobile_latest_news_articles = array_slice($ga_trending_articles, 0, GA_MOBIL
                             </div>
                         </div>
                     </li>
-                    <?php ga_render_mobile_ad_slot('HOMEPAGE_MOBILE_AFTER_MOST_POPULAR_AD', 'li', 'sortable-item clear ad-center-mobile'); ?>
+                    <?php if (ga_is_mobile()): ?>
+                        <li class="sortable-item clear ad-center-mobile">
+                            <?php ga_render_ad('HOMEPAGE_MOBILE_AFTER_MOST_POPULAR_AD'); ?>
+                        </li>
+                    <?php endif; ?>
                     <!--<li class="sortable-item">
 
 						<div id="vuukle-ad-16" style="min-width: 300px; min-height: 250px;" class="margin-top-bot">                    
@@ -1121,7 +1485,37 @@ $ga_mobile_latest_news_articles = array_slice($ga_trending_articles, 0, GA_MOBIL
 
         <!-- White part at the very end -->
         <div class="footer-bottom-spacer"></div>
-        <!--great_andhra_main_footer-->
+
+
+        <style>
+            /* .gan-footer .gan-footer-first {
+                height: 20px;
+                text-align: center;
+            }
+
+            .gan-footer .gan-footer-first .block ul li {
+                display: inline-block;
+            } */
+
+            /* .menuf li a {
+                font-family: Lato;
+            }
+
+            .menuf li a:hover {
+                color: #fff !important;
+            }
+
+            .gan-footer {
+                background: #292221;
+                height: 175px;
+            }
+
+            .gan-footer .gan-footer-first i.fab {
+                color: #ffffff !important;
+                padding: 5px;
+                font-size: 24px;
+            } */
+        </style> <!--great_andhra_main_footer-->
     </div>
     <!--great_andhra_inner_body-->
 
@@ -1151,28 +1545,133 @@ $ga_mobile_latest_news_articles = array_slice($ga_trending_articles, 0, GA_MOBIL
             (d.head || d.body).appendChild(s);
         })();
     </script>
-    <script src="js/jquery-ui-1.8.custom.min.js" type="text/javascript"> </script>
-    <script src="js/jquery.marquee.js" type="text/javascript"> </script>
-    <script src="js/great_andhra_view_js_160_1.js?v=<?php echo ga_asset_version('js/great_andhra_view_js_160_1.js'); ?>" type="text/javascript"> </script>
-    <script>
-        // Powers the "Top News / Most Read / Telugu" tab widget above.
-        function openTabs(evt, cityName) {
-            var i, tabcontent, tablinks;
-
-            tabcontent = document.getElementsByClassName("tabcontent");
-            for (i = 0; i < tabcontent.length; i++) {
-                tabcontent[i].style.display = "none";
-            }
-
-            tablinks = document.getElementsByClassName("tablinks");
-            for (i = 0; i < tablinks.length; i++) {
-                tablinks[i].className = tablinks[i].className.replace(" active", "");
-            }
-
-            document.getElementById(cityName).style.display = "block";
-            evt.currentTarget.className += " active";
-        }
-    </script>
 </body>
+<script src="js/jquery-ui-1.8.custom.min.js" type="text/javascript"> </script>
+<script src="js/jquery.marquee.js" type="text/javascript"> </script>
+<script src="js/great_andhra_view_js_160_1.js?v=<?php echo ga_asset_version('js/great_andhra_view_js_160_1.js'); ?>" type="text/javascript"> </script>
+<style>
+    /* .great_andhra_main_menu_panel_2019 {
+
+        border-left: 1px solid #e6e6e6;
+
+        background: #fbfbfb;
+
+        margin-bottom: 0px;
+
+    } */
+
+    /* .great_andhra_main_menu_panel_2019 ul li a {
+        text-transform: capitalize;
+        font-weight: 600 !important;
+        font-family: 'Lato';
+        border-left: 0px;
+        letter-spacing: 0.5px;
+    } */
+    /* 
+    ul.top_story_option2_3story li .top_news_txt a {
+
+        font-size: 14px;
+
+        font-family: 'Lato';
+
+    } */
+
+    /* .great_andhra_main_local_rotator1 {
+
+        border: 0px;
+
+    } */
+
+    /* .ga-gallery {
+
+        width: 990px;
+
+    } */
+
+    /* .ga-mdcenter {
+
+        width: 990px;
+
+    } */
+    /* 
+    .great_andhra_main_local_rotator1 {
+
+        border: 0px;
+
+    } */
+
+    /* ul.top_story_option2_3story li .top_news_txt {
+
+        margin-right: 4px;
+
+        line-height: 21px;
+
+        color: #262626;
+
+        text-decoration: none;
+
+        padding-top: 10px;
+
+        display: block;
+
+        font-family: 'Lato';
+
+        font-size: 14px;
+
+        margin-bottom: -21px;
+
+    } */
+
+    /* .border-topbottom {
+
+        border-top: 1px #d9d9d9 solid;
+
+        border-bottom: 1px #d9d9d9 solid;
+
+        padding: 8px;
+
+    } */
+</style>
+<script>
+    function openTabs(evt, cityName) {
+
+        // Declare all variables
+
+        var i, tabcontent, tablinks;
+
+
+
+        // Get all elements with class="tabcontent" and hide them
+
+        tabcontent = document.getElementsByClassName("tabcontent");
+
+        for (i = 0; i < tabcontent.length; i++) {
+
+            tabcontent[i].style.display = "none";
+
+        }
+
+
+
+        // Get all elements with class="tablinks" and remove the class "active"
+
+        tablinks = document.getElementsByClassName("tablinks");
+
+        for (i = 0; i < tablinks.length; i++) {
+
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+
+        }
+
+
+
+        // Show the current tab, and add an "active" class to the button that opened the tab
+
+        document.getElementById(cityName).style.display = "block";
+
+        evt.currentTarget.className += " active";
+
+    }
+</script>
 
 </html>
