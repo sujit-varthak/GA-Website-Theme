@@ -41,8 +41,9 @@ define('GA_INTERSTITIAL_FREQUENCY_DEFAULT_HOURS', 24);
 define('GA_STICKY_AD_ENABLED', true);
 
 // Manual cache-clear trigger: hit clear-cache.php?key=<this> to force-refresh instantly
-// instead of waiting out the TTL. Change this to your own value before going live.
-define('GA_CACHE_CLEAR_KEY', 'ga-dev-clear-2026');
+// instead of waiting out the TTL. Randomly generated 2026-09-10 - the previous value
+// ('ga-dev-clear-2026') was a guessable placeholder sitting in git history.
+define('GA_CACHE_CLEAR_KEY', '0100af42c9a237e7f40d42069f4e179c30a1b2b0fbb43e53');
 
 // Admin-managed advertisements (ga_render_ad() in inc/helpers.php). Shorter TTL than articles
 // (GA_CACHE_TTL) since an editor toggling an ad active/inactive or changing its schedule
