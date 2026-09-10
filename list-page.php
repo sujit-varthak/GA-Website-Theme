@@ -42,7 +42,8 @@ if ($ga_path_info !== '') {
                 header('Location: /tag/' . rawurlencode($ga_legacy_tag['slug']), true, 301);
                 exit;
             }
-            http_response_code(404);
+            require __DIR__ . '/404.php';
+            exit;
         } else {
             $ga_tag = ga_find_tag_by_slug($ga_tag_arg);
             if ($ga_tag !== null) {
@@ -51,7 +52,8 @@ if ($ga_path_info !== '') {
                 $ga_is_tag_mode = true;
                 $ga_clean_path = 'tag/' . rawurlencode($ga_tag_arg);
             } else {
-                http_response_code(404);
+                require __DIR__ . '/404.php';
+                exit;
             }
         }
     } else {
@@ -63,7 +65,8 @@ if ($ga_path_info !== '') {
             $ga_clean_path = $ga_path_info;
             $ga_is_latest_news_trending = ($ga_path_info === 'latest-news');
         } else {
-            http_response_code(404);
+            require __DIR__ . '/404.php';
+            exit;
         }
     }
 } else {
@@ -198,6 +201,9 @@ function ga_list_page_url(string $cleanPath, array $legacyParams, int $page): st
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Latest News Today,Current News,online News,Latest Breaking News Headlines,Live News,Video News- Greatandhra
     </title>
+    <?php if ($ga_clean_path !== ''): ?>
+    <link rel="canonical" href="https://www.greatandhra.com/<?php echo ga_e($ga_clean_path); ?><?php echo $ga_page > 1 ? '?page=' . $ga_page : ''; ?>">
+    <?php endif; ?>
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,400italic,700,700italic|Roboto+Condensed:400,700"
         rel="stylesheet">
     <link
@@ -255,9 +261,10 @@ function ga_list_page_url(string $cleanPath, array $legacyParams, int $page): st
 
             <!--great_andhra_logo_panel-->
             <!--great_andhra_main_menu_panel-->
-            <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
-                integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ"
-                crossorigin="anonymous">
+            <?php // Was the old v5.7.0 CDN link with a since-stale integrity hash - the browser's
+                  // SRI check silently blocked the whole file, so this page rendered with no icon
+                  // font at all. Same cdnjs v6.5.1 link every other page already uses. ?>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
             <script>
                 <?php // #great_andhra_main_menu_panel_2019 doesn't exist on this page (it's
                       // homepage-only markup) - $(...).offset() on an empty jQuery set returns
@@ -698,7 +705,7 @@ function ga_list_page_url(string $cleanPath, array $legacyParams, int $page): st
                     <!-- Navigation Links: Lato 13px White -->
                     <nav>
                         <ul class="footer-nav-links">
-                            <li><a href="https://www.greatandhra.com/aboutus.php" target="_blank">About Us</a></li>
+                            <li><a href="https://www.greatandhra.com/about%20us/" target="_blank">About Us</a></li>
                             <li><a href="https://www.greatandhra.com/disclaimer.php" target="_blank">Disclaimer</a></li>
                             <li><a href="https://www.greatandhra.com/contactus.php" target="_blank">Contact Us</a></li>
                             <li><a href="https://www.greatandhra.com/convergence/index.php" target="_blank">Advertise
