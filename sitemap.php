@@ -28,11 +28,23 @@ if ($ga_is_fresh) {
 }
 
 $ga_lock = ga_cache_lock_try($ga_sitemap_cache_file);
-if ($ga_lock === null && is_file($ga_sitemap_cache_file)) {
-    // Someone else is already regenerating - serve the existing file even if stale rather
-    // than piling on a second full ~30-call regeneration.
-    readfile($ga_sitemap_cache_file);
-    exit;
+if ($ga_lock === null) {
+    // Someone else is already regenerating. If a cache file exists (even stale), serve it
+    // rather than piling on a second full ~30-call regeneration. If this is the very
+    // first-ever generation (no file yet either), briefly retry for the lock instead of
+    // immediately running a second full regeneration unlocked in parallel with the one
+    // already in flight - up to ~2.5s, acceptable for a crawler-only endpoint.
+    for ($ga_wait = 0; $ga_lock === null && !is_file($ga_sitemap_cache_file) && $ga_wait < 5; $ga_wait++) {
+        usleep(500000);
+        $ga_lock = ga_cache_lock_try($ga_sitemap_cache_file);
+    }
+    if ($ga_lock === null && is_file($ga_sitemap_cache_file)) {
+        readfile($ga_sitemap_cache_file);
+        exit;
+    }
+    // Otherwise: either we now hold the lock and can proceed normally, or the retry budget
+    // ran out with still nothing to serve - fall through and generate anyway rather than
+    // leave the crawler with nothing.
 }
 
 function ga_sitemap_url_entry(string $loc, ?string $lastmod, string $changefreq, string $priority): string
@@ -61,11 +73,14 @@ foreach (GA_CATEGORY_ROUTES as $ga_route) {
 $ga_skip = 0;
 $ga_take = 100;
 $ga_total = 0;
+$ga_complete = true;
 do {
     $ga_result = ga_fetch_articles($ga_take, $ga_skip);
     if ($ga_result === null) {
         // Backend unreachable and no cache at all for this particular page - stop walking
-        // rather than erroring the whole sitemap; whatever was gathered before this still ships.
+        // rather than erroring the whole sitemap. $ga_complete below decides whether this
+        // partial result is safe to cache (it isn't - see below).
+        $ga_complete = false;
         break;
     }
     $ga_total = (int) ($ga_result['total'] ?? 0);
@@ -87,7 +102,19 @@ do {
 
 $ga_xml .= '</urlset>' . "\n";
 
-file_put_contents($ga_sitemap_cache_file, $ga_xml, LOCK_EX);
-ga_cache_lock_release($ga_lock);
-
-echo $ga_xml;
+if ($ga_complete) {
+    file_put_contents($ga_sitemap_cache_file, $ga_xml, LOCK_EX);
+    ga_cache_lock_release($ga_lock);
+    echo $ga_xml;
+} else {
+    // The walk broke early (a page fetch failed) - never cache a partial sitemap as if it
+    // were the real one. If a previous complete generation is still on disk, serve that
+    // (stale but accurate) instead; only fall back to this partial result when there's
+    // nothing else to serve at all, and still don't write it to the cache either way.
+    ga_cache_lock_release($ga_lock);
+    if (is_file($ga_sitemap_cache_file)) {
+        readfile($ga_sitemap_cache_file);
+    } else {
+        echo $ga_xml;
+    }
+}
