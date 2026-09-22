@@ -23,6 +23,18 @@
     background: #ffffff !important;
   }
 
+  /* Hide Desktop Sidebar Ads on Mobile - same rule mobile-responsive.css (homepage) and
+     inner-page-mobile-responsive.css (article pages) already carry. This file was missing it,
+     so on list-page.php/404.php these fixed/absolute-positioned skyscraper panels (left: 59px,
+     right: 59px per main-list-page.css, unscoped there) sat directly on top of the mobile
+     content column instead of off to its sides, since there's no room for sidebars at all on a
+     narrow viewport. */
+  .local_great,
+  .source-image-left,
+  .source-image-right {
+    display: none !important;
+  }
+
   /* ========================================
      MAIN CONTAINER
      ======================================== */
