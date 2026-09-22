@@ -17,14 +17,6 @@ p {
   position: absolute;
 }
 
-/* Requested fixed value for the left panel only - overrides great_andhra_view_js_160_1.js's
-   viewport-width-based left calculation (that script still runs and sets its own left via
-   plain .css(), which !important here always wins over). .source-image-right is untouched
-   and still tracks the content column dynamically. */
-.source-image-left {
-  left: 140px !important;
-}
-
 i.fas.fa-home {
   font-size: 16px;
   margin-top: 2px;
