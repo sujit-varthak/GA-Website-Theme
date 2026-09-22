@@ -65,6 +65,22 @@ if ($ga_path_info !== '') {
             $ga_clean_path = $ga_path_info;
             $ga_is_latest_news_trending = ($ga_path_info === 'latest-news');
         } else {
+            // Not a known category path. Article URLs are moving to
+            // /{category}/{subCategory?}/{slug} (dropping the leading numeric/UUID id they used
+            // to carry - see buildUrlPath() in articles.service.ts), so anything this generic
+            // 1-3-segment rewrite rule sent here that isn't a category may actually be an
+            // article. The slug is globally unique (Article.slug is @unique), so trying just the
+            // last segment against the article-detail lookup is enough - no need to validate the
+            // category segments in between against the article's real category; the canonical
+            // tag on the rendered article page already points at its one true URL regardless of
+            // which path segments a visitor arrived through.
+            $ga_slug_candidate = end($ga_segments);
+            $ga_article_lookup = $ga_slug_candidate !== '' ? ga_fetch_article_by_id($ga_slug_candidate) : ['status' => 'not_found'];
+            if ($ga_article_lookup['status'] === 'found') {
+                $_SERVER['PATH_INFO'] = $ga_slug_candidate;
+                require __DIR__ . '/inner-page.php';
+                exit;
+            }
             require __DIR__ . '/404.php';
             exit;
         }

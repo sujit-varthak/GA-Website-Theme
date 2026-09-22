@@ -121,7 +121,10 @@ function ga_article_by_id_request(string $id): array
 }
 
 // Returns ['status' => 'found'|'not_found'|'unavailable', 'article' => array|null]
-// The backend's article-detail endpoint now resolves by id (not slug) — confirmed 2026-07-24.
+// The backend's article-detail endpoint resolves its argument as a UUID, a numeric shortId,
+// or (as of the URL-restructuring work) a slug — tried in that order server-side
+// (findPublishedById() in articles.service.ts) — so this same function/cache now backs both
+// inner-page.php's id-based lookups and list-page.php's article-slug fallback.
 function ga_fetch_article_by_id(string $id): array
 {
     $req = ga_article_by_id_request($id);
