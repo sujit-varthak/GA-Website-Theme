@@ -1070,6 +1070,16 @@ ul {
     width: 100% !important;
   }
 
+  /* Desktop rule at ~line 311 caps this at max-width:400px with no media
+     query, so it still applies on mobile and silently overrides the
+     width:100% !important set above (max-width caps rendered width
+     regardless of width). */
+  .great_andhra_main_body_container
+    .news_style.news_section_ul
+    li:not(.main-story) {
+    max-width: 100% !important;
+  }
+
   li.main-story.clearfix img {
     width: 100% !important;
     height: auto !important;

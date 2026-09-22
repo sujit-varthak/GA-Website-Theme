@@ -899,6 +899,7 @@ $ga_mobile_latest_news_articles = array_slice($ga_trending_articles, 0, GA_MOBIL
                         </ul>
                     </div>
                 </div>
+                <?php ga_render_mobile_ad_slot('HOMEPAGE_MOBILE_BEFORE_MOVIE_NEWS_AD', 'div', 'home_left_column ad-center-mobile-block'); ?>
                 <!-- categories Start-->
                 <div class="paras float-left clear">
                     <?php ga_render_homepage_category_box('movie-news', 'Movie News', 'Movie News', $ga_movie_news_articles, GA_MOVIE_NEWS_FALLBACK_IMAGE, GA_CATEGORY_SECTION_TITLE_MAX); ?>
@@ -908,6 +909,7 @@ $ga_mobile_latest_news_articles = array_slice($ga_trending_articles, 0, GA_MOBIL
                 <?php ga_render_mobile_ad_slot('HOMEPAGE_MOBILE_AFTER_MOVIE_GOSSIP_AD', 'div', 'home_left_column ad-center-mobile-block'); ?>
                 <div class="paras float-left clear">
                     <?php ga_render_homepage_category_box('andhra-news', 'Andhra News', 'Andhra News', $ga_andhra_news_articles, GA_ANDHRA_NEWS_FALLBACK_IMAGE, GA_CATEGORY_SECTION_TITLE_MAX); ?>
+                    <?php ga_render_mobile_ad_slot('HOMEPAGE_MOBILE_BETWEEN_ANDHRA_TELANGANA_NEWS_AD', 'div', 'home_left_column ad-center-mobile-block'); ?>
                     <?php ga_render_homepage_category_box('telangana-news', 'Telangana News', 'Telangana News', $ga_telangana_news_articles, GA_TELANGANA_NEWS_FALLBACK_IMAGE, GA_CATEGORY_SECTION_TITLE_MAX); ?>
                 </div>
                 <?php ga_render_mobile_ad_slot('HOMEPAGE_MOBILE_AFTER_TELANGANA_NEWS_AD', 'div', 'home_left_column ad-center-mobile-block'); ?>

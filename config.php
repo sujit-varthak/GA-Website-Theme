@@ -252,6 +252,8 @@ define('GA_AD_ZONE_IMAGE_DIMENSIONS', [
     'HOMEPAGE_MOBILE_LATEST_NEWS_END_AD' => ['width' => 300, 'height' => 250],
     'HOMEPAGE_MOBILE_AFTER_TALK_OF_TOWN_AD' => ['width' => 300, 'height' => 250],
     'HOMEPAGE_MOBILE_AFTER_OPINION_AD' => ['width' => 300, 'height' => 250],
+    'HOMEPAGE_MOBILE_BEFORE_MOVIE_NEWS_AD' => ['width' => 300, 'height' => 250],
+    'HOMEPAGE_MOBILE_BETWEEN_ANDHRA_TELANGANA_NEWS_AD' => ['width' => 300, 'height' => 250],
     'HOMEPAGE_MOBILE_AFTER_TELANGANA_NEWS_AD' => ['width' => 300, 'height' => 250],
     'HOMEPAGE_MOBILE_AFTER_USA_SCHEDULE_AD' => ['width' => 300, 'height' => 250],
     'HOMEPAGE_MOBILE_AFTER_MOST_POPULAR_AD' => ['width' => 300, 'height' => 250],
