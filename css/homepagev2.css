@@ -1040,6 +1040,22 @@ ul {
     flex-direction: column !important;
   }
 
+  /* HOMEPAGE_AFTER_POLITICS_GOSSIP_AD's wrapper (<?php if (!ga_is_mobile())) - desktop-only,
+     had no mobile-hide rule at all. Same stale-render issue as .ad-center-mobile-block/
+     .display-inline-block above. */
+  .add_place_50 {
+    display: none !important;
+  }
+
+  /* #sortable-item_5 is the Reviews box's desktop position - skipped in PHP on mobile since
+     Reviews is shown in the Editor's Pick slot instead there (see index.php). If desktop HTML
+     is viewed at mobile width without reload, this at least prevents Reviews from appearing
+     twice; it can't fix Editor's Pick still showing in its own slot instead of being replaced -
+     that's a content swap, not a simple hide, and only a fresh page load resolves it fully. */
+  #sortable-item_5 {
+    display: none !important;
+  }
+
   /* LEFT AND RIGHT COLUMNS */
 
   .great_andhra_main_body_container .home_left_column,
@@ -1457,8 +1473,13 @@ ul {
     float: none !important;
   }
 
+  /* Only 2 real (non-commented) usages in index.php: HOMEPAGE_SECTION_INLINE and
+     HOMEPAGE_ARTICLE_WIDGET_AD, both desktop-only (wrapped in <?php if (!ga_is_mobile())).
+     display:block here just reflowed them for mobile instead of hiding them - if desktop HTML
+     is viewed at mobile width without a fresh load (see .ad-center-mobile-block above for the
+     full explanation), these stayed visible. */
   .display-inline-block {
-    display: block !important;
+    display: none !important;
   }
 
   .margin-top-bot {
@@ -1593,6 +1614,20 @@ ul {
      silently won on every viewport including mobile, hiding this ad there too. */
   .mobile-before-latest-news-ad {
     display: none;
+  }
+
+  /* Every ga_render_mobile_ad_slot() zone (see inc/helpers.php) uses one of these two wrapper
+     classes and is only ever rendered server-side when ga_is_mobile() is true. That check runs
+     once, when the page is first requested - if the page was loaded with a mobile User-Agent
+     and the browser is then widened past this breakpoint (or switched to a desktop device
+     profile) WITHOUT a fresh page load, these ad blocks are still sitting in the DOM with
+     nothing telling them to hide, since desktop was never expected to render them in the first
+     place. This is the desktop-width safety net for that case - same mechanism as
+     .mobile-latest-news above, just covering every other mobile-only ad zone at once instead
+     of one specific class. */
+  .ad-center-mobile-block,
+  .ad-center-mobile {
+    display: none !important;
   }
 }
 
