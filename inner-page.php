@@ -33,6 +33,7 @@ ga_prefetch_page([
         'INNER_MOBILE_BANNER',
         'INNER_ARTICLE_BANNER',
         'INNER_SIDEBAR_BOTTOM_AD',
+        'INNER_ARTICLE_END_AD',
         'FULLSCREEN_INTERSTITIAL_AD',
         'BOTTOM_STICKY_AD',
     ],
@@ -529,7 +530,16 @@ if ($ga_article && !empty($ga_article['category']['id'])) {
                         </div>
                         <?php endif; ?>
                         <div class="local_place_650X60">
-                            <div id="vuukle-ad-13" style="min-width: 320px; min-height: 260px;"></div>
+                            <!-- Admin-managed script slot (INNER_ARTICLE_END_AD) - replaces the old static
+                                 #vuukle-ad-13 div, which only Vuukle's own platform.js (loaded further down
+                                 this page) could fill via its site-wide auto-scan. Deliberately not named
+                                 vuukle-ad-* so that auto-scan doesn't also try to inject into it - whatever
+                                 script gets pasted into this zone in the admin is now the sole thing that
+                                 renders here, sized however that script decides. min-width/min-height below
+                                 are just a layout-stability placeholder before the script loads. -->
+                            <div id="inner-article-end-ad" style="min-width: 320px; min-height: 260px;">
+                                <?php ga_render_ad('INNER_ARTICLE_END_AD'); ?>
+                            </div>
 
                         </div>
 
