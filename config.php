@@ -243,17 +243,17 @@ define('GA_AD_ZONE_IMAGE_DIMENSIONS', [
     'LISTPAGE_REVIEW_AD' => ['width' => 300, 'height' => 600],
     'HOMEPAGE_LATEST_NEWS_INLINE_AD' => ['width' => 300, 'height' => 250],
     // Standardized to 300x250 on request - every mobile-only homepage ad zone except the
-    // strip banners (HOMEPAGE_MOBILE_AFTER_BIGSTORY_AD/AFTER_MOVIE_GOSSIP_AD/AFTER_USA_SCHEDULE_AD,
-    // all ~40px tall) and the header banner (HOMEPAGE_MOBILE_BANNER). Each of these 8 is
-    // rendered only via ga_render_mobile_ad_slot()/ga_is_mobile() (confirmed in index.php), so
-    // this has no effect on desktop regardless of GA_AD_ZONE_IMAGE_DIMENSIONS not being
-    // device-specific.
+    // strip banners (HOMEPAGE_MOBILE_AFTER_BIGSTORY_AD/AFTER_MOVIE_GOSSIP_AD/
+    // BETWEEN_MOVIE_NEWS_GOSSIP_AD, all narrow strips despite the last one's name) and the
+    // header banner (HOMEPAGE_MOBILE_BANNER). Each of these zones is rendered only via
+    // ga_render_mobile_ad_slot()/ga_is_mobile() (confirmed in index.php), so this has no
+    // effect on desktop regardless of GA_AD_ZONE_IMAGE_DIMENSIONS not being device-specific.
     'HOMEPAGE_MOBILE_BEFORE_LATEST_NEWS_AD' => ['width' => 300, 'height' => 250],
     'HOMEPAGE_MOBILE_LATEST_NEWS_END_AD' => ['width' => 300, 'height' => 250],
     'HOMEPAGE_MOBILE_AFTER_TALK_OF_TOWN_AD' => ['width' => 300, 'height' => 250],
     'HOMEPAGE_MOBILE_AFTER_OPINION_AD' => ['width' => 300, 'height' => 250],
-    'HOMEPAGE_MOBILE_BETWEEN_MOVIE_NEWS_GOSSIP_AD' => ['width' => 300, 'height' => 250],
     'HOMEPAGE_MOBILE_AFTER_TELANGANA_NEWS_AD' => ['width' => 300, 'height' => 250],
+    'HOMEPAGE_MOBILE_AFTER_USA_SCHEDULE_AD' => ['width' => 300, 'height' => 250],
     'HOMEPAGE_MOBILE_AFTER_MOST_POPULAR_AD' => ['width' => 300, 'height' => 250],
     'HOMEPAGE_MOBILE_AFTER_TRENDING_TOPICS_AD' => ['width' => 300, 'height' => 250],
     'HOMEPAGE_OPINION_BANNER' => ['width' => 728, 'height' => 90],
