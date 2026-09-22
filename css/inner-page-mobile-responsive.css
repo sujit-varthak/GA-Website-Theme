@@ -186,12 +186,31 @@
     padding: 0 0 5px !important;
   }
 
-  /* Byline */
+  /* Byline - flex row so the date and the share icons sit side by side (space-between),
+     matching the same "date left, icons right" row the desktop share bar doesn't need since
+     it only ever shows after the full article there. wrap, not nowrap: a long author-less
+     date string plus 4 icons can still get tight on very narrow phones. */
   .great_andhra_main_body_container .page_news .byline {
     width: 100% !important;
     font-size: 12px !important;
     line-height: 20px !important;
     padding: 0 0 8px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+  }
+
+  /* Publisher/author name dropped on mobile specifically to make room for the share icons
+     on the same row - desktop keeps "By {author} On {date}" as-is (see .byline-share above,
+     which mirrors this same mobile-only scoping in the other direction). */
+  .byline .pub_name {
+    display: none !important;
+  }
+
+  .byline-share {
+    display: block !important;
   }
 
   /* Article Content */
