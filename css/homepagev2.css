@@ -1504,15 +1504,25 @@ ul {
   }
 }
 
-/* Hidden by default (desktop); the block above shows it on mobile. PHP already gates this
+/* Hidden on desktop; the mobile media query above shows it on mobile. PHP already gates this
    block behind ga_is_mobile(), but that's a UA sniff that can be wrong (proxies, cached
-   responses, etc.); this CSS is the actual "never show mobile ads/list on desktop" backstop. */
-.mobile-latest-news {
-  display: none;
-}
+   responses, etc.); this CSS is the actual "never show mobile ads/list on desktop" backstop.
+   Was previously unscoped (no media query), so this rule - being later in the cascade than
+   the mobile block above, at equal specificity - silently won on every viewport including
+   mobile, hiding the list there too and leaving Talk Of The Town looking like it follows
+   directly after Big Story with nothing in between. */
+@media (min-width: 769px) {
+  .mobile-latest-news {
+    display: none;
+  }
 
-.mobile-before-latest-news-ad {
-  display: none;
+  /* Same bug as .mobile-latest-news above, same fix: this duplicate of the line-356 base rule
+     was left unscoped after the HomepageV2 CSS merge, so - being later in the cascade than the
+     @media (max-width:768px) block's display:block at line ~1454, at equal specificity - it
+     silently won on every viewport including mobile, hiding this ad there too. */
+  .mobile-before-latest-news-ad {
+    display: none;
+  }
 }
 
 /* ========================================
