@@ -1210,9 +1210,14 @@ ul {
     min-width: 0 !important;
   }
 
+  /* align-items was missing here, so .big-galist-rgt (stretched to the image's 62px height by
+     default flex stretch) left its <p> title sitting at the top of the row instead of
+     vertically centered next to the thumbnail - unlike .mobile-latest-news-item a below,
+     which already has this. */
   ul.big-galist li a {
     display: flex;
     flex-direction: row;
+    align-items: center;
     font-size: 13px;
     color: #231f20;
     font-family: "Lato", sans-serif;
