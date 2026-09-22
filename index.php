@@ -848,6 +848,12 @@ $ga_mobile_latest_news_articles = array_slice($ga_trending_articles, 0, GA_MOBIL
             <!--two_column_home-->
             <div class="two_column_home">
                 <div class="paras float-left clear">
+                    <?php if (ga_is_mobile()): ?>
+                        <?php // Editor's Pick swapped out for Reviews on mobile - same $ga_reviews_articles
+                              // data as the desktop-only Reviews box further down, which is skipped on mobile
+                              // below so it isn't rendered twice. ?>
+                        <?php ga_render_homepage_category_box('reviews', 'Reviews', 'Reviews', $ga_reviews_articles, GA_REVIEWS_FALLBACK_IMAGE, GA_CATEGORY_SECTION_TITLE_MAX); ?>
+                    <?php else: ?>
                     <div class="home_left_column news-section">
                         <ul class="sortable-list ui-sortable">
                             <li class="sortable-item">
@@ -898,6 +904,7 @@ $ga_mobile_latest_news_articles = array_slice($ga_trending_articles, 0, GA_MOBIL
                             </li>
                         </ul>
                     </div>
+                    <?php endif; ?>
                 </div>
                 <?php ga_render_mobile_ad_slot('HOMEPAGE_MOBILE_BEFORE_MOVIE_NEWS_AD', 'div', 'home_left_column ad-center-mobile-block'); ?>
                 <!-- categories Start-->
@@ -927,9 +934,13 @@ $ga_mobile_latest_news_articles = array_slice($ga_trending_articles, 0, GA_MOBIL
                         </ul>
                     </div>
                 <?php endif; ?>
+                <?php // Skipped on mobile - already rendered above in the Editor's Pick slot, so this
+                      // avoids showing Reviews twice on one mobile page. ?>
+                <?php if (!ga_is_mobile()): ?>
                 <div class="paras float-left clear">
                     <?php ga_render_homepage_category_box('reviews', 'Reviews', 'Reviews', $ga_reviews_articles, GA_REVIEWS_FALLBACK_IMAGE, GA_CATEGORY_SECTION_TITLE_MAX, false, 'sortable-item_5'); ?>
                 </div>
+                <?php endif; ?>
             </div>
             <!--two_column_home-->
             <div class="home_right_column">
