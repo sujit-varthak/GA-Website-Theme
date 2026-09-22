@@ -210,6 +210,16 @@ i.fas.fa-home {
 
 .great_andhra_main_body_container .movies_column_middle {
   width: 100%;
+  /* .great_andhra_main_body_container is a flex row, and the default
+     align-items:stretch was forcing this sidebar's box to match the (much
+     taller, paginated) .movies_column's height even though its own content
+     - a handful of Gossip/Reviews links plus two ad slots - ends far
+     earlier, leaving a large blank gap below it. align-self:flex-start lets
+     this box size to its own content so position:sticky has room to keep it
+     in view as the visitor scrolls the longer article list beside it. */
+  align-self: flex-start;
+  position: sticky;
+  top: 20px;
 }
 
 .great_andhra_main_body_container .movies_news_description_container {
