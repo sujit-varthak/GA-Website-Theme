@@ -1157,6 +1157,16 @@ ul {
 
   /* GALLERY / VIDEO SECTIONS */
 
+  /* .ga-mdcenter (the OPINION section's wrapper - heading + the featured-videos list below)
+     has a bare, unscoped `width: 990px` (see rule above this media query) that was never
+     overridden for mobile, unlike its child <ul> just below. That fixed width forced the
+     whole section past the viewport edge on mobile, cutting off the heading and every card's
+     text. The child list itself was already correctly responsive - only this parent needed
+     the same treatment. */
+  .ga-mdcenter {
+    width: 100% !important;
+  }
+
   /* Desktop stacks these as a wrapping grid of 188px tiles (image on top, caption below —
      see ul.bg-unlist.ga-featured-videos li above). On mobile this switches to a single
      column of full-width rows instead, image fixed on the left and caption to its right —
