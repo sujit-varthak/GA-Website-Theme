@@ -60,6 +60,21 @@ ErrorDocument 404 /404.php
 RewriteCond %{THE_REQUEST} \s/inner-page\.php/([0-9]+|[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})(/[^\s]*)?\s
 RewriteRule ^ /%1%2 [R=301,L]
 
+# Canonicalize old id-prefixed bare article URLs (/{id}/{category}/.../{slug}) to the new
+# id-less form - buildUrlPath() no longer emits the id segment as of the URL-restructuring
+# cutover; articles resolve by slug alone now (findPublishedById() in articles.service.ts).
+# THE_REQUEST-matched for the same non-looping reason as the rule above - this can't re-fire
+# against the id-less form the bare-URL catch-all below eventually produces, since THE_REQUEST
+# stays fixed to the original external request across internal rewrite passes. Requires at
+# least one segment after the id - a bare /{id} with nothing else has no slug to redirect to,
+# so it falls through to the numeric/UUID rule below instead, which still resolves by id via
+# findPublishedById()'s UUID/shortId branches (unchanged by this cutover). Chains with the
+# inner-page.php rule above for the oldest inner-page.php/{id}/... links (redirect twice
+# instead of once) rather than merging into it - an acceptable extra hop for an already-legacy
+# link form, not worth complicating a working rule over.
+RewriteCond %{THE_REQUEST} \s/([0-9]+|[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})/([^\s]+)\s
+RewriteRule ^ /%2 [R=301,L]
+
 # Same THE_REQUEST-matched canonicalization for the old box-office.php link -> /box-office.
 # Query string (?page=2) is captured and carried over if present.
 RewriteCond %{THE_REQUEST} \s/box-office\.php(\?[^\s]*)?\s
