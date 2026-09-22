@@ -445,7 +445,11 @@ img {
    ancestor's overflow clipping entirely - that was the previous bug). The <img> rendered
    by ga_render_ad() is made invisible but kept in place (see box-office.php inline script)
    so its wrapping <a> link/click target and alt text still work.
-   NOTE: local-only experiment, not committed - see box-office.php's inline script. */
+   background-size: cover was missing here - whatever creative gets uploaded to this zone
+   rendered at its own native size with no scaling, so a narrow asset (e.g. a 160x600
+   skyscraper banner, far narrower than this 300px box) left most of the box blank instead of
+   filled. cover guarantees the box always shows image, regardless of the uploaded creative's
+   own dimensions, without touching the fixed-attachment reveal effect itself. */
 .boxoffice-sticky-ad {
   position: relative;
   height: 300px;
@@ -456,6 +460,7 @@ img {
   background-repeat: no-repeat;
   background-position: center top;
   background-attachment: fixed;
+  background-size: cover;
 }
 
 .boxoffice-sticky-ad a {
