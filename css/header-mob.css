@@ -30,7 +30,11 @@
     background: #fff !important;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1) !important;
     position: relative !important;
-    z-index: 100 !important;
+    /* Was 100 - lower than .mobile-overlay (999) and .mobile-nav-wrapper (1000), so once the
+       drawer opened, the overlay visually covered the hamburger's own X-shape "close" state
+       (it still worked as a toggle, just invisible - looked like there was no close button at
+       all). Raised above both so the hamburger (and its X transform) stays visible/on top. */
+    z-index: 1002 !important;
   }
 
   .logo-bar .logo {
@@ -41,6 +45,27 @@
     height: 45px !important;
     width: auto !important;
     display: block !important;
+  }
+
+  /* Search + Hamburger group, right-aligned - search comes first (left of the hamburger) */
+  .mobile-actions {
+    display: flex !important;
+    align-items: center !important;
+    gap: 16px !important;
+  }
+
+  .mobile-search-btn {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 30px !important;
+    height: 30px !important;
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    cursor: pointer !important;
+    color: #333 !important;
+    font-size: 17px !important;
   }
 
   /* Hamburger Button */
@@ -54,7 +79,6 @@
     border: none !important;
     cursor: pointer !important;
     padding: 0 !important;
-    z-index: 1001 !important;
     position: relative !important;
   }
 
@@ -77,6 +101,51 @@
 
   .hamburger-menu.active span:nth-child(3) {
     transform: translateY(-10.5px) rotate(-45deg) !important;
+  }
+
+  /* Mobile Search Bar - collapsed (max-height:0) until #mobileSearchBtn toggles .active */
+  .mobile-search-bar {
+    max-height: 0 !important;
+    overflow: hidden !important;
+    background: #fff !important;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1) !important;
+    transition: max-height 0.3s ease !important;
+  }
+
+  .mobile-search-bar.active {
+    max-height: 60px !important;
+  }
+
+  .mobile-search-form {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    padding: 10px !important;
+  }
+
+  .mobile-search-input {
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+    height: 36px !important;
+    padding: 0 12px !important;
+    border: 1px solid #ddd !important;
+    border-radius: 18px !important;
+    font-size: 14px !important;
+    font-family: "lato" !important;
+  }
+
+  .mobile-search-submit {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-shrink: 0 !important;
+    width: 36px !important;
+    height: 36px !important;
+    border: none !important;
+    border-radius: 50% !important;
+    background: #d0021b !important;
+    color: #fff !important;
+    cursor: pointer !important;
   }
 
   /* Mobile Navigation Wrapper */
@@ -140,20 +209,51 @@
   }
 
   /* Submenu Styles */
-  .has-submenu .submenu-toggle {
-    position: relative !important;
+  /* Politics/Movies rows - split into a real link (navigates to the category, same as any
+     other top-level item) and a separate caret button (toggles the submenu only). Previously
+     a single <a class="submenu-toggle"> did both via preventDefault(), so tapping "Politics"
+     could only ever open the submenu and never actually navigate there. */
+  .has-submenu .submenu-row {
     display: flex !important;
-    justify-content: space-between !important;
-    align-items: center !important;
+    align-items: stretch !important;
   }
 
-  .has-submenu .submenu-toggle i.fa-caret-down {
+  .has-submenu .submenu-link {
+    flex: 1 1 auto !important;
+    display: block !important;
+    padding: 16px 25px !important;
+    color: #333 !important;
+    font-family: "lato";
+    text-decoration: none !important;
+    font-size: 15px !important;
+    font-weight: 500 !important;
+    text-transform: uppercase !important;
+    transition: background 0.2s ease !important;
+  }
+
+  .has-submenu .submenu-link:hover {
+    background: #f5f5f5 !important;
+  }
+
+  .has-submenu .submenu-caret {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 50px !important;
+    flex-shrink: 0 !important;
+    background: transparent !important;
+    border: none !important;
+    border-left: 1px solid #eee !important;
+    cursor: pointer !important;
+    color: #666 !important;
+  }
+
+  .has-submenu .submenu-caret i.fa-caret-down {
     transition: transform 0.3s ease !important;
     font-size: 14px !important;
-    margin-left: auto !important;
   }
 
-  .has-submenu.active .submenu-toggle i.fa-caret-down {
+  .has-submenu.active .submenu-caret i.fa-caret-down {
     transform: rotate(180deg) !important;
   }
 

@@ -195,11 +195,27 @@ if ($ga_article && !empty($ga_article['category']['id'])) {
                     <img alt="Greatandhra logo" src="images/great_andhra.gif" title="Greatandhra website Logo" />
                 </a>
 
-                <button class="hamburger-menu" id="hamburgerBtn" aria-label="Menu">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </button>
+                <div class="mobile-actions">
+                    <button class="mobile-search-btn" id="mobileSearchBtn" aria-label="Search">
+                        <i class="fas fa-search"></i>
+                    </button>
+
+                    <button class="hamburger-menu" id="hamburgerBtn" aria-label="Menu">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobile Search Bar -->
+            <div class="mobile-search-bar" id="mobileSearchBar">
+                <form class="mobile-search-form" action="/list-page.php" method="get">
+                    <input class="mobile-search-input" type="text" name="search" placeholder="Search articles..." required>
+                    <button class="mobile-search-submit" type="submit" aria-label="Submit search">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </form>
             </div>
 
             <!-- Mobile Navigation Menu -->
@@ -215,9 +231,12 @@ if ($ga_article && !empty($ga_article['category']['id'])) {
                             <a href="<?php echo ga_e(ga_nav_category_link('latest-news', 'Latest News')); ?>">Latest</a>
                         </li>
                         <li class="has-submenu">
-                            <a href="<?php echo ga_e(ga_nav_category_link('politics', 'Politics', true)); ?>" class="submenu-toggle">
-                                Politics <i class="fas fa-caret-down"></i>
-                            </a>
+                            <div class="submenu-row">
+                                <a href="<?php echo ga_e(ga_nav_category_link('politics', 'Politics', true)); ?>" class="submenu-link">Politics</a>
+                                <button type="button" class="submenu-caret" aria-label="Toggle Politics submenu">
+                                    <i class="fas fa-caret-down"></i>
+                                </button>
+                            </div>
                             <ul class="submenu">
                                 <li><a href="<?php echo ga_e(ga_nav_category_link('andhra-news', 'Andhra News')); ?>">Andhra</a></li>
                                 <li><a href="<?php echo ga_e(ga_nav_category_link('telangana-news', 'Telangana News')); ?>">Telangana</a></li>
@@ -225,9 +244,12 @@ if ($ga_article && !empty($ga_article['category']['id'])) {
                             </ul>
                         </li>
                         <li class="has-submenu">
-                            <a href="<?php echo ga_e(ga_nav_category_link('movies', 'Movies', true)); ?>" class="submenu-toggle">
-                                Movies <i class="fas fa-caret-down"></i>
-                            </a>
+                            <div class="submenu-row">
+                                <a href="<?php echo ga_e(ga_nav_category_link('movies', 'Movies', true)); ?>" class="submenu-link">Movies</a>
+                                <button type="button" class="submenu-caret" aria-label="Toggle Movies submenu">
+                                    <i class="fas fa-caret-down"></i>
+                                </button>
+                            </div>
                             <ul class="submenu">
                                 <li><a href="<?php echo ga_e(ga_nav_category_link('movie-news', 'Movie News')); ?>">News</a></li>
                                 <li><a href="<?php echo ga_e(ga_nav_category_link('movie-gossip', 'Movie Gossip')); ?>">Gossip</a></li>
