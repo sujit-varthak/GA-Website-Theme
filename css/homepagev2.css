@@ -1263,10 +1263,20 @@ ul {
     padding: 10px 0 !important;
   }
 
+  /* Desktop's .top_newsbox_img is float:left, so the title next to it (.top_news_txt) just
+     flows from the top of the float instead of being vertically centered - unlike
+     .mobile-latest-news-item a, which is a flex row with align-items:center. Making the <a>
+     a flex row here (float is ignored on a flex item automatically) matches that. */
+  ul.top_story_option2_3story li a {
+    display: flex !important;
+    align-items: center !important;
+  }
+
   ul.top_story_option2_3story li .top_newsbox_img {
     width: 80px !important;
     height: 60px !important;
     margin-right: 15px !important;
+    flex-shrink: 0 !important;
   }
 
   ul.top_story_option2_3story li .top_newsbox_img img {
@@ -1287,6 +1297,7 @@ ul {
     font-size: 13px !important;
     line-height: 18px !important;
     padding-top: 0 !important;
+    min-width: 0 !important;
   }
 
   /* TRENDING TOPICS */
