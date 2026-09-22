@@ -529,19 +529,30 @@ if ($ga_article && !empty($ga_article['category']['id'])) {
                             </div>
                         </div>
                         <?php endif; ?>
+                        <?php
+                        // Admin-managed script slot (INNER_ARTICLE_END_AD) - replaces the old static
+                        // #vuukle-ad-13 div, which only Vuukle's own platform.js (loaded further down this
+                        // page) could fill via its site-wide auto-scan. Deliberately not named vuukle-ad-*
+                        // so that auto-scan doesn't also try to inject into it - whatever script gets
+                        // pasted into this zone in the admin is now the sole thing that renders here, sized
+                        // however that script decides.
+                        //
+                        // Buffered so the wrapper (and its min-width/min-height placeholder, and
+                        // .local_place_650X60's own padding) only render when there's actually something
+                        // to show - an empty/unconfigured zone should collapse to zero height, not leave a
+                        // blank reserved box.
+                        ob_start();
+                        ga_render_ad('INNER_ARTICLE_END_AD');
+                        $ga_end_ad_html = ob_get_clean();
+                        if ($ga_end_ad_html !== ''):
+                        ?>
                         <div class="local_place_650X60">
-                            <!-- Admin-managed script slot (INNER_ARTICLE_END_AD) - replaces the old static
-                                 #vuukle-ad-13 div, which only Vuukle's own platform.js (loaded further down
-                                 this page) could fill via its site-wide auto-scan. Deliberately not named
-                                 vuukle-ad-* so that auto-scan doesn't also try to inject into it - whatever
-                                 script gets pasted into this zone in the admin is now the sole thing that
-                                 renders here, sized however that script decides. min-width/min-height below
-                                 are just a layout-stability placeholder before the script loads. -->
                             <div id="inner-article-end-ad" style="min-width: 320px; min-height: 260px;">
-                                <?php ga_render_ad('INNER_ARTICLE_END_AD'); ?>
+                                <?php echo $ga_end_ad_html; ?>
                             </div>
 
                         </div>
+                        <?php endif; ?>
 
                         <?php if (!empty($ga_related_articles)): ?>
                         <div class="header_re">RELATED ARTICLES</div>
