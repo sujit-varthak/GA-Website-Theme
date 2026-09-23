@@ -86,10 +86,13 @@
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
+  /* 2 columns on phone instead of the single stacked column - 7 links, so the last
+     (ePaper) sits alone in its own row, which is expected for an odd count. */
   .footer-nav-links {
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    justify-items: center;
+    gap: 12px 10px;
   }
   .footer-copyright {
     line-height: 24px;
