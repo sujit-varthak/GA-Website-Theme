@@ -125,12 +125,6 @@ li {
   gap: 3px;
 }
 
-.great_andhra_main_body_container.category_section
-  ul.sortable-list.ui-sortable {
-  float: left;
-  margin-top: 5px;
-}
-
 /* Navbar container */
 .ga-nav {
   background: var(--nav-bg);
@@ -871,10 +865,6 @@ ul {
   .ga-nav {
     overflow-x: auto;
     white-space: nowrap;
-  }
-
-  .social-group {
-    margin-left: 20px;
   }
 
   /* GLOBAL RESETS FOR MOBILE */
