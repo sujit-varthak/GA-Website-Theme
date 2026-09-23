@@ -330,13 +330,33 @@ li.main-story.clearfix img {
   margin-top: 5px;
 }
 
+/* Grid instead of the old float+fixed-width+margin math (5 x (188+10) happened to add up to
+   exactly 990px, the container's own width - fragile, breaks the moment either number
+   changes). gap handles spacing instead of per-tile margin, so tiles can't drift uneven. */
+ul.bg-unlist.ga-featured-videos,
+ul.bg-unlist.ga-grply {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 14px;
+}
+
 ul.bg-unlist.ga-featured-videos li {
-  background: #f2f2f2;
-  width: 188px;
-  float: left;
-  padding: 2px;
-  margin: 4px 5px;
-  min-height: 190px;
+  background: #fff;
+  width: auto;
+  float: none;
+  padding: 0;
+  margin: 0;
+  min-height: 0;
+  border: 1px solid #e6e6e6;
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+ul.bg-unlist.ga-featured-videos li:hover {
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+  transform: translateY(-2px);
 }
 
 ul.bg-unlist.ga-grply a p {
@@ -372,19 +392,6 @@ ul.bg-unlist.ga-grply a p {
 .padding-top-bot.no-padding-top-bot {
   padding-top: 0;
   padding-bottom: 0;
-}
-
-ul.bg-unlist.ga-grply li:nth-child(3) {
-  padding-right: 0;
-  margin-right: 5px;
-}
-ul.bg-unlist.ga-grply li:nth-child(3n + 4) {
-  border-left: 0;
-}
-
-ul.bg-unlist.ga-grply li:nth-child(5) {
-  border-left: 0;
-  margin-right: 5px;
 }
 
 i.fab.fa-youtube:hover {
@@ -455,8 +462,10 @@ i.fab.fa-facebook-f {
 }
 
 .ga-featured-videos .big-galist-lft {
-  height: 110px;
-  width: 185px;
+  height: 120px;
+  width: 100%;
+  float: none;
+  margin: 0;
 }
 
 .big-galist-lft {
@@ -493,11 +502,14 @@ i.fab.fa-facebook-f {
 
 .ga-featured-videos .big-galist-rgt {
   width: 100%;
-  padding: 0 5px 0 5px;
+  padding: 10px 12px 12px;
 }
 
 .ga-featured-videos .big-galist-rgt p {
-  width: 175px;
+  width: 100%;
+  margin: 0;
+  color: #262626;
+  font-weight: 600;
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
@@ -598,15 +610,20 @@ span.editors_pick_release {
   width: 990px;
 }
 
+/* margin-bottom:-21px used to be here compensating for .top_news_txt's own content pushing
+   past the <li>'s fixed height:80px below (see that rule further down) - a fragile hack that
+   broke on any title long enough to wrap to 3+ lines. Flex + a natural-height <li> (below)
+   needs none of that. */
 ul.top_story_option2_3story li .top_news_txt {
-  line-height: 21px;
+  line-height: 1.4;
   color: #262626;
   text-decoration: none;
-  padding-top: 10px;
+  padding-top: 0;
   display: block;
   font-family: "Lato";
   font-size: 14px;
-  margin-bottom: -21px;
+  margin-bottom: 0;
+  min-width: 0;
 }
 
 .border-topbottom {
@@ -689,12 +706,13 @@ ul.top_story_option2_3story li .top_news_txt {
 }
 
 ul.top_story_option2_3story li .top_newsbox_img {
-  float: left;
-  margin-right: 24px;
+  float: none;
+  flex-shrink: 0;
+  margin: 0;
   height: 75px;
   width: 100px;
+  border-radius: 4px;
   position: relative;
-  margin-top: 5px;
   overflow: hidden;
 }
 
@@ -706,10 +724,27 @@ ul.top_story_option2_3story li .top_newsbox_img img {
   display: block;
 }
 
+/* Was a fixed height:80px with float-based children and a negative-margin hack on
+   .top_news_txt to compensate (see that rule above) - fragile, and clipped/overlapped on
+   any title long enough to wrap past what 80px could fit. Flex row + natural height fixes
+   both the vertical-centering and the overflow risk in one move. */
 ul.top_story_option2_3story li {
-  margin-bottom: 8px;
-  height: 80px;
-  border-top: 1px #d9d9d9 solid;
+  margin-bottom: 0;
+  height: auto;
+  border-top: none;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+ul.top_story_option2_3story li:last-child {
+  border-bottom: none;
+}
+
+ul.top_story_option2_3story li a {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 0;
+  text-decoration: none;
 }
 
 .more_arrow {
