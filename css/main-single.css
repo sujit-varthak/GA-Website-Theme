@@ -733,11 +733,12 @@ ul.top_story_option2_3story li {
   border-top: 1px #d9d9d9 solid;
 }
 
+/* background-image removed - it pointed at the old WordPress domain's
+   images/ga_sprite_images.png, which now 404s there (confirmed live), wasting a request on a
+   guaranteed-failing cross-domain fetch for an icon that was already invisible either way. */
 .more_arrow {
   width: 13px;
   height: 9px;
-  background: url(https://www.greatandhra.com/images/ga_sprite_images.png) -96px
-    0 no-repeat;
   margin-right: 6px;
 }
 

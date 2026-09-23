@@ -2736,11 +2736,13 @@ font {
 	cursor: pointer;
 }
 
+/* background-image removed - it pointed at the old WordPress domain's
+   images/ga_sprite_images.png, which now 404s there (confirmed live), wasting a request on a
+   guaranteed-failing cross-domain fetch for an icon that was already invisible either way. */
 .more_arrow {
 	float: right;
 	width: 13px;
 	height: 9px;
-	background: url(https://www.greatandhra.com/images/ga_sprite_images.png) -96px 0 no-repeat;
 	margin-top: 8px;
 	margin-right: 6px;
 }

@@ -747,11 +747,16 @@ ul.top_story_option2_3story li a {
   text-decoration: none;
 }
 
+/* Was a background-image sliced from a sprite sheet on the old WordPress domain
+   (images/ga_sprite_images.png) - that URL now 404s there (confirmed live), so every page
+   load spent ~300ms on a guaranteed-failing cross-domain request for an icon that was already
+   invisible either way. Removed rather than re-hosted: nothing currently depends on this
+   arrow actually being visible (it never has been, since the image stopped resolving), and
+   the element itself (13x9px, next to a "more" link) is trivial enough not to warrant a new
+   asset without a design decision on what it should look like. */
 .more_arrow {
   width: 13px;
   height: 9px;
-  background: url(https://www.greatandhra.com/images/ga_sprite_images.png) -96px
-    0 no-repeat;
   margin-right: 6px;
 }
 
