@@ -56,7 +56,12 @@ $ga_tag_list = $ga_article ? ga_tag_names($ga_article) : [];
 $ga_img_src = $ga_article ? (ga_image($ga_article, ['src' => GA_ARTICLE_FALLBACK_IMAGE['src'], 'width' => null, 'height' => null])['src']) : GA_ARTICLE_FALLBACK_IMAGE['src'];
 
 $ga_meta_title = $ga_article ? (($ga_article['seoTitle'] ?? null) ?: ($ga_article['title'] ?? '')) : 'Article Not Found';
-$ga_meta_desc = $ga_article ? (($ga_article['seoDescription'] ?? null) ?: ($ga_article['excerpt'] ?? '')) : '';
+// Was falling back straight to `excerpt`, which is null for almost every article (confirmed
+// earlier this project - real excerpts are rarely set), leaving <meta name="description">,
+// og:description, and the NewsArticle schema's `description` all empty for most pages.
+// ga_article_excerpt() already solves this exact problem for list pages (excerpt, then the
+// body's first paragraph, truncated) - reused here instead of a separate one-off fallback.
+$ga_meta_desc = $ga_article ? (($ga_article['seoDescription'] ?? null) ?: ga_article_excerpt($ga_article, 160)) : '';
 $ga_category_name = $ga_article['category']['name'] ?? '';
 // Category's own "parent" is embedded directly on the article's category object — present
 // only when this category is itself a subcategory (e.g. Gossip under Politics).
@@ -415,19 +420,37 @@ if ($ga_article && !empty($ga_article['category']['id'])) {
 
                     <?php if ($ga_article): ?>
                     <?php
-                        $ga_breadcrumb_items = [['name' => 'Home', 'id' => 'index.php']];
-                        if ($ga_parent_category_name !== '') {
-                            $ga_breadcrumb_items[] = ['name' => $ga_parent_category_name, 'id' => ga_inner_link($ga_article)];
-                        }
-                        if ($ga_category_name !== '') {
-                            $ga_breadcrumb_items[] = ['name' => $ga_category_name, 'id' => ga_inner_link($ga_article)];
-                        }
-                        $ga_breadcrumb_items[] = ['name' => $ga_meta_title, 'id' => ga_inner_link($ga_article)];
-                    ?>
-                    <?php
                         $ga_schema_published = ga_format_date($ga_article['publishedAt'] ?? null, 'c');
                         $ga_schema_modified = ga_format_date($ga_article['updatedAt'] ?? null, 'c') ?: $ga_schema_published;
-                        $ga_schema_url = 'https://www.greatandhra.com/' . ga_inner_link($ga_article);
+                        $ga_schema_url = GA_SITEMAP_BASE_URL . '/' . ga_inner_link($ga_article);
+                    ?>
+                    <?php
+                        // Every crumb's "id" used to be ga_inner_link($ga_article) regardless of which
+                        // level it represented - Home linked to a bare "index.php" (not even an absolute
+                        // URL) and the parent-category/category/title crumbs all pointed at the same
+                        // article URL instead of their own actual category pages. Passed Google's Rich
+                        // Results Test anyway (it mainly validates name/position for the visible
+                        // breadcrumb trail), but not spec-correct - each item.id should be that level's
+                        // real, absolute URL. category.slug/category.parent.slug are already on the
+                        // article response (same fields buildUrlPath() uses backend-side), so building
+                        // the real category URLs here needs no extra data.
+                        $ga_breadcrumb_items = [['name' => 'Home', 'id' => GA_SITEMAP_BASE_URL . '/']];
+                        $ga_crumb_category_slug = $ga_article['category']['slug'] ?? '';
+                        $ga_crumb_parent_slug = $ga_article['category']['parent']['slug'] ?? '';
+                        if ($ga_parent_category_name !== '' && $ga_crumb_parent_slug !== '') {
+                            $ga_breadcrumb_items[] = [
+                                'name' => $ga_parent_category_name,
+                                'id' => GA_SITEMAP_BASE_URL . '/' . $ga_crumb_parent_slug,
+                            ];
+                        }
+                        if ($ga_category_name !== '' && $ga_crumb_category_slug !== '') {
+                            $ga_crumb_category_segments = array_filter([$ga_crumb_parent_slug, $ga_crumb_category_slug]);
+                            $ga_breadcrumb_items[] = [
+                                'name' => $ga_category_name,
+                                'id' => GA_SITEMAP_BASE_URL . '/' . implode('/', $ga_crumb_category_segments),
+                            ];
+                        }
+                        $ga_breadcrumb_items[] = ['name' => $ga_meta_title, 'id' => $ga_schema_url];
                     ?>
                     <script type="application/ld+json">
                     <?php echo json_encode([
@@ -447,25 +470,27 @@ if ($ga_article && !empty($ga_article['category']['id'])) {
                         'mainEntityOfPage' => ['@type' => 'WebPage', '@id' => $ga_schema_url],
                     ]); ?>
                     </script>
-                    <script type="application/ld+json">{
-						"@context": "http://schema.org",
-						"@type": "BreadcrumbList",
-						"itemListElement": [
-							<?php foreach ($ga_breadcrumb_items as $ga_i => $ga_crumb): ?>
-							<?php if ($ga_i > 0): ?>,<?php endif; ?>
-							{
-								"@type": "ListItem",
-								"position": <?php echo $ga_i + 1; ?>,
-								"item": {
-									"@type": "<?php echo $ga_i === 0 ? 'WebSite' : 'WebPage'; ?>",
-									"@id": "<?php echo ga_e($ga_crumb['id']); ?>",
-									"name": "<?php echo ga_e($ga_crumb['name']); ?>"
-								}
-							}
-							<?php endforeach; ?>
-						]
-					}
-				</script>
+                    <script type="application/ld+json">
+                    <?php echo json_encode([
+                        '@context' => 'https://schema.org',
+                        '@type' => 'BreadcrumbList',
+                        'itemListElement' => array_map(
+                            function (array $ga_crumb, int $ga_i): array {
+                                return [
+                                    '@type' => 'ListItem',
+                                    'position' => $ga_i + 1,
+                                    'item' => [
+                                        '@type' => $ga_i === 0 ? 'WebSite' : 'WebPage',
+                                        '@id' => $ga_crumb['id'],
+                                        'name' => $ga_crumb['name'],
+                                    ],
+                                ];
+                            },
+                            $ga_breadcrumb_items,
+                            array_keys($ga_breadcrumb_items)
+                        ),
+                    ]); ?>
+                    </script>
                     <div class="breade_crumb"> <a href="index.php" title="Go to Home">Home</a>
                         <?php if ($ga_parent_category_name !== ''): ?>
                         <span><?php echo ga_e($ga_parent_category_name); ?></span>
