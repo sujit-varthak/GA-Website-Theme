@@ -186,29 +186,60 @@
     margin-bottom: 20px !important;
   }
 
-  /* News Item Container */
+  /* News Item Container - matches the homepage's Latest News list treatment (flex row,
+     rounded thumb, vertically centered, bottom-border divider) instead of the old stacked
+     block layout (full-width image on top, title below). Published date kept, unlike Latest
+     News, which has none - .view_mov_poli_content (the excerpt) was already hidden on mobile
+     before this change, untouched here. */
   .great_andhra_main_body_container .movies_news_description_container {
     width: 100% !important;
-    margin: 0 0 20px !important;
-    font-size: 15px !important;
-    display: block !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+    margin: 0 !important;
+    padding: 10px 4px !important;
     border-bottom: 1px solid #e0e0e0 !important;
-    padding-bottom: 15px !important;
+  }
+
+  .great_andhra_main_body_container .movies_news_description_container:last-child {
+    border-bottom: none !important;
+  }
+
+  .movies_news_description_container .img_plc {
+    flex-shrink: 0 !important;
+    width: 100px !important;
+    height: 75px !important;
+    overflow: hidden !important;
+    border-radius: 4px !important;
+  }
+
+  .movies_news_description_container .img_plc img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+  }
+
+  /* The title+byline column - a bare, unclassed <div> in the markup (see
+     movies_news_description_container's HTML), second of the container's 3 direct children. */
+  .movies_news_description_container > div:nth-child(2) {
+    flex: 1 !important;
+    min-width: 0 !important;
   }
 
   /* News Title Link */
   .movies_news_description_container a {
-    font-size: 16px !important;
-    line-height: 22px !important;
+    font-size: 15px !important;
+    line-height: 1.4 !important;
     display: block !important;
-    margin-bottom: 8px !important;
+    margin-bottom: 4px !important;
   }
 
   /* Byline / Date */
   .byline {
-    font-size: 11px !important;
-    padding: 5px 0 !important;
-    margin-bottom: 8px !important;
+    font-size: 12px !important;
+    color: #767676 !important;
+    padding: 0 !important;
+    margin-bottom: 0 !important;
   }
 
   /* News Description/Content */
