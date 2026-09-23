@@ -5,4 +5,4 @@ Disallow: /inc/
 Disallow: /clear-cache.php
 Disallow: /advertisement.php
 
-Sitemap: https://www.greatandhra.com/sitemap.xml
+Sitemap: https://www.greatandhra.com/sitemap_index.xml

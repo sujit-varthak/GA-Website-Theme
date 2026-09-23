@@ -11,6 +11,15 @@ define('GA_CACHE_DIR', __DIR__ . '/cache');
 define('GA_CACHE_TTL', 120); // seconds — was 30 ("lowered for demo purposes"), raised now that real traffic is in scope (load-audit fix #6, 2026-08-20); the cache-stampede lock in ga_cache_lock_try() makes a longer TTL safe instead of just less-fresh
 define('GA_TAGS_CACHE_TTL', 3600); // seconds — the full tag list (ga_fetch_all_tags()) changes far less often than articles
 
+// Shared by every sitemap-*.php file (see inc/sitemap-helpers.php) - one place to update if
+// the canonical domain or the actual content language ever changes. GA_SITE_LANGUAGE is what
+// news-sitemap.xml reports to Google News per article; the WordPress site's own Yoast news
+// sitemap has this hardcoded to "hi" (Hindi), which doesn't match this site's actual
+// (English-language) article text - not copied here on purpose.
+define('GA_SITEMAP_BASE_URL', 'https://www.greatandhra.com');
+define('GA_SITE_NAME', 'GreatAndhra');
+define('GA_SITE_LANGUAGE', 'en');
+
 // Full-page roadblock ad (advertisement.php), shown once per cookie window before any page
 // renders. Kill switch + cookie name/lifetime in one place so it's easy to disable or retune.
 define('GA_ROADBLOCK_AD_ENABLED', true);

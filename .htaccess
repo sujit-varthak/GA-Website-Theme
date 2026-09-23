@@ -87,9 +87,21 @@ RewriteCond %{REQUEST_FILENAME} -f [OR]
 RewriteCond %{REQUEST_FILENAME} -d
 RewriteRule ^ - [L]
 
-# /sitemap.xml is generated on demand (sitemap.php), not a real file, so it needs its own
-# rule rather than relying on the passthrough above.
+# /sitemap.xml is generated on demand (sitemap.php, now a redirect to sitemap_index.xml below),
+# not a real file, so it needs its own rule rather than relying on the passthrough above.
 RewriteRule ^sitemap\.xml$ sitemap.php [L]
+
+# Sitemap index + type-specific sitemaps (sitemap_index.php and sitemap-{articles,categories,
+# tags,pages}.php, news-sitemap.php) - same "not a real file, needs its own rule" reasoning as
+# the legacy /sitemap.xml rule above. One rule per file rather than a shared pattern, since the
+# index's underscore and the type files' hyphens/prefix aren't uniform enough for a single
+# regex to stay readable.
+RewriteRule ^sitemap_index\.xml$ sitemap_index.php [L]
+RewriteRule ^sitemap-articles\.xml$ sitemap-articles.php [L]
+RewriteRule ^sitemap-categories\.xml$ sitemap-categories.php [L]
+RewriteRule ^sitemap-tags\.xml$ sitemap-tags.php [L]
+RewriteRule ^sitemap-pages\.xml$ sitemap-pages.php [L]
+RewriteRule ^news-sitemap\.xml$ news-sitemap.php [L]
 
 # Bare article URLs: /{id}/{category}/{subcategory?}/{title-slug}, where {id} is either
 # the numeric shortId or a full UUID. Internally forwarded to inner-page.php with the same
