@@ -237,13 +237,6 @@
   color: #666;
 }
 
-/* Mobile-only second share-bar instance (see inner-page.php's byline markup) - hidden by
-   default here, shown via inner-page-mobile-responsive.css's mobile media query. Desktop
-   keeps the single existing share bar after the article body, unchanged. */
-.byline-share {
-  display: none;
-}
-
 /* ads section */
 .add_place_650X60,
 .local_place_650X60 {

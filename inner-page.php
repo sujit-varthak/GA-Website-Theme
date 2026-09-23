@@ -488,18 +488,17 @@ if ($ga_article && !empty($ga_article['category']['id'])) {
                                 <?php $ga_updated = ga_format_date($ga_article['updatedAt'] ?? null, 'H:i'); ?>
                                 <?php if ($ga_updated !== ''): ?>| UPDATED <?php echo ga_e($ga_updated); ?> IST<?php endif; ?>
                             </span>
-                            <!-- Mobile-only second Vuukle share bar instance, positioned next to the
-                                 byline date instead of after the full article body (where the original
-                                 vuukle-powerbar below still lives, unchanged, for desktop). Vuukle's own
-                                 multi-instance convention is a unique numeric class suffix per instance
-                                 (vuukle-powerbar-{N}) - platform.js (loaded further down this page) scans
-                                 for and fills every matching div on initial page load, no separate JS call
-                                 needed since this exists in the markup from the start (that extra call is
-                                 only required for instances inserted after load, e.g. infinite scroll).
-                                 byline-share (not Vuukle's own class) controls this instance's
-                                 hidden-on-desktop/visible-on-mobile visibility - see inner-page-main.css /
-                                 inner-page-mobile-responsive.css. -->
-                            <div class="vuukle-powerbar-2 byline-share"></div>
+                            <?php if (ga_is_mobile()): ?>
+                            <?php // A second .vuukle-powerbar div here (a duplicate instance) does NOT work -
+                                  // confirmed by loading Vuukle's actual platform.js and checking its container
+                                  // selector logic directly: there is no supported multi-instance class-suffix
+                                  // convention it recognizes for auto-filling more than one div per page, so a
+                                  // "vuukle-powerbar-2"-style div sits empty forever. Vuukle DOES reliably fill
+                                  // exactly one plain .vuukle-powerbar div, so this moves that same single div
+                                  // up here for mobile instead of duplicating it - see the matching !ga_is_mobile()
+                                  // branch below the article body, where it renders instead for desktop. ?>
+                            <div class="vuukle-powerbar" style="min-height: 50px;"></div>
+                            <?php endif; ?>
                         </div>
 
                         <div class="add_place_650X60">
@@ -518,7 +517,9 @@ if ($ga_article && !empty($ga_article['category']['id'])) {
 
                                 <?php echo ga_render_article_body($ga_article['body'] ?? '', 'INNER_ARTICLE_MIDCONTENT_AD'); ?>
 
+                                <?php if (!ga_is_mobile()): ?>
                                 <div class="vuukle-powerbar" style="min-height: 50px;"></div>
+                                <?php endif; ?>
 
                             </div><!--unselect end-->
                         </div><!--content end-->

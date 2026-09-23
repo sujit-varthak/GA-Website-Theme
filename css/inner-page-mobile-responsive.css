@@ -203,14 +203,11 @@
   }
 
   /* Publisher/author name dropped on mobile specifically to make room for the share icons
-     on the same row - desktop keeps "By {author} On {date}" as-is (see .byline-share above,
-     which mirrors this same mobile-only scoping in the other direction). */
+     on the same row - desktop keeps "By {author} On {date}" as-is. The share bar itself
+     (.vuukle-powerbar) needs no visibility rule here - inner-page.php only renders it inside
+     .byline at all when ga_is_mobile() is true, so there's nothing to hide/show via CSS. */
   .byline .pub_name {
     display: none !important;
-  }
-
-  .byline-share {
-    display: block !important;
   }
 
   /* Article Content */
