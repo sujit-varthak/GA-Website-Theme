@@ -296,6 +296,12 @@
     margin-bottom: 10px !important;
   }
 
+  /* .tag-chip's desktop margin (inner-page-main.css) is 0 1px - horizontal only, so wrapped
+     rows on a narrow phone screen had no vertical gap between them. Added one here. */
+  .tag-chip {
+    margin: 4px 3px !important;
+  }
+
   /* ========================================
      SIDEBAR SECTIONS
      ======================================== */
