@@ -149,14 +149,13 @@ if ($ga_is_tag_mode) {
 }
 ga_prefetch_page([
     'articles' => $ga_prefetch_articles,
+    // Every zone but these two used to be listed here purely to warm the cache ga_render_ad()
+    // read from - now that ad content resolves client-side (see its comment in
+    // inc/helpers.php), that prefetch was pure waste. FULLSCREEN_INTERSTITIAL_AD and
+    // BOTTOM_STICKY_AD stay - both are still read synchronously here, to decide whether an ad
+    // is currently active for their zone at all (ga_prepare_interstitial_config() /
+    // ga_render_bottom_sticky_ad()).
     'adZones' => [
-        'LISTPAGE_SIDEBAR_LEFT',
-        'LISTPAGE_SIDEBAR_RIGHT',
-        'LISTPAGE_TOP_BANNER',
-        'LISTPAGE_MOBILE_BANNER',
-        'LISTPAGE_CONTENT_AD',
-        'LISTPAGE_MOBILE_MIDDLE_AD',
-        'LISTPAGE_REVIEW_AD',
         'FULLSCREEN_INTERSTITIAL_AD',
         'BOTTOM_STICKY_AD',
     ],

@@ -5,17 +5,11 @@ require_once __DIR__ . '/inc/api-client.php';
 
 http_response_code(404);
 
-// Same shared chrome (nav, footer, skyscraper/top-banner ads) as list-page.php, minus the
-// interstitial/bottom-sticky ad zones - an error page shouldn't add an extra ad on top of
-// telling a visitor they landed somewhere that doesn't exist.
-ga_prefetch_page([
-    'adZones' => [
-        'LISTPAGE_SIDEBAR_LEFT',
-        'LISTPAGE_SIDEBAR_RIGHT',
-        'LISTPAGE_TOP_BANNER',
-        'LISTPAGE_MOBILE_BANNER',
-    ],
-]);
+// Ad zones on this page (skyscraper/top-banner, same chrome as list-page.php minus the
+// interstitial/bottom-sticky zones - an error page shouldn't add an extra ad on top of telling
+// a visitor they landed somewhere that doesn't exist) all resolve client-side now, via
+// js/ga-ad-loader.js - nothing here reads a prefetched ad-zone cache entry server-side, so
+// there's no ga_prefetch_page() call to make on this page anymore.
 ?>
 <html lang="en">
 

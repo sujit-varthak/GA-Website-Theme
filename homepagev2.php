@@ -17,32 +17,13 @@ ga_prefetch_page([
         [GA_EDITORS_PICK_SCAN_COUNT, 0, GA_NAV_CATEGORY_IDS['reviews']],
         [GA_MOST_POPULAR_FEED_SIZE, 0],
     ],
+    // Every zone but these two used to be listed here purely to warm the cache ga_render_ad()
+    // read from - now that ad content resolves client-side (see its comment in
+    // inc/helpers.php), that prefetch was pure waste. FULLSCREEN_INTERSTITIAL_AD and
+    // BOTTOM_STICKY_AD stay - both are still read synchronously here, to decide whether an ad
+    // is currently active for their zone at all (ga_prepare_interstitial_config() /
+    // ga_render_bottom_sticky_ad()).
     'adZones' => [
-        'HOMEPAGE_SIDEBAR_LEFT',
-        'HOMEPAGE_SIDEBAR_RIGHT',
-        'HOMEPAGE_ABOVE_HEADER_BANNER',
-        'HOMEPAGE_TOP_BANNER',
-        'HOMEPAGE_MOBILE_BANNER',
-        'HOMEPAGE_STRIP_BANNER_1',
-        'HOMEPAGE_STRIP_BANNER_2',
-        'HOMEPAGE_STRIP_BANNER_3',
-        'HOMEPAGE_MOBILE_AFTER_BIGSTORY_AD',
-        'HOMEPAGE_MOBILE_BEFORE_LATEST_NEWS_AD',
-        'HOMEPAGE_MOBILE_LATEST_NEWS_END_AD',
-        'HOMEPAGE_MOBILE_AFTER_TALK_OF_TOWN_AD',
-        'HOMEPAGE_MOBILE_AFTER_OPINION_AD',
-        'HOMEPAGE_MOBILE_BETWEEN_MOVIE_NEWS_GOSSIP_AD',
-        'HOMEPAGE_MOBILE_AFTER_MOVIE_GOSSIP_AD',
-        'HOMEPAGE_MOBILE_AFTER_TELANGANA_NEWS_AD',
-        'HOMEPAGE_MOBILE_AFTER_USA_SCHEDULE_AD',
-        'HOMEPAGE_MOBILE_AFTER_MOST_POPULAR_AD',
-        'HOMEPAGE_MOBILE_AFTER_TRENDING_TOPICS_AD',
-        'HOMEPAGE_AFTER_POLITICS_GOSSIP_AD',
-        'HOMEPAGE_BIG_STORY_BANNER',
-        'HOMEPAGE_LATEST_NEWS_INLINE_AD',
-        'HOMEPAGE_SECTION_INLINE',
-        'HOMEPAGE_OPINION_BANNER',
-        'HOMEPAGE_ARTICLE_WIDGET_AD',
         'FULLSCREEN_INTERSTITIAL_AD',
         'BOTTOM_STICKY_AD',
     ],

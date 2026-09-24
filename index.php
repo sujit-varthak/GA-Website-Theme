@@ -4,13 +4,17 @@ require_once __DIR__ . '/inc/helpers.php';
 ga_maybe_show_roadblock_ad();
 require_once __DIR__ . '/inc/api-client.php';
 
-// Fires the homepage aggregate + both article feeds + every ad zone below concurrently
-// (curl_multi) instead of the 17 sequential blocking calls this page used to make one at a
-// time. Every ga_fetch_*()/ga_render_ad() call below is unchanged — they just see a cache
-// warmed a moment ago instead of doing their own network round trip. FULLSCREEN_INTERSTITIAL_AD
-// is included below specifically so ga_prepare_interstitial_ad() (called right after, not
-// before) hits this warm cache instead of its own separate blocking request - it previously ran
-// before this batch even started, adding a full sequential network round trip to every page load.
+// Fires the homepage aggregate + both article feeds + the two ad zones actually needed
+// server-side concurrently (curl_multi), instead of the 17 sequential blocking calls this page
+// used to make one at a time. Every other ad zone used to be listed here too, to warm the cache
+// ga_render_ad() read from - now that ad content resolves client-side (see its comment in
+// inc/helpers.php), ga_render_ad() never calls ga_fetch_ad() during this page's own render at
+// all, so prefetching those zones' data was pure waste: real backend round trips for a result
+// nothing on this request would ever read. FULLSCREEN_INTERSTITIAL_AD and BOTTOM_STICKY_AD stay
+// - unlike every other zone, both are still read synchronously here (ga_prepare_interstitial_config()
+// and ga_render_bottom_sticky_ad() each still call ga_fetch_ad() directly, to decide whether an
+// ad is currently active for their zone at all), so prefetching them still avoids a cold,
+// separate blocking call for each.
 ga_prefetch_page([
     'homepage' => true,
     'articles' => [
@@ -18,31 +22,6 @@ ga_prefetch_page([
         [GA_MOST_POPULAR_FEED_SIZE, 0],
     ],
     'adZones' => [
-        'HOMEPAGE_SIDEBAR_LEFT',
-        'HOMEPAGE_SIDEBAR_RIGHT',
-        'HOMEPAGE_ABOVE_HEADER_BANNER',
-        'HOMEPAGE_TOP_BANNER',
-        'HOMEPAGE_MOBILE_BANNER',
-        'HOMEPAGE_STRIP_BANNER_1',
-        'HOMEPAGE_STRIP_BANNER_2',
-        'HOMEPAGE_STRIP_BANNER_3',
-        'HOMEPAGE_MOBILE_AFTER_BIGSTORY_AD',
-        'HOMEPAGE_MOBILE_BEFORE_LATEST_NEWS_AD',
-        'HOMEPAGE_MOBILE_LATEST_NEWS_END_AD',
-        'HOMEPAGE_MOBILE_AFTER_TALK_OF_TOWN_AD',
-        'HOMEPAGE_MOBILE_AFTER_OPINION_AD',
-        'HOMEPAGE_MOBILE_BETWEEN_MOVIE_NEWS_GOSSIP_AD',
-        'HOMEPAGE_MOBILE_AFTER_MOVIE_GOSSIP_AD',
-        'HOMEPAGE_MOBILE_AFTER_TELANGANA_NEWS_AD',
-        'HOMEPAGE_MOBILE_AFTER_USA_SCHEDULE_AD',
-        'HOMEPAGE_MOBILE_AFTER_MOST_POPULAR_AD',
-        'HOMEPAGE_MOBILE_AFTER_TRENDING_TOPICS_AD',
-        'HOMEPAGE_AFTER_POLITICS_GOSSIP_AD',
-        'HOMEPAGE_BIG_STORY_BANNER',
-        'HOMEPAGE_LATEST_NEWS_INLINE_AD',
-        'HOMEPAGE_SECTION_INLINE',
-        'HOMEPAGE_OPINION_BANNER',
-        'HOMEPAGE_ARTICLE_WIDGET_AD',
         'FULLSCREEN_INTERSTITIAL_AD',
         'BOTTOM_STICKY_AD',
     ],

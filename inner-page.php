@@ -36,14 +36,13 @@ ga_prefetch_page([
     'articles' => [
         [GA_RECOMMENDED_COUNT, 0, GA_ARTICLES_CATEGORY_ID, true],
     ],
+    // Every zone but these two used to be listed here purely to warm the cache ga_render_ad()
+    // read from - now that ad content resolves client-side (see its comment in
+    // inc/helpers.php), that prefetch was pure waste. FULLSCREEN_INTERSTITIAL_AD and
+    // BOTTOM_STICKY_AD stay - both are still read synchronously here, to decide whether an ad
+    // is currently active for their zone at all (ga_prepare_interstitial_config() /
+    // ga_render_bottom_sticky_ad()).
     'adZones' => [
-        'INNER_SIDEBAR_LEFT',
-        'INNER_SIDEBAR_RIGHT',
-        'INNER_TOP_BANNER',
-        'INNER_MOBILE_BANNER',
-        'INNER_ARTICLE_BANNER',
-        'INNER_SIDEBAR_BOTTOM_AD',
-        'INNER_ARTICLE_END_AD',
         'FULLSCREEN_INTERSTITIAL_AD',
         'BOTTOM_STICKY_AD',
     ],
@@ -587,22 +586,16 @@ if ($ga_article && !empty($ga_article['category']['id'])) {
                         // pasted into this zone in the admin is now the sole thing that renders here, sized
                         // however that script decides.
                         //
-                        // Buffered so the wrapper (and its min-width/min-height placeholder, and
-                        // .local_place_650X60's own padding) only render when there's actually something
-                        // to show - an empty/unconfigured zone should collapse to zero height, not leave a
-                        // blank reserved box.
-                        ob_start();
-                        ga_render_ad('INNER_ARTICLE_END_AD');
-                        $ga_end_ad_html = ob_get_clean();
-                        if ($ga_end_ad_html !== ''):
+                        // ga-ad-collapse-wrapper: whether this zone has an active ad isn't known here
+                        // anymore (ad content resolves client-side, see ga_render_ad()'s comment in
+                        // inc/helpers.php) - the ob_start()/collapse-if-empty check this used to do
+                        // server-side can't work now. js/ga-ad-loader.js hides this wrapper itself, after
+                        // the fact, if ad-fetch.php comes back with nothing for this zone - same
+                        // zero-height-when-empty result, just decided one request later than before.
                         ?>
-                        <div class="local_place_650X60">
-                            <div id="inner-article-end-ad" style="min-width: 320px; min-height: 260px;">
-                                <?php echo $ga_end_ad_html; ?>
-                            </div>
-
+                        <div class="local_place_650X60 ga-ad-collapse-wrapper">
+                            <?php ga_render_ad('INNER_ARTICLE_END_AD'); ?>
                         </div>
-                        <?php endif; ?>
 
                         <?php if (!empty($ga_related_articles)): ?>
                         <div class="header_re">RELATED ARTICLES</div>

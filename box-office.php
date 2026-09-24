@@ -17,8 +17,12 @@ $ga_bo_page = max(1, isset($_GET['page']) ? (int) $_GET['page'] : 1);
 $ga_bo_skip = ($ga_bo_page - 1) * GA_BOX_OFFICE_TAKE;
 
 // Fires the box-office listing feed + sidebar reviews feed + the 3 small Movie Rankings
-// endpoints + every ad zone on this page concurrently, instead of the ~6 sequential blocking
-// calls this page used to make one at a time.
+// endpoints concurrently, instead of the ~6 sequential blocking calls this page used to make
+// one at a time. adZones is now just the two zones something on this page still reads
+// server-side (FULLSCREEN_INTERSTITIAL_AD via ga_prepare_interstitial_config() below,
+// BOTTOM_STICKY_AD via ga_render_bottom_sticky_ad()'s existence check) - every other zone's ad
+// content now resolves client-side (see ga_render_ad() in inc/helpers.php), so prefetching them
+// here would just warm a cache entry nothing reads.
 ga_prefetch_page([
     'movieRankings' => true,
     'articles' => [
@@ -26,10 +30,6 @@ ga_prefetch_page([
         [GA_LIST_SIDEBAR_COUNT, 0, GA_NAV_CATEGORY_IDS['reviews']],
     ],
     'adZones' => [
-        'BOXOFFICE_TOP_BANNER',
-        'BOXOFFICE_MOBILE_BANNER',
-        'BOXOFFICE_STICKY_AD',
-        'BOXOFFICE_REVIEW_AD',
         'FULLSCREEN_INTERSTITIAL_AD',
         'BOTTOM_STICKY_AD',
     ],
@@ -533,13 +533,29 @@ function ga_box_office_url(int $page): string
                             (function () {
                                 var box = document.currentScript.previousElementSibling;
                                 if (!box || !box.classList.contains('boxoffice-sticky-ad')) return;
-                                var img = box.querySelector('img');
-                                if (!img || !img.src) return;
-                                function applyBg() {
-                                    box.style.backgroundImage = 'url(' + img.src + ')';
+                                var slot = box.querySelector('.ga-ad-slot');
+                                if (!slot) return;
+
+                                function tryApplyBg() {
+                                    var img = box.querySelector('img');
+                                    if (!img || !img.src) return;
+                                    function applyBg() {
+                                        box.style.backgroundImage = 'url(' + img.src + ')';
+                                    }
+                                    if (img.complete) applyBg();
+                                    else img.addEventListener('load', applyBg);
                                 }
-                                if (img.complete) applyBg();
-                                else img.addEventListener('load', applyBg);
+
+                                // The <img> ga_render_ad() used to render synchronously now arrives
+                                // asynchronously, via js/ga-ad-loader.js's fetch - wait for its
+                                // 'ga-ad-loaded' event (detail.loaded false means no ad was active
+                                // for this zone at all, nothing to apply) instead of assuming the
+                                // <img> is already there.
+                                slot.addEventListener('ga-ad-loaded', function (e) {
+                                    if (e.detail && e.detail.loaded) {
+                                        tryApplyBg();
+                                    }
+                                });
                             })();
                             </script>
                         </li>
