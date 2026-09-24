@@ -1537,11 +1537,26 @@ $ga_mobile_latest_news_articles = array_slice($ga_trending_articles, 0, GA_MOBIL
             }
         };
         (function() {
-            var d = document,
-                s = d.createElement('script');
-            s.async = true;
-            s.src = 'https://cdn.vuukle.com/platform.js';
-            (d.head || d.body).appendChild(s);
+            function ga_load_vuukle() {
+                var d = document,
+                    s = d.createElement('script');
+                s.async = true;
+                s.src = 'https://cdn.vuukle.com/platform.js';
+                (d.head || d.body).appendChild(s);
+            }
+            // Deferred to window 'load' instead of firing immediately - comments/emotes/powerbar
+            // are all disabled in VUUKLE_CONFIG above on this page (ads.noDefaults too), so
+            // nothing Vuukle renders here is time-critical. Loading platform.js immediately was
+            // pulling in its full ad-tech stack (Google Ad Manager's gpt.js, Prebid.js, Funding
+            // Choices consent, DoubleClick partner pixels - confirmed via the Performance API:
+            // together they accounted for most of this page's ~2s load time) at the same time as
+            // this page's own critical content and ad zones, competing with them for bandwidth
+            // and main-thread time. Waiting until 'load' lets everything else finish first.
+            if (document.readyState === 'complete') {
+                ga_load_vuukle();
+            } else {
+                window.addEventListener('load', ga_load_vuukle);
+            }
         })();
     </script>
 </body>
