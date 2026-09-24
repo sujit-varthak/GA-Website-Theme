@@ -157,8 +157,15 @@ if ($ga_article && !empty($ga_article['category']['id'])) {
     <link href="css/site-ads.css?v=<?php echo ga_asset_version('css/site-ads.css'); ?>" rel="stylesheet">
     <link href="css/header-mob.css?v=<?php echo ga_asset_version('css/header-mob.css'); ?>" rel="stylesheet">
     <script src="js/drawer.js?v=<?php echo ga_asset_version('js/drawer.js'); ?>"></script>
- 
-    
+    <?php // defer, not the bottom-of-body placement this used to have - starts downloading
+          // immediately, in parallel with the rest of this page's HTML, instead of only once
+          // the parser reaches the very end of it. Execution still waits for the full DOM
+          // (defer's own guarantee), so every .ga-ad-slot below is already there when it runs -
+          // same behavior, just no longer paying for the download as a trailing round trip
+          // after everything else has already rendered. ?>
+    <script src="js/ga-ad-loader.js?v=<?php echo ga_asset_version('js/ga-ad-loader.js'); ?>" defer></script>
+
+
 </head>
 
 <body>
@@ -826,7 +833,6 @@ if ($ga_article && !empty($ga_article['category']['id'])) {
 
         <script type="text/javascript" src="./js/jquery-ui-1.8.custom.min.js"> </script>
         <script type="text/javascript" src="./js/great_andhra_view_js_160_ad_1.js?v=<?php echo ga_asset_version('js/great_andhra_view_js_160_ad_1.js'); ?>"> </script>
-        <script type="text/javascript" src="./js/ga-ad-loader.js?v=<?php echo ga_asset_version('js/ga-ad-loader.js'); ?>"></script>
         <script type="text/javascript" src="./js/ga-interstitial.js?v=<?php echo ga_asset_version('js/ga-interstitial.js'); ?>"></script>
 
     </div><iframe scrolling="no" frameborder="0" allowtransparency="true"

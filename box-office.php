@@ -79,6 +79,13 @@ function ga_box_office_url(int $page): string
     <link href="css/site-ads.css?v=<?php echo ga_asset_version('css/site-ads.css'); ?>" rel="stylesheet">
     <link href="css/header-mob.css?v=<?php echo ga_asset_version('css/header-mob.css'); ?>" rel="stylesheet">
     <script src="js/drawer.js?v=<?php echo ga_asset_version('js/drawer.js'); ?>"></script>
+    <?php // defer, not the bottom-of-body placement this used to have - starts downloading
+          // immediately, in parallel with the rest of this page's HTML, instead of only once
+          // the parser reaches the very end of it. Execution still waits for the full DOM
+          // (defer's own guarantee), so every .ga-ad-slot below is already there when it runs -
+          // same behavior, just no longer paying for the download as a trailing round trip
+          // after everything else has already rendered. ?>
+    <script src="js/ga-ad-loader.js?v=<?php echo ga_asset_version('js/ga-ad-loader.js'); ?>" defer></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <!-- Start Alexa Certify Javascript -->
     <script type="text/javascript">
@@ -720,7 +727,6 @@ function ga_box_office_url(int $page): string
           // positions the fixed skyscraper ad panels and injects the ad's close (X) button -
           // Box Office was the one page on the site missing that button because of this. ?>
     <script type="text/javascript" src="js/great_andhra_view_js_160_1.js?v=<?php echo ga_asset_version('js/great_andhra_view_js_160_1.js'); ?>"></script>
-    <script type="text/javascript" src="js/ga-ad-loader.js?v=<?php echo ga_asset_version('js/ga-ad-loader.js'); ?>"></script>
     <script type="text/javascript" src="js/ga-interstitial.js?v=<?php echo ga_asset_version('js/ga-interstitial.js'); ?>"></script>
 
 

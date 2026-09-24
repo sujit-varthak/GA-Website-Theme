@@ -31,6 +31,13 @@ http_response_code(404);
     <link href="css/site-ads.css?v=<?php echo ga_asset_version('css/site-ads.css'); ?>" rel="stylesheet">
     <link href="css/header-mob.css?v=<?php echo ga_asset_version('css/header-mob.css'); ?>" rel="stylesheet">
     <script src="js/drawer.js?v=<?php echo ga_asset_version('js/drawer.js'); ?>"> </script>
+    <?php // defer, not the bottom-of-body placement this used to have - starts downloading
+          // immediately, in parallel with the rest of this page's HTML, instead of only once
+          // the parser reaches the very end of it. Execution still waits for the full DOM
+          // (defer's own guarantee), so every .ga-ad-slot below is already there when it runs -
+          // same behavior, just no longer paying for the download as a trailing round trip
+          // after everything else has already rendered. ?>
+    <script src="js/ga-ad-loader.js?v=<?php echo ga_asset_version('js/ga-ad-loader.js'); ?>" defer></script>
 
     <link href="./css/main-list-page.css?v=<?php echo ga_asset_version('css/main-list-page.css'); ?>" rel="stylesheet" />
     <link href="./css/list-page-mobile-responsive.css?v=<?php echo ga_asset_version('css/list-page-mobile-responsive.css'); ?>" rel="stylesheet" />
@@ -392,6 +399,5 @@ http_response_code(404);
     <?php // Positions .source-image-left/.source-image-right relative to the page's centered
           // 990px content column - same script every other page on the site uses for this. ?>
     <script src="js/great_andhra_view_js_160_1.js?v=<?php echo ga_asset_version('js/great_andhra_view_js_160_1.js'); ?>" type="text/javascript"></script>
-    <script src="js/ga-ad-loader.js?v=<?php echo ga_asset_version('js/ga-ad-loader.js'); ?>" type="text/javascript"></script>
 </body>
 </html>
