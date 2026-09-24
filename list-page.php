@@ -250,7 +250,7 @@ function ga_list_page_url(string $cleanPath, array $legacyParams, int $page): st
     <?php ga_render_bottom_sticky_ad(); ?>
 
     <div class="local_great" style="position:fixed; width:80px; float:left;">
-        <div class="source-image-left" style="float: left;left: 60px;">
+        <div class="source-image-left" style="float:left">
             <?php ga_render_ad('LISTPAGE_SIDEBAR_LEFT'); ?>
         </div>
     </div>

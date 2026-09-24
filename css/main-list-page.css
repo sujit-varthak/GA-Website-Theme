@@ -21,9 +21,9 @@ p {
    viewport-width-based left calculation (that script still runs and sets its own left via
    plain .css(), which !important here always wins over). .source-image-right is untouched
    and still tracks the content column dynamically. */
-/* .source-image-left {
+.source-image-left {
   left: 60px !important;
-} */
+}
 
 i.fas.fa-home {
   font-size: 16px;
