@@ -6,16 +6,18 @@ require_once __DIR__ . '/inc/api-client.php';
 $ga_return_to = ga_sanitize_local_path($_GET['return'] ?? null, '/');
 
 // Direct/bare hits with no roadblock cookie (bookmarked link, crawler, etc.) skip straight to
-// the destination — the ad only shows as part of the redirect chain from ga_maybe_show_roadblock_ad().
+// the destination — the ad only shows as part of the redirect chain from the homepage's own
+// client-side roadblock check (see ga_render_roadblock_check() in inc/helpers.php), which sets
+// this cookie itself right before navigating here.
 if (!isset($_COOKIE[GA_ROADBLOCK_COOKIE_NAME])) {
     header('Location: ' . $ga_return_to);
     exit;
 }
 
-// Same lookup ga_maybe_show_roadblock_ad() made when it set the cookie — re-fetched here
-// (cheap: file-cached) rather than passed through the redirect, since the cached admin ad
-// rarely changes mid-window. Falls back to the config-defined backup ad if the admin panel
-// has nothing active right now.
+// Same lookup ga_prepare_roadblock_config() made to decide whether to offer a redirect at all —
+// re-fetched here (cheap: file-cached) rather than passed through the redirect, since the
+// cached admin ad rarely changes mid-window. Falls back to the config-defined backup ad if the
+// admin panel has nothing active right now.
 $ga_is_mobile = ga_is_mobile();
 $ga_ad = ga_fetch_roadblock_ad(!$ga_is_mobile);
 $ga_ad = $ga_ad ?? (GA_AD_FALLBACKS['ROADBLOCK'] ?? null);

@@ -8,7 +8,7 @@ Core-PHP frontend for GreatAndhra.com. No framework, no WordPress — plain PHP 
 - `inner-page.php` — article detail page
 - `list-page.php` — category and tag listing page (numbered pagination)
 - `box-office.php` — Movies-category listing + Movie Rankings tables (This Week Top Five, All Time Top Films, USA Box Office)
-- `advertisement.php` — full-page roadblock ad, shown once per cookie window before any page renders (see `ga_maybe_show_roadblock_ad()`)
+- `advertisement.php` — full-page roadblock ad, shown once per cookie window before the homepage renders (the redirect decision itself runs client-side, via the inline script `ga_render_roadblock_check()` emits — see `inc/helpers.php`)
 - `clear-cache.php` — hits `?key=<GA_CACHE_CLEAR_KEY>` to wipe `cache/` on demand instead of waiting out the TTL
 - `.htaccess` — clean-URL rewriting (see below) — **requires Apache with `mod_rewrite`**
 - `config.php` — API base URL, cache TTLs, category/route tables, fallback images, title-truncation limits, roadblock ad settings

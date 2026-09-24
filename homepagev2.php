@@ -1,8 +1,14 @@
 <?php
 require_once __DIR__ . '/config.php';
 require_once __DIR__ . '/inc/helpers.php';
-ga_maybe_show_roadblock_ad();
 require_once __DIR__ . '/inc/api-client.php';
+
+// Safe to cache at Cloudflare's edge as of the client-side ad/interstitial/roadblock rework
+// (see ga_render_ad()/ga_render_interstitial_overlay()/ga_render_roadblock_check() in
+// inc/helpers.php) - this page's render is now identical for every visitor requesting it: no ad
+// content, interstitial-eligibility, or roadblock-redirect decision is baked in here anymore,
+// all three are resolved client-side per visitor after this cached HTML loads.
+header('Cache-Control: public, max-age=60, s-maxage=60');
 
 // Fires the homepage aggregate + both article feeds + every ad zone below concurrently
 // (curl_multi) instead of the 17 sequential blocking calls this page used to make one at a
@@ -30,6 +36,7 @@ ga_prefetch_page([
 ]);
 
 $ga_interstitial_config = ga_prepare_interstitial_config();
+$ga_roadblock_config = ga_prepare_roadblock_config();
 
 // Big Story hero + the flagged articles below the ad, and the "Top News" tab's trending
 // articles — all resolved server-side (filtering, sorting, hero-exclusion) by the same
@@ -96,6 +103,10 @@ $ga_mobile_latest_news_articles = array_slice($ga_trending_articles, 0, GA_MOBIL
 <head>
     <!--<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" /> -->
     <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+    <?php // Must stay this early - right after the charset meta, before any stylesheet/font/
+          // other resource below - so a roadblock redirect fires before this page's own content
+          // gets a chance to paint. See ga_render_roadblock_check()'s comment in inc/helpers.php. ?>
+    <?php ga_render_roadblock_check($ga_roadblock_config); ?>
     <title>No.1 Telugu news website in the world | Latest Telugu News - Greatandhra</title>
     <meta
         content="Greatandhra - World No 1 leading Telugu Daily News website delivers Andhra Pradesh and Telangana News, Latest Telugu News, Telugu News Paper Online, Astrology, Rasi Palan, Movie news, Political News in Telugu and English, Business News in Telugu and English, Tollywood, Cinema and Sports News in Telugu and English"

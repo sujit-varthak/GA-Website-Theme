@@ -512,34 +512,63 @@ function ga_sanitize_local_path(?string $path, string $fallback = '/'): string
     return $path;
 }
 
-// Called at the top of every page (before any API fetch or output): first visit in this
-// cookie window gets redirected to the roadblock ad instead of the page they asked for;
-// advertisement.php sends them on to their original destination once the ad's done.
-// Skips entirely once the cookie is set — the cookie's own TTL is the admin-managed roadblock
-// ad's roadblockCookieTTL when one is active (falls back to GA_ROADBLOCK_COOKIE_TTL otherwise),
-// so a "show again after N minutes" edit in the admin panel takes effect on the very next visit.
-function ga_maybe_show_roadblock_ad(): void
+// Resolves whether a roadblock ad is currently active (admin panel or config-defined
+// fallback), without the per-visitor cookie check baked in - that check now happens
+// client-side, via the inline script ga_render_roadblock_check() below emits, so the
+// homepage's render is identical for every visitor and safe to cache at Cloudflare's edge. This
+// result is still safe to compute server-side and bake into that cached HTML: it depends only
+// on what's configured in the admin panel right now, never on who's asking - same reasoning as
+// ga_prepare_interstitial_config() below.
+// Returns null when the feature is off or no roadblock ad is configured anywhere (admin panel
+// or GA_AD_FALLBACKS) - nothing to redirect a first-time-this-window visitor to.
+function ga_prepare_roadblock_config(): ?array
 {
-    if (!GA_ROADBLOCK_AD_ENABLED || isset($_COOKIE[GA_ROADBLOCK_COOKIE_NAME])) {
-        return;
+    if (!GA_ROADBLOCK_AD_ENABLED) {
+        return null;
     }
 
     require_once __DIR__ . '/api-client.php';
     $ad = ga_fetch_roadblock_ad(!ga_is_mobile());
     $ad = $ad ?? (GA_AD_FALLBACKS['ROADBLOCK'] ?? null);
-
-    // No active roadblock ad in the admin panel and no fallback configured — skip the
-    // interstitial entirely rather than redirect to an empty ad page.
     if ($ad === null) {
-        return;
+        return null;
     }
 
-    $cookieTtl = (int) ($ad['roadblockCookieTTL'] ?? GA_ROADBLOCK_COOKIE_TTL);
-    setcookie(GA_ROADBLOCK_COOKIE_NAME, '1', time() + $cookieTtl, '/');
+    return [
+        'cookieName' => GA_ROADBLOCK_COOKIE_NAME,
+        'cookieTtlSeconds' => (int) ($ad['roadblockCookieTTL'] ?? GA_ROADBLOCK_COOKIE_TTL),
+    ];
+}
 
-    $returnTo = ga_sanitize_local_path($_SERVER['REQUEST_URI'] ?? '/');
-    header('Location: /advertisement.php?return=' . rawurlencode($returnTo));
-    exit;
+// Emits the blocking inline script that makes the roadblock's actual per-visitor decision -
+// call site matters here: this must be the very first thing in <head> (right after the charset
+// meta), before any stylesheet, font, or other resource, so a redirect fires before the
+// homepage's own content gets a chance to paint. Checks document.cookie for the frequency
+// cookie itself (isset($_COOKIE[...]) used to do this server-side, in the now-removed
+// ga_maybe_show_roadblock_ad()); if absent, sets it with the same TTL the server used to and
+// replaces the page with advertisement.php - same outcome as the old 302, just decided a few ms
+// later, client-side, so the page underneath can be one identical cached response for everyone.
+function ga_render_roadblock_check(?array $config): void
+{
+    if ($config === null) {
+        return;
+    }
+    ?>
+    <script>
+    (function () {
+        var cookieName = <?php echo json_encode($config['cookieName']); ?>;
+        var cookies = document.cookie.split('; ');
+        for (var i = 0; i < cookies.length; i++) {
+            if (cookies[i].indexOf(cookieName + '=') === 0) {
+                return;
+            }
+        }
+        document.cookie = cookieName + '=1; max-age=<?php echo (int) $config['cookieTtlSeconds']; ?>; path=/';
+        var returnTo = location.pathname + location.search;
+        location.replace('/advertisement.php?return=' + encodeURIComponent(returnTo));
+    })();
+    </script>
+    <?php
 }
 
 // Classifies $_SERVER['HTTP_REFERER']'s path the same way .htaccess routes it, for the
@@ -578,12 +607,6 @@ function ga_classify_referer_page_type(): ?string
     return 'LISTPAGE';
 }
 
-// Decides whether the full-screen interstitial should show on this request - must be called
-// early, at the top of the page before any HTML output (same spot as
-// ga_maybe_show_roadblock_ad()), because TRANSITION mode sets a cookie here and setcookie()
-// fails once headers are already sent. The actual markup is echoed later, from within <body>,
-// by ga_render_interstitial_overlay() - passed this function's return value.
-//
 // Two independent trigger modes, chosen per-ad in the admin panel:
 //   - TRANSITION: only when the visitor's referrer page-type and the current page-type match
 //     the ad's configured From/To Page (ANY matches everything on that side). Cookie is set
@@ -592,8 +615,6 @@ function ga_classify_referer_page_type(): ?string
 //     (and only then sets the frequency cookie itself, via document.cookie - a visitor who
 //     leaves before the timer fires never saw it and shouldn't be cookie-capped out of seeing
 //     it on a later visit).
-// Returns null (render nothing) if the cookie is already set, the zone has no active ad, or a
-// TRANSITION ad's trigger doesn't match this visit.
 // Returns the currently active interstitial ad's CONFIG only (frequency, trigger rules) - no
 // cookie or referer check. Safe to call unconditionally, even on a page that gets cached at
 // Cloudflare's edge, since this result is identical for every visitor: it depends only on
