@@ -162,7 +162,7 @@ $ga_mobile_latest_news_articles = array_slice($ga_trending_articles, 0, GA_MOBIL
     <?php ga_render_bottom_sticky_ad(); ?>
     <div id="fb-root"></div>
     <div class="local_great" style="position:fixed; width:80px; float:left;">
-        <div class="source-image-left" style="float:left; display:block; left:69px;">
+        <div class="source-image-left" style="float:left; display:block; left:60px;">
             <?php ga_render_ad('HOMEPAGE_SIDEBAR_LEFT'); ?>
         </div>
     </div>
