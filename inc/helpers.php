@@ -594,9 +594,21 @@ function ga_classify_referer_page_type(): ?string
 //     it on a later visit).
 // Returns null (render nothing) if the cookie is already set, the zone has no active ad, or a
 // TRANSITION ad's trigger doesn't match this visit.
-function ga_prepare_interstitial_ad(string $currentPageType): ?array
+// Returns the currently active interstitial ad's CONFIG only (frequency, trigger rules) - no
+// cookie or referer check. Safe to call unconditionally, even on a page that gets cached at
+// Cloudflare's edge, since this result is identical for every visitor: it depends only on
+// what's configured in the admin panel right now, never on who's asking.
+//
+// The actual per-visitor eligibility decision (was this cookie already set; does the referer
+// match the configured transition) used to happen here too, server-side - that's exactly what
+// made every page calling this uncacheable, since two visitors hitting the same cached copy
+// need to be able to reach two different eligibility outcomes. That decision now happens in
+// js/ga-interstitial.js instead, reading this config back out of the data attributes
+// ga_render_interstitial_overlay() below embeds in the (always-present, initially hidden)
+// overlay markup.
+function ga_prepare_interstitial_config(): ?array
 {
-    if (!GA_INTERSTITIAL_AD_ENABLED || isset($_COOKIE[GA_INTERSTITIAL_COOKIE_NAME])) {
+    if (!GA_INTERSTITIAL_AD_ENABLED) {
         return null;
     }
 
@@ -607,44 +619,39 @@ function ga_prepare_interstitial_ad(string $currentPageType): ?array
     }
 
     $frequencyHours = max(1, (int) ($ad['interstitialFrequencyHours'] ?? GA_INTERSTITIAL_FREQUENCY_DEFAULT_HOURS));
-    $cookieTtlSeconds = $frequencyHours * 3600;
     $triggerType = $ad['interstitialTriggerType'] ?? 'TRANSITION';
-    $timerSeconds = null;
 
-    if ($triggerType === 'TIMER') {
-        $timerSeconds = max(1, (int) ($ad['interstitialTimerSeconds'] ?? 10));
-    } else {
-        $fromPage = $ad['interstitialFromPage'] ?? 'ANY';
-        $toPage = $ad['interstitialToPage'] ?? 'ANY';
-        $refererPageType = ga_classify_referer_page_type();
-        $matches = ($fromPage === 'ANY' || $fromPage === $refererPageType)
-            && ($toPage === 'ANY' || $toPage === $currentPageType);
-
-        // Doesn't match this visit's transition - render nothing, and don't set the cookie
-        // either, so a later matching transition in the same visit can still trigger it.
-        if (!$matches) {
-            return null;
-        }
-
-        setcookie(GA_INTERSTITIAL_COOKIE_NAME, '1', time() + $cookieTtlSeconds, '/');
-    }
-
-    return ['ad' => $ad, 'timerSeconds' => $timerSeconds, 'cookieTtlSeconds' => $cookieTtlSeconds];
+    return [
+        'cookieTtlSeconds' => $frequencyHours * 3600,
+        'triggerType' => $triggerType,
+        'timerSeconds' => $triggerType === 'TIMER' ? max(1, (int) ($ad['interstitialTimerSeconds'] ?? 10)) : null,
+        'fromPage' => $ad['interstitialFromPage'] ?? 'ANY',
+        'toPage' => $ad['interstitialToPage'] ?? 'ANY',
+    ];
 }
 
-// Echoes the overlay markup from within <body>, using the decision ga_prepare_interstitial_ad()
-// already made (and already acted on, cookie-wise) at the top of the page. No-ops on null.
-function ga_render_interstitial_overlay(?array $decision): void
+// Echoes the overlay markup from within <body> - always present (when an interstitial ad is
+// configured at all) and always hidden by default now, unlike before when PHP only emitted it
+// on visits ga_prepare_interstitial_ad() had already decided were eligible. js/ga-interstitial.js
+// reads the data-interstitial-* attributes below to make that same decision client-side (cookie
+// + referer/page-type), then reveals the overlay and loads its ad slot itself if eligible - see
+// that file for the full decision logic, ported from ga_classify_referer_page_type() above and
+// the removed cookie/referer branch that used to live in ga_prepare_interstitial_ad().
+function ga_render_interstitial_overlay(?array $config, string $currentPageType): void
 {
-    if ($decision === null) {
+    if ($config === null) {
         return;
     }
-
-    $adName = $decision['ad']['name'] ?? 'Advertisement';
-    $timerSeconds = $decision['timerSeconds'];
-    $cookieTtlSeconds = $decision['cookieTtlSeconds'];
     ?>
-    <div id="ga-interstitial-overlay" class="ga-interstitial-overlay"<?php echo $timerSeconds !== null ? ' style="display:none;"' : ''; ?> role="dialog" aria-label="<?php echo ga_e($adName); ?>">
+    <div id="ga-interstitial-overlay" class="ga-interstitial-overlay" style="display:none;" role="dialog" aria-label="Advertisement"
+        data-interstitial-cookie-name="<?php echo ga_e(GA_INTERSTITIAL_COOKIE_NAME); ?>"
+        data-interstitial-cookie-ttl="<?php echo (int) $config['cookieTtlSeconds']; ?>"
+        data-interstitial-trigger-type="<?php echo ga_e($config['triggerType']); ?>"
+        data-interstitial-timer-seconds="<?php echo $config['timerSeconds'] !== null ? (int) $config['timerSeconds'] : ''; ?>"
+        data-interstitial-from-page="<?php echo ga_e($config['fromPage']); ?>"
+        data-interstitial-to-page="<?php echo ga_e($config['toPage']); ?>"
+        data-interstitial-current-page="<?php echo ga_e($currentPageType); ?>"
+    >
         <div class="ga-interstitial-box">
             <button type="button" class="ga-interstitial-close" aria-label="Close">&times;</button>
             <div class="ga-interstitial-media">
@@ -652,24 +659,6 @@ function ga_render_interstitial_overlay(?array $decision): void
             </div>
         </div>
     </div>
-    <script>
-    (function () {
-        var overlay = document.getElementById('ga-interstitial-overlay');
-        if (!overlay) return;
-        var closeBtn = overlay.querySelector('.ga-interstitial-close');
-        closeBtn.addEventListener('click', function () {
-            overlay.style.display = 'none';
-        });
-        <?php if ($timerSeconds !== null): ?>
-        setTimeout(function () {
-            overlay.style.display = 'flex';
-            try {
-                document.cookie = <?php echo json_encode(GA_INTERSTITIAL_COOKIE_NAME); ?> + '=1; max-age=' + <?php echo (int) $cookieTtlSeconds; ?> + '; path=/';
-            } catch (e) {}
-        }, <?php echo (int) $timerSeconds * 1000; ?>);
-        <?php endif; ?>
-    })();
-    </script>
     <?php
 }
 
@@ -732,39 +721,38 @@ function ga_is_mobile(): bool
     return $isMobile;
 }
 
-// Renders one ad slot for $zone (an AdZone string matching the backend's enum, e.g.
-// 'HOMEPAGE_SIDEBAR_LEFT'): fetches the active admin-managed ad, falls back to
-// GA_AD_FALLBACKS[$zone] if none is active, and renders nothing if neither exists. IMAGE ads
-// render as a linked <img> (desktop or mobile source based on ga_is_mobile()); SCRIPT ads
-// output the stored embed code as-is — trusted admin-authored content, not user input. No
-// "Advertisement" caption is ever printed — removed site-wide per admin request.
+// Builds one ad slot's inner HTML for $zone (an AdZone string matching the backend's enum,
+// e.g. 'HOMEPAGE_SIDEBAR_LEFT'): fetches the active admin-managed ad, falls back to
+// GA_AD_FALLBACKS[$zone] if none is active, and returns '' if neither exists. IMAGE ads render
+// as a linked <img> (desktop or mobile source based on $isMobile); SCRIPT ads output the
+// stored embed code as-is — trusted admin-authored content, not user input. No "Advertisement"
+// caption is ever printed — removed site-wide per admin request.
 // $dimensionZone overrides which GA_AD_ZONE_IMAGE_DIMENSIONS entry sizes the <img> — for a
 // call site that fetches one zone's ad but needs a different fixed size than that zone's own
 // primary placement (e.g. the homepage phone-view banner reuses HOMEPAGE_TOP_BANNER's ad but
 // sizes it like the old HOMEPAGE_MOBILE_BANNER slot, not the 728x90 desktop banner).
-function ga_render_ad(string $zone, ?string $dimensionZone = null): void
+//
+// Pure string builder, no echo - used by both ad-fetch.php (the client-side loader's target,
+// see ga_render_ad() below) and could be called directly by anything that genuinely needs a
+// server-rendered ad string.
+function ga_build_ad_html(string $zone, ?string $dimensionZone, bool $isMobile): string
 {
-    $isMobile = ga_is_mobile();
     $ad = ga_fetch_ad($zone, !$isMobile);
     $ad = $ad ?? (GA_AD_FALLBACKS[$zone] ?? null);
 
     if ($ad === null) {
-        return;
+        return '';
     }
 
     if (($ad['type'] ?? 'IMAGE') === 'SCRIPT') {
-        $script = $ad['scriptCode'] ?? '';
-        if ($script !== '') {
-            echo $script;
-        }
-        return;
+        return $ad['scriptCode'] ?? '';
     }
 
     $imageUrl = $isMobile
         ? ($ad['imageUrlMobile'] ?? $ad['imageUrlDesktop'] ?? '')
         : ($ad['imageUrlDesktop'] ?? $ad['imageUrlMobile'] ?? '');
     if ($imageUrl === '') {
-        return;
+        return '';
     }
 
     $landingUrl = $ad['landingUrl'] ?? '';
@@ -799,11 +787,41 @@ function ga_render_ad(string $zone, ?string $dimensionZone = null): void
     }
     $imgAttrs .= ' style="' . implode('; ', $styleParts) . ';"';
 
+    $html = '';
     if ($landingUrl !== '') {
-        echo '<a href="' . ga_e($landingUrl) . '" target="_blank" rel="noopener">';
+        $html .= '<a href="' . ga_e($landingUrl) . '" target="_blank" rel="noopener">';
     }
-    echo '<img alt="' . ga_e($name) . '" src="' . ga_e($imageUrl) . '"' . $imgAttrs . ' border="0" />';
+    $html .= '<img alt="' . ga_e($name) . '" src="' . ga_e($imageUrl) . '"' . $imgAttrs . ' border="0" />';
     if ($landingUrl !== '') {
-        echo '</a>';
+        $html .= '</a>';
     }
+    return $html;
+}
+
+// Renders one ad slot for $zone - as of the edge-caching work, this is a placeholder div only
+// (ga-ad-slot, see js/ga-ad-loader.js), not the ad content itself. Every ad zone used to be
+// server-rendered with a random pick already baked into the HTML, which made every page
+// containing one unsafe to cache at Cloudflare's edge: two visitors hitting the same cached
+// page would be frozen onto whichever ad happened to render into that cached copy, defeating
+// rotation entirely. The loader fetches this zone's actual ad fresh, client-side, via
+// ad-fetch.php (which calls ga_build_ad_html() above) - same admin-managed ad data, just
+// resolved per-visitor instead of per-cache-entry. GA_AD_ZONE_IMAGE_DIMENSIONS still sizes the
+// placeholder (as min-width/min-height, not a hard width) so the layout doesn't jump once the
+// real ad loads in.
+function ga_render_ad(string $zone, ?string $dimensionZone = null): void
+{
+    $dims = GA_AD_ZONE_IMAGE_DIMENSIONS[$dimensionZone ?? $zone] ?? null;
+    $styleParts = [];
+    if ($dims !== null) {
+        if ($dims['width'] !== null) {
+            $styleParts[] = 'min-width: ' . (int) $dims['width'] . 'px';
+        }
+        if ($dims['height'] !== null) {
+            $styleParts[] = 'min-height: ' . (int) $dims['height'] . 'px';
+        }
+    }
+    $style = $styleParts !== [] ? ' style="' . implode('; ', $styleParts) . ';"' : '';
+    $dimAttr = $dimensionZone !== null ? ' data-ad-dimension-zone="' . ga_e($dimensionZone) . '"' : '';
+
+    echo '<div class="ga-ad-slot" data-ad-zone="' . ga_e($zone) . '"' . $dimAttr . $style . '></div>';
 }

@@ -48,7 +48,7 @@ ga_prefetch_page([
     ],
 ]);
 
-$ga_interstitial_decision = ga_prepare_interstitial_ad('HOME');
+$ga_interstitial_config = ga_prepare_interstitial_config();
 
 // Big Story hero + the flagged articles below the ad, and the "Top News" tab's trending
 // articles — all resolved server-side (filtering, sorting, hero-exclusion) by the same
@@ -158,7 +158,7 @@ $ga_mobile_latest_news_articles = array_slice($ga_trending_articles, 0, GA_MOBIL
 </head>
 
 <body>
-    <?php ga_render_interstitial_overlay($ga_interstitial_decision); ?>
+    <?php ga_render_interstitial_overlay($ga_interstitial_config, 'HOME'); ?>
     <?php ga_render_bottom_sticky_ad(); ?>
     <div id="fb-root"></div>
     <div class="local_great" style="position:fixed; width:80px; float:left;">
@@ -1189,6 +1189,8 @@ $ga_mobile_latest_news_articles = array_slice($ga_trending_articles, 0, GA_MOBIL
     <script src="js/jquery-ui-1.8.custom.min.js" type="text/javascript"> </script>
     <script src="js/jquery.marquee.js" type="text/javascript"> </script>
     <script src="js/great_andhra_view_js_160_1.js?v=<?php echo ga_asset_version('js/great_andhra_view_js_160_1.js'); ?>" type="text/javascript"> </script>
+    <script src="js/ga-ad-loader.js?v=<?php echo ga_asset_version('js/ga-ad-loader.js'); ?>" type="text/javascript"></script>
+    <script src="js/ga-interstitial.js?v=<?php echo ga_asset_version('js/ga-interstitial.js'); ?>" type="text/javascript"></script>
     <script>
         // Powers the "Top News / Most Read / Telugu" tab widget above.
         function openTabs(evt, cityName) {

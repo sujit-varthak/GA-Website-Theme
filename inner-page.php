@@ -5,6 +5,16 @@ require_once __DIR__ . '/inc/helpers.php';
 // showing on every page type, which the user found intrusive on list/box-office/article pages.
 require_once __DIR__ . '/inc/api-client.php';
 
+// Safe to cache at Cloudflare's edge as of the client-side ad/interstitial rework (see
+// ga_render_ad()/ga_render_interstitial_overlay() in inc/helpers.php) - this page's render is
+// now identical for every visitor requesting the same article URL: no ad content or
+// interstitial-eligibility decision is baked in here anymore, both are resolved client-side
+// per visitor after this cached HTML loads. Applies to the not-found/unavailable render
+// branches too (same file, no separate exit path) - a short-lived cached "not found" is
+// correct for a genuinely bad id, and a cached "unavailable" during a real backend outage is
+// an acceptable, self-correcting 60s staleness rather than a reason to special-case this.
+header('Cache-Control: public, max-age=60, s-maxage=60');
+
 // New URL shape: inner-page.php/{id}/{categorySlug}/{subCategorySlug?}/{titleSlug} — the
 // UUID is always the first path segment, regardless of how many category segments follow.
 // ?id= still works as a fallback for any old-style links.
@@ -42,7 +52,7 @@ ga_prefetch_page([
 // Reads the FULLSCREEN_INTERSTITIAL_AD zone from the cache the batch above just warmed,
 // instead of its own separate blocking request (previously called before ga_prefetch_page(),
 // adding a full sequential network round trip to every page load).
-$ga_interstitial_decision = ga_prepare_interstitial_ad('ARTICLE');
+$ga_interstitial_config = ga_prepare_interstitial_config();
 
 $ga_result = $ga_id !== '' ? ga_fetch_article_by_id($ga_id) : ['status' => 'not_found', 'article' => null];
 $ga_status = $ga_result['status'];
@@ -153,7 +163,7 @@ if ($ga_article && !empty($ga_article['category']['id'])) {
 </head>
 
 <body>
-    <?php ga_render_interstitial_overlay($ga_interstitial_decision); ?>
+    <?php ga_render_interstitial_overlay($ga_interstitial_config, 'ARTICLE'); ?>
     <?php ga_render_bottom_sticky_ad(); ?>
     <div id="fb-root" class=" fb_reset">
         <div style="position: absolute; top: -10000px; width: 0px; height: 0px;">
@@ -823,6 +833,8 @@ if ($ga_article && !empty($ga_article['category']['id'])) {
 
         <script type="text/javascript" src="./js/jquery-ui-1.8.custom.min.js"> </script>
         <script type="text/javascript" src="./js/great_andhra_view_js_160_ad_1.js?v=<?php echo ga_asset_version('js/great_andhra_view_js_160_ad_1.js'); ?>"> </script>
+        <script type="text/javascript" src="./js/ga-ad-loader.js?v=<?php echo ga_asset_version('js/ga-ad-loader.js'); ?>"></script>
+        <script type="text/javascript" src="./js/ga-interstitial.js?v=<?php echo ga_asset_version('js/ga-interstitial.js'); ?>"></script>
 
     </div><iframe scrolling="no" frameborder="0" allowtransparency="true"
         src="https://platform.twitter.com/widgets/widget_iframe.2f70fb173b9000da126c79afe2098f02.html?origin=https%3A%2F%2Fwww.greatandhra.com"

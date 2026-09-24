@@ -398,5 +398,6 @@ ga_prefetch_page([
     <?php // Positions .source-image-left/.source-image-right relative to the page's centered
           // 990px content column - same script every other page on the site uses for this. ?>
     <script src="js/great_andhra_view_js_160_1.js?v=<?php echo ga_asset_version('js/great_andhra_view_js_160_1.js'); ?>" type="text/javascript"></script>
+    <script src="js/ga-ad-loader.js?v=<?php echo ga_asset_version('js/ga-ad-loader.js'); ?>" type="text/javascript"></script>
 </body>
 </html>

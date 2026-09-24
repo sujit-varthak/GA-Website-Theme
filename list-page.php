@@ -113,6 +113,18 @@ if ($ga_path_info !== '') {
     }
 }
 
+// Safe to cache at Cloudflare's edge as of the client-side ad/interstitial rework (see
+// ga_render_ad()/ga_render_interstitial_overlay() in inc/helpers.php) - this point in the file
+// is only reached by the actual page render (every redirect/404 branch above already exited),
+// and that render is now identical for every visitor requesting the same URL: no ad content or
+// interstitial-eligibility decision is baked in here anymore, both are resolved client-side
+// per visitor after this cached HTML loads. public/max-age so browsers and Cloudflare both
+// treat it as cacheable; s-maxage separately for Cloudflare specifically, since it doesn't
+// need to match how long an individual browser tab keeps its own copy. Still needs a matching
+// Cloudflare Cache Rule to actually take effect there - Cloudflare doesn't cache HTML by
+// default regardless of this header.
+header('Cache-Control: public, max-age=60, s-maxage=60');
+
 $ga_page_heading = $ga_is_tag_mode ? $ga_tag_name : $ga_category_name;
 
 // ga_fetch_articles() now returns a total count matching the filter (confirmed live
@@ -153,7 +165,7 @@ ga_prefetch_page([
 // Reads the FULLSCREEN_INTERSTITIAL_AD zone from the cache the batch above just warmed,
 // instead of its own separate blocking request (previously called before ga_prefetch_page(),
 // adding a full sequential network round trip to every page load).
-$ga_interstitial_decision = ga_prepare_interstitial_ad('LISTPAGE');
+$ga_interstitial_config = ga_prepare_interstitial_config();
 
 $ga_list_articles = [];
 $ga_total = 0;
@@ -246,7 +258,7 @@ function ga_list_page_url(string $cleanPath, array $legacyParams, int $page): st
 </head>
 
 <body class="home_bg">
-    <?php ga_render_interstitial_overlay($ga_interstitial_decision); ?>
+    <?php ga_render_interstitial_overlay($ga_interstitial_config, 'LISTPAGE'); ?>
     <?php ga_render_bottom_sticky_ad(); ?>
 
     <div class="local_great" style="position:fixed; width:80px; float:left;">
@@ -872,6 +884,8 @@ function ga_list_page_url(string $cleanPath, array $legacyParams, int $page): st
     // "stick" against the content edges the way they do on index.php. 
     ?>
     <script src="js/great_andhra_view_js_160_1.js?v=<?php echo ga_asset_version('js/great_andhra_view_js_160_1.js'); ?>" type="text/javascript"></script>
+    <script src="js/ga-ad-loader.js?v=<?php echo ga_asset_version('js/ga-ad-loader.js'); ?>" type="text/javascript"></script>
+    <script src="js/ga-interstitial.js?v=<?php echo ga_asset_version('js/ga-interstitial.js'); ?>" type="text/javascript"></script>
 </body>
 
 </html>

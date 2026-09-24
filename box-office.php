@@ -5,6 +5,14 @@ require_once __DIR__ . '/inc/helpers.php';
 // showing on every page type, which the user found intrusive on list/box-office/article pages.
 require_once __DIR__ . '/inc/api-client.php';
 
+// Safe to cache at Cloudflare's edge as of the client-side ad/interstitial rework (see
+// ga_render_ad()/ga_render_interstitial_overlay() in inc/helpers.php) - this page's render is
+// now identical for every visitor requesting the same URL (page number included, since that's
+// part of the querystring/cache key): no ad content or interstitial-eligibility decision is
+// baked in here anymore, both are resolved client-side per visitor after this cached HTML
+// loads.
+header('Cache-Control: public, max-age=60, s-maxage=60');
+
 $ga_bo_page = max(1, isset($_GET['page']) ? (int) $_GET['page'] : 1);
 $ga_bo_skip = ($ga_bo_page - 1) * GA_BOX_OFFICE_TAKE;
 
@@ -30,7 +38,7 @@ ga_prefetch_page([
 // Reads the FULLSCREEN_INTERSTITIAL_AD zone from the cache the batch above just warmed,
 // instead of its own separate blocking request (previously called before ga_prefetch_page(),
 // adding a full sequential network round trip to every page load).
-$ga_interstitial_decision = ga_prepare_interstitial_ad('BOXOFFICE');
+$ga_interstitial_config = ga_prepare_interstitial_config();
 
 $ga_bo_result = ga_fetch_articles(GA_BOX_OFFICE_TAKE, $ga_bo_skip, GA_NAV_CATEGORY_IDS['movies'], true);
 $ga_bo_articles = $ga_bo_result['items'] ?? [];
@@ -126,7 +134,7 @@ function ga_box_office_url(int $page): string
 </head>
 
 <body class="home_bg">
-    <?php ga_render_interstitial_overlay($ga_interstitial_decision); ?>
+    <?php ga_render_interstitial_overlay($ga_interstitial_config, 'BOXOFFICE'); ?>
     <?php ga_render_bottom_sticky_ad(); ?>
     <!--great_andhra_body-->
     <div class="great_andhra_movie_body">
@@ -696,6 +704,8 @@ function ga_box_office_url(int $page): string
           // positions the fixed skyscraper ad panels and injects the ad's close (X) button -
           // Box Office was the one page on the site missing that button because of this. ?>
     <script type="text/javascript" src="js/great_andhra_view_js_160_1.js?v=<?php echo ga_asset_version('js/great_andhra_view_js_160_1.js'); ?>"></script>
+    <script type="text/javascript" src="js/ga-ad-loader.js?v=<?php echo ga_asset_version('js/ga-ad-loader.js'); ?>"></script>
+    <script type="text/javascript" src="js/ga-interstitial.js?v=<?php echo ga_asset_version('js/ga-interstitial.js'); ?>"></script>
 
 
     <style>
