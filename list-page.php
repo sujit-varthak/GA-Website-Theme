@@ -218,7 +218,7 @@ function ga_list_page_url(string $cleanPath, array $legacyParams, int $page): st
     <title>Latest News Today,Current News,online News,Latest Breaking News Headlines,Live News,Video News- Greatandhra
     </title>
     <?php if ($ga_clean_path !== ''): ?>
-    <link rel="canonical" href="https://www.greatandhra.com/<?php echo ga_e($ga_clean_path); ?><?php echo $ga_page > 1 ? '?page=' . $ga_page : ''; ?>">
+        <link rel="canonical" href="https://www.greatandhra.com/<?php echo ga_e($ga_clean_path); ?><?php echo $ga_page > 1 ? '?page=' . $ga_page : ''; ?>">
     <?php endif; ?>
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,400italic,700,700italic|Roboto+Condensed:400,700"
         rel="stylesheet">
@@ -236,11 +236,12 @@ function ga_list_page_url(string $cleanPath, array $legacyParams, int $page): st
     <link type="text/css" href="//fonts.googleapis.com/css?family=Google%20Sans%3A400" rel="stylesheet">
     <link type="text/css" href="//fonts.googleapis.com/css?family=Google%20Sans%3A700" rel="stylesheet">
     <?php // jQuery, loaded here (head) same as index.php - every inline script below the top
-          // banner ad assumes it's already available. Previously loaded from
-          // https://www.greatandhra.com/js/jquery.min.1.8.2.js, the old WordPress domain's copy
-          // of this file - confirmed that now 404s there, so jQuery silently never loaded on
-          // this page at all, breaking every $()-dependent script on it (sticky nav, search
-          // toggle, dropdowns, and the sidebar-ad positioning script added below). ?>
+    // banner ad assumes it's already available. Previously loaded from
+    // https://www.greatandhra.com/js/jquery.min.1.8.2.js, the old WordPress domain's copy
+    // of this file - confirmed that now 404s there, so jQuery silently never loaded on
+    // this page at all, breaking every $()-dependent script on it (sticky nav, search
+    // toggle, dropdowns, and the sidebar-ad positioning script added below). 
+    ?>
     <script type="text/javascript" src="assets/jquery.min.1.8.2.js"></script>
 </head>
 
@@ -249,7 +250,7 @@ function ga_list_page_url(string $cleanPath, array $legacyParams, int $page): st
     <?php ga_render_bottom_sticky_ad(); ?>
 
     <div class="local_great" style="position:fixed; width:80px; float:left;">
-        <div class="source-image-left" style="float:left">
+        <div class="source-image-left" style="float: left;left: 60px;">
             <?php ga_render_ad('LISTPAGE_SIDEBAR_LEFT'); ?>
         </div>
     </div>
@@ -270,7 +271,8 @@ function ga_list_page_url(string $cleanPath, array $legacyParams, int $page): st
                     <img src="./images/great_andhra.gif" title="Greatandhra website logo" alt="Greatandhra logo">
                 </a>
                 <div class="AdinHedare">
-                    <?php // Same ad as the homepage's top banner - not independently manageable. ?>
+                    <?php // Same ad as the homepage's top banner - not independently manageable. 
+                    ?>
                     <?php ga_render_ad('LISTPAGE_TOP_BANNER'); ?>
                 </div>
             </div>
@@ -278,17 +280,19 @@ function ga_list_page_url(string $cleanPath, array $legacyParams, int $page): st
             <!--great_andhra_logo_panel-->
             <!--great_andhra_main_menu_panel-->
             <?php // Was the old v5.7.0 CDN link with a since-stale integrity hash - the browser's
-                  // SRI check silently blocked the whole file, so this page rendered with no icon
-                  // font at all. Same cdnjs v6.5.1 link every other page already uses. ?>
+            // SRI check silently blocked the whole file, so this page rendered with no icon
+            // font at all. Same cdnjs v6.5.1 link every other page already uses. 
+            ?>
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
             <script>
                 <?php // #great_andhra_main_menu_panel_2019 doesn't exist on this page (it's
-                      // homepage-only markup) - $(...).offset() on an empty jQuery set returns
-                      // undefined, so .top threw uncaught here on every load. That silently
-                      // aborted every OTHER $(document).ready() handler registered later in the
-                      // page too (jQuery 1.8's ready-queue stops on an unhandled exception),
-                      // which is why the sidebar-ad positioning script below never ran. ?>
-                $(function () {
+                // homepage-only markup) - $(...).offset() on an empty jQuery set returns
+                // undefined, so .top threw uncaught here on every load. That silently
+                // aborted every OTHER $(document).ready() handler registered later in the
+                // page too (jQuery 1.8's ready-queue stops on an unhandled exception),
+                // which is why the sidebar-ad positioning script below never ran. 
+                ?>
+                $(function() {
                     var $stickyNav = $('#great_andhra_main_menu_panel_2019');
                     if ($stickyNav.length === 0) {
                         return;
@@ -298,14 +302,19 @@ function ga_list_page_url(string $cleanPath, array $legacyParams, int $page): st
                     var sticky_navigation_offset_top = $stickyNav.offset().top;
 
                     // our function that decides weather the navigation bar should have "fixed" css position or not.
-                    var great_andhra_main_menu_panel_2019 = function () {
+                    var great_andhra_main_menu_panel_2019 = function() {
                         var scroll_top = $(window).scrollTop(); // our current vertical position from the top
 
                         // if we've scrolled more than the navigation, change its position to fixed to stick to top, otherwise change it back to relative
                         if (scroll_top > sticky_navigation_offset_top) {
-                            $('#great_andhra_main_menu_panel_2019').css({ 'position': 'fixed', 'top': 0 });
+                            $('#great_andhra_main_menu_panel_2019').css({
+                                'position': 'fixed',
+                                'top': 0
+                            });
                         } else {
-                            $('#great_andhra_main_menu_panel_2019').css({ 'position': 'relative' });
+                            $('#great_andhra_main_menu_panel_2019').css({
+                                'position': 'relative'
+                            });
                         }
                     };
 
@@ -313,13 +322,13 @@ function ga_list_page_url(string $cleanPath, array $legacyParams, int $page): st
                     great_andhra_main_menu_panel_2019();
 
                     // and run it again every time you scroll
-                    $(window).scroll(function () {
+                    $(window).scroll(function() {
                         great_andhra_main_menu_panel_2019();
                     });
 
                     // NOT required:
                     // for this demo disable all links that point to "#"
-                    $('a[href="#"]').click(function (event) {
+                    $('a[href="#"]').click(function(event) {
                         event.preventDefault();
                     });
 
@@ -328,15 +337,15 @@ function ga_list_page_url(string $cleanPath, array $legacyParams, int $page): st
 
             <!---Search button-->
             <script type="text/javascript">
-                $(document).ready(function (e) {
-                    $('.search_img').click(function () {
+                $(document).ready(function(e) {
+                    $('.search_img').click(function() {
                         $('#search_box_new').slideToggle('slow');
                     });
                 });
             </script>
             <script>
-                $(document).ready(function () {
-                    $(".dropdown").click(function () {
+                $(document).ready(function() {
+                    $(".dropdown").click(function() {
                         $(".dropdown-content").toggle();
                     });
                 });
@@ -435,105 +444,106 @@ function ga_list_page_url(string $cleanPath, array $legacyParams, int $page): st
                     </li>
                 </ul>
             </nav>
-            
-            
+
+
             <div class="great_andhra_logo_panel-mob">
-            <!-- First Row: Logo and Hamburger -->
-            <div class="logo-bar">
-                <a class="logo" href="/">
-                    <img alt="Greatandhra logo" src="images/great_andhra.gif" title="Greatandhra website Logo" />
-                </a>
+                <!-- First Row: Logo and Hamburger -->
+                <div class="logo-bar">
+                    <a class="logo" href="/">
+                        <img alt="Greatandhra logo" src="images/great_andhra.gif" title="Greatandhra website Logo" />
+                    </a>
 
-                <button class="hamburger-menu" id="hamburgerBtn" aria-label="Menu">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </button>
-            </div>
+                    <button class="hamburger-menu" id="hamburgerBtn" aria-label="Menu">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
+                </div>
 
-            <!-- Mobile Navigation Menu -->
-            <div class="mobile-nav-wrapper" id="mobileNav">
-                <div class="mobile-nav-content">
-                    <ul class="mobile-menu">
-                        <li>
-                            <a href="index.php">
-                                <i class="fas fa-home"></i> Home
-                            </a>
-                        </li>
-                        <li>
-                            <a href="<?php echo ga_e(ga_nav_category_link('latest-news', 'Latest News')); ?>">Latest</a>
-                        </li>
-                        <li class="has-submenu">
-                            <a href="<?php echo ga_e(ga_nav_category_link('politics', 'Politics', true)); ?>" class="submenu-toggle">
-                                Politics <i class="fas fa-caret-down"></i>
-                            </a>
-                            <ul class="submenu">
-                                <li><a href="<?php echo ga_e(ga_nav_category_link('andhra-news', 'Andhra News')); ?>">Andhra</a></li>
-                                <li><a href="<?php echo ga_e(ga_nav_category_link('telangana-news', 'Telangana News')); ?>">Telangana</a></li>
-                                <li><a href="<?php echo ga_e(ga_nav_category_link('india-news', 'India News')); ?>">India</a></li>
-                            </ul>
-                        </li>
-                        <li class="has-submenu">
-                            <a href="<?php echo ga_e(ga_nav_category_link('movies', 'Movies', true)); ?>" class="submenu-toggle">
-                                Movies <i class="fas fa-caret-down"></i>
-                            </a>
-                            <ul class="submenu">
-                                <li><a href="<?php echo ga_e(ga_nav_category_link('movie-news', 'Movie News')); ?>">News</a></li>
-                                <li><a href="<?php echo ga_e(ga_nav_category_link('movie-gossip', 'Movie Gossip')); ?>">Gossip</a></li>
-                                <li><a href="box-office">Box Office</a></li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a href="<?php echo ga_e(ga_nav_category_link('reviews', 'Reviews')); ?>">Reviews</a>
-                        </li>
-                        <li>
-                            <a href="https://gallery.greatandhra.com/index.php">Gallery</a>
-                        </li>
-                        <li>
-                            <a href="<?php echo ga_e(ga_nav_category_link('opinion', 'Opinion')); ?>">Opinion</a>
-                        </li>
-                        <li>
-                            <a href="http://epaper.greatandhra.com/">
-                                <img alt="greatandhra print" src="images/ga-print.png"
-                                    style="height: 20px; vertical-align: middle;">
-                            </a>
-                        </li>
-                        <li>
-                            <a href="https://telugu.greatandhra.com/" style="font-size: 16px;">తెలుగు</a>
-                        </li>
-                    </ul>
+                <!-- Mobile Navigation Menu -->
+                <div class="mobile-nav-wrapper" id="mobileNav">
+                    <div class="mobile-nav-content">
+                        <ul class="mobile-menu">
+                            <li>
+                                <a href="index.php">
+                                    <i class="fas fa-home"></i> Home
+                                </a>
+                            </li>
+                            <li>
+                                <a href="<?php echo ga_e(ga_nav_category_link('latest-news', 'Latest News')); ?>">Latest</a>
+                            </li>
+                            <li class="has-submenu">
+                                <a href="<?php echo ga_e(ga_nav_category_link('politics', 'Politics', true)); ?>" class="submenu-toggle">
+                                    Politics <i class="fas fa-caret-down"></i>
+                                </a>
+                                <ul class="submenu">
+                                    <li><a href="<?php echo ga_e(ga_nav_category_link('andhra-news', 'Andhra News')); ?>">Andhra</a></li>
+                                    <li><a href="<?php echo ga_e(ga_nav_category_link('telangana-news', 'Telangana News')); ?>">Telangana</a></li>
+                                    <li><a href="<?php echo ga_e(ga_nav_category_link('india-news', 'India News')); ?>">India</a></li>
+                                </ul>
+                            </li>
+                            <li class="has-submenu">
+                                <a href="<?php echo ga_e(ga_nav_category_link('movies', 'Movies', true)); ?>" class="submenu-toggle">
+                                    Movies <i class="fas fa-caret-down"></i>
+                                </a>
+                                <ul class="submenu">
+                                    <li><a href="<?php echo ga_e(ga_nav_category_link('movie-news', 'Movie News')); ?>">News</a></li>
+                                    <li><a href="<?php echo ga_e(ga_nav_category_link('movie-gossip', 'Movie Gossip')); ?>">Gossip</a></li>
+                                    <li><a href="box-office">Box Office</a></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="<?php echo ga_e(ga_nav_category_link('reviews', 'Reviews')); ?>">Reviews</a>
+                            </li>
+                            <li>
+                                <a href="https://gallery.greatandhra.com/index.php">Gallery</a>
+                            </li>
+                            <li>
+                                <a href="<?php echo ga_e(ga_nav_category_link('opinion', 'Opinion')); ?>">Opinion</a>
+                            </li>
+                            <li>
+                                <a href="http://epaper.greatandhra.com/">
+                                    <img alt="greatandhra print" src="images/ga-print.png"
+                                        style="height: 20px; vertical-align: middle;">
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://telugu.greatandhra.com/" style="font-size: 16px;">తెలుగు</a>
+                            </li>
+                        </ul>
 
-                    <div class="mobile-social">
-                        <a href="https://www.facebook.com/greatandhra" target="_blank">
-                            <i class="fab fa-facebook-f"></i>
-                        </a>
-                        <a href="https://twitter.com/greatandhranews" target="_blank">
-                            <i class="fab fa-twitter"></i>
-                        </a>
-                        <a href="https://www.youtube.com/channel/UCoarMz-cpxAnBy8tszp35wA" target="_blank">
-                            <i class="fab fa-youtube"></i>
-                        </a>
+                        <div class="mobile-social">
+                            <a href="https://www.facebook.com/greatandhra" target="_blank">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                            <a href="https://twitter.com/greatandhranews" target="_blank">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                            <a href="https://www.youtube.com/channel/UCoarMz-cpxAnBy8tszp35wA" target="_blank">
+                                <i class="fab fa-youtube"></i>
+                            </a>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="shortcut-menu-links">
-                <li><a href="https://m.greatandhra.com/index.php" title="home"> <img width="20" height="20"
-                            src="images/home-icon.png" alt="home icon" title="home icon"></a></li>
-                <li><a href="http://telugu.greatandhra.com/">తెలుగు</a></li>
-                <li><a href="https://m.greatandhra.com/category.php?id=4" title="Reviews">Reviews</a></li>
-                <li><a href="http://epaper.greatandhra.com/" title="epaper">ePaper</a></li>
-                <li><a href="http://gallery.greatandhra.com/index.php" title="gallery">Gallery</a></li>
-            </div>
+                <div class="shortcut-menu-links">
+                    <li><a href="https://m.greatandhra.com/index.php" title="home"> <img width="20" height="20"
+                                src="images/home-icon.png" alt="home icon" title="home icon"></a></li>
+                    <li><a href="http://telugu.greatandhra.com/">తెలుగు</a></li>
+                    <li><a href="https://m.greatandhra.com/category.php?id=4" title="Reviews">Reviews</a></li>
+                    <li><a href="http://epaper.greatandhra.com/" title="epaper">ePaper</a></li>
+                    <li><a href="http://gallery.greatandhra.com/index.php" title="gallery">Gallery</a></li>
+                </div>
 
-            <!-- Overlay -->
-            <div class="mobile-overlay" id="mobileOverlay"></div>
+                <!-- Overlay -->
+                <div class="mobile-overlay" id="mobileOverlay"></div>
 
-            <!-- Second Row: Advertisement -->
-            <div class="_201223_">
-                <?php // Reuses the Homepage Top Banner ad's mobile image - same pattern as index.php/inner-page.php. ?>
-                <?php ga_render_ad('LISTPAGE_MOBILE_BANNER'); ?>
+                <!-- Second Row: Advertisement -->
+                <div class="_201223_">
+                    <?php // Reuses the Homepage Top Banner ad's mobile image - same pattern as index.php/inner-page.php. 
+                    ?>
+                    <?php ga_render_ad('LISTPAGE_MOBILE_BANNER'); ?>
+                </div>
             </div>
-        </div>
             <!--great_andhra_main_menu_panel-->
             <!--great_andhra_main_menu_white_gap-->
             <!--<div class="great_andhra_main_menu_white_gap">-->
@@ -558,48 +568,48 @@ function ga_list_page_url(string $cleanPath, array $legacyParams, int $page): st
 
                                     <div class="content">
                                         <?php if (!empty($ga_list_articles)): ?>
-                                        <?php
+                                            <?php
                                             // Phone-only ad dropped at the true middle of however many articles
                                             // this page actually has (varies with pagination) - never fires on
                                             // desktop, and simply doesn't fire on a near-empty last page (index
                                             // never matched) rather than needing a special-cased minimum.
                                             $ga_list_mobile_ad_after_index = (int) floor(count($ga_list_articles) / 2) - 1;
-                                        ?>
-                                        <?php foreach ($ga_list_articles as $ga_list_i => $ga_article): ?>
-                                        <?php
-                                            $ga_list_img = ga_image($ga_article, GA_LIST_PAGE_FALLBACK_IMAGE);
-                                            $ga_list_date = ga_format_date($ga_article['publishedAt'] ?? null, 'd-M-Y H:i:s');
-                                        ?>
-                                        <div class="movies_news_description_container float-left" style="color:#000; ">
-                                            <div class="img_plc">
-                                                <div>
-                                                    <img border="0" src="<?php echo ga_e($ga_list_img['src']); ?>"
-                                                        align="absmiddle" width="<?php echo (int) $ga_list_img['width']; ?>"
-                                                        height="<?php echo (int) $ga_list_img['height']; ?>"
-                                                        alt="<?php echo ga_e($ga_article['title'] ?? ''); ?>"
-                                                        <?php if ($ga_list_i > 0): ?>loading="lazy"<?php endif; ?>>
+                                            ?>
+                                            <?php foreach ($ga_list_articles as $ga_list_i => $ga_article): ?>
+                                                <?php
+                                                $ga_list_img = ga_image($ga_article, GA_LIST_PAGE_FALLBACK_IMAGE);
+                                                $ga_list_date = ga_format_date($ga_article['publishedAt'] ?? null, 'd-M-Y H:i:s');
+                                                ?>
+                                                <div class="movies_news_description_container float-left" style="color:#000; ">
+                                                    <div class="img_plc">
+                                                        <div>
+                                                            <img border="0" src="<?php echo ga_e($ga_list_img['src']); ?>"
+                                                                align="absmiddle" width="<?php echo (int) $ga_list_img['width']; ?>"
+                                                                height="<?php echo (int) $ga_list_img['height']; ?>"
+                                                                alt="<?php echo ga_e($ga_article['title'] ?? ''); ?>"
+                                                                <?php if ($ga_list_i > 0): ?>loading="lazy" <?php endif; ?>>
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <a style="color:#326891; "
+                                                            href="<?php echo ga_e(ga_inner_link($ga_article)); ?>"
+                                                            title="<?php echo ga_e($ga_article['title'] ?? ''); ?>"><?php echo ga_e($ga_article['title'] ?? ''); ?></a>
+                                                        <div class="byline " style="padding:0px; ">Published Date : <?php echo ga_e($ga_list_date); ?> IST</div>
+                                                    </div>
+                                                    <div class="view_mov_poli_content">
+                                                        <?php echo ga_e(ga_article_excerpt($ga_article, 220)); ?>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div>
-                                                <a style="color:#326891; "
-                                                    href="<?php echo ga_e(ga_inner_link($ga_article)); ?>"
-                                                    title="<?php echo ga_e($ga_article['title'] ?? ''); ?>"><?php echo ga_e($ga_article['title'] ?? ''); ?></a>
-                                                <div class="byline " style="padding:0px; ">Published Date : <?php echo ga_e($ga_list_date); ?> IST</div>
-                                            </div>
-                                            <div class="view_mov_poli_content">
-                                                <?php echo ga_e(ga_article_excerpt($ga_article, 220)); ?>
-                                            </div>
-                                        </div>
-                                        <?php if ($ga_list_i === $ga_list_mobile_ad_after_index && ga_is_mobile()): ?>
-                                        <div class="listpage-mobile-middle-ad">
-                                            <?php ga_render_ad('LISTPAGE_MOBILE_MIDDLE_AD'); ?>
-                                        </div>
-                                        <?php endif; ?>
-                                        <?php endforeach; ?>
+                                                <?php if ($ga_list_i === $ga_list_mobile_ad_after_index && ga_is_mobile()): ?>
+                                                    <div class="listpage-mobile-middle-ad">
+                                                        <?php ga_render_ad('LISTPAGE_MOBILE_MIDDLE_AD'); ?>
+                                                    </div>
+                                                <?php endif; ?>
+                                            <?php endforeach; ?>
                                         <?php else: ?>
-                                        <div class="ga-unavailable" style="min-height:150px;">
-                                            <p class="ga-unavailable-msg">No articles found in this category yet.</p>
-                                        </div>
+                                            <div class="ga-unavailable" style="min-height:150px;">
+                                                <p class="ga-unavailable-msg">No articles found in this category yet.</p>
+                                            </div>
                                         <?php endif; ?>
                                     </div>
                                 </div>
@@ -608,46 +618,46 @@ function ga_list_page_url(string $cleanPath, array $legacyParams, int $page): st
                     </div>
                     <!--page_news-->
                     <?php if ($ga_total_pages > 1): ?>
-                    <?php
+                        <?php
                         $ga_window_start = max(1, $ga_page - GA_LIST_PAGINATION_WINDOW);
                         $ga_window_end = min($ga_total_pages, $ga_page + GA_LIST_PAGINATION_WINDOW);
-                    ?>
-                    <div class="new_pagination" style="margin-left:0px;margin-top:10px; width:650px; ">
-                        <table width="100%" align="center">
-                            <tbody>
-                                <tr>
-                                    <td align="center">
-                                        <?php if ($ga_page > 1): ?>
-                                        <a href="<?php echo ga_e(ga_list_page_url($ga_clean_path, $ga_base_params,$ga_page - 1)); ?>">&laquo; Prev</a>
-                                        <?php endif; ?>
+                        ?>
+                        <div class="new_pagination" style="margin-left:0px;margin-top:10px; width:650px; ">
+                            <table width="100%" align="center">
+                                <tbody>
+                                    <tr>
+                                        <td align="center">
+                                            <?php if ($ga_page > 1): ?>
+                                                <a href="<?php echo ga_e(ga_list_page_url($ga_clean_path, $ga_base_params, $ga_page - 1)); ?>">&laquo; Prev</a>
+                                            <?php endif; ?>
 
-                                        <?php if ($ga_window_start > 1): ?>
-                                        <a href="<?php echo ga_e(ga_list_page_url($ga_clean_path, $ga_base_params,1)); ?>">1</a>
-                                        <?php if ($ga_window_start > 2): ?><span>&hellip;</span><?php endif; ?>
-                                        <?php endif; ?>
+                                            <?php if ($ga_window_start > 1): ?>
+                                                <a href="<?php echo ga_e(ga_list_page_url($ga_clean_path, $ga_base_params, 1)); ?>">1</a>
+                                                <?php if ($ga_window_start > 2): ?><span>&hellip;</span><?php endif; ?>
+                                            <?php endif; ?>
 
-                                        <?php for ($ga_p = $ga_window_start; $ga_p <= $ga_window_end; $ga_p++): ?>
-                                        <?php if ($ga_p === $ga_page): ?>
-                                        <span><?php echo $ga_p; ?></span>
-                                        <?php else: ?>
-                                        <a href="<?php echo ga_e(ga_list_page_url($ga_clean_path, $ga_base_params,$ga_p)); ?>"><?php echo $ga_p; ?></a>
-                                        <?php endif; ?>
-                                        <?php endfor; ?>
+                                            <?php for ($ga_p = $ga_window_start; $ga_p <= $ga_window_end; $ga_p++): ?>
+                                                <?php if ($ga_p === $ga_page): ?>
+                                                    <span><?php echo $ga_p; ?></span>
+                                                <?php else: ?>
+                                                    <a href="<?php echo ga_e(ga_list_page_url($ga_clean_path, $ga_base_params, $ga_p)); ?>"><?php echo $ga_p; ?></a>
+                                                <?php endif; ?>
+                                            <?php endfor; ?>
 
-                                        <?php if ($ga_window_end < $ga_total_pages): ?>
-                                        <?php if ($ga_window_end < $ga_total_pages - 1): ?><span>&hellip;</span><?php endif; ?>
-                                        <a href="<?php echo ga_e(ga_list_page_url($ga_clean_path, $ga_base_params,$ga_total_pages)); ?>"><?php echo $ga_total_pages; ?></a>
-                                        <?php endif; ?>
+                                            <?php if ($ga_window_end < $ga_total_pages): ?>
+                                                <?php if ($ga_window_end < $ga_total_pages - 1): ?><span>&hellip;</span><?php endif; ?>
+                                                <a href="<?php echo ga_e(ga_list_page_url($ga_clean_path, $ga_base_params, $ga_total_pages)); ?>"><?php echo $ga_total_pages; ?></a>
+                                            <?php endif; ?>
 
-                                        <?php if ($ga_page < $ga_total_pages): ?>
-                                        <a href="<?php echo ga_e(ga_list_page_url($ga_clean_path, $ga_base_params,$ga_page + 1)); ?>">Next &raquo;</a>
-                                        <?php endif; ?>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                                            <?php if ($ga_page < $ga_total_pages): ?>
+                                                <a href="<?php echo ga_e(ga_list_page_url($ga_clean_path, $ga_base_params, $ga_page + 1)); ?>">Next &raquo;</a>
+                                            <?php endif; ?>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
 
-                    </div>
+                        </div>
                     <?php endif; ?>
 
 
@@ -661,13 +671,15 @@ function ga_list_page_url(string $cleanPath, array $legacyParams, int $page): st
                                 <div class="content">
                                     <ul class="news_style">
                                         <?php if (!empty($ga_sidebar_gossip)): ?>
-                                        <?php foreach ($ga_sidebar_gossip as $ga_gossip_article): ?>
-                                        <li><a href="<?php echo ga_e(ga_inner_link($ga_gossip_article)); ?>"
-                                                title="<?php echo ga_e($ga_gossip_article['title'] ?? ''); ?>"><?php echo ga_e($ga_gossip_article['title'] ?? ''); ?></a>
-                                        </li>
-                                        <?php endforeach; ?>
+                                            <?php foreach ($ga_sidebar_gossip as $ga_gossip_article): ?>
+                                                <li><a href="<?php echo ga_e(ga_inner_link($ga_gossip_article)); ?>"
+                                                        title="<?php echo ga_e($ga_gossip_article['title'] ?? ''); ?>"><?php echo ga_e($ga_gossip_article['title'] ?? ''); ?></a>
+                                                </li>
+                                            <?php endforeach; ?>
                                         <?php else: ?>
-                                        <li class="ga-unavailable"><p class="ga-unavailable-msg">Content temporarily unavailable</p></li>
+                                            <li class="ga-unavailable">
+                                                <p class="ga-unavailable-msg">Content temporarily unavailable</p>
+                                            </li>
                                         <?php endif; ?>
                                     </ul>
                                 </div>
@@ -677,13 +689,15 @@ function ga_list_page_url(string $cleanPath, array $legacyParams, int $page): st
 
 
                         <li class="sortable-item">
-                            <?php // New admin-manageable zone, no content configured yet - renders nothing until an ad is added. ?>
+                            <?php // New admin-manageable zone, no content configured yet - renders nothing until an ad is added. 
+                            ?>
                             <?php ga_render_ad('LISTPAGE_CONTENT_AD'); ?>
                         </li>
 
                         <li class="sortable-item">
                             <?php // Was a hardcoded AdSense unit (ca-pub-1239645388568087, slot 3746403796) -
-                                  // now admin-managed like every other zone on this page. ?>
+                            // now admin-managed like every other zone on this page. 
+                            ?>
                             <?php ga_render_ad('LISTPAGE_REVIEW_AD'); ?>
                         </li>
 
@@ -695,13 +709,15 @@ function ga_list_page_url(string $cleanPath, array $legacyParams, int $page): st
                                 <div class="content">
                                     <ul class="news_style">
                                         <?php if (!empty($ga_sidebar_reviews)): ?>
-                                        <?php foreach ($ga_sidebar_reviews as $ga_review_article): ?>
-                                        <li><a href="<?php echo ga_e(ga_inner_link($ga_review_article)); ?>"
-                                                title="<?php echo ga_e($ga_review_article['title'] ?? ''); ?>"><?php echo ga_e($ga_review_article['title'] ?? ''); ?></a>
-                                        </li>
-                                        <?php endforeach; ?>
+                                            <?php foreach ($ga_sidebar_reviews as $ga_review_article): ?>
+                                                <li><a href="<?php echo ga_e(ga_inner_link($ga_review_article)); ?>"
+                                                        title="<?php echo ga_e($ga_review_article['title'] ?? ''); ?>"><?php echo ga_e($ga_review_article['title'] ?? ''); ?></a>
+                                                </li>
+                                            <?php endforeach; ?>
                                         <?php else: ?>
-                                        <li class="ga-unavailable"><p class="ga-unavailable-msg">Content temporarily unavailable</p></li>
+                                            <li class="ga-unavailable">
+                                                <p class="ga-unavailable-msg">Content temporarily unavailable</p>
+                                            </li>
                                         <?php endif; ?>
                                     </ul>
                                 </div>
@@ -762,7 +778,31 @@ function ga_list_page_url(string $cleanPath, array $legacyParams, int $page): st
 
         </div>
         <!--great_andhra_inner_body-->
-        <script>var VUUKLE_CONFIG = { apiKey: '2b166297-6273-48a9-82e9-696327c67418', articleId: '1', comments: { enabled: false }, emotes: { "enabled": false }, powerbar: { "enabled": false }, ads: { noDefaults: true } }; (function () { var d = document, s = d.createElement('script'); s.async = true; s.src = 'https://cdn.vuukle.com/platform.js'; (d.head || d.body).appendChild(s); })();</script>
+        <script>
+            var VUUKLE_CONFIG = {
+                apiKey: '2b166297-6273-48a9-82e9-696327c67418',
+                articleId: '1',
+                comments: {
+                    enabled: false
+                },
+                emotes: {
+                    "enabled": false
+                },
+                powerbar: {
+                    "enabled": false
+                },
+                ads: {
+                    noDefaults: true
+                }
+            };
+            (function() {
+                var d = document,
+                    s = d.createElement('script');
+                s.async = true;
+                s.src = 'https://cdn.vuukle.com/platform.js';
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
     </div>
     <!--great_andhra_body-->
 
@@ -827,9 +867,11 @@ function ga_list_page_url(string $cleanPath, array $legacyParams, int $page): st
     </div>
     <script src="https://player.vuukle.com/script/6.1/player.js" async=""></script>
     <?php // Positions .source-image-left/.source-image-right (the fixed skyscraper ad panels
-          // above) relative to the page's centered 990px content column - same script the
-          // homepage uses. Without it these panels have no left/right offset at all and never
-          // "stick" against the content edges the way they do on index.php. ?>
+    // above) relative to the page's centered 990px content column - same script the
+    // homepage uses. Without it these panels have no left/right offset at all and never
+    // "stick" against the content edges the way they do on index.php. 
+    ?>
     <script src="js/great_andhra_view_js_160_1.js?v=<?php echo ga_asset_version('js/great_andhra_view_js_160_1.js'); ?>" type="text/javascript"></script>
 </body>
+
 </html>
