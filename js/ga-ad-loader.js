@@ -13,6 +13,26 @@
 (function () {
     'use strict';
 
+    // Script-type ads (see AdType in the admin) come back as a raw <script> tag inside
+    // data.html. Browsers never execute a <script> element that was inserted via innerHTML -
+    // that's spec behavior, not a bug in the fetch/render above - so SCRIPT ads would silently
+    // do nothing without this: find each inert <script> the innerHTML assignment just parsed,
+    // and replace it with a freshly created <script> (same attributes/inline text/src) that the
+    // DOM will actually run once appended.
+    function runScripts(container) {
+        var oldScripts = container.querySelectorAll('script');
+        for (var i = 0; i < oldScripts.length; i++) {
+            var oldScript = oldScripts[i];
+            var newScript = document.createElement('script');
+            for (var j = 0; j < oldScript.attributes.length; j++) {
+                var attr = oldScript.attributes[j];
+                newScript.setAttribute(attr.name, attr.value);
+            }
+            newScript.text = oldScript.textContent;
+            oldScript.parentNode.replaceChild(newScript, oldScript);
+        }
+    }
+
     function loadSlot(el) {
         var zone = el.getAttribute('data-ad-zone');
         if (!zone) {
@@ -31,6 +51,7 @@
             .then(function (data) {
                 if (data && data.html) {
                     el.innerHTML = data.html;
+                    runScripts(el);
                     el.dispatchEvent(new CustomEvent('ga-ad-loaded', { detail: { zone: zone, loaded: true } }));
                 } else {
                     collapseSlot(el);
